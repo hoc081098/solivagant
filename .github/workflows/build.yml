@@ -81,7 +81,8 @@ jobs:
 
   publish:
     needs: [ build ]
-    if: ${{ github.ref == 'refs/heads/master' && github.repository == 'hoc081098/solivagant' }}
+#    if: ${{ github.ref == 'refs/heads/master' && github.repository == 'hoc081098/solivagant' }}
+    if: ${{ false }}
     strategy:
       matrix:
         os: [ macos-11 ]
