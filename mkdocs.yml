@@ -1,0 +1,53 @@
+site_name: KMP ViewModel
+site_url: https://hoc081098.github.io/kmp-viewmodel/docs/0.x
+repo_name: kmp-viewmodel
+repo_url: https://github.com/hoc081098/solivagant
+site_description: "Kotlin Multiplatform ViewModel - Kotlin Multiplatform MVVM - Compose Multiplatform ViewModel. Common/ Shared ViewModel in Kotlin Multiplatform - A Kotlin Multiplatform library that provides shared MVVM for UI applications. Components are lifecycle-aware on Android. Supports Android Parcelable, Kotlin Parcelize, AndroidX SavedStateHandle for restoring state after process death. Easy interoperability with Swift/Objective-C and SwiftUI. Supports Compose Multiplatform Framework (Android, Desktop, Web, iOS, macOS, tvOS, watchOS)."
+site_author: Petrus Nguyễn Thái Học
+remote_branch: gh-pages
+edit_uri: edit/master/docs/
+
+copyright: 'Copyright &copy; 2023 Petrus Nguyễn Thái Học.'
+
+theme:
+  name: 'material'
+  favicon: images/logo.jpeg
+  logo: images/logo.jpeg
+  palette:
+    primary: 'deep purple'
+    accent: 'white'
+  features:
+    - toc.integrate
+
+markdown_extensions:
+  - tables
+  - attr_list
+  - md_in_html
+  - smarty
+  - codehilite:
+      guess_lang: false
+  - footnotes
+  - meta
+  - toc:
+      permalink: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tilde
+  - tables
+  - mdx_truly_sane_lists
+
+nav:
+  - 'Overview': index.md
+  - 'Multiplatform': multiplatform.md
+  - 'ViewModel': viewmodel.md
+  - 'ViewModel SavedState': viewmodel-savedstate.md
+  - 'Safe SavedStateHandle': viewmodel-savedstate-safe.md
+  - 'ViewModel Compose': viewmodel-compose.md
+  - 'Swift Interop': swift-interop.md
+  - 'Change Log': changelog.md
+  - 'API': API

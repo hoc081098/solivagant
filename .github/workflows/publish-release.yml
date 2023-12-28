@@ -1,0 +1,119 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - '**'
+
+env:
+  GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.daemon=false -Dkotlin.incremental=false -XX:+UseParallelGC -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
+
+permissions:
+  contents: write
+
+jobs:
+  create-gh-release:
+    if: ${{ github.repository == 'hoc081098/solivagant' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Extract release notes
+        id: release_notes
+        uses: ffurrer2/extract-release-notes@v1
+
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: ${{ steps.release_notes.outputs.release_notes }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    needs: create-gh-release
+    if: ${{ github.repository == 'hoc081098/solivagant' }}
+    strategy:
+      matrix:
+        os: [ macos-11 ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Cache gradle, wrapper and buildSrc
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ matrix.os }}-gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
+          restore-keys: |
+            ${{ matrix.os }}-gradle-
+      - name: Cache konan
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.konan/cache
+            ~/.konan/dependencies
+            ~/.konan/kotlin-native-macos*
+            ~/.konan/kotlin-native-mingw*
+            ~/.konan/kotlin-native-windows*
+            ~/.konan/kotlin-native-linux*
+            ~/.konan/kotlin-native-prebuilt-macos*
+            ~/.konan/kotlin-native-prebuilt-mingw*
+            ~/.konan/kotlin-native-prebuilt-windows*
+            ~/.konan/kotlin-native-prebuilt-linux*
+          key: ${{ matrix.os }}-konan-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ matrix.os }}-konan-
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Build release
+        run: ./gradlew :viewmodel:assemble :viewmodel-savedstate:assemble :viewmodel-compose:assemble
+
+      - name: Publish release
+        run: ./gradlew publish --stacktrace
+        if: contains(matrix.os, 'macos')
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.MAVEN_SIGNING_PRIVATE_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.MAVEN_SIGNING_PASSWORD }}
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+
+      - name: Install MkDocs Material
+        run: pip install mkdocs-material
+
+      - name: Generate docs
+        run: ./gradlew :dokkaHtmlMultiModule --no-parallel --stacktrace
+
+      - name: Copy docs
+        run: |
+          cp README.md docs/index.md
+          cp CHANGELOG.md docs/changelog.md
+          mkdir -p docs/API
+          cp -R build/dokka/htmlMultiModule/. docs/API
+
+      - name: Build MkDocs
+        run: mkdocs build
+
+      - name: Deploy docs 🚀 to website
+        if: ${{ contains(matrix.os, 'macos') }}
+        uses: JamesIves/github-pages-deploy-action@v4.5.0
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: site # The folder the action should deploy.
+          target-folder: docs/0.x/
+          clean: true

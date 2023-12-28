@@ -1,0 +1,172 @@
+name: Build and publish snapshot
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignore: [ '**.md', '**.MD', '!docs/**' ]
+    tags-ignore:
+      - '**'
+  pull_request:
+    branches: [ master ]
+    paths-ignore: [ '**.md', '**.MD', '!docs/**' ]
+  workflow_dispatch:
+
+env:
+  GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.daemon=false -Dkotlin.incremental=false -XX:+UseParallelGC -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ macos-11 ]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    if: ${{ github.repository == 'hoc081098/solivagant' }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Cache gradle, wrapper and buildSrc
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ matrix.os }}-gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
+          restore-keys: |
+            ${{ matrix.os }}-gradle-
+      - name: Cache konan
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.konan/cache
+            ~/.konan/dependencies
+            ~/.konan/kotlin-native-macos*
+            ~/.konan/kotlin-native-mingw*
+            ~/.konan/kotlin-native-windows*
+            ~/.konan/kotlin-native-linux*
+            ~/.konan/kotlin-native-prebuilt-macos*
+            ~/.konan/kotlin-native-prebuilt-mingw*
+            ~/.konan/kotlin-native-prebuilt-windows*
+            ~/.konan/kotlin-native-prebuilt-linux*
+          key: ${{ matrix.os }}-konan-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ matrix.os }}-konan-
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Build
+        run: ./gradlew :viewmodel:build :viewmodel-savedstate:build :viewmodel-compose:build --stacktrace
+
+      - name: Kover Xml Report
+        run: ./gradlew :koverXmlReport
+
+      - name: Upload Test Report
+        uses: codecov/codecov-action@v3.1.4
+
+      - name: Upload test report artifact
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: build/reports/tests/allTests/
+
+  publish:
+    needs: [ build ]
+    if: ${{ github.ref == 'refs/heads/master' && github.repository == 'hoc081098/solivagant' }}
+    strategy:
+      matrix:
+        os: [ macos-11 ]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Cache gradle, wrapper and buildSrc
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ matrix.os }}-gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
+          restore-keys: |
+            ${{ matrix.os }}-gradle-
+      - name: Cache konan
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.konan/cache
+            ~/.konan/dependencies
+            ~/.konan/kotlin-native-macos*
+            ~/.konan/kotlin-native-mingw*
+            ~/.konan/kotlin-native-windows*
+            ~/.konan/kotlin-native-linux*
+            ~/.konan/kotlin-native-prebuilt-macos*
+            ~/.konan/kotlin-native-prebuilt-mingw*
+            ~/.konan/kotlin-native-prebuilt-windows*
+            ~/.konan/kotlin-native-prebuilt-linux*
+          key: ${{ matrix.os }}-konan-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ matrix.os }}-konan-
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Retrieve version
+        run: |
+          echo "VERSION_NAME=$(cat gradle.properties | grep -w "VERSION_NAME" | cut -d'=' -f2)" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Publish snapshot
+        run: ./gradlew publish --stacktrace
+        if: ${{ endsWith(env.VERSION_NAME, '-SNAPSHOT') && contains(matrix.os, 'macos') }}
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.MAVEN_SIGNING_PRIVATE_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.MAVEN_SIGNING_PASSWORD }}
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+
+      - name: Install MkDocs MaterialRequirements
+        run: pip install -r docs/requirements.txt
+
+      - name: Generate docs
+        run: ./gradlew :dokkaHtmlMultiModule --no-parallel --stacktrace
+
+      - name: Copy docs
+        run: |
+          cp README.md docs/index.md
+          cp CHANGELOG.md docs/changelog.md
+          sh scripts/update_docs_url.sh "snapshot"
+          mkdir -p docs/API
+          cp -R build/dokka/htmlMultiModule/. docs/API
+
+      - name: Build MkDocs
+        run: mkdocs build --verbose
+
+      - name: Deploy docs 🚀 to website
+        if: ${{ contains(matrix.os, 'macos') }}
+        uses: JamesIves/github-pages-deploy-action@v4.5.0
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: site # The folder the action should deploy.
+          target-folder: docs/latest/
+          clean: true
