@@ -1,6 +1,6 @@
 package com.freeletics.khonshu.navigation.internal
 
-import androidx.activity.OnBackPressedCallback
+import com.freeletics.khonshu.navigation.OnBackPressedCallback
 
 internal class DelegatingOnBackPressedCallback : OnBackPressedCallback(false) {
 

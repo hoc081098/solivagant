@@ -150,6 +150,12 @@ kotlin {
       optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
     }
   }
+
+  sourceSets.configureEach {
+    languageSettings {
+      optIn("com.freeletics.khonshu.navigation.internal.InternalNavigationApi")
+    }
+  }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {

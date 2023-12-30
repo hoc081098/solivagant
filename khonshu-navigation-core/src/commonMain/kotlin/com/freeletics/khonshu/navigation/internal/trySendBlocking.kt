@@ -1,9 +1,9 @@
 package com.freeletics.khonshu.navigation.internal
 
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ChannelResult
+import kotlinx.coroutines.channels.SendChannel
 
-internal fun <T> Channel<T>.trySendBlocking(element: T): ChannelResult<Unit> {
+internal fun <T> SendChannel<T>.trySendBlocking(element: T): ChannelResult<Unit> {
   TODO()
   return trySend(element)
 }
