@@ -1,9 +1,9 @@
 package com.freeletics.khonshu.navigation.internal
 
-import androidx.lifecycle.SavedStateHandle
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.Navigator
-import java.io.Serializable
+import com.freeletics.khonshu.navigation.Serializable
+import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import kotlin.reflect.KClass
 
 @InternalNavigationApi
