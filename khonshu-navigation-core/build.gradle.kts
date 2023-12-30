@@ -6,15 +6,17 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   alias(libs.plugins.kotlin.multiplatform)
+
   alias(libs.plugins.android.library)
+  alias(libs.plugins.kotlin.parcelize)
 
   alias(libs.plugins.jetbrains.compose)
 
   alias(libs.plugins.vanniktech.maven.publish)
-
   alias(libs.plugins.dokka)
   alias(libs.plugins.kotlinx.binary.compatibility.validator)
   alias(libs.plugins.kotlinx.kover)
+  alias(libs.plugins.poko)
 }
 
 compose {
