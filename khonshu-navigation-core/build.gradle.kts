@@ -153,7 +153,7 @@ kotlin {
 
   sourceSets.configureEach {
     languageSettings {
-      optIn("com.freeletics.khonshu.navigation.internal.InternalNavigationApi")
+      optIn("com.hoc081098.solivagant.navigation.internal.InternalNavigationApi")
     }
   }
 }

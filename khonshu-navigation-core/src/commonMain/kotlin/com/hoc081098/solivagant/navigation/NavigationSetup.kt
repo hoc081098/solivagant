@@ -1,13 +1,13 @@
-package com.freeletics.khonshu.navigation
+package com.hoc081098.solivagant.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
-import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
-import com.freeletics.khonshu.navigation.internal.NavEvent
-import com.freeletics.khonshu.navigation.internal.NavigationExecutor
-import com.freeletics.khonshu.navigation.internal.VisibleForTesting
+import com.hoc081098.solivagant.navigation.internal.InternalNavigationApi
+import com.hoc081098.solivagant.navigation.internal.NavEvent
+import com.hoc081098.solivagant.navigation.internal.NavigationExecutor
+import com.hoc081098.solivagant.navigation.internal.VisibleForTesting
 import com.hoc081098.kmp.viewmodel.parcelable.Parcelable
 import com.hoc081098.kmp.viewmodel.parcelable.Parcelize
 import kotlinx.coroutines.Dispatchers

@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.navigation
+package com.hoc081098.solivagant.navigation
 
 public expect abstract class OnBackPressedCallback constructor(isEnabled: Boolean) {
   public var isEnabled: Boolean

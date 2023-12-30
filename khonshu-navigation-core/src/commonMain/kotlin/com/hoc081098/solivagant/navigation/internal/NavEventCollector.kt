@@ -1,9 +1,9 @@
-package com.freeletics.khonshu.navigation.internal
+package com.hoc081098.solivagant.navigation.internal
 
-import com.freeletics.khonshu.navigation.BaseRoute
-import com.freeletics.khonshu.navigation.NavRoot
-import com.freeletics.khonshu.navigation.NavRoute
-import com.freeletics.khonshu.navigation.Navigator
+import com.hoc081098.solivagant.navigation.BaseRoute
+import com.hoc081098.solivagant.navigation.NavRoot
+import com.hoc081098.solivagant.navigation.NavRoute
+import com.hoc081098.solivagant.navigation.Navigator
 
 internal class NavEventCollector : Navigator {
 

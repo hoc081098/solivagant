@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.navigation.internal
+package com.hoc081098.solivagant.navigation.internal
 
 import kotlinx.coroutines.channels.ChannelResult
 import kotlinx.coroutines.channels.SendChannel

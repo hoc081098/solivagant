@@ -1,8 +1,8 @@
-package com.freeletics.khonshu.navigation
+package com.hoc081098.solivagant.navigation
 
-import com.freeletics.khonshu.navigation.internal.DestinationId
-import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
-import com.freeletics.khonshu.navigation.internal.trySendBlocking
+import com.hoc081098.solivagant.navigation.internal.DestinationId
+import com.hoc081098.solivagant.navigation.internal.InternalNavigationApi
+import com.hoc081098.solivagant.navigation.internal.trySendBlocking
 import dev.drewhamilton.poko.Poko
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow

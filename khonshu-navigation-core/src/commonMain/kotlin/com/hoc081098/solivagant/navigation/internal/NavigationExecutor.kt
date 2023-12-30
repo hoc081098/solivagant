@@ -1,8 +1,8 @@
-package com.freeletics.khonshu.navigation.internal
+package com.hoc081098.solivagant.navigation.internal
 
-import com.freeletics.khonshu.navigation.BaseRoute
-import com.freeletics.khonshu.navigation.Navigator
-import com.freeletics.khonshu.navigation.Serializable
+import com.hoc081098.solivagant.navigation.BaseRoute
+import com.hoc081098.solivagant.navigation.Navigator
+import com.hoc081098.solivagant.navigation.Serializable
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import kotlin.reflect.KClass
 

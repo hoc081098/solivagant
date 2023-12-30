@@ -1,6 +1,6 @@
-package com.freeletics.khonshu.navigation
+package com.hoc081098.solivagant.navigation
 
-import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
+import com.hoc081098.solivagant.navigation.internal.InternalNavigationApi
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 
 public fun <T : BaseRoute> SavedStateHandle.requireRoute(): T {

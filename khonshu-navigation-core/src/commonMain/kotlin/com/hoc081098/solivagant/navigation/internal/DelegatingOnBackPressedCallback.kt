@@ -1,6 +1,6 @@
-package com.freeletics.khonshu.navigation.internal
+package com.hoc081098.solivagant.navigation.internal
 
-import com.freeletics.khonshu.navigation.OnBackPressedCallback
+import com.hoc081098.solivagant.navigation.OnBackPressedCallback
 
 internal class DelegatingOnBackPressedCallback : OnBackPressedCallback(false) {
 

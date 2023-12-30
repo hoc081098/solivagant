@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.navigation
+package com.hoc081098.solivagant.navigation
 
 import androidx.compose.runtime.Immutable
 import com.hoc081098.kmp.viewmodel.parcelable.Parcelable

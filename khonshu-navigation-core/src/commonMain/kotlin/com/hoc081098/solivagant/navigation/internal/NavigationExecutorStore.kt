@@ -1,4 +1,4 @@
-package com.freeletics.khonshu.navigation.internal
+package com.hoc081098.solivagant.navigation.internal
 
 import com.hoc081098.kmp.viewmodel.Closeable
 import kotlin.reflect.KClass

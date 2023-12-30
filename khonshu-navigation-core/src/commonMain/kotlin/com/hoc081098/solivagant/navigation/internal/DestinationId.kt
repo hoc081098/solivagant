@@ -1,8 +1,8 @@
-package com.freeletics.khonshu.navigation.internal
+package com.hoc081098.solivagant.navigation.internal
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
-import com.freeletics.khonshu.navigation.BaseRoute
+import com.hoc081098.solivagant.navigation.BaseRoute
 import kotlin.jvm.JvmInline
 import kotlin.reflect.KClass
 

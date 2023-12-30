@@ -1,8 +1,8 @@
-package com.freeletics.khonshu.navigation
+package com.hoc081098.solivagant.navigation
 
 import androidx.compose.runtime.Composable
-import com.freeletics.khonshu.navigation.internal.DestinationId
-import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
+import com.hoc081098.solivagant.navigation.internal.DestinationId
+import com.hoc081098.solivagant.navigation.internal.InternalNavigationApi
 
 /**
  * A destination that can be navigated to. See `NavHost` for how to configure a `NavGraph` with it.
