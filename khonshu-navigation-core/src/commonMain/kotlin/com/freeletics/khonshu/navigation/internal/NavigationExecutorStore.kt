@@ -1,6 +1,6 @@
 package com.freeletics.khonshu.navigation.internal
 
-import java.io.Closeable
+import com.hoc081098.kmp.viewmodel.Closeable
 import kotlin.reflect.KClass
 
 @InternalNavigationApi
