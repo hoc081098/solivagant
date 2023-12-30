@@ -2,7 +2,9 @@ package com.hoc081098.solivagant.navigation
 
 import com.hoc081098.kmp.viewmodel.parcelable.Parcelable
 import com.hoc081098.kmp.viewmodel.parcelable.Parcelize
+import com.hoc081098.kmp.viewmodel.parcelable.TypeParceler
 import com.hoc081098.solivagant.navigation.internal.DestinationId
+import com.hoc081098.solivagant.navigation.internal.DestinationIdParceler
 import com.hoc081098.solivagant.navigation.internal.InternalNavigationApi
 import com.hoc081098.solivagant.navigation.internal.trySendBlocking
 import dev.drewhamilton.poko.Poko
@@ -51,7 +53,7 @@ public class NavigationResultRequest<R : Parcelable> internal constructor(
   @Poko
   @Parcelize
   public class Key<R : Parcelable> @InternalNavigationApi constructor(
-    internal val destinationId: DestinationId<*>,
+    @TypeParceler<DestinationId<*>, DestinationIdParceler> internal val destinationId: DestinationId<*>,
     internal val requestKey: String,
   ) : Parcelable
 }
