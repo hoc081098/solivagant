@@ -1,0 +1,248 @@
+public abstract interface class com/hoc081098/solivagant/navigation/BackInterceptor {
+	public abstract fun backPresses ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun backPresses (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public abstract interface class com/hoc081098/solivagant/navigation/BaseRoute : android/os/Parcelable {
+}
+
+public abstract interface class com/hoc081098/solivagant/navigation/ContentDestination : com/hoc081098/solivagant/navigation/NavDestination {
+	public abstract fun getContent ()Lkotlin/jvm/functions/Function3;
+	public abstract fun getExtra ()Ljava/io/Serializable;
+	public abstract fun getId-6ifOiCY ()Lkotlin/reflect/KClass;
+}
+
+public final class com/hoc081098/solivagant/navigation/EXTRA_ROUTEKt {
+	public static final field EXTRA_ROUTE Ljava/lang/String;
+}
+
+public final class com/hoc081098/solivagant/navigation/InitialValue$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/hoc081098/solivagant/navigation/InitialValue;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/hoc081098/solivagant/navigation/InitialValue;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public abstract interface class com/hoc081098/solivagant/navigation/NavDestination {
+}
+
+public class com/hoc081098/solivagant/navigation/NavEventNavigator : com/hoc081098/solivagant/navigation/BackInterceptor, com/hoc081098/solivagant/navigation/Navigator, com/hoc081098/solivagant/navigation/ResultNavigator {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun backPresses ()Lkotlinx/coroutines/flow/Flow;
+	public fun backPresses (Ljava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public fun deliverNavigationResult (Lcom/hoc081098/solivagant/navigation/NavigationResultRequest$Key;Landroid/os/Parcelable;)V
+	public final fun getNavEvents ()Lkotlinx/coroutines/flow/Flow;
+	public final fun getNavigationResultRequests ()Ljava/util/List;
+	public final fun getOnBackPressedCallback ()Landroidx/activity/OnBackPressedCallback;
+	public final fun navigate (Lkotlin/jvm/functions/Function1;)V
+	public fun navigateBack ()V
+	public fun navigateBackToInternal-wq5Z9EY (Lkotlin/reflect/KClass;Z)V
+	public fun navigateTo (Lcom/hoc081098/solivagant/navigation/NavRoute;)V
+	public fun navigateToRoot (Lcom/hoc081098/solivagant/navigation/NavRoot;Z)V
+	public fun navigateUp ()V
+	public final fun registerForNavigationResult-wq5Z9EY (Lkotlin/reflect/KClass;Ljava/lang/String;)Lcom/hoc081098/solivagant/navigation/NavigationResultRequest;
+	public fun replaceAll (Lcom/hoc081098/solivagant/navigation/NavRoot;)V
+	public fun resetToRoot (Lcom/hoc081098/solivagant/navigation/NavRoot;)V
+}
+
+public abstract interface class com/hoc081098/solivagant/navigation/NavRoot : com/hoc081098/solivagant/navigation/BaseRoute {
+}
+
+public abstract interface class com/hoc081098/solivagant/navigation/NavRoute : com/hoc081098/solivagant/navigation/BaseRoute {
+}
+
+public final class com/hoc081098/solivagant/navigation/NavigationResultRequest : com/hoc081098/solivagant/navigation/ResultOwner {
+	public static final field $stable I
+	public final fun getKey ()Lcom/hoc081098/solivagant/navigation/NavigationResultRequest$Key;
+}
+
+public final class com/hoc081098/solivagant/navigation/NavigationResultRequest$Key : android/os/Parcelable {
+	public static final field $stable I
+	public static final field CREATOR Landroid/os/Parcelable$Creator;
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun describeContents ()I
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/hoc081098/solivagant/navigation/NavigationResultRequest$Key$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/hoc081098/solivagant/navigation/NavigationResultRequest$Key;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/hoc081098/solivagant/navigation/NavigationResultRequest$Key;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public final class com/hoc081098/solivagant/navigation/NavigationSetupKt {
+	public static final fun NavigationSetup (Lcom/hoc081098/solivagant/navigation/NavEventNavigator;Landroidx/compose/runtime/Composer;I)V
+	public static final fun getLocalNavigationExecutor ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+}
+
+public abstract interface class com/hoc081098/solivagant/navigation/Navigator {
+	public static final field Companion Lcom/hoc081098/solivagant/navigation/Navigator$Companion;
+	public abstract fun navigateBack ()V
+	public abstract fun navigateBackToInternal-wq5Z9EY (Lkotlin/reflect/KClass;Z)V
+	public abstract fun navigateTo (Lcom/hoc081098/solivagant/navigation/NavRoute;)V
+	public abstract fun navigateToRoot (Lcom/hoc081098/solivagant/navigation/NavRoot;Z)V
+	public abstract fun navigateUp ()V
+	public abstract fun replaceAll (Lcom/hoc081098/solivagant/navigation/NavRoot;)V
+	public abstract fun resetToRoot (Lcom/hoc081098/solivagant/navigation/NavRoot;)V
+}
+
+public final class com/hoc081098/solivagant/navigation/Navigator$Companion {
+}
+
+public final class com/hoc081098/solivagant/navigation/Navigator$DefaultImpls {
+	public static synthetic fun navigateBackToInternal-wq5Z9EY$default (Lcom/hoc081098/solivagant/navigation/Navigator;Lkotlin/reflect/KClass;ZILjava/lang/Object;)V
+	public static synthetic fun navigateToRoot$default (Lcom/hoc081098/solivagant/navigation/Navigator;Lcom/hoc081098/solivagant/navigation/NavRoot;ZILjava/lang/Object;)V
+}
+
+public final class com/hoc081098/solivagant/navigation/OverlayDestination : com/hoc081098/solivagant/navigation/ContentDestination {
+	public static final field $stable I
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Ljava/io/Serializable;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getContent ()Lkotlin/jvm/functions/Function3;
+	public fun getExtra ()Ljava/io/Serializable;
+	public fun getId-6ifOiCY ()Lkotlin/reflect/KClass;
+}
+
+public final class com/hoc081098/solivagant/navigation/RequireRouteKt {
+	public static final fun getArguments (Lcom/hoc081098/solivagant/navigation/BaseRoute;)Landroidx/lifecycle/SavedStateHandle;
+	public static final fun requireRoute (Landroidx/lifecycle/SavedStateHandle;)Lcom/hoc081098/solivagant/navigation/BaseRoute;
+}
+
+public abstract interface class com/hoc081098/solivagant/navigation/ResultNavigator {
+	public abstract fun deliverNavigationResult (Lcom/hoc081098/solivagant/navigation/NavigationResultRequest$Key;Landroid/os/Parcelable;)V
+}
+
+public abstract class com/hoc081098/solivagant/navigation/ResultOwner {
+	public static final field $stable I
+	public final fun getResults ()Lkotlinx/coroutines/flow/Flow;
+	public final fun onResult (Ljava/lang/Object;)V
+}
+
+public final class com/hoc081098/solivagant/navigation/ScreenDestination : com/hoc081098/solivagant/navigation/ContentDestination {
+	public static final field $stable I
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Ljava/io/Serializable;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getContent ()Lkotlin/jvm/functions/Function3;
+	public fun getExtra ()Ljava/io/Serializable;
+	public fun getId-6ifOiCY ()Lkotlin/reflect/KClass;
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/DestinationId {
+	public static final synthetic fun box-impl (Lkotlin/reflect/KClass;)Lcom/hoc081098/solivagant/navigation/internal/DestinationId;
+	public static fun constructor-impl (Lkotlin/reflect/KClass;)Lkotlin/reflect/KClass;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Lkotlin/reflect/KClass;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;)Z
+	public final fun getRoute ()Lkotlin/reflect/KClass;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Lkotlin/reflect/KClass;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Lkotlin/reflect/KClass;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Lkotlin/reflect/KClass;
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/DestinationIdKt {
+	public static final fun getDestinationId (Lcom/hoc081098/solivagant/navigation/BaseRoute;)Lkotlin/reflect/KClass;
+}
+
+public abstract interface annotation class com/hoc081098/solivagant/navigation/internal/InternalNavigationApi : java/lang/annotation/Annotation {
+}
+
+public abstract interface class com/hoc081098/solivagant/navigation/internal/NavEvent {
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/NavEvent$BackEvent : com/hoc081098/solivagant/navigation/internal/NavEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/hoc081098/solivagant/navigation/internal/NavEvent$BackEvent;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/NavEvent$BackToEvent : com/hoc081098/solivagant/navigation/internal/NavEvent {
+	public static final field $stable I
+	public synthetic fun <init> (Lkotlin/reflect/KClass;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/NavEvent$DestinationResultEvent : com/hoc081098/solivagant/navigation/internal/NavEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/hoc081098/solivagant/navigation/NavigationResultRequest$Key;Landroid/os/Parcelable;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/NavEvent$MultiNavEvent : com/hoc081098/solivagant/navigation/internal/NavEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/util/List;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/NavEvent$NavigateToEvent : com/hoc081098/solivagant/navigation/internal/NavEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/hoc081098/solivagant/navigation/NavRoute;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/NavEvent$NavigateToRootEvent : com/hoc081098/solivagant/navigation/internal/NavEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/hoc081098/solivagant/navigation/NavRoot;Z)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/NavEvent$ReplaceAll : com/hoc081098/solivagant/navigation/internal/NavEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/hoc081098/solivagant/navigation/NavRoot;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/NavEvent$ResetToRoot : com/hoc081098/solivagant/navigation/internal/NavEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/hoc081098/solivagant/navigation/NavRoot;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/NavEvent$UpEvent : com/hoc081098/solivagant/navigation/internal/NavEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/hoc081098/solivagant/navigation/internal/NavEvent$UpEvent;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/hoc081098/solivagant/navigation/internal/NavigationExecutor : com/hoc081098/solivagant/navigation/Navigator {
+	public abstract fun extra-LEmrymE (Lkotlin/reflect/KClass;)Ljava/io/Serializable;
+	public abstract fun routeFor-LEmrymE (Lkotlin/reflect/KClass;)Lcom/hoc081098/solivagant/navigation/BaseRoute;
+	public abstract fun savedStateHandleFor-LEmrymE (Lkotlin/reflect/KClass;)Landroidx/lifecycle/SavedStateHandle;
+	public abstract fun storeFor-LEmrymE (Lkotlin/reflect/KClass;)Lcom/hoc081098/solivagant/navigation/internal/NavigationExecutor$Store;
+}
+
+public abstract interface class com/hoc081098/solivagant/navigation/internal/NavigationExecutor$Store {
+	public abstract fun getOrCreate (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/NavigationExecutorStore : com/hoc081098/solivagant/navigation/internal/NavigationExecutor$Store, java/io/Closeable {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun close ()V
+	public fun getOrCreate (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+}
+
