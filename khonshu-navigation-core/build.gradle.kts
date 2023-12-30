@@ -67,15 +67,6 @@ kotlin {
   macosX64()
   macosArm64()
 
-  // tvosX64()
-  // tvosSimulatorArm64()
-  // tvosArm64()
-
-  // watchosArm32()
-  // watchosArm64()
-  // watchosX64()
-  // watchosSimulatorArm64()
-
   applyDefaultHierarchyTemplate()
 
   sourceSets {
@@ -98,12 +89,30 @@ kotlin {
       }
     }
 
+    val commonJvmMain by creating {
+      dependsOn(commonMain.get())
+    }
+    val commonJvmTest by creating {
+      dependsOn(commonTest.get())
+    }
+
+    val nonJvmMain by creating {
+      dependsOn(commonMain.get())
+    }
+    val nonJvmTest by creating {
+      dependsOn(commonTest.get())
+    }
+
     androidMain {
+      dependsOn(commonJvmMain)
+
       dependencies {
         implementation(libs.androidx.activity.compose)
       }
     }
     val androidUnitTest by getting {
+      dependsOn(commonJvmTest)
+
       dependencies {
         implementation(kotlin("test-junit"))
       }
@@ -118,9 +127,11 @@ kotlin {
 
     jvmMain {
       dependsOn(nonAndroidMain)
+      dependsOn(commonJvmMain)
     }
     jvmTest {
       dependsOn(nonAndroidTest)
+      dependsOn(commonJvmTest)
 
       dependencies {
         implementation(kotlin("test-junit"))
@@ -129,9 +140,12 @@ kotlin {
 
     jsMain {
       dependsOn(nonAndroidMain)
+      dependsOn(nonJvmMain)
     }
     jsTest {
       dependsOn(nonAndroidTest)
+      dependsOn(nonJvmTest)
+
       dependencies {
         implementation(kotlin("test-js"))
       }
@@ -139,9 +153,11 @@ kotlin {
 
     nativeMain {
       dependsOn(nonAndroidMain)
+      dependsOn(nonJvmMain)
     }
     nativeTest {
       dependsOn(nonAndroidTest)
+      dependsOn(nonJvmTest)
     }
   }
 
