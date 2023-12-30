@@ -11,14 +11,14 @@ public sealed interface NavDestination
 
 @InternalNavigationApi
 public sealed interface ContentDestination<T : BaseRoute> : NavDestination {
-    @InternalNavigationApi
-    public val id: DestinationId<T>
+  @InternalNavigationApi
+  public val id: DestinationId<T>
 
-    @InternalNavigationApi
-    public val extra: Serializable?
+  @InternalNavigationApi
+  public val extra: Serializable?
 
-    @InternalNavigationApi
-    public val content: @Composable (T) -> Unit
+  @InternalNavigationApi
+  public val content: @Composable (T) -> Unit
 }
 
 /**
@@ -28,21 +28,21 @@ public sealed interface ContentDestination<T : BaseRoute> : NavDestination {
  */
 @Suppress("FunctionName")
 public inline fun <reified T : BaseRoute> ScreenDestination(
-    noinline content: @Composable (T) -> Unit,
+  noinline content: @Composable (T) -> Unit,
 ): NavDestination = ScreenDestination(DestinationId(T::class), null, content)
 
 @InternalNavigationApi
 @Suppress("FunctionName")
 public inline fun <reified T : BaseRoute> ScreenDestination(
-    extra: Serializable,
-    noinline content: @Composable (T) -> Unit,
+  extra: Serializable,
+  noinline content: @Composable (T) -> Unit,
 ): NavDestination = ScreenDestination(DestinationId(T::class), extra, content)
 
 @InternalNavigationApi
 public class ScreenDestination<T : BaseRoute>(
-    override val id: DestinationId<T>,
-    override val extra: Serializable?,
-    override val content: @Composable (T) -> Unit,
+  override val id: DestinationId<T>,
+  override val extra: Serializable?,
+  override val content: @Composable (T) -> Unit,
 ) : ContentDestination<T>
 
 /**
@@ -52,19 +52,19 @@ public class ScreenDestination<T : BaseRoute>(
  */
 @Suppress("FunctionName")
 public inline fun <reified T : NavRoute> OverlayDestination(
-    noinline content: @Composable (T) -> Unit,
+  noinline content: @Composable (T) -> Unit,
 ): NavDestination = OverlayDestination(DestinationId(T::class), null, content)
 
 @InternalNavigationApi
 @Suppress("FunctionName")
 public inline fun <reified T : NavRoute> OverlayDestination(
-    extra: Serializable,
-    noinline content: @Composable (T) -> Unit,
+  extra: Serializable,
+  noinline content: @Composable (T) -> Unit,
 ): NavDestination = OverlayDestination(DestinationId(T::class), extra, content)
 
 @InternalNavigationApi
 public class OverlayDestination<T : NavRoute>(
-    override val id: DestinationId<T>,
-    override val extra: Serializable?,
-    override val content: @Composable (T) -> Unit,
+  override val id: DestinationId<T>,
+  override val extra: Serializable?,
+  override val content: @Composable (T) -> Unit,
 ) : ContentDestination<T>

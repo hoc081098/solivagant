@@ -14,5 +14,4 @@ public value class DestinationId<T : BaseRoute>(public val route: KClass<T>)
 @InternalNavigationApi
 @Stable
 public val <T : BaseRoute> T.destinationId: DestinationId<out T>
-    get() = DestinationId(this::class)
-
+  get() = DestinationId(this::class)

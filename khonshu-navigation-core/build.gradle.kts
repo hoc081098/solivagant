@@ -190,7 +190,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach
 android {
   compileSdk = libs.versions.android.compile.get().toInt()
   sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-  namespace = "com.hoc081098.kmp.viewmodel.compose"
+  namespace = "com.hoc081098.solivagant.khonshu.navigation.core"
 
   defaultConfig {
     minSdk = libs.versions.android.min.get().toInt()

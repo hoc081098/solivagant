@@ -1,7 +1,7 @@
 package com.hoc081098.solivagant.navigation
 
-import com.hoc081098.solivagant.navigation.internal.InternalNavigationApi
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
+import com.hoc081098.solivagant.navigation.internal.InternalNavigationApi
 
 public fun <T : BaseRoute> SavedStateHandle.requireRoute(): T {
   return requireNotNull(get<T>(EXTRA_ROUTE)) {
