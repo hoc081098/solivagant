@@ -7,7 +7,6 @@ import com.freeletics.khonshu.navigation.internal.NavEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.BackEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.BackToEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.MultiNavEvent
-import com.freeletics.khonshu.navigation.internal.NavEvent.NavigateToActivityEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.NavigateToEvent
 import com.freeletics.khonshu.navigation.internal.NavEvent.UpEvent
 import com.freeletics.khonshu.navigation.internal.NavEventCollector
