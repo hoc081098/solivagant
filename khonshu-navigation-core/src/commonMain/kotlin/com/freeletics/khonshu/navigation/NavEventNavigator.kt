@@ -36,11 +36,6 @@ public interface Navigator {
     )
 
     /**
-     * Triggers navigation to the given [route].
-     */
-    public fun navigateTo(route: ActivityRoute)
-
-    /**
      * Triggers up navigation.
      */
     public fun navigateUp()
@@ -170,14 +165,6 @@ public open class NavEventNavigator : Navigator, ResultNavigator, BackIntercepto
         restoreRootState: Boolean,
     ) {
         val event = NavEvent.NavigateToRootEvent(root, restoreRootState)
-        sendNavEvent(event)
-    }
-
-    /**
-     * Triggers a new [NavEvent] to navigate to the given [route].
-     */
-    override fun navigateTo(route: ActivityRoute) {
-        val event = NavigateToActivityEvent(route)
         sendNavEvent(event)
     }
 

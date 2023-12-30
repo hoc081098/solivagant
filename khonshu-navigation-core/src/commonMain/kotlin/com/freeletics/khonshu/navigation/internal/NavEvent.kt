@@ -1,12 +1,10 @@
 package com.freeletics.khonshu.navigation.internal
 
-import android.os.Parcelable
-import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
-import com.freeletics.khonshu.navigation.ContractResultOwner
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
 import com.freeletics.khonshu.navigation.NavigationResultRequest
+import com.hoc081098.kmp.viewmodel.parcelable.Parcelable
 import dev.drewhamilton.poko.Poko
 
 @InternalNavigationApi
@@ -23,12 +21,6 @@ public sealed interface NavEvent {
     public class NavigateToRootEvent(
         internal val root: NavRoot,
         internal val restoreRootState: Boolean,
-    ) : NavEvent
-
-    @InternalNavigationApi
-    @Poko
-    public class NavigateToActivityEvent(
-        internal val route: ActivityRoute,
     ) : NavEvent
 
     @InternalNavigationApi
@@ -54,13 +46,6 @@ public sealed interface NavEvent {
     @Poko
     public class ReplaceAll(
         internal val root: NavRoot,
-    ) : NavEvent
-
-    @InternalNavigationApi
-    @Poko
-    public class ActivityResultEvent<I>(
-        internal val request: ContractResultOwner<I, *, *>,
-        internal val input: I,
     ) : NavEvent
 
     @InternalNavigationApi

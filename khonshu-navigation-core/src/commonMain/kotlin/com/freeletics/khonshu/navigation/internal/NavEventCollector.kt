@@ -1,6 +1,5 @@
 package com.freeletics.khonshu.navigation.internal
 
-import com.freeletics.khonshu.navigation.ActivityRoute
 import com.freeletics.khonshu.navigation.BaseRoute
 import com.freeletics.khonshu.navigation.NavRoot
 import com.freeletics.khonshu.navigation.NavRoute
@@ -18,11 +17,6 @@ internal class NavEventCollector : Navigator {
 
     override fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {
         val event = NavEvent.NavigateToRootEvent(root, restoreRootState)
-        _navEvents.add(event)
-    }
-
-    override fun navigateTo(route: ActivityRoute) {
-        val event = NavEvent.NavigateToActivityEvent(route)
         _navEvents.add(event)
     }
 
