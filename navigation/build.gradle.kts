@@ -73,10 +73,18 @@ kotlin {
     commonMain {
       dependencies {
         api(compose.runtime)
+        api(compose.runtimeSaveable)
+        api(compose.foundation)
+        api(compose.ui)
+
+        api(libs.kotlinx.collections.immutable)
+        api(projects.khonshuNavigationCore)
 
         api(libs.kmp.viewmodel.core)
         api(libs.kmp.viewmodel.savedstate)
         api(libs.kmp.viewmodel.compose)
+
+        implementation(libs.uuid)
       }
     }
     commonTest {
@@ -187,7 +195,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach
 android {
   compileSdk = libs.versions.android.compile.get().toInt()
   sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-  namespace = "com.hoc081098.solivagant.khonshu.navigation.core"
+  namespace = "com.hoc081098.solivagant.navigation"
 
   defaultConfig {
     minSdk = libs.versions.android.min.get().toInt()
