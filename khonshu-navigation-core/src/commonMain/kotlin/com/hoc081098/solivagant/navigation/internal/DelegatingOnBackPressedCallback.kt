@@ -1,7 +1,5 @@
 package com.hoc081098.solivagant.navigation.internal
 
-import com.hoc081098.solivagant.navigation.OnBackPressedCallback
-
 internal class DelegatingOnBackPressedCallback : OnBackPressedCallback(false) {
 
   private val callbacks = mutableListOf<() -> Unit>()

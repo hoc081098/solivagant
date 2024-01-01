@@ -1,6 +1,7 @@
 package com.hoc081098.solivagant.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -10,6 +11,7 @@ import com.hoc081098.solivagant.navigation.internal.InternalNavigationApi
 import com.hoc081098.solivagant.navigation.internal.NavEvent
 import com.hoc081098.solivagant.navigation.internal.NavigationExecutor
 import com.hoc081098.solivagant.navigation.internal.VisibleForTesting
+import com.hoc081098.solivagant.navigation.internal.currentBackPressedDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -27,20 +29,19 @@ public fun NavigationSetup(navigator: NavEventNavigator) {
     }
   }
 
-  // TODO: Handle android
-//    val backDispatcher = LocalOnBackPressedDispatcherOwner.current!!.onBackPressedDispatcher
-//    DisposableEffect(backDispatcher, navigator) {
-//        backDispatcher.addCallback(navigator.onBackPressedCallback)
-//
-//        onDispose {
-//            navigator.onBackPressedCallback.remove()
-//        }
-//    }
+  val backDispatcher = currentBackPressedDispatcher()
+  DisposableEffect(backDispatcher, navigator) {
+    backDispatcher.addCallback(navigator.onBackPressedCallback)
 
-  // Handle lifecycle
-//    LaunchedEffect(lifecycleOwner, executor, navigator) {
-//        navigator.collectAndHandleNavEvents(lifecycleOwner.lifecycle, executor)
-//    }
+    onDispose {
+      navigator.onBackPressedCallback.remove()
+    }
+  }
+
+  // TODO: Handle lifecycle
+  LaunchedEffect(executor, navigator) {
+    navigator.collectAndHandleNavEvents(executor)
+  }
 }
 
 @VisibleForTesting
@@ -72,27 +73,35 @@ private fun NavigationExecutor.navigateTo(
     is NavEvent.NavigateToEvent -> {
       navigateTo(event.route)
     }
+
     is NavEvent.NavigateToRootEvent -> {
       navigateToRoot(event.root, event.restoreRootState)
     }
+
     is NavEvent.UpEvent -> {
       navigateUp()
     }
+
     is NavEvent.BackEvent -> {
       navigateBack()
     }
+
     is NavEvent.BackToEvent -> {
       navigateBackToInternal(event.popUpTo, event.inclusive)
     }
+
     is NavEvent.ResetToRoot -> {
       resetToRoot(event.root)
     }
+
     is NavEvent.ReplaceAll -> {
       replaceAll(event.root)
     }
+
     is NavEvent.DestinationResultEvent<*> -> {
       savedStateHandleFor(event.key.destinationId)[event.key.requestKey] = event.result
     }
+
     is NavEvent.MultiNavEvent -> {
       event.navEvents.forEach { navigateTo(it) }
     }

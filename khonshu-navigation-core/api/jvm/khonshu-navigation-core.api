@@ -27,7 +27,7 @@ public class com/hoc081098/solivagant/navigation/NavEventNavigator : com/hoc0810
 	public fun deliverNavigationResult (Lcom/hoc081098/solivagant/navigation/NavigationResultRequest$Key;Lcom/hoc081098/kmp/viewmodel/parcelable/Parcelable;)V
 	public final fun getNavEvents ()Lkotlinx/coroutines/flow/Flow;
 	public final fun getNavigationResultRequests ()Ljava/util/List;
-	public final fun getOnBackPressedCallback ()Lcom/hoc081098/solivagant/navigation/OnBackPressedCallback;
+	public final fun getOnBackPressedCallback ()Lcom/hoc081098/solivagant/navigation/internal/OnBackPressedCallback;
 	public final fun navigate (Lkotlin/jvm/functions/Function1;)V
 	public fun navigateBack ()V
 	public fun navigateBackToInternal (Lcom/hoc081098/solivagant/navigation/internal/DestinationId;Z)V
@@ -80,15 +80,6 @@ public final class com/hoc081098/solivagant/navigation/Navigator$Companion {
 public final class com/hoc081098/solivagant/navigation/Navigator$DefaultImpls {
 	public static synthetic fun navigateBackToInternal$default (Lcom/hoc081098/solivagant/navigation/Navigator;Lcom/hoc081098/solivagant/navigation/internal/DestinationId;ZILjava/lang/Object;)V
 	public static synthetic fun navigateToRoot$default (Lcom/hoc081098/solivagant/navigation/Navigator;Lcom/hoc081098/solivagant/navigation/NavRoot;ZILjava/lang/Object;)V
-}
-
-public abstract class com/hoc081098/solivagant/navigation/OnBackPressedCallback {
-	public static final field $stable I
-	public fun <init> (Z)V
-	public abstract fun handleOnBackPressed ()V
-	public final fun isEnabled ()Z
-	public final fun remove ()V
-	public final fun setEnabled (Z)V
 }
 
 public final class com/hoc081098/solivagant/navigation/OverlayDestination : com/hoc081098/solivagant/navigation/ContentDestination {
@@ -232,5 +223,28 @@ public final class com/hoc081098/solivagant/navigation/internal/NavigationExecut
 	public fun <init> ()V
 	public fun close ()V
 	public fun getOrCreate (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+}
+
+public abstract class com/hoc081098/solivagant/navigation/internal/OnBackPressedCallback {
+	public static final field $stable I
+	public fun <init> (Z)V
+	public abstract fun handleOnBackPressed ()V
+	public final fun isEnabled ()Z
+	public final fun remove ()V
+	public final fun setEnabled (Z)V
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/OnBackPressedDispatcherOwner {
+	public static final field $stable I
+	public static final field Companion Lcom/hoc081098/solivagant/navigation/internal/OnBackPressedDispatcherOwner$Companion;
+	public fun <init> ()V
+	public final fun addCallback (Lcom/hoc081098/solivagant/navigation/internal/OnBackPressedCallback;)V
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/OnBackPressedDispatcherOwner$Companion {
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/OnBackPressedDispatcherOwner_nonAndroidKt {
+	public static final fun currentBackPressedDispatcher (Landroidx/compose/runtime/Composer;I)Lcom/hoc081098/solivagant/navigation/internal/OnBackPressedDispatcherOwner;
 }
 

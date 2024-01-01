@@ -255,3 +255,13 @@ public final class com/hoc081098/solivagant/navigation/internal/NavigationExecut
 	public fun getOrCreate (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
 }
 
+public final class com/hoc081098/solivagant/navigation/internal/OnBackPressedDispatcherOwner {
+	public static final field $stable I
+	public fun <init> (Landroidx/activity/OnBackPressedDispatcherOwner;)V
+	public final fun addCallback (Landroidx/activity/OnBackPressedCallback;)V
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/OnBackPressedDispatcherOwner_androidKt {
+	public static final fun currentBackPressedDispatcher (Landroidx/compose/runtime/Composer;I)Lcom/hoc081098/solivagant/navigation/internal/OnBackPressedDispatcherOwner;
+}
+

@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import com.freeletics.khonshu.navigation.internal.MultiStackNavigationExecutor
 import com.freeletics.khonshu.navigation.internal.StackEntry
 import com.freeletics.khonshu.navigation.internal.WeakReference
-import com.freeletics.khonshu.navigation.internal.currentBackPressedDispatcher
 import com.freeletics.khonshu.navigation.internal.rememberNavigationExecutor
 import com.hoc081098.kmp.viewmodel.Closeable
 import com.hoc081098.solivagant.navigation.BaseRoute
@@ -22,7 +21,8 @@ import com.hoc081098.solivagant.navigation.NavDestination
 import com.hoc081098.solivagant.navigation.NavEventNavigator
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavigationSetup
-import com.hoc081098.solivagant.navigation.OnBackPressedCallback
+import com.hoc081098.solivagant.navigation.internal.OnBackPressedCallback
+import com.hoc081098.solivagant.navigation.internal.currentBackPressedDispatcher
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map

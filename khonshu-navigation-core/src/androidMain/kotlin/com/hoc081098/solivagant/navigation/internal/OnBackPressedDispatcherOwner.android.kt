@@ -1,19 +1,20 @@
-package com.freeletics.khonshu.navigation.internal
+package com.hoc081098.solivagant.navigation.internal
 
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import com.hoc081098.solivagant.navigation.OnBackPressedCallback
 
-internal actual class OnBackPressedDispatcherOwner(
+@InternalNavigationApi
+public actual class OnBackPressedDispatcherOwner(
   private val androidXOwner: androidx.activity.OnBackPressedDispatcherOwner,
 ) {
-  actual fun addCallback(callback: OnBackPressedCallback) =
+  public actual fun addCallback(callback: OnBackPressedCallback): Unit =
     androidXOwner.onBackPressedDispatcher.addCallback(callback)
 }
 
+@InternalNavigationApi
 @Composable
-internal actual fun currentBackPressedDispatcher(): OnBackPressedDispatcherOwner {
+public actual fun currentBackPressedDispatcher(): OnBackPressedDispatcherOwner {
   val onBackPressedDispatcherOwner = checkNotNull(LocalOnBackPressedDispatcherOwner.current) {
     "No OnBackPressedDispatcherOwner was provided via LocalOnBackPressedDispatcherOwner"
   }
