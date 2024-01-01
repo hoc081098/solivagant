@@ -58,7 +58,10 @@ internal actual fun SavedStateHandle.getAsMap(key: String): Map<String, Any?>? =
     ?.let { bundle ->
       bundle
         .keySet()
-        .associateWith { bundle.get(it) }
+        .associateWith {
+          @Suppress("DEPRECATION")
+          bundle.get(it)
+        }
     }
 
 @SuppressLint("RestrictedApi")

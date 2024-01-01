@@ -77,7 +77,7 @@ internal class StoreViewModel(
     globalSavedStateHandle.getAsMap(SAVED_STATE_STACK)
 
   private companion object {
-    private const val SAVED_START_ROOT_KEY = "com.freeletics.solivagant.navigation.store.start_root"
-    private const val SAVED_INPUT_START_ROOT_KEY = "com.freeletics.solivagant.navigation.store.input_start_root"
+    private const val SAVED_START_ROOT_KEY = "com.hoc081098.solivagant.navigation.store.start_root"
+    private const val SAVED_INPUT_START_ROOT_KEY = "com.hoc081098.solivagant.navigation.store.input_start_root"
   }
 }

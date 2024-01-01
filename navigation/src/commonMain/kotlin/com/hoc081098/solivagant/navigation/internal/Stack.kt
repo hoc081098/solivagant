@@ -113,9 +113,10 @@ internal class Stack private constructor(
       onStackEntryRemoved: (StackEntry.Id) -> Unit,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
+      @Suppress("UNCHECKED_CAST")
       val ids = bundle[SAVED_STATE_IDS]!! as ArrayList<String>
 
-      @Suppress("DEPRECATION")
+      @Suppress("UNCHECKED_CAST")
       val routes = bundle[SAVED_STATE_ROUTES]!! as ArrayList<BaseRoute>
       val entries = ids.mapIndexed { index, id ->
         entry(routes[index], destinations) { id }
@@ -133,7 +134,7 @@ internal class Stack private constructor(
       return StackEntry(StackEntry.Id(idGenerator()), route, destination)
     }
 
-    private const val SAVED_STATE_IDS = "com.freeletics.solivagant.navigation.stack.ids"
-    private const val SAVED_STATE_ROUTES = "com.freeletics.solivagant.navigation.stack.routes"
+    private const val SAVED_STATE_IDS = "com.hoc081098.solivagant.navigation.stack.ids"
+    private const val SAVED_STATE_ROUTES = "com.hoc081098.solivagant.navigation.stack.routes"
   }
 }

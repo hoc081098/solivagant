@@ -87,6 +87,6 @@ internal class MultiStackNavigationExecutor(
   }
 
   internal companion object {
-    const val SAVED_STATE_STACK = "com.freeletics.solivagant.navigation.stack"
+    const val SAVED_STATE_STACK = "com.hoc081098.solivagant.navigation.stack"
   }
 }

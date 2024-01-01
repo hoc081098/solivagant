@@ -198,6 +198,7 @@ internal class MultiStack(
       onStackEntryRemoved: (StackEntry.Id) -> Unit,
       idGenerator: () -> String = { uuid4().toString() },
     ): MultiStack {
+      @Suppress("UNCHECKED_CAST")
       val allStackBundles = bundle[SAVED_STATE_ALL_STACKS]!! as ArrayList<Map<String, ArrayList<out Any>>>
       val currentStackId = bundle[SAVED_STATE_CURRENT_STACK] as DestinationId<*>
       val allStacks = allStackBundles.mapTo(ArrayList(allStackBundles.size)) {
@@ -215,7 +216,7 @@ internal class MultiStack(
       )
     }
 
-    private const val SAVED_STATE_ALL_STACKS = "com.freeletics.solivagant.navigation.stack.all_stacks"
-    private const val SAVED_STATE_CURRENT_STACK = "com.freeletics.solivagant.navigation.stack.current_stack"
+    private const val SAVED_STATE_ALL_STACKS = "com.hoc081098.solivagant.navigation.stack.all_stacks"
+    private const val SAVED_STATE_CURRENT_STACK = "com.hoc081098.solivagant.navigation.stack.current_stack"
   }
 }
