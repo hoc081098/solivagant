@@ -1,9 +1,9 @@
 package com.hoc081098.solivagant.navigation.internal
 
-import com.hoc081098.solivagant.navigation.internal.MultiStackNavigationExecutor.Companion.SAVED_STATE_STACK
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.ViewModel
 import com.hoc081098.solivagant.navigation.NavRoot
+import com.hoc081098.solivagant.navigation.internal.MultiStackNavigationExecutor.Companion.SAVED_STATE_STACK
 
 internal class StoreViewModel(
   internal val globalSavedStateHandle: SavedStateHandle,
