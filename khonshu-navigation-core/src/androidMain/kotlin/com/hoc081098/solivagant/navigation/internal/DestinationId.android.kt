@@ -2,15 +2,13 @@ package com.hoc081098.solivagant.navigation.internal
 
 import android.os.Parcel
 import com.hoc081098.kmp.viewmodel.parcelable.Parceler
-import com.hoc081098.solivagant.navigation.BaseRoute
+import kotlin.reflect.KClass
 
-@OptIn(InternalNavigationApi::class)
-internal actual object DestinationIdParceler : Parceler<DestinationId<*>> {
-  override fun create(parcel: Parcel): DestinationId<*> {
-    @Suppress("UNCHECKED_CAST", "DEPRECATION")
-    val kClass = (parcel.readSerializable() as Class<out BaseRoute>).kotlin
-    return DestinationId(kClass)
+internal actual object KClassParceler : Parceler<KClass<*>> {
+  override fun create(parcel: Parcel): KClass<*> {
+    @Suppress("DEPRECATION")
+    return (parcel.readSerializable() as Class<*>).kotlin
   }
 
-  override fun DestinationId<*>.write(parcel: Parcel, flags: Int) = parcel.writeSerializable(route.java)
+  override fun KClass<*>.write(parcel: Parcel, flags: Int) = parcel.writeSerializable(this.java)
 }

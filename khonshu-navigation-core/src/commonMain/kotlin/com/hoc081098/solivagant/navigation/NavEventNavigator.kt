@@ -11,6 +11,7 @@ import com.hoc081098.solivagant.navigation.internal.NavEvent.MultiNavEvent
 import com.hoc081098.solivagant.navigation.internal.NavEvent.NavigateToEvent
 import com.hoc081098.solivagant.navigation.internal.NavEvent.UpEvent
 import com.hoc081098.solivagant.navigation.internal.NavEventCollector
+import com.hoc081098.solivagant.navigation.internal.OnBackPressedCallback
 import com.hoc081098.solivagant.navigation.internal.trySendBlocking
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
