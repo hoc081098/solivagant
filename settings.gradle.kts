@@ -16,6 +16,7 @@ dependencyResolutionManagement {
     mavenCentral()
     maven(url = "https://maven.pkg.jetbrains.space/public/p/compose/dev")
     gradlePluginPortal()
+    maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
   }
 }
 
@@ -23,6 +24,7 @@ rootProject.name = "solivagant"
 include(":navigation-core")
 include(":khonshu-navigation-core")
 include(":navigation")
+include(":sample:app", ":sample:shared")
 
 plugins {
   id("org.gradle.toolchains.foojay-resolver-convention") version("0.7.0")

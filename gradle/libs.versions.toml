@@ -24,11 +24,13 @@ sample-android-target = "34"
 sample-android-compile = "34"
 
 jetbrains-compose = "1.5.11"
+jetbrains-compose-compiler = "1.5.7.1"
 
 touchlab-stately = "1.2.5"
 napier = "2.6.1"
 flowExt = "0.7.4"
 koin = "3.5.0"
+koin-compose = "1.1.0"
 koin-androidx-compose = "3.5.0"
 coil = "2.5.0"
 compose-rules-detekt = "0.3.8"
@@ -36,7 +38,9 @@ compose-rules-detekt = "0.3.8"
 androidx-lifecycle = "2.6.2"
 androidx-annotation = "1.7.1"
 androidx-activity = "1.8.2"
+androidx-appcompat = "1.6.1"
 androidx-compose-compiler = "1.5.6"
+androidx-core-ktx = "1.12.0"
 androidx-navigation = "2.7.6"
 android-gradle = "8.2.0"
 
@@ -57,6 +61,7 @@ ktlint = "0.50.0"
 [libraries]
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 coroutines-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "coroutines" }
 junit = { module = "junit:junit", version.ref = "junit" }
@@ -68,6 +73,7 @@ touchlab-stately-concurrency = { module = "co.touchlab:stately-concurrency", ver
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 flowExt = { module = "io.github.hoc081098:FlowExt", version.ref = "flowExt" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-androidx-compose" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
@@ -79,6 +85,7 @@ androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-ru
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version = "androidx-lifecycle" }
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version = "2023.10.01" }
 androidx-compose-ui-ui = { module = "androidx.compose.ui:ui" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
@@ -87,6 +94,7 @@ androidx-compose-foundation = { module = "androidx.compose.foundation:foundation
 androidx-compose-material = { module = "androidx.compose.material:material" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core-ktx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
 
 kmp-viewmodel-core = { module = "io.github.hoc081098:kmp-viewmodel", version.ref = "kmp-viewmodel" }
