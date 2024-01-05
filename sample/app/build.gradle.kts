@@ -2,6 +2,11 @@
 plugins {
   alias(libs.plugins.android.app)
   alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.jetbrains.compose)
+}
+
+compose {
+  kotlinCompilerPlugin.set(libs.versions.jetbrains.compose.compiler)
 }
 
 android {
