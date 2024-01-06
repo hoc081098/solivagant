@@ -1,15 +1,15 @@
 package com.hoc081098.solivagant.navigation.internal
 
-import com.hoc081098.kmp.viewmodel.Closeable
 import com.hoc081098.kmp.viewmodel.ViewModelStore
 import com.hoc081098.kmp.viewmodel.ViewModelStoreOwner
+import kotlin.LazyThreadSafetyMode.NONE
 
 internal expect fun createViewModelStore(): ViewModelStore
 
-internal class ViewModelStoreOwnerCloseable : Closeable, ViewModelStoreOwner {
-  private val viewModelStoreLazy = lazy { createViewModelStore() }
+internal class StackEntryViewModelStoreOwner : ViewModelStoreOwner {
+  private val viewModelStoreLazy = lazy(NONE) { createViewModelStore() }
 
-  override fun close() {
+  fun clearIfInitialized() {
     if (viewModelStoreLazy.isInitialized()) {
       viewModelStoreLazy.value.clear()
     }

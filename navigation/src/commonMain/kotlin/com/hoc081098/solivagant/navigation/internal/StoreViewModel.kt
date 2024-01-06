@@ -1,6 +1,7 @@
 package com.hoc081098.solivagant.navigation.internal
 
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
+import com.hoc081098.kmp.viewmodel.SavedStateHandleFactory
 import com.hoc081098.kmp.viewmodel.ViewModel
 import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.EXTRA_ROUTE
@@ -12,25 +13,33 @@ internal class StoreViewModel(
 ) : ViewModel() {
   private val stores = mutableMapOf<StackEntry.Id, NavigationExecutorStore>()
   private val savedStateHandles = mutableMapOf<StackEntry.Id, SavedStateHandle>()
+  private val savedStateHandleFactories = mutableMapOf<StackEntry.Id, SavedStateHandleFactory>()
 
   internal val savedNavRoot: NavRoot? get() = globalSavedStateHandle[SAVED_START_ROOT_KEY]
 
-  fun provideStore(id: StackEntry.Id): NavigationExecutor.Store {
+  internal fun provideStore(id: StackEntry.Id): NavigationExecutor.Store {
     return stores.getOrPut(id) { NavigationExecutorStore() }
   }
 
-  fun provideSavedStateHandle(id: StackEntry.Id, route: BaseRoute): SavedStateHandle {
+  internal fun provideSavedStateHandle(id: StackEntry.Id, route: BaseRoute): SavedStateHandle {
     return savedStateHandles.getOrPut(id) {
       createSavedStateHandleAndSetSavedStateProvider(id.value, globalSavedStateHandle)
         .apply { this[EXTRA_ROUTE] = route }
     }
   }
 
-  fun removeEntry(id: StackEntry.Id) {
+  internal fun provideSavedStateHandleFactory(id: StackEntry.Id, route: BaseRoute): SavedStateHandleFactory {
+    return savedStateHandleFactories.getOrPut(id) {
+      SavedStateHandleFactory { provideSavedStateHandle(id, route) }
+    }
+  }
+
+  internal fun removeEntry(id: StackEntry.Id) {
     val store = stores.remove(id)
     store?.close()
 
     savedStateHandles.remove(id)
+    savedStateHandleFactories.remove(id)
     globalSavedStateHandle.removeSavedStateProvider(id.value)
     globalSavedStateHandle.remove<Any>(id.value)
   }
@@ -47,6 +56,7 @@ internal class StoreViewModel(
       globalSavedStateHandle.remove<Any>(key.value)
     }
     savedStateHandles.clear()
+    savedStateHandleFactories.clear()
   }
 
   internal fun setInputStartRoot(root: NavRoot) {

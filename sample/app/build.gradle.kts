@@ -43,41 +43,5 @@ android {
 
 dependencies {
   implementation(project(":sample:shared"))
-//  implementation(platform(libs.androidx.compose.bom))
-//
-//  implementation(libs.androidx.lifecycle.runtime.compose)
-//
-//  implementation(libs.androidx.compose.ui.ui)
-//  debugImplementation(libs.androidx.compose.ui.tooling)
-//  implementation(libs.androidx.compose.ui.tooling.preview)
-//  implementation(libs.androidx.compose.foundation)
-//  implementation(libs.androidx.compose.material3)
-//  implementation(libs.androidx.compose.material)
-//  implementation(libs.androidx.compose.runtime)
   implementation(libs.androidx.activity.compose)
-//  implementation(libs.androidx.navigation.compose)
-
-//  implementation(libs.koin.androidx.compose)
-//  implementation(libs.coil.compose)
-
-//  implementation(libs.kotlinx.collections.immutable)
 }
-
-// tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-//  kotlinOptions {
-//    val buildDirAbsolutePath = project.layout.buildDirectory.map { it.asFile.absolutePath }.get()
-//
-//    if (project.findProperty("composeCompilerReports") == "true") {
-//      freeCompilerArgs = freeCompilerArgs + listOf(
-//        "-P",
-//        "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=$buildDirAbsolutePath/compose_compiler",
-//      )
-//    }
-//    if (project.findProperty("composeCompilerMetrics") == "true") {
-//      freeCompilerArgs = freeCompilerArgs + listOf(
-//        "-P",
-//        "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=$buildDirAbsolutePath/compose_compiler",
-//      )
-//    }
-//  }
-// }
