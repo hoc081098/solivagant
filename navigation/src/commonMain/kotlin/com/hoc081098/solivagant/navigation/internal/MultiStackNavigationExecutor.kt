@@ -2,6 +2,7 @@ package com.hoc081098.solivagant.navigation.internal
 
 import androidx.compose.runtime.State
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
+import com.hoc081098.kmp.viewmodel.SavedStateHandleFactory
 import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
@@ -64,7 +65,12 @@ internal class MultiStackNavigationExecutor(
 
   override fun <T : BaseRoute> savedStateHandleFor(destinationId: DestinationId<T>): SavedStateHandle {
     val entry = entryFor(destinationId)
-    return viewModel.provideSavedStateHandle(entry.id)
+    return viewModel.provideSavedStateHandle(entry.id, entry.route)
+  }
+
+  override fun <T : BaseRoute> savedStateHandleFactoryFor(destinationId: DestinationId<T>): SavedStateHandleFactory {
+    val entry = entryFor(destinationId)
+    return viewModel.provideSavedStateHandleFactory(entry.id, entry.route)
   }
 
   override fun <T : BaseRoute> storeFor(destinationId: DestinationId<T>): NavigationExecutor.Store {

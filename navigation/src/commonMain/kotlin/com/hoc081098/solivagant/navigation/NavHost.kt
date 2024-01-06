@@ -5,15 +5,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.Modifier
 import com.hoc081098.kmp.viewmodel.Closeable
+import com.hoc081098.kmp.viewmodel.compose.SavedStateHandleFactoryProvider
+import com.hoc081098.kmp.viewmodel.compose.ViewModelStoreOwnerProvider
 import com.hoc081098.solivagant.navigation.internal.MultiStackNavigationExecutor
 import com.hoc081098.solivagant.navigation.internal.OnBackPressedCallback
 import com.hoc081098.solivagant.navigation.internal.StackEntry
+import com.hoc081098.solivagant.navigation.internal.StackEntryViewModelStoreOwner
 import com.hoc081098.solivagant.navigation.internal.WeakReference
 import com.hoc081098.solivagant.navigation.internal.currentBackPressedDispatcher
 import com.hoc081098.solivagant.navigation.internal.rememberNavigationExecutor
@@ -50,7 +57,11 @@ public fun NavHost(
 
     Box(modifier = modifier) {
       executor.visibleEntries.value.forEach { entry ->
-        Show(entry, executor, saveableStateHolder)
+        Show(
+          entry = entry,
+          executor = executor,
+          saveableStateHolder = saveableStateHolder,
+        )
       }
     }
   }
@@ -67,14 +78,32 @@ private fun <T : BaseRoute> Show(
   //   it is available when the destination is cleared. Which, because of animations,
   //   only happens after this leaves composition. Which means we can't rely on
   //   DisposableEffect to clean up this reference (as it'll be cleaned up too early)
-  remember(entry, executor, saveableStateHolder) {
-    executor.storeFor(entry.id).getOrCreate(SaveableCloseable::class) {
-      SaveableCloseable(entry.id.value, WeakReference(saveableStateHolder))
-    }
+  val saveableCloseable = remember(entry, executor, saveableStateHolder) {
+    executor
+      .storeFor(entry.id)
+      .getOrCreate(SaveableCloseable::class) {
+        SaveableCloseable(
+          entry.id.value,
+          WeakReference(saveableStateHolder),
+        )
+      }
   }
 
+  val viewModelStoreOwner = saveableCloseable
+    .viewModelStoreOwnerState
+    .value // <-- This will cause the recomposition when the value is cleared.
+    ?: return
+
   saveableStateHolder.SaveableStateProvider(entry.id.value) {
-    entry.destination.content(entry.route)
+    ViewModelStoreOwnerProvider(
+      viewModelStoreOwner = viewModelStoreOwner,
+    ) {
+      SavedStateHandleFactoryProvider(
+        savedStateHandleFactory = executor.savedStateHandleFactoryFor(entry.destinationId),
+      ) {
+        entry.destination.content(entry.route)
+      }
+    }
   }
 }
 
@@ -82,7 +111,17 @@ internal class SaveableCloseable(
   private val id: String,
   private val saveableStateHolderRef: WeakReference<SaveableStateHolder>,
 ) : Closeable {
+  private val _viewModelStoreOwnerState: MutableState<StackEntryViewModelStoreOwner?> =
+    mutableStateOf(StackEntryViewModelStoreOwner())
+
+  inline val viewModelStoreOwnerState: State<StackEntryViewModelStoreOwner?> get() = _viewModelStoreOwnerState
+
   override fun close() {
+    Snapshot.withMutableSnapshot {
+      _viewModelStoreOwnerState.value?.clearIfInitialized()
+      _viewModelStoreOwnerState.value = null
+    }
+
     saveableStateHolderRef.get()?.removeState(id)
     saveableStateHolderRef.clear()
   }

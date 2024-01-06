@@ -58,11 +58,24 @@ internal actual fun SavedStateHandle.getAsMap(key: String): Map<String, Any?>? =
     ?.let { bundle ->
       bundle
         .keySet()
-        .associateWith {
-          @Suppress("DEPRECATION")
-          bundle.get(it)
-        }
+        .associateWith { bundle.safeGet(it) }
     }
+
+private fun Bundle.toMap(): Map<String, Any?> = keySet().associateWith { safeGet(it) }
+
+private fun Bundle.safeGet(key: String): Any? {
+  @Suppress("DEPRECATION")
+  return when (val v = get(key)) {
+    is Bundle -> return v.toMap()
+    is ArrayList<*> -> {
+      when (v[0]) {
+        is Bundle -> v.mapTo(ArrayList(v.size)) { (it as Bundle).toMap() }
+        else -> v
+      }
+    }
+    else -> v
+  }
+}
 
 @SuppressLint("RestrictedApi")
 internal actual fun createSavedStateHandleAndSetSavedStateProvider(

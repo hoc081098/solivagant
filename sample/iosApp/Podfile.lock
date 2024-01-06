@@ -50,7 +50,7 @@ SPEC CHECKSUMS:
   RxDataSources: aa47cc1ed6c500fa0dfecac5c979b723542d79cf
   RxRelay: 45eaa5db8ee4fb50e5ebd57deec0159e97fa51e6
   RxSwift: a4b44f7d24599f674deebd1818eab82e58410632
-  shared: 590f56c2e6596d2bf475c0e71233e385feb4a13e
+  shared: 8b0dbc7374b73d572d2b95d5fcf0c9c76801ff09
 
 PODFILE CHECKSUM: ba90cf8daf1f3b2d6cf7e270921fbb887b46843e
 
