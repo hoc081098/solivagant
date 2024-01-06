@@ -36,6 +36,7 @@ import com.hoc081098.solivagant.sample.products.ProductsScreenRoute
 import com.hoc081098.solivagant.sample.search_products.SearchProductScreenDestination
 import com.hoc081098.solivagant.sample.search_products.SearchProductScreenRoute
 import kotlinx.collections.immutable.persistentSetOf
+import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 
 @OptIn(
@@ -64,50 +65,52 @@ fun SolivagantSampleApp(
     )
   }
 
-  MyApplicationTheme {
-    Surface(
-      modifier = modifier.fillMaxSize(),
-      color = MaterialTheme.colorScheme.background,
-    ) {
-      Scaffold(
-        topBar = {
-          TopAppBar(
-            title = {
-              Text(
-                text = when (currentRoute) {
-                  StartScreenRoute -> "KMP ViewModel Sample"
-                  is ProductsScreenRoute -> "Products screen"
-                  is SearchProductScreenRoute -> "Search products screen"
-                  is ProductDetailScreenRoute -> "Product detail screen"
-                  else -> "KMP ViewModel Sample"
-                },
-              )
-            },
-            navigationIcon = {
-              if (currentRoute !is NavRoot) {
-                IconButton(
-                  onClick = remember { navigator::navigateBack },
-                ) {
-                  Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back",
-                  )
+  KoinContext {
+    MyApplicationTheme {
+      Surface(
+        modifier = modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background,
+      ) {
+        Scaffold(
+          topBar = {
+            TopAppBar(
+              title = {
+                Text(
+                  text = when (currentRoute) {
+                    StartScreenRoute -> "KMP ViewModel Sample"
+                    is ProductsScreenRoute -> "Products screen"
+                    is SearchProductScreenRoute -> "Search products screen"
+                    is ProductDetailScreenRoute -> "Product detail screen"
+                    else -> "KMP ViewModel Sample"
+                  },
+                )
+              },
+              navigationIcon = {
+                if (currentRoute !is NavRoot) {
+                  IconButton(
+                    onClick = remember { navigator::navigateBack },
+                  ) {
+                    Icon(
+                      imageVector = Icons.Default.ArrowBack,
+                      contentDescription = "Back",
+                    )
+                  }
                 }
-              }
-            },
+              },
+            )
+          },
+        ) { innerPadding ->
+          NavHost(
+            modifier = Modifier
+              .padding(innerPadding)
+              .consumeWindowInsets(innerPadding)
+              .fillMaxSize(),
+            startRoute = StartScreenRoute,
+            destinations = destinations,
+            navEventNavigator = navigator,
+            destinationChangedCallback = { currentRoute = it },
           )
-        },
-      ) { innerPadding ->
-        NavHost(
-          modifier = Modifier
-            .padding(innerPadding)
-            .consumeWindowInsets(innerPadding)
-            .fillMaxSize(),
-          startRoute = StartScreenRoute,
-          destinations = destinations,
-          navEventNavigator = navigator,
-          destinationChangedCallback = { currentRoute = it },
-        )
+        }
       }
     }
   }
