@@ -67,6 +67,12 @@ private fun Bundle.safeGet(key: String): Any? {
   @Suppress("DEPRECATION")
   return when (val v = get(key)) {
     is Bundle -> return v.toMap()
+    is ArrayList<*> -> {
+      when (v[0]) {
+        is Bundle -> v.mapTo(ArrayList(v.size)) { (it as Bundle).toMap() }
+        else -> v
+      }
+    }
     else -> v
   }
 }
