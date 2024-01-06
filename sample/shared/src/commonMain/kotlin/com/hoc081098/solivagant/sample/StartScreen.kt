@@ -40,13 +40,13 @@ internal fun StartScreen(
     verticalArrangement = Arrangement.Center,
   ) {
     ProductsButton(
-      navigateToProducts = { navigator.navigateTo(ProductsScreenRoute) }
+      navigateToProducts = { navigator.navigateTo(ProductsScreenRoute) },
     )
 
     Spacer(modifier = Modifier.height(16.dp))
 
     SearchProductsButton(
-      navigateToSearch = { navigator.navigateTo(SearchProductScreenRoute) }
+      navigateToSearch = { navigator.navigateTo(SearchProductScreenRoute) },
     )
   }
 }

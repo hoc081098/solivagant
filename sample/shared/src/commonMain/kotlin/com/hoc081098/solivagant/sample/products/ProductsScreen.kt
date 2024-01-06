@@ -63,7 +63,8 @@ fun ProductsScreen(
 
   val toastManager = PlatformToastManager()
   val eventHandler: (ProductSingleEvent) -> Unit = remember(toastManager, scope, currentLazyListState) {
-    { event ->
+    {
+        event ->
       when (event) {
         is ProductSingleEvent.Refresh.Failure -> {
           toastManager.showToast("Failed to refresh")

@@ -38,11 +38,10 @@ import com.hoc081098.solivagant.sample.search_products.SearchProductScreenRoute
 import kotlinx.collections.immutable.persistentSetOf
 import org.koin.compose.koinInject
 
-
 @OptIn(
   ExperimentalLayoutApi::class,
   ExperimentalMaterial3Api::class,
-  ExperimentalCoilApi::class
+  ExperimentalCoilApi::class,
 )
 @Composable
 fun SolivagantSampleApp(
@@ -87,7 +86,7 @@ fun SolivagantSampleApp(
             navigationIcon = {
               if (currentRoute !is NavRoot) {
                 IconButton(
-                  onClick = remember { navigator::navigateBack }
+                  onClick = remember { navigator::navigateBack },
                 ) {
                   Icon(
                     imageVector = Icons.Default.ArrowBack,

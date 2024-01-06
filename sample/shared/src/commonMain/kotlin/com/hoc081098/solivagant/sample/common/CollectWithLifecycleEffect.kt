@@ -3,21 +3,13 @@ package com.hoc081098.solivagant.sample.common
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.NonRestartableComposable
-import androidx.compose.runtime.RememberObserver
 import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
 @Immutable
 enum class CollectWithLifecycleEffectDispatcher {
@@ -70,5 +62,5 @@ expect fun <T> Flow<T>.CollectWithLifecycleEffect(
 
 @Composable
 expect fun <T> StateFlow<T>.collectAsStateWithLifecycle(
-  context: CoroutineContext = EmptyCoroutineContext
+  context: CoroutineContext = EmptyCoroutineContext,
 ): State<T>

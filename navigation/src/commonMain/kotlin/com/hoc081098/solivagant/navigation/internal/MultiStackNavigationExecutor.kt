@@ -64,7 +64,7 @@ internal class MultiStackNavigationExecutor(
 
   override fun <T : BaseRoute> savedStateHandleFor(destinationId: DestinationId<T>): SavedStateHandle {
     val entry = entryFor(destinationId)
-    return viewModel.provideSavedStateHandle(entry.id)
+    return viewModel.provideSavedStateHandle(entry.id, entry.route)
   }
 
   override fun <T : BaseRoute> storeFor(destinationId: DestinationId<T>): NavigationExecutor.Store {

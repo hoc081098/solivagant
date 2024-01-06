@@ -11,9 +11,12 @@ import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import com.hoc081098.kmp.viewmodel.Closeable
+import com.hoc081098.kmp.viewmodel.compose.SavedStateHandleFactoryProvider
+import com.hoc081098.kmp.viewmodel.compose.ViewModelStoreOwnerProvider
 import com.hoc081098.solivagant.navigation.internal.MultiStackNavigationExecutor
 import com.hoc081098.solivagant.navigation.internal.OnBackPressedCallback
 import com.hoc081098.solivagant.navigation.internal.StackEntry
+import com.hoc081098.solivagant.navigation.internal.ViewModelStoreOwnerCloseable
 import com.hoc081098.solivagant.navigation.internal.WeakReference
 import com.hoc081098.solivagant.navigation.internal.currentBackPressedDispatcher
 import com.hoc081098.solivagant.navigation.internal.rememberNavigationExecutor
@@ -50,7 +53,11 @@ public fun NavHost(
 
     Box(modifier = modifier) {
       executor.visibleEntries.value.forEach { entry ->
-        Show(entry, executor, saveableStateHolder)
+        Show(
+          entry = entry,
+          executor = executor,
+          saveableStateHolder = saveableStateHolder,
+        )
       }
     }
   }
@@ -74,7 +81,20 @@ private fun <T : BaseRoute> Show(
   }
 
   saveableStateHolder.SaveableStateProvider(entry.id.value) {
-    entry.destination.content(entry.route)
+    ViewModelStoreOwnerProvider(
+      viewModelStoreOwner = executor
+        .storeFor(entry.id)
+        .getOrCreate(
+          ViewModelStoreOwnerCloseable::class,
+          ::ViewModelStoreOwnerCloseable,
+        ),
+    ) {
+      SavedStateHandleFactoryProvider(
+        savedStateHandleFactory = { executor.savedStateHandleFor(entry.destinationId) },
+      ) {
+        entry.destination.content(entry.route)
+      }
+    }
   }
 }
 

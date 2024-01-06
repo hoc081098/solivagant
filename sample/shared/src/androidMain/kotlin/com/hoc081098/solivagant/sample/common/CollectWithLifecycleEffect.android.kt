@@ -1,6 +1,5 @@
 package com.hoc081098.solivagant.sample.common
 
-import androidx.lifecycle.compose.collectAsStateWithLifecycle as androidXCollectAsStateWithLifecycle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.NonRestartableComposable
@@ -10,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle as androidXCollectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineDispatcher
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 actual fun <T> Flow<T>.CollectWithLifecycleEffect(
   vararg keys: Any?,
   dispatcher: CollectWithLifecycleEffectDispatcher,
-  collector: (T) -> Unit
+  collector: (T) -> Unit,
 ) {
   val lifecycleOwner = LocalLifecycleOwner.current
   val minActiveState = Lifecycle.State.STARTED
@@ -57,9 +57,8 @@ actual fun <T> Flow<T>.CollectWithLifecycleEffect(
 
 @Composable
 actual fun <T> StateFlow<T>.collectAsStateWithLifecycle(
-  context: CoroutineContext
+  context: CoroutineContext,
 ): State<T> = androidXCollectAsStateWithLifecycle(context = context)
-
 
 @Composable
 @NonRestartableComposable

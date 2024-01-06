@@ -2,6 +2,8 @@ package com.hoc081098.solivagant.navigation.internal
 
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.ViewModel
+import com.hoc081098.solivagant.navigation.BaseRoute
+import com.hoc081098.solivagant.navigation.EXTRA_ROUTE
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.internal.MultiStackNavigationExecutor.Companion.SAVED_STATE_STACK
 
@@ -17,9 +19,10 @@ internal class StoreViewModel(
     return stores.getOrPut(id) { NavigationExecutorStore() }
   }
 
-  fun provideSavedStateHandle(id: StackEntry.Id): SavedStateHandle {
+  fun provideSavedStateHandle(id: StackEntry.Id, route: BaseRoute): SavedStateHandle {
     return savedStateHandles.getOrPut(id) {
       createSavedStateHandleAndSetSavedStateProvider(id.value, globalSavedStateHandle)
+        .apply { this[EXTRA_ROUTE] = route }
     }
   }
 
@@ -73,7 +76,7 @@ internal class StoreViewModel(
     globalSavedStateHandle[SAVED_START_ROOT_KEY] = root
   }
 
-  fun getSavedStackState(): Map<String, Any?>? =
+  internal fun getSavedStackState(): Map<String, Any?>? =
     globalSavedStateHandle.getAsMap(SAVED_STATE_STACK)
 
   private companion object {
