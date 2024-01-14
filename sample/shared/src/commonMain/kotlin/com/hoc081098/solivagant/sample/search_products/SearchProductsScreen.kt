@@ -29,7 +29,7 @@ import com.hoc081098.solivagant.sample.common.LoadingIndicator
 import com.hoc081098.solivagant.sample.common.ProductItemUi
 import com.hoc081098.solivagant.sample.common.ProductItemsList
 import com.hoc081098.solivagant.sample.common.collectAsStateWithLifecycle
-import org.koin.compose.rememberKoinInject
+import org.koin.compose.koinInject
 
 @Suppress("ReturnCount")
 @Composable
@@ -44,7 +44,7 @@ fun SearchProductsScreen(
 
   val state by viewModel.stateFlow.collectAsStateWithLifecycle()
   val searchTerm by viewModel.searchTermStateFlow.collectAsStateWithLifecycle(
-    context = rememberKoinInject<AppDispatchers>().immediateMain,
+    context = koinInject<AppDispatchers>().immediateMain,
   )
 
   Column(
