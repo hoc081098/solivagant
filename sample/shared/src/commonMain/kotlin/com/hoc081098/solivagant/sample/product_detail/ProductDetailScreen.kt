@@ -47,10 +47,7 @@ fun ProductDetailScreen(
   modifier: Modifier = Modifier,
   viewModel: ProductDetailViewModel = koinKmpViewModel<ProductDetailViewModel>(),
 ) {
-  val refresh = remember(viewModel) {
-    @Suppress("SuspiciousCallableReferenceInLambda")
-    viewModel::refresh
-  }
+  val refresh = remember(viewModel) { viewModel::refresh }
 
   DisposableEffect(refresh) {
     refresh()

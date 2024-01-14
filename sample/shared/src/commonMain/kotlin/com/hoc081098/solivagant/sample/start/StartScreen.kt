@@ -8,18 +8,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.hoc081098.solivagant.navigation.NavEventNavigator
-import com.hoc081098.solivagant.sample.products.ProductsScreenRoute
-import com.hoc081098.solivagant.sample.search_products.SearchProductScreenRoute
-import org.koin.compose.koinInject
+import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
 
 @Composable
 internal fun StartScreen(
   modifier: Modifier = Modifier,
-  navigator: NavEventNavigator = koinInject(),
+  viewModel: StartViewModel = koinKmpViewModel(),
 ) {
   Column(
     modifier = modifier.fillMaxSize(),
@@ -27,13 +25,13 @@ internal fun StartScreen(
     verticalArrangement = Arrangement.Center,
   ) {
     ProductsButton(
-      navigateToProducts = { navigator.navigateTo(ProductsScreenRoute) },
+      navigateToProducts = remember(viewModel) { viewModel::navigateToProductsScreen },
     )
 
     Spacer(modifier = Modifier.height(16.dp))
 
     SearchProductsButton(
-      navigateToSearch = { navigator.navigateTo(SearchProductScreenRoute) },
+      navigateToSearch = remember(viewModel) { viewModel::navigateToSearchProductScreen },
     )
   }
 }
