@@ -78,11 +78,11 @@ kotlin {
         api("io.github.hoc081098:kmp-viewmodel-savedstate:0.6.2-SNAPSHOT")
         implementation(libs.kmp.viewmodel.compose)
 
-        implementation("io.coil-kt.coil3:coil-core:3.0.0-alpha01")
-        implementation("io.coil-kt.coil3:coil-compose:3.0.0-alpha01")
+        implementation("io.coil-kt.coil3:coil-core:3.0.0-alpha02")
+        implementation("io.coil-kt.coil3:coil-compose:3.0.0-alpha02")
 
         // Import coil-network and an HTTP client engine.
-        implementation("io.coil-kt.coil3:coil-network:3.0.0-alpha01")
+        implementation("io.coil-kt.coil3:coil-network:3.0.0-alpha02")
 
         api(libs.napier)
         api(libs.coroutines.core)
