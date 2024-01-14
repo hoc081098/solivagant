@@ -11,37 +11,22 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.withFrameMillis
 import androidx.compose.ui.Modifier
-import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
-import com.hoc081098.kmp.viewmodel.viewModelFactory
-import com.hoc081098.solivagant.navigation.NavEventNavigator
+import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
 import com.hoc081098.solivagant.sample.common.CollectWithLifecycleEffect
 import com.hoc081098.solivagant.sample.common.EmptyProducts
 import com.hoc081098.solivagant.sample.common.ErrorMessageAndRetryButton
 import com.hoc081098.solivagant.sample.common.LoadingIndicator
 import com.hoc081098.solivagant.sample.common.PlatformToastManager
 import com.hoc081098.solivagant.sample.common.ProductItemsList
-import com.hoc081098.solivagant.sample.common.SingleEventChannel
 import com.hoc081098.solivagant.sample.common.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
-import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterialApi::class)
 @Suppress("ReturnCount", "ModifierReused")
 @Composable
 fun ProductsScreen(
   modifier: Modifier = Modifier,
-  getProducts: GetProducts = koinInject(),
-  singleEventChannel: SingleEventChannel<ProductSingleEvent> = koinInject(),
-  navigator: NavEventNavigator = koinInject(),
-  viewModel: ProductsViewModel = kmpViewModel(
-    factory = viewModelFactory {
-      ProductsViewModel(
-        getProducts = getProducts,
-        singleEventChannel = singleEventChannel,
-        navigator = navigator,
-      )
-    },
-  ),
+  viewModel: ProductsViewModel = koinKmpViewModel<ProductsViewModel>(),
 ) {
   DisposableEffect(viewModel) {
     if (!viewModel.stateFlow.value.hasContent) {

@@ -21,10 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
-import com.hoc081098.kmp.viewmodel.createSavedStateHandle
-import com.hoc081098.kmp.viewmodel.viewModelFactory
-import com.hoc081098.solivagant.navigation.NavEventNavigator
+import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
 import com.hoc081098.solivagant.sample.common.AppDispatchers
 import com.hoc081098.solivagant.sample.common.EmptyProducts
 import com.hoc081098.solivagant.sample.common.ErrorMessageAndRetryButton
@@ -32,24 +29,13 @@ import com.hoc081098.solivagant.sample.common.LoadingIndicator
 import com.hoc081098.solivagant.sample.common.ProductItemUi
 import com.hoc081098.solivagant.sample.common.ProductItemsList
 import com.hoc081098.solivagant.sample.common.collectAsStateWithLifecycle
-import org.koin.compose.koinInject
 import org.koin.compose.rememberKoinInject
 
 @Suppress("ReturnCount")
 @Composable
 fun SearchProductsScreen(
   modifier: Modifier = Modifier,
-  searchProducts: SearchProducts = koinInject(),
-  navigator: NavEventNavigator = koinInject(),
-  viewModel: SearchProductsViewModel = kmpViewModel(
-    factory = viewModelFactory {
-      SearchProductsViewModel(
-        searchProducts = searchProducts,
-        savedStateHandle = createSavedStateHandle(),
-        navigator = navigator,
-      )
-    },
-  ),
+  viewModel: SearchProductsViewModel = koinKmpViewModel<SearchProductsViewModel>(),
 ) {
   // TODO: OnLifecycleEventWithBuilder
   //  OnLifecycleEventWithBuilder {

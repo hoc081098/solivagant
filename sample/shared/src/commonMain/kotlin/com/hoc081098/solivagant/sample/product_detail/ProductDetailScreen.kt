@@ -35,28 +35,17 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
 import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.SubcomposeAsyncImageContent
-import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
-import com.hoc081098.kmp.viewmodel.createSavedStateHandle
-import com.hoc081098.kmp.viewmodel.viewModelFactory
+import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
 import com.hoc081098.solivagant.sample.common.ErrorMessageAndRetryButton
 import com.hoc081098.solivagant.sample.common.LoadingIndicator
 import com.hoc081098.solivagant.sample.common.ProductItemUi
 import com.hoc081098.solivagant.sample.common.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
-import org.koin.compose.koinInject
 
 @Composable
 fun ProductDetailScreen(
   modifier: Modifier = Modifier,
-  getProductById: GetProductById = koinInject(),
-  viewModel: ProductDetailViewModel = kmpViewModel(
-    factory = viewModelFactory {
-      ProductDetailViewModel(
-        savedStateHandle = createSavedStateHandle(),
-        getProductById = getProductById,
-      )
-    },
-  ),
+  viewModel: ProductDetailViewModel = koinKmpViewModel<ProductDetailViewModel>(),
 ) {
   val refresh = remember(viewModel) {
     @Suppress("SuspiciousCallableReferenceInLambda")

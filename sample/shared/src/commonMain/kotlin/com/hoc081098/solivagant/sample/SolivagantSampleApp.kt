@@ -35,6 +35,8 @@ import com.hoc081098.solivagant.sample.products.ProductsScreenDestination
 import com.hoc081098.solivagant.sample.products.ProductsScreenRoute
 import com.hoc081098.solivagant.sample.search_products.SearchProductScreenDestination
 import com.hoc081098.solivagant.sample.search_products.SearchProductScreenRoute
+import com.hoc081098.solivagant.sample.start.StartScreenDestination
+import com.hoc081098.solivagant.sample.start.StartScreenRoute
 import kotlinx.collections.immutable.persistentSetOf
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
