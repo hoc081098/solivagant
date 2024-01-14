@@ -44,7 +44,7 @@ androidx-core-ktx = "1.12.0"
 androidx-navigation = "2.7.6"
 android-gradle = "8.2.1"
 
-kmp-viewmodel = "0.6.1"
+kmp-viewmodel = "0.6.2-SNAPSHOT"
 uuid = "0.8.2"
 
 spotless = "6.23.3"
@@ -100,6 +100,8 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 kmp-viewmodel-core = { module = "io.github.hoc081098:kmp-viewmodel", version.ref = "kmp-viewmodel" }
 kmp-viewmodel-savedstate = { module = "io.github.hoc081098:kmp-viewmodel-savedstate", version.ref = "kmp-viewmodel" }
 kmp-viewmodel-compose = { module = "io.github.hoc081098:kmp-viewmodel-compose", version.ref = "kmp-viewmodel" }
+kmp-viewmodel-koin = { module = "io.github.hoc081098:kmp-viewmodel-koin", version.ref = "kmp-viewmodel" }
+kmp-viewmodel-koin-compose = { module = "io.github.hoc081098:kmp-viewmodel-koin-compose", version.ref = "kmp-viewmodel" }
 
 uuid = { module = "com.benasher44:uuid", version.ref = "uuid" }
 

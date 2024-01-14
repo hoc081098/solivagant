@@ -54,8 +54,7 @@ kotlin {
       baseName = "shared"
 
       export(libs.kmp.viewmodel.core)
-      //      export(libs.kmp.viewmodel.savedstate)
-      export("io.github.hoc081098:kmp-viewmodel-savedstate:0.6.2-SNAPSHOT")
+      export(libs.kmp.viewmodel.savedstate)
 
       export(libs.napier)
       export(libs.coroutines.core)
@@ -74,9 +73,10 @@ kotlin {
         api(projects.navigation)
 
         api(libs.kmp.viewmodel.core)
-        //        api(libs.kmp.viewmodel.savedstate)
-        api("io.github.hoc081098:kmp-viewmodel-savedstate:0.6.2-SNAPSHOT")
+        api(libs.kmp.viewmodel.savedstate)
         implementation(libs.kmp.viewmodel.compose)
+        implementation(libs.kmp.viewmodel.koin)
+        implementation(libs.kmp.viewmodel.koin.compose)
 
         implementation("io.coil-kt.coil3:coil-core:3.0.0-alpha02")
         implementation("io.coil-kt.coil3:coil-compose:3.0.0-alpha02")
