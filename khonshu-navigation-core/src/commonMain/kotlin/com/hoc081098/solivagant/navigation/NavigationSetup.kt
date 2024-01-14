@@ -8,10 +8,13 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import com.hoc081098.kmp.viewmodel.parcelable.Parcelable
 import com.hoc081098.kmp.viewmodel.parcelable.Parcelize
 import com.hoc081098.solivagant.navigation.internal.InternalNavigationApi
+import com.hoc081098.solivagant.navigation.internal.LifecycleOwner
 import com.hoc081098.solivagant.navigation.internal.NavEvent
 import com.hoc081098.solivagant.navigation.internal.NavigationExecutor
 import com.hoc081098.solivagant.navigation.internal.VisibleForTesting
 import com.hoc081098.solivagant.navigation.internal.currentBackPressedDispatcher
+import com.hoc081098.solivagant.navigation.internal.currentLifecycleOwner
+import com.hoc081098.solivagant.navigation.internal.repeatOnResumeLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -38,14 +41,15 @@ public fun NavigationSetup(navigator: NavEventNavigator) {
     }
   }
 
-  // TODO: Handle lifecycle
-  LaunchedEffect(executor, navigator) {
-    navigator.collectAndHandleNavEvents(executor)
+  val lifecycleOwner = currentLifecycleOwner()
+  LaunchedEffect(lifecycleOwner, executor, navigator) {
+    navigator.collectAndHandleNavEvents(lifecycleOwner, executor)
   }
 }
 
 @VisibleForTesting
 internal suspend fun NavEventNavigator.collectAndHandleNavEvents(
+  lifecycleOwner: LifecycleOwner,
   executor: NavigationExecutor,
 ) {
   // Following comment https://github.com/Kotlin/kotlinx.coroutines/issues/2886#issuecomment-901188295,
@@ -59,9 +63,10 @@ internal suspend fun NavEventNavigator.collectAndHandleNavEvents(
   // whichever comes first. Basically, it has some certain delay compared to [Dispatchers.Main.immediate].
   // So we must switch to [Dispatchers.Main.immediate] before collecting events.
   withContext(Dispatchers.Main.immediate) {
-    // TODO: flowWithLifecycle(lifecycle, minActiveState = Lifecycle.State.RESUMED)
-    navEvents.collect { event ->
-      executor.navigateTo(event)
+    lifecycleOwner.repeatOnResumeLifecycle {
+      navEvents.collect { event ->
+        executor.navigateTo(event)
+      }
     }
   }
 }

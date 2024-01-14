@@ -1,5 +1,6 @@
 package com.hoc081098.solivagant.navigation
 
+import com.hoc081098.kmp.viewmodel.MainThread
 import com.hoc081098.kmp.viewmodel.parcelable.Parcelable
 import com.hoc081098.solivagant.navigation.internal.DelegatingOnBackPressedCallback
 import com.hoc081098.solivagant.navigation.internal.DestinationId
@@ -110,6 +111,7 @@ public interface BackInterceptor {
  * the testability of your navigation logic since it is possible to just write test that
  * the correct events were emitted.
  */
+@MainThread
 public open class NavEventNavigator : Navigator, ResultNavigator, BackInterceptor {
 
   private val _navEvents = Channel<NavEvent>(Channel.UNLIMITED)
