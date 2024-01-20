@@ -55,7 +55,7 @@ public fun NavHost(
 
   CompositionLocalProvider(
     LocalNavigationExecutor provides executor,
-    LocalLifecycleOwner provides lifecycleOwner,
+    LocalLifecycleOwner providesDefault lifecycleOwner,
   ) {
     if (navEventNavigator != null) {
       NavigationSetup(navEventNavigator)
