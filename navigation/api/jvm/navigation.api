@@ -2,3 +2,7 @@ public final class com/hoc081098/solivagant/navigation/NavHostKt {
 	public static final fun NavHost (Lcom/hoc081098/solivagant/navigation/NavRoot;Lkotlinx/collections/immutable/ImmutableSet;Landroidx/compose/ui/Modifier;Lcom/hoc081098/solivagant/navigation/NavEventNavigator;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/hoc081098/solivagant/navigation/internal/RememberPlatformLifecycleOwner_jvmKt {
+	public static final fun LifecycleControllerEffect (Lcom/hoc081098/solivagant/lifecycle/LifecycleRegistry;Landroidx/compose/ui/window/WindowState;Landroidx/compose/runtime/Composer;I)V
+}
+
