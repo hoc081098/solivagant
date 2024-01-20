@@ -39,7 +39,15 @@ public interface Lifecycle {
     INITIALIZED,
     CREATED,
     STARTED,
-    RESUMED,
+    RESUMED;
+
+    /**
+     * Compares if this State is greater or equal to the given `state`.
+     *
+     * @param state State to compare with
+     * @return true if this State is greater or equal to the given `state`
+     */
+    public fun isAtLeast(state: State): Boolean = compareTo(state) >= 0
   }
 
   public enum class Event {
@@ -50,6 +58,22 @@ public interface Lifecycle {
     ON_STOP,
     ON_DESTROY,
     ;
+
+    /**
+     * Returns the new [Lifecycle.State] of a [Lifecycle] that just reported
+     * this [Lifecycle.Event].
+     *
+     * @return the state that will result from this event
+     */
+    public val targetState: State
+      get() {
+        return when (this) {
+          ON_CREATE, ON_STOP -> State.CREATED
+          ON_START, ON_PAUSE -> State.STARTED
+          ON_RESUME -> State.RESUMED
+          ON_DESTROY -> State.DESTROYED
+        }
+      }
 
     public companion object {
       /**

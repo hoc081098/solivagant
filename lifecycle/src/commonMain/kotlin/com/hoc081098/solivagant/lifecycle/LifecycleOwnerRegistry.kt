@@ -30,12 +30,7 @@ public fun LifecycleRegistry(
 
 private class LifecycleRegistryImpl(initialState: State) : LifecycleRegistry {
   private val _currentStateFlow = MutableStateFlow(initialState)
-
-  private inline var _state: State
-    get() = _currentStateFlow.value
-    set(value) {
-      _currentStateFlow.value = value
-    }
+  private var _state: State by _currentStateFlow::value
 
   private var observers: List<Observer> = emptyList()
 
