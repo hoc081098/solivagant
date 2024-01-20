@@ -164,6 +164,27 @@ kotlin {
       dependsOn(nonAndroidTest)
       dependsOn(nonJvmTest)
     }
+
+    val iosAndTvOs by creating {
+      dependsOn(appleMain.get())
+    }
+    val iosAndTvOsTest by creating {
+      dependsOn(appleTest.get())
+    }
+
+    iosMain {
+      dependsOn(iosAndTvOs)
+    }
+    iosTest {
+      dependsOn(iosAndTvOsTest)
+    }
+
+    tvosMain {
+      dependsOn(iosAndTvOs)
+    }
+    tvosTest {
+      dependsOn(iosAndTvOsTest)
+    }
   }
 
   sourceSets.matching { it.name.contains("Test") }.all {
