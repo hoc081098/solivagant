@@ -65,6 +65,14 @@ public final class com/hoc081098/solivagant/lifecycle/LifecycleOwnerRegistryKt {
 public abstract interface class com/hoc081098/solivagant/lifecycle/LifecycleRegistry : com/hoc081098/solivagant/lifecycle/Lifecycle, com/hoc081098/solivagant/lifecycle/Lifecycle$Observer {
 }
 
+public final class com/hoc081098/solivagant/lifecycle/LocalLifecycleOwner {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/hoc081098/solivagant/lifecycle/LocalLifecycleOwner;
+	public final fun getCurrent (Landroidx/compose/runtime/Composer;I)Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;
+	public final fun provides (Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;)Landroidx/compose/runtime/ProvidedValue;
+	public final fun providesDefault (Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;)Landroidx/compose/runtime/ProvidedValue;
+}
+
 public final class com/hoc081098/solivagant/lifecycle/RepeatOnLifecycleKt {
 	public static final fun repeatOnLifecycle (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun repeatOnLifecycle (Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

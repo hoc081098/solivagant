@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
-import com.hoc081098.solivagant.navigation.LocalLifecycleOwner
+import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 
 @Composable
 internal fun StartScreen(

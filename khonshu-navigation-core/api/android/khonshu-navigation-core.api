@@ -24,14 +24,6 @@ public final class com/hoc081098/solivagant/navigation/InitialValue$Creator : an
 	public synthetic fun newArray (I)[Ljava/lang/Object;
 }
 
-public final class com/hoc081098/solivagant/navigation/LocalLifecycleOwner {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/hoc081098/solivagant/navigation/LocalLifecycleOwner;
-	public final fun getCurrent (Landroidx/compose/runtime/Composer;I)Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;
-	public final fun provides (Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;)Landroidx/compose/runtime/ProvidedValue;
-	public final fun providesDefault (Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;)Landroidx/compose/runtime/ProvidedValue;
-}
-
 public abstract interface class com/hoc081098/solivagant/navigation/NavDestination {
 }
 

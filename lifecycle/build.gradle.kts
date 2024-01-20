@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   alias(libs.plugins.kotlin.multiplatform)
+  alias(libs.plugins.jetbrains.compose)
   alias(libs.plugins.android.library)
   alias(libs.plugins.poko)
 
@@ -13,6 +14,10 @@ plugins {
   alias(libs.plugins.dokka)
   alias(libs.plugins.kotlinx.binary.compatibility.validator)
   alias(libs.plugins.kotlinx.kover)
+}
+
+compose {
+  kotlinCompilerPlugin.set(libs.versions.jetbrains.compose.compiler)
 }
 
 kotlin {
@@ -64,6 +69,8 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
+        api(compose.runtime)
+
         api(libs.coroutines.core)
       }
     }
