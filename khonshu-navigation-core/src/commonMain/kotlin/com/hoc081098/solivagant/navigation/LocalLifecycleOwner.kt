@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ProvidedValue
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.staticCompositionLocalOf
 import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.navigation.internal.InternalNavigationApi
@@ -11,6 +12,7 @@ import com.hoc081098.solivagant.navigation.internal.InternalNavigationApi
 /**
  * The CompositionLocal containing the current [LifecycleOwner].
  */
+@Stable
 public object LocalLifecycleOwner {
   /**
    * The CompositionLocal containing the current [LifecycleOwner].
