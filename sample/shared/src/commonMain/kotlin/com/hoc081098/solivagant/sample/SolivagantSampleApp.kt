@@ -61,25 +61,6 @@ fun SolivagantSampleApp(
       .build()
   }
 
-  LocalLifecycleOwner.current.let { owner ->
-    LaunchedEffect(owner) {
-      owner.lifecycle.currentStateFlow.collect {
-        println("🚀🚀🚀 Lifecycle state changed: $it")
-      }
-    }
-
-    DisposableEffect(owner) {
-      val cancellable = owner.lifecycle.subscribe { event ->
-        println("🚀🚀🚀 Lifecycle event: $event")
-      }
-
-      onDispose {
-        cancellable.cancel()
-        println("🚀🚀🚀 Lifecycle state disposed")
-      }
-    }
-  }
-
   var currentRoute: BaseRoute? by remember { mutableStateOf(null) }
   val destinations = remember {
     persistentSetOf(

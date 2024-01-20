@@ -8,17 +8,39 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
+import com.hoc081098.solivagant.navigation.LocalLifecycleOwner
 
 @Composable
 internal fun StartScreen(
   modifier: Modifier = Modifier,
   viewModel: StartViewModel = koinKmpViewModel(),
 ) {
+  LocalLifecycleOwner.current.let { owner ->
+    LaunchedEffect(owner) {
+      owner.lifecycle.currentStateFlow.collect {
+        println("🚀🚀🚀 Lifecycle state changed: $it")
+      }
+    }
+
+    DisposableEffect(owner) {
+      val cancellable = owner.lifecycle.subscribe { event ->
+        println("🚀🚀🚀 Lifecycle event: $event")
+      }
+
+      onDispose {
+        cancellable.cancel()
+        println("🚀🚀🚀 Lifecycle state disposed")
+      }
+    }
+  }
+
   Column(
     modifier = modifier.fillMaxSize(),
     horizontalAlignment = Alignment.CenterHorizontally,
