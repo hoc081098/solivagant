@@ -25,7 +25,6 @@ import com.hoc081098.solivagant.navigation.internal.WeakReference
 import com.hoc081098.solivagant.navigation.internal.currentBackPressedDispatcher
 import com.hoc081098.solivagant.navigation.internal.rememberNavigationExecutor
 import com.hoc081098.solivagant.navigation.internal.rememberPlatformLifecycleOwner
-import com.hoc081098.solivagant.navigation.lifecycle.LocalLifecycleOwner
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map

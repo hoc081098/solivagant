@@ -16,6 +16,10 @@ public final class com/hoc081098/solivagant/navigation/EXTRA_ROUTEKt {
 	public static final field EXTRA_ROUTE Ljava/lang/String;
 }
 
+public final class com/hoc081098/solivagant/navigation/LocalLifecycleOwnerKt {
+	public static final fun getLocalLifecycleOwner ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+}
+
 public abstract interface class com/hoc081098/solivagant/navigation/NavDestination {
 }
 
