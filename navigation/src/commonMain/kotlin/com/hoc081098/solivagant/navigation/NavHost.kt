@@ -24,6 +24,8 @@ import com.hoc081098.solivagant.navigation.internal.StackEntryViewModelStoreOwne
 import com.hoc081098.solivagant.navigation.internal.WeakReference
 import com.hoc081098.solivagant.navigation.internal.currentBackPressedDispatcher
 import com.hoc081098.solivagant.navigation.internal.rememberNavigationExecutor
+import com.hoc081098.solivagant.navigation.internal.rememberPlatformLifecycleOwner
+import com.hoc081098.solivagant.navigation.lifecycle.LocalLifecycleOwner
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -50,7 +52,12 @@ public fun NavHost(
   DestinationChangedCallback(executor, destinationChangedCallback)
 
   val saveableStateHolder = rememberSaveableStateHolder()
-  CompositionLocalProvider(LocalNavigationExecutor provides executor) {
+  val lifecycleOwner = rememberPlatformLifecycleOwner()
+
+  CompositionLocalProvider(
+    LocalNavigationExecutor provides executor,
+    LocalLifecycleOwner provides lifecycleOwner,
+  ) {
     if (navEventNavigator != null) {
       NavigationSetup(navEventNavigator)
     }

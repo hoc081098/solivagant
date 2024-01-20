@@ -6,21 +6,13 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   alias(libs.plugins.kotlin.multiplatform)
-
   alias(libs.plugins.android.library)
-  alias(libs.plugins.kotlin.parcelize)
-
-  alias(libs.plugins.jetbrains.compose)
   alias(libs.plugins.poko)
 
   alias(libs.plugins.vanniktech.maven.publish)
   alias(libs.plugins.dokka)
   alias(libs.plugins.kotlinx.binary.compatibility.validator)
   alias(libs.plugins.kotlinx.kover)
-}
-
-compose {
-  kotlinCompilerPlugin.set(libs.versions.jetbrains.compose.compiler)
 }
 
 kotlin {
@@ -72,13 +64,7 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
-        api(compose.runtime)
-        api(compose.ui)
-
-        api(projects.lifecycle)
-        api(libs.kmp.viewmodel.core)
-        api(libs.kmp.viewmodel.savedstate)
-        api(libs.kmp.viewmodel.compose)
+        api(libs.coroutines.core)
       }
     }
     commonTest {
@@ -106,7 +92,7 @@ kotlin {
       dependsOn(commonJvmMain)
 
       dependencies {
-        implementation(libs.androidx.activity.compose)
+        implementation(libs.androidx.lifecycle.runtime.ktx)
       }
     }
     val androidUnitTest by getting {
@@ -165,12 +151,6 @@ kotlin {
       optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
     }
   }
-
-  sourceSets.configureEach {
-    languageSettings {
-      optIn("com.hoc081098.solivagant.navigation.internal.InternalNavigationApi")
-    }
-  }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
@@ -189,7 +169,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach
 android {
   compileSdk = libs.versions.android.compile.get().toInt()
   sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-  namespace = "com.hoc081098.solivagant.khonshu.navigation.core"
+  namespace = "com.hoc081098.solivagant.lifecycle"
 
   defaultConfig {
     minSdk = libs.versions.android.min.get().toInt()
@@ -214,7 +194,7 @@ tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
 
       sourceLink {
         localDirectory.set(projectDir.resolve("src"))
-        remoteUrl.set(URL("https://github.com/hoc081098/solivagant/tree/master/viewmodel-compose/src"))
+        remoteUrl.set(URL("https://github.com/hoc081098/solivagant/tree/master/lifecycle/src"))
         remoteLineSuffix.set("#L")
       }
     }
