@@ -17,6 +17,7 @@ public object LocalLifecycleOwner {
   /**
    * The CompositionLocal containing the current [LifecycleOwner].
    */
+  @Suppress("CompositionLocalAllowlist", "MemberNameEqualsClassName")
   private val LocalLifecycleOwner = staticCompositionLocalOf<LifecycleOwner> {
     error("No LifecycleOwner was provided")
   }
@@ -31,7 +32,7 @@ public object LocalLifecycleOwner {
     get() = LocalLifecycleOwner.current
 
   /**
-   * Associates a [LocalLifecycleOwner] key to a value in a call to
+   * Associates a [lifecycleOwnerProvidableCompositionLocal] key to a value in a call to
    * [CompositionLocalProvider].
    */
   public infix fun provides(lifecycleOwner: LifecycleOwner): ProvidedValue<LifecycleOwner> =

@@ -16,7 +16,8 @@ internal class Stack private constructor(
   private val onStackEntryRemoved: (StackEntry.Id) -> Unit,
   private val idGenerator: () -> String,
 ) {
-  private val stack = ArrayDeque<StackEntry<*>>(20).also {
+  @Suppress("MemberNameEqualsClassName")
+  private val stack = ArrayDeque<StackEntry<*>>(@Suppress("MagicNumber") 20).also {
     it.addAll(initialStack)
   }
 
@@ -29,6 +30,7 @@ internal class Stack private constructor(
     return stack.findLast { it.destinationId == destinationId } as StackEntry<T>?
   }
 
+  @Suppress("NestedBlockDepth")
   fun computeVisibleEntries(): ImmutableList<StackEntry<*>> {
     if (stack.size == 1) {
       return persistentListOf(stack.single())

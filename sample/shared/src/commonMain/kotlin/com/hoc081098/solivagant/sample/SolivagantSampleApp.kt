@@ -47,6 +47,7 @@ import org.koin.compose.koinInject
   ExperimentalCoilApi::class,
 )
 @Composable
+@Suppress("LongMethod")
 fun SolivagantSampleApp(
   modifier: Modifier = Modifier,
   navigator: NavEventNavigator = koinInject(),

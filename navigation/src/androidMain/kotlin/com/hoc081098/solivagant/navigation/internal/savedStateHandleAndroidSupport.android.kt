@@ -31,6 +31,7 @@ internal actual fun SavedStateHandle.setSavedStateProvider(
   }
 }
 
+@Suppress("NestedBlockDepth")
 private fun Map<String, Any?>.toBundle(): Bundle = Bundle().apply {
   forEach { (k, v) ->
     when (v) {

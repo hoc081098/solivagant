@@ -9,11 +9,13 @@ import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavDestination
 import com.hoc081098.solivagant.navigation.NavRoot
 
+@Suppress("UnstableCollections")
 @Composable
 internal fun rememberNavigationExecutor(
   startRoot: NavRoot,
   destinations: Set<NavDestination>,
 ): MultiStackNavigationExecutor {
+  @Suppress("ViewModelInjection")
   val viewModel = kmpViewModel(
     viewModelFactory {
       StoreViewModel(
