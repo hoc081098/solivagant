@@ -133,9 +133,9 @@ public open class NavEventNavigator : Navigator, ResultNavigator, BackIntercepto
    * Note: You must call this before [NavigationSetup] is called with this navigator."
    */
   protected inline fun <
-      reified T : BaseRoute,
-      reified O : Parcelable
-      > registerForNavigationResult(): NavigationResultRequest<O> {
+    reified T : BaseRoute,
+    reified O : Parcelable,
+    > registerForNavigationResult(): NavigationResultRequest<O> {
     // TODO(js): cannot use qualifiedName
     return registerForNavigationResult(DestinationId(T::class), O::class.simpleName!!)
   }

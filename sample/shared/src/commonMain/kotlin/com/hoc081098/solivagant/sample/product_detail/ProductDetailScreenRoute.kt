@@ -1,4 +1,5 @@
 @file:Suppress("PackageNaming")
+
 package com.hoc081098.solivagant.sample.product_detail
 
 import androidx.compose.runtime.Immutable
