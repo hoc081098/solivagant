@@ -101,3 +101,48 @@ public final class com/hoc081098/solivagant/lifecycle/WithLifecycleStateKt {
 	public static final fun withStateAtLeastUnchecked (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
+public final class com/hoc081098/solivagant/lifecycle/compose/CollectAsStateWithLifecycleKt {
+	public static final fun collectAsStateWithLifecycle (Lkotlinx/coroutines/flow/Flow;Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/coroutines/CoroutineContext;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/State;
+	public static final fun collectAsStateWithLifecycle (Lkotlinx/coroutines/flow/Flow;Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/coroutines/CoroutineContext;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/State;
+	public static final fun collectAsStateWithLifecycle (Lkotlinx/coroutines/flow/StateFlow;Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/coroutines/CoroutineContext;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/State;
+	public static final fun collectAsStateWithLifecycle (Lkotlinx/coroutines/flow/StateFlow;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/coroutines/CoroutineContext;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/State;
+}
+
+public final class com/hoc081098/solivagant/lifecycle/compose/CurrentStateAsStateKt {
+	public static final fun currentStateAsState (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+}
+
+public final class com/hoc081098/solivagant/lifecycle/compose/LifecycleEffectKt {
+	public static final fun LifecycleEventEffect (Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LifecycleResumeEffect (Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LifecycleResumeEffect (Ljava/lang/Object;Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LifecycleResumeEffect (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LifecycleResumeEffect ([Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LifecycleStartEffect (Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LifecycleStartEffect (Ljava/lang/Object;Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LifecycleStartEffect (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LifecycleStartEffect ([Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+}
+
+public abstract interface class com/hoc081098/solivagant/lifecycle/compose/LifecyclePauseOrDisposeEffectResult {
+	public abstract fun runPauseOrOnDisposeEffect ()V
+}
+
+public final class com/hoc081098/solivagant/lifecycle/compose/LifecycleResumePauseEffectScope : com/hoc081098/solivagant/lifecycle/LifecycleOwner {
+	public static final field $stable I
+	public fun <init> (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;)V
+	public fun getLifecycle ()Lcom/hoc081098/solivagant/lifecycle/Lifecycle;
+	public final fun onPauseOrDispose (Lkotlin/jvm/functions/Function1;)Lcom/hoc081098/solivagant/lifecycle/compose/LifecyclePauseOrDisposeEffectResult;
+}
+
+public final class com/hoc081098/solivagant/lifecycle/compose/LifecycleStartStopEffectScope : com/hoc081098/solivagant/lifecycle/LifecycleOwner {
+	public static final field $stable I
+	public fun <init> (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;)V
+	public fun getLifecycle ()Lcom/hoc081098/solivagant/lifecycle/Lifecycle;
+	public final fun onStopOrDispose (Lkotlin/jvm/functions/Function1;)Lcom/hoc081098/solivagant/lifecycle/compose/LifecycleStopOrDisposeEffectResult;
+}
+
+public abstract interface class com/hoc081098/solivagant/lifecycle/compose/LifecycleStopOrDisposeEffectResult {
+	public abstract fun runStopOrDisposeEffect ()V
+}
+
