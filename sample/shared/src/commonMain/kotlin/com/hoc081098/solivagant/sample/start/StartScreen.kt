@@ -25,18 +25,18 @@ internal fun StartScreen(
   LocalLifecycleOwner.current.let { owner ->
     LaunchedEffect(owner) {
       owner.lifecycle.currentStateFlow.collect {
-        println("🚀🚀🚀 Lifecycle state changed: $it")
+        println("🚀🚀🚀 Lifecycle STATE: $it")
       }
     }
 
     DisposableEffect(owner) {
       val cancellable = owner.lifecycle.subscribe { event ->
-        println("🚀🚀🚀 Lifecycle event: $event")
+        println("🚀🚀🚀 Lifecycle EVENT: $event")
       }
 
       onDispose {
         cancellable.cancel()
-        println("🚀🚀🚀 Lifecycle state disposed")
+        println("🚀🚀🚀 Lifecycle EVENT disposed")
       }
     }
   }
