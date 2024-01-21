@@ -23,24 +23,6 @@ import kotlinx.coroutines.launch
  * Note: this operator creates a hot flow that only closes when the [lifecycle] is destroyed or
  * the coroutine that collects from the flow is cancelled.
  *
- * ```
- * class MyActivity : AppCompatActivity() {
- *     override fun onCreate(savedInstanceState: Bundle?) {
- *         /* ... */
- *         // Launches a coroutine that collects items from a flow when the Activity
- *         // is at least started. It will automatically cancel when the activity is stopped and
- *         // start collecting again whenever it's started again.
- *         lifecycleScope.launch {
- *             flow
- *                 .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
- *                 .collect {
- *                     // Consume flow emissions
- *                  }
- *         }
- *     }
- * }
- * ```
- *
  * `flowWithLifecycle` cancels the upstream Flow when [lifecycle] falls below
  * [minActiveState] state. However, the downstream Flow will be active without receiving any
  * emissions as long as the scope used to collect the Flow is active. As such, please take care
