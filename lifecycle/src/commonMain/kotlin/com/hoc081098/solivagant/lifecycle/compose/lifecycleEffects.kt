@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+@file:Suppress("TooManyFunctions")
 package com.hoc081098.solivagant.lifecycle.compose
 
 import androidx.compose.runtime.Composable
