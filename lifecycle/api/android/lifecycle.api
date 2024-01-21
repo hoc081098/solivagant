@@ -5,6 +5,11 @@ public final class com/hoc081098/solivagant/lifecycle/AndroidKt {
 	public static final fun asSolivagantState (Landroidx/lifecycle/Lifecycle$State;)Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;
 }
 
+public final class com/hoc081098/solivagant/lifecycle/FlowWithLifecycleKt {
+	public static final fun flowWithLifecycle (Lkotlinx/coroutines/flow/Flow;Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun flowWithLifecycle$default (Lkotlinx/coroutines/flow/Flow;Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+}
+
 public abstract interface class com/hoc081098/solivagant/lifecycle/Lifecycle {
 	public static final field Companion Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Companion;
 	public abstract fun getCurrentStateFlow ()Lkotlinx/coroutines/flow/StateFlow;
@@ -60,6 +65,11 @@ public final class com/hoc081098/solivagant/lifecycle/Lifecycle$State : java/lan
 	public static fun values ()[Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;
 }
 
+public final class com/hoc081098/solivagant/lifecycle/LifecycleDestroyedException : java/util/concurrent/CancellationException {
+	public static final field $stable I
+	public fun <init> ()V
+}
+
 public abstract interface class com/hoc081098/solivagant/lifecycle/LifecycleOwner {
 	public abstract fun getLifecycle ()Lcom/hoc081098/solivagant/lifecycle/Lifecycle;
 }
@@ -83,5 +93,18 @@ public final class com/hoc081098/solivagant/lifecycle/LocalLifecycleOwner {
 public final class com/hoc081098/solivagant/lifecycle/RepeatOnLifecycleKt {
 	public static final fun repeatOnLifecycle (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun repeatOnLifecycle (Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/hoc081098/solivagant/lifecycle/WithLifecycleStateKt {
+	public static final fun suspendWithStateAtLeastUnchecked (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;ZLkotlinx/coroutines/CoroutineDispatcher;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withCreated (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withCreated (Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withResumed (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withResumed (Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withStarted (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withStarted (Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withStateAtLeast (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withStateAtLeast (Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withStateAtLeastUnchecked (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
