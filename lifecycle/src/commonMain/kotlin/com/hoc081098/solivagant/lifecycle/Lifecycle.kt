@@ -39,7 +39,8 @@ public interface Lifecycle {
     INITIALIZED,
     CREATED,
     STARTED,
-    RESUMED;
+    RESUMED,
+    ;
 
     /**
      * Compares if this State is greater or equal to the given `state`.
