@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("TooManyFunctions")
+
 package com.hoc081098.solivagant.lifecycle.compose
 
 import androidx.compose.runtime.Composable
@@ -53,13 +54,13 @@ import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 public fun LifecycleEventEffect(
   event: Lifecycle.Event,
   lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-  onEvent: () -> Unit
+  onEvent: () -> Unit,
 ) {
   if (event == Lifecycle.Event.ON_DESTROY) {
     throw IllegalArgumentException(
       "LifecycleEventEffect cannot be used to " +
-          "listen for Lifecycle.Event.ON_DESTROY, since Compose disposes of the " +
-          "composition before ON_DESTROY observers are invoked."
+        "listen for Lifecycle.Event.ON_DESTROY, since Compose disposes of the " +
+        "composition before ON_DESTROY observers are invoked.",
     )
   }
 
@@ -126,7 +127,7 @@ public fun LifecycleEventEffect(
 public fun LifecycleStartEffect(
   key1: Any?,
   lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-  effects: LifecycleStartStopEffectScope.() -> LifecycleStopOrDisposeEffectResult
+  effects: LifecycleStartStopEffectScope.() -> LifecycleStopOrDisposeEffectResult,
 ) {
   val lifecycleStartStopEffectScope = remember(key1, lifecycleOwner) {
     LifecycleStartStopEffectScope(lifecycleOwner.lifecycle)
@@ -187,7 +188,7 @@ public fun LifecycleStartEffect(
   key1: Any?,
   key2: Any?,
   lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-  effects: LifecycleStartStopEffectScope.() -> LifecycleStopOrDisposeEffectResult
+  effects: LifecycleStartStopEffectScope.() -> LifecycleStopOrDisposeEffectResult,
 ) {
   val lifecycleStartStopEffectScope = remember(key1, key2, lifecycleOwner) {
     LifecycleStartStopEffectScope(lifecycleOwner.lifecycle)
@@ -250,7 +251,7 @@ public fun LifecycleStartEffect(
   key2: Any?,
   key3: Any?,
   lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-  effects: LifecycleStartStopEffectScope.() -> LifecycleStopOrDisposeEffectResult
+  effects: LifecycleStartStopEffectScope.() -> LifecycleStopOrDisposeEffectResult,
 ) {
   val lifecycleStartStopEffectScope = remember(key1, key2, key3, lifecycleOwner) {
     LifecycleStartStopEffectScope(lifecycleOwner.lifecycle)
@@ -309,7 +310,7 @@ public fun LifecycleStartEffect(
 public fun LifecycleStartEffect(
   vararg keys: Any?,
   lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-  effects: LifecycleStartStopEffectScope.() -> LifecycleStopOrDisposeEffectResult
+  effects: LifecycleStartStopEffectScope.() -> LifecycleStopOrDisposeEffectResult,
 ) {
   val lifecycleStartStopEffectScope = remember(*keys, lifecycleOwner) {
     LifecycleStartStopEffectScope(lifecycleOwner.lifecycle)
@@ -321,7 +322,7 @@ public fun LifecycleStartEffect(
 private fun LifecycleStartEffectImpl(
   lifecycleOwner: LifecycleOwner,
   scope: LifecycleStartStopEffectScope,
-  effects: LifecycleStartStopEffectScope.() -> LifecycleStopOrDisposeEffectResult
+  effects: LifecycleStartStopEffectScope.() -> LifecycleStopOrDisposeEffectResult,
 ) {
   DisposableEffect(lifecycleOwner, scope) {
     var effectResult: LifecycleStopOrDisposeEffectResult? = null
@@ -370,7 +371,7 @@ public class LifecycleStartStopEffectScope(override val lifecycle: Lifecycle) : 
    * observer receives an (ON_STOP)[Lifecycle.Event.ON_STOP] event or must undergo cleanup.
    */
   public inline fun onStopOrDispose(
-    crossinline onStopOrDisposeEffect: LifecycleOwner.() -> Unit
+    crossinline onStopOrDisposeEffect: LifecycleOwner.() -> Unit,
   ): LifecycleStopOrDisposeEffectResult = object : LifecycleStopOrDisposeEffectResult {
     override fun runStopOrDisposeEffect() {
       onStopOrDisposeEffect()
@@ -429,7 +430,7 @@ public class LifecycleStartStopEffectScope(override val lifecycle: Lifecycle) : 
 public fun LifecycleResumeEffect(
   key1: Any?,
   lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-  effects: LifecycleResumePauseEffectScope.() -> LifecyclePauseOrDisposeEffectResult
+  effects: LifecycleResumePauseEffectScope.() -> LifecyclePauseOrDisposeEffectResult,
 ) {
   val lifecycleResumePauseEffectScope = remember(key1, lifecycleOwner) {
     LifecycleResumePauseEffectScope(lifecycleOwner.lifecycle)
@@ -490,7 +491,7 @@ public fun LifecycleResumeEffect(
   key1: Any?,
   key2: Any?,
   lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-  effects: LifecycleResumePauseEffectScope.() -> LifecyclePauseOrDisposeEffectResult
+  effects: LifecycleResumePauseEffectScope.() -> LifecyclePauseOrDisposeEffectResult,
 ) {
   val lifecycleResumePauseEffectScope = remember(key1, key2, lifecycleOwner) {
     LifecycleResumePauseEffectScope(lifecycleOwner.lifecycle)
@@ -553,7 +554,7 @@ public fun LifecycleResumeEffect(
   key2: Any?,
   key3: Any?,
   lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-  effects: LifecycleResumePauseEffectScope.() -> LifecyclePauseOrDisposeEffectResult
+  effects: LifecycleResumePauseEffectScope.() -> LifecyclePauseOrDisposeEffectResult,
 ) {
   val lifecycleResumePauseEffectScope = remember(key1, key2, key3, lifecycleOwner) {
     LifecycleResumePauseEffectScope(lifecycleOwner.lifecycle)
@@ -612,7 +613,7 @@ public fun LifecycleResumeEffect(
 public fun LifecycleResumeEffect(
   vararg keys: Any?,
   lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-  effects: LifecycleResumePauseEffectScope.() -> LifecyclePauseOrDisposeEffectResult
+  effects: LifecycleResumePauseEffectScope.() -> LifecyclePauseOrDisposeEffectResult,
 ) {
   val lifecycleResumePauseEffectScope = remember(*keys, lifecycleOwner) {
     LifecycleResumePauseEffectScope(lifecycleOwner.lifecycle)
@@ -624,7 +625,7 @@ public fun LifecycleResumeEffect(
 private fun LifecycleResumeEffectImpl(
   lifecycleOwner: LifecycleOwner,
   scope: LifecycleResumePauseEffectScope,
-  effects: LifecycleResumePauseEffectScope.() -> LifecyclePauseOrDisposeEffectResult
+  effects: LifecycleResumePauseEffectScope.() -> LifecyclePauseOrDisposeEffectResult,
 ) {
   DisposableEffect(lifecycleOwner, scope) {
     var effectResult: LifecyclePauseOrDisposeEffectResult? = null
@@ -673,7 +674,7 @@ public class LifecycleResumePauseEffectScope(override val lifecycle: Lifecycle) 
    * receives an (ON_PAUSE)[Lifecycle.Event.ON_PAUSE] event or must undergo cleanup.
    */
   public inline fun onPauseOrDispose(
-    crossinline onPauseOrDisposeEffect: LifecycleOwner.() -> Unit
+    crossinline onPauseOrDisposeEffect: LifecycleOwner.() -> Unit,
   ): LifecyclePauseOrDisposeEffectResult = object : LifecyclePauseOrDisposeEffectResult {
     override fun runPauseOrOnDisposeEffect() {
       onPauseOrDisposeEffect()
