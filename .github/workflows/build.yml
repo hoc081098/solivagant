@@ -67,7 +67,6 @@ jobs:
       # ./gradlew :navigation-core:build --stacktrace
       - name: Build
         run: |
-          ./gradlew :khonshu-navigation-core:compileKotlinJvm :khonshu-navigation-core:compileDebugKotlinAndroid :khonshu-navigation-core:compileKotlinIosX64 --stacktrace
           ./gradlew :navigation:compileKotlinJvm :navigation:compileDebugKotlinAndroid :navigation:compileKotlinIosX64 --stacktrace
 
 #      - name: Kover Xml Report
