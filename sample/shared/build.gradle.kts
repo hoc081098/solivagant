@@ -4,7 +4,6 @@
 plugins {
   alias(libs.plugins.kotlin.multiplatform)
   alias(libs.plugins.jetbrains.compose)
-  alias(libs.plugins.kotlin.cocoapods)
 
   alias(libs.plugins.kotlin.serialization)
 
@@ -43,23 +42,6 @@ kotlin {
   iosSimulatorArm64()
 
   applyDefaultHierarchyTemplate()
-
-  cocoapods {
-    summary = "Some description for the Shared Module"
-    homepage = "Link to the Shared Module homepage"
-    version = "1.0"
-    ios.deploymentTarget = "14.1"
-    podfile = project.file("../iosApp/Podfile")
-    framework {
-      baseName = "shared"
-
-      export(libs.kmp.viewmodel.core)
-      export(libs.kmp.viewmodel.savedstate)
-
-      export(libs.napier)
-      export(libs.coroutines.core)
-    }
-  }
 
   sourceSets {
     commonMain {
