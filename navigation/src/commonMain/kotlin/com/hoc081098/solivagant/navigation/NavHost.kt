@@ -15,8 +15,8 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.Modifier
 import com.hoc081098.kmp.viewmodel.Closeable
-import com.hoc081098.kmp.viewmodel.compose.SavedStateHandleFactoryProvider
-import com.hoc081098.kmp.viewmodel.compose.ViewModelStoreOwnerProvider
+import com.hoc081098.kmp.viewmodel.compose.LocalSavedStateHandleFactory
+import com.hoc081098.kmp.viewmodel.compose.LocalViewModelStoreOwner
 import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 import com.hoc081098.solivagant.navigation.internal.MultiStackNavigationExecutor
 import com.hoc081098.solivagant.navigation.internal.OnBackPressedCallback
@@ -46,29 +46,33 @@ public fun NavHost(
   navEventNavigator: NavEventNavigator? = null,
   destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
 ) {
-  val executor = rememberNavigationExecutor(startRoute, destinations)
-
-  SystemBackHandling(executor)
-  DestinationChangedCallback(executor, destinationChangedCallback)
-
-  val saveableStateHolder = rememberSaveableStateHolder()
   val lifecycleOwner = rememberPlatformLifecycleOwner()
 
   CompositionLocalProvider(
-    LocalNavigationExecutor provides executor,
     LocalLifecycleOwner providesDefault lifecycleOwner,
   ) {
-    if (navEventNavigator != null) {
-      NavigationSetup(navEventNavigator)
-    }
+    val executor = rememberNavigationExecutor(startRoute, destinations)
 
-    Box(modifier = modifier) {
-      executor.visibleEntries.value.forEach { entry ->
-        Show(
-          entry = entry,
-          executor = executor,
-          saveableStateHolder = saveableStateHolder,
-        )
+    SystemBackHandling(executor)
+    DestinationChangedCallback(executor, destinationChangedCallback)
+
+    val saveableStateHolder = rememberSaveableStateHolder()
+
+    CompositionLocalProvider(
+      LocalNavigationExecutor provides executor,
+    ) {
+      if (navEventNavigator != null) {
+        NavigationSetup(navEventNavigator)
+      }
+
+      Box(modifier = modifier) {
+        executor.visibleEntries.value.forEach { entry ->
+          Show(
+            entry = entry,
+            executor = executor,
+            saveableStateHolder = saveableStateHolder,
+          )
+        }
       }
     }
   }
@@ -101,15 +105,13 @@ private fun <T : BaseRoute> Show(
     .value // <-- This will cause the recomposition when the value is cleared.
     ?: return
 
-  saveableStateHolder.SaveableStateProvider(entry.id.value) {
-    ViewModelStoreOwnerProvider(
-      viewModelStoreOwner = viewModelStoreOwner,
-    ) {
-      SavedStateHandleFactoryProvider(
-        savedStateHandleFactory = executor.savedStateHandleFactoryFor(entry.destinationId),
-      ) {
-        entry.destination.content(entry.route)
-      }
+  CompositionLocalProvider(
+    LocalViewModelStoreOwner provides viewModelStoreOwner,
+    LocalSavedStateHandleFactory provides executor.savedStateHandleFactoryFor(entry.destinationId),
+    LocalLifecycleOwner provides entry,
+  ) {
+    saveableStateHolder.SaveableStateProvider(entry.id.value) {
+      entry.destination.content(entry.route)
     }
   }
 }

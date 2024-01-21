@@ -23,7 +23,7 @@ import com.hoc081098.solivagant.lifecycle.LifecycleRegistry
 internal class MergedLifecycle private constructor(
   private val registry: LifecycleRegistry,
   lifecycle1: Lifecycle,
-  lifecycle2: Lifecycle
+  lifecycle2: Lifecycle,
 ) : Lifecycle by registry {
 
   constructor(lifecycle1: Lifecycle, lifecycle2: Lifecycle) : this(LifecycleRegistry(), lifecycle1, lifecycle2)
@@ -71,7 +71,8 @@ internal class MergedLifecycle private constructor(
 
       Lifecycle.State.CREATED,
       Lifecycle.State.STARTED,
-      Lifecycle.State.RESUMED -> registry.onStateChanged(Lifecycle.Event.ON_DESTROY)
+      Lifecycle.State.RESUMED,
+      -> registry.onStateChanged(Lifecycle.Event.ON_DESTROY)
     }
   }
 
@@ -83,19 +84,22 @@ internal class MergedLifecycle private constructor(
       Lifecycle.State.CREATED -> Unit
 
       Lifecycle.State.STARTED,
-      Lifecycle.State.RESUMED -> registry.onStateChanged(Lifecycle.Event.ON_STOP)
+      Lifecycle.State.RESUMED,
+      -> registry.onStateChanged(Lifecycle.Event.ON_STOP)
     }
   }
 
   private fun moveToStarted() {
     when (registry.currentState) {
       Lifecycle.State.INITIALIZED,
-      Lifecycle.State.CREATED -> registry.onStateChanged(Lifecycle.Event.ON_START)
+      Lifecycle.State.CREATED,
+      -> registry.onStateChanged(Lifecycle.Event.ON_START)
 
       Lifecycle.State.RESUMED -> registry.onStateChanged(Lifecycle.Event.ON_PAUSE)
 
       Lifecycle.State.DESTROYED,
-      Lifecycle.State.STARTED -> Unit
+      Lifecycle.State.STARTED,
+      -> Unit
     }
   }
 
@@ -103,10 +107,12 @@ internal class MergedLifecycle private constructor(
     when (registry.currentState) {
       Lifecycle.State.INITIALIZED,
       Lifecycle.State.CREATED,
-      Lifecycle.State.STARTED -> registry.onStateChanged(Lifecycle.Event.ON_RESUME)
+      Lifecycle.State.STARTED,
+      -> registry.onStateChanged(Lifecycle.Event.ON_RESUME)
 
       Lifecycle.State.RESUMED,
-      Lifecycle.State.DESTROYED -> Unit
+      Lifecycle.State.DESTROYED,
+      -> Unit
     }
   }
 }

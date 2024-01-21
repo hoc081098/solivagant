@@ -44,9 +44,34 @@ public fun LifecycleRegistry(
   initialState: State,
 ): LifecycleRegistry = LifecycleRegistryImpl(initialState)
 
+/**
+ * Possible transitions:
+ *
+ * ```
+ * [INITIALIZED] ──┐(1)
+ *                 ↓
+ *      (6)┌── [CREATED] ────┐(2)
+ *         ↓       ↑ (5)     ↓
+ *    [DESTROYED]  └──── [STARTED] ──┐(3)
+ *                           ↑       ↓
+ *                        (4)└── [RESUMED]
+ *
+ * (1): ON_CREATE
+ * (2): ON_START
+ * (3): ON_RESUME
+ * (4): ON_PAUSE
+ * (5): ON_STOP
+ * (6): ON_DESTROY
+ * ```
+ */
 private class LifecycleRegistryImpl(initialState: State) : LifecycleRegistry {
   private val _currentStateFlow = MutableStateFlow(initialState)
-  private var _state: State by _currentStateFlow::value
+
+  private var _state: State = _currentStateFlow.value
+    set(value) {
+      field = value
+      _currentStateFlow.value = value
+    }
 
   private var observers: List<Observer> = emptyList()
 

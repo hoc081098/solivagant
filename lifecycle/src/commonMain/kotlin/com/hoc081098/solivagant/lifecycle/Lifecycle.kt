@@ -41,13 +41,20 @@ import kotlinx.coroutines.flow.StateFlow
  * Possible transitions:
  *
  * ```
- * [INITIALIZED] ──┐
+ * [INITIALIZED] ──┐(1)
  *                 ↓
- *         ┌── [CREATED] ──┐
- *         ↓       ↑       ↓
- *    [DESTROYED]  └── [STARTED] ──┐
- *                         ↑       ↓
- *                         └── [RESUMED]
+ *      (6)┌── [CREATED] ────┐(2)
+ *         ↓       ↑ (5)     ↓
+ *    [DESTROYED]  └──── [STARTED] ──┐(3)
+ *                           ↑       ↓
+ *                        (4)└── [RESUMED]
+ *
+ * (1): ON_CREATE
+ * (2): ON_START
+ * (3): ON_RESUME
+ * (4): ON_PAUSE
+ * (5): ON_STOP
+ * (6): ON_DESTROY
  * ```
  */
 public interface Lifecycle {

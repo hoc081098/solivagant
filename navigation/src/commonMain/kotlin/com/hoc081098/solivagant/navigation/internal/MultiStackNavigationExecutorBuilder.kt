@@ -5,6 +5,7 @@ import androidx.compose.runtime.remember
 import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
 import com.hoc081098.kmp.viewmodel.createSavedStateHandle
 import com.hoc081098.kmp.viewmodel.viewModelFactory
+import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavDestination
 import com.hoc081098.solivagant.navigation.NavRoot
@@ -25,7 +26,9 @@ internal fun rememberNavigationExecutor(
   )
   viewModel.setInputStartRoot(startRoot)
 
-  return remember(viewModel) {
+  val lifecycleOwner = LocalLifecycleOwner.current
+
+  return remember(viewModel, lifecycleOwner) {
     val contentDestinations = destinations.filterIsInstance<ContentDestination<*>>()
 
     val navState = viewModel.getSavedStackState()
@@ -33,6 +36,7 @@ internal fun rememberNavigationExecutor(
       MultiStack.createWith(
         root = viewModel.savedNavRoot!!,
         destinations = contentDestinations,
+        lifecycleOwner = lifecycleOwner,
         onStackEntryRemoved = viewModel::removeEntry,
       )
     } else {
@@ -40,6 +44,7 @@ internal fun rememberNavigationExecutor(
         root = viewModel.savedNavRoot!!,
         bundle = navState,
         destinations = contentDestinations,
+        lifecycleOwner = lifecycleOwner,
         onStackEntryRemoved = viewModel::removeEntry,
       )
     }

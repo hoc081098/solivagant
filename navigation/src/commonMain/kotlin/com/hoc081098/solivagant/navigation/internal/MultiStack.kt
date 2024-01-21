@@ -1,8 +1,10 @@
 package com.hoc081098.solivagant.navigation.internal
+
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.benasher44.uuid.uuid4
+import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavRoot
@@ -10,12 +12,13 @@ import com.hoc081098.solivagant.navigation.NavRoute
 import kotlinx.collections.immutable.ImmutableList
 
 @Suppress("TooManyFunctions")
-internal class MultiStack(
+internal class MultiStack constructor(
   // Use ArrayList to make sure it is a RandomAccess
   private val allStacks: ArrayList<Stack>,
   private var startStack: Stack,
   private var currentStack: Stack,
   private val destinations: List<ContentDestination<*>>,
+  private val lifecycleOwner: LifecycleOwner,
   private val onStackEntryRemoved: (StackEntry.Id) -> Unit,
   private val idGenerator: () -> String,
 ) {
@@ -53,7 +56,13 @@ internal class MultiStack(
   }
 
   private fun createBackStack(root: NavRoot): Stack {
-    val newStack = Stack.createWith(root, destinations, onStackEntryRemoved, idGenerator)
+    val newStack = Stack.createWith(
+      root = root,
+      destinations = destinations,
+      lifecycleOwner = lifecycleOwner,
+      onStackEntryRemoved = onStackEntryRemoved,
+      idGenerator = idGenerator,
+    )
     allStacks.add(newStack)
     return newStack
   }
@@ -178,15 +187,23 @@ internal class MultiStack(
     fun createWith(
       root: NavRoot,
       destinations: List<ContentDestination<*>>,
+      lifecycleOwner: LifecycleOwner,
       onStackEntryRemoved: (StackEntry.Id) -> Unit,
       idGenerator: () -> String = { uuid4().toString() },
     ): MultiStack {
-      val startStack = Stack.createWith(root, destinations, onStackEntryRemoved, idGenerator)
+      val startStack = Stack.createWith(
+        root = root,
+        destinations = destinations,
+        lifecycleOwner = lifecycleOwner,
+        onStackEntryRemoved = onStackEntryRemoved,
+        idGenerator = idGenerator,
+      )
       return MultiStack(
         allStacks = arrayListOf(startStack),
         startStack = startStack,
         currentStack = startStack,
         destinations = destinations,
+        lifecycleOwner = lifecycleOwner,
         onStackEntryRemoved = onStackEntryRemoved,
         idGenerator = idGenerator,
       )
@@ -197,6 +214,7 @@ internal class MultiStack(
       root: NavRoot,
       bundle: Map<String, Any?>,
       destinations: List<ContentDestination<*>>,
+      lifecycleOwner: LifecycleOwner,
       onStackEntryRemoved: (StackEntry.Id) -> Unit,
       idGenerator: () -> String = { uuid4().toString() },
     ): MultiStack {
@@ -204,7 +222,13 @@ internal class MultiStack(
       val allStackBundles = bundle[SAVED_STATE_ALL_STACKS]!! as ArrayList<Map<String, ArrayList<out Any>>>
       val currentStackId = bundle[SAVED_STATE_CURRENT_STACK] as DestinationId<*>
       val allStacks = allStackBundles.mapTo(ArrayList(allStackBundles.size)) {
-        Stack.fromState(it, destinations, onStackEntryRemoved, idGenerator)
+        Stack.fromState(
+          bundle = it,
+          destinations = destinations,
+          lifecycleOwner = lifecycleOwner,
+          onStackEntryRemoved = onStackEntryRemoved,
+          idGenerator = idGenerator,
+        )
       }
       val startStack = allStacks.first { it.id == root.destinationId }
       val currentStack = allStacks.first { it.id.route == currentStackId.route }
@@ -213,6 +237,7 @@ internal class MultiStack(
         startStack = startStack,
         currentStack = currentStack,
         destinations = destinations,
+        lifecycleOwner = lifecycleOwner,
         onStackEntryRemoved = onStackEntryRemoved,
         idGenerator = idGenerator,
       )

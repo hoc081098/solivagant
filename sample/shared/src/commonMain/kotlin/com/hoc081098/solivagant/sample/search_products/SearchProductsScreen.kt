@@ -18,11 +18,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
+import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 import com.hoc081098.solivagant.sample.common.AppDispatchers
 import com.hoc081098.solivagant.sample.common.EmptyProducts
 import com.hoc081098.solivagant.sample.common.ErrorMessageAndRetryButton
@@ -42,6 +44,18 @@ fun SearchProductsScreen(
   //  OnLifecycleEventWithBuilder {
   //    onEach { owner, event -> Napier.d("[SearchProductsScreen] event=$event, owner=$owner") }
   //  }
+
+  val lifecycleOwner = LocalLifecycleOwner.current
+  DisposableEffect(lifecycleOwner) {
+    val cancellable = lifecycleOwner.lifecycle.subscribe { event ->
+      println("🚀🚀🚀 -->: $event")
+    }
+
+    onDispose {
+      cancellable.cancel()
+      println("🚀🚀🚀 --> disposed")
+    }
+  }
 
   val state by viewModel.stateFlow.collectAsStateWithLifecycle()
   val searchTerm by viewModel.searchTermStateFlow.collectAsStateWithLifecycle(

@@ -1,6 +1,8 @@
 package com.hoc081098.solivagant.navigation.internal
 
 import com.benasher44.uuid.uuid4
+import com.hoc081098.solivagant.lifecycle.Lifecycle
+import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavRoot
@@ -13,6 +15,7 @@ import kotlinx.collections.immutable.toImmutableList
 internal class Stack private constructor(
   initialStack: List<StackEntry<*>>,
   private val destinations: List<ContentDestination<*>>,
+  private val lifecycleOwner: LifecycleOwner,
   private val onStackEntryRemoved: (StackEntry.Id) -> Unit,
   private val idGenerator: () -> String,
 ) {
@@ -54,7 +57,7 @@ internal class Stack private constructor(
   }
 
   fun push(route: NavRoute) {
-    stack.add(entry(route, destinations, idGenerator))
+    stack.add(entry(route, destinations, lifecycleOwner, idGenerator))
   }
 
   fun pop() {
@@ -64,6 +67,9 @@ internal class Stack private constructor(
 
   private fun popInternal() {
     val entry = stack.removeLast()
+    entry.onStateChanged(Lifecycle.Event.ON_PAUSE)
+    entry.onStateChanged(Lifecycle.Event.ON_STOP)
+    entry.onStateChanged(Lifecycle.Event.ON_DESTROY)
     onStackEntryRemoved(entry.id)
   }
 
@@ -102,16 +108,29 @@ internal class Stack private constructor(
     fun createWith(
       root: NavRoot,
       destinations: List<ContentDestination<*>>,
+      lifecycleOwner: LifecycleOwner,
       onStackEntryRemoved: (StackEntry.Id) -> Unit,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
-      val rootEntry = entry(root, destinations, idGenerator)
-      return Stack(listOf(rootEntry), destinations, onStackEntryRemoved, idGenerator)
+      val rootEntry = entry(
+        route = root,
+        destinations = destinations,
+        lifecycleOwner = lifecycleOwner,
+        idGenerator = idGenerator,
+      )
+      return Stack(
+        initialStack = listOf(rootEntry),
+        destinations = destinations,
+        lifecycleOwner = lifecycleOwner,
+        onStackEntryRemoved = onStackEntryRemoved,
+        idGenerator = idGenerator,
+      )
     }
 
     fun fromState(
       bundle: Map<String, ArrayList<out Any>>,
       destinations: List<ContentDestination<*>>,
+      lifecycleOwner: LifecycleOwner,
       onStackEntryRemoved: (StackEntry.Id) -> Unit,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
@@ -121,19 +140,35 @@ internal class Stack private constructor(
       @Suppress("UNCHECKED_CAST")
       val routes = bundle[SAVED_STATE_ROUTES]!! as ArrayList<BaseRoute>
       val entries = ids.mapIndexed { index, id ->
-        entry(routes[index], destinations) { id }
+        entry(
+          route = routes[index],
+          destinations = destinations,
+          lifecycleOwner = lifecycleOwner,
+        ) { id }
       }
-      return Stack(entries, destinations, onStackEntryRemoved, idGenerator)
+      return Stack(
+        initialStack = entries,
+        destinations = destinations,
+        lifecycleOwner = lifecycleOwner,
+        onStackEntryRemoved = onStackEntryRemoved,
+        idGenerator = idGenerator,
+      )
     }
 
     private inline fun <T : BaseRoute> entry(
       route: T,
       destinations: List<ContentDestination<*>>,
+      lifecycleOwner: LifecycleOwner,
       idGenerator: () -> String,
     ): StackEntry<T> {
       @Suppress("UNCHECKED_CAST")
       val destination = destinations.find { it.id == route.destinationId } as ContentDestination<T>
-      return StackEntry(StackEntry.Id(idGenerator()), route, destination)
+      return StackEntry(
+        id = StackEntry.Id(idGenerator()),
+        route = route,
+        destination = destination,
+        lifecycleOwner = lifecycleOwner,
+      )
     }
 
     private const val SAVED_STATE_IDS = "com.hoc081098.solivagant.navigation.stack.ids"
