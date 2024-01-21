@@ -112,7 +112,7 @@ public final class com/hoc081098/solivagant/lifecycle/compose/CurrentStateAsStat
 	public static final fun currentStateAsState (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
 }
 
-public final class com/hoc081098/solivagant/lifecycle/compose/LifecycleEffectKt {
+public final class com/hoc081098/solivagant/lifecycle/compose/LifecycleEffectsKt {
 	public static final fun LifecycleEventEffect (Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 	public static final fun LifecycleResumeEffect (Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
 	public static final fun LifecycleResumeEffect (Ljava/lang/Object;Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
