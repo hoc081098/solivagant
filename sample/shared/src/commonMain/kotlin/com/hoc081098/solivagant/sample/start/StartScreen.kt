@@ -16,12 +16,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
 import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
+import com.hoc081098.solivagant.lifecycle.compose.LifecycleResumeEffect
 
 @Composable
 internal fun StartScreen(
   modifier: Modifier = Modifier,
   viewModel: StartViewModel = koinKmpViewModel(),
 ) {
+  LifecycleResumeEffect(Unit) {
+    println(">>> LifecycleResumeEffect run")
+    onPauseOrDispose { println(">>> LifecycleResumeEffect onPauseOrDispose") }
+  }
+
   LocalLifecycleOwner.current.let { owner ->
     LaunchedEffect(owner) {
       owner.lifecycle.currentStateFlow.collect {
