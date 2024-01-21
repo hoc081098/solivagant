@@ -7,14 +7,15 @@ import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
 import com.hoc081098.kmp.viewmodel.parcelable.Parcelable
 import com.hoc081098.kmp.viewmodel.parcelable.Parcelize
+import com.hoc081098.solivagant.lifecycle.Lifecycle
+import com.hoc081098.solivagant.lifecycle.LifecycleOwner
+import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
+import com.hoc081098.solivagant.lifecycle.repeatOnLifecycle
 import com.hoc081098.solivagant.navigation.internal.InternalNavigationApi
-import com.hoc081098.solivagant.navigation.internal.LifecycleOwner
 import com.hoc081098.solivagant.navigation.internal.NavEvent
 import com.hoc081098.solivagant.navigation.internal.NavigationExecutor
 import com.hoc081098.solivagant.navigation.internal.VisibleForTesting
 import com.hoc081098.solivagant.navigation.internal.currentBackPressedDispatcher
-import com.hoc081098.solivagant.navigation.internal.currentLifecycleOwner
-import com.hoc081098.solivagant.navigation.internal.repeatOnResumeLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -41,7 +42,7 @@ public fun NavigationSetup(navigator: NavEventNavigator) {
     }
   }
 
-  val lifecycleOwner = currentLifecycleOwner()
+  val lifecycleOwner = LocalLifecycleOwner.current
   LaunchedEffect(lifecycleOwner, executor, navigator) {
     navigator.collectAndHandleNavEvents(lifecycleOwner, executor)
   }
@@ -63,7 +64,7 @@ internal suspend fun NavEventNavigator.collectAndHandleNavEvents(
   // whichever comes first. Basically, it has some certain delay compared to [Dispatchers.Main.immediate].
   // So we must switch to [Dispatchers.Main.immediate] before collecting events.
   withContext(Dispatchers.Main.immediate) {
-    lifecycleOwner.repeatOnResumeLifecycle {
+    lifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.RESUMED) {
       navEvents.collect { event ->
         executor.navigateTo(event)
       }
@@ -131,6 +132,7 @@ internal suspend fun <R : Parcelable> NavigationExecutor.collectAndHandleNavigat
 @Parcelize
 private object InitialValue : Parcelable
 
+@Suppress("CompositionLocalAllowlist")
 @InternalNavigationApi
 public val LocalNavigationExecutor: ProvidableCompositionLocal<NavigationExecutor> = staticCompositionLocalOf {
   throw IllegalStateException("Can't use NavEventNavigationHandler outside of a navigator NavHost")

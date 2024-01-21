@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import com.hoc081098.kmp.viewmodel.Closeable
 import com.hoc081098.kmp.viewmodel.compose.SavedStateHandleFactoryProvider
 import com.hoc081098.kmp.viewmodel.compose.ViewModelStoreOwnerProvider
+import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 import com.hoc081098.solivagant.navigation.internal.MultiStackNavigationExecutor
 import com.hoc081098.solivagant.navigation.internal.OnBackPressedCallback
 import com.hoc081098.solivagant.navigation.internal.StackEntry
@@ -24,6 +25,7 @@ import com.hoc081098.solivagant.navigation.internal.StackEntryViewModelStoreOwne
 import com.hoc081098.solivagant.navigation.internal.WeakReference
 import com.hoc081098.solivagant.navigation.internal.currentBackPressedDispatcher
 import com.hoc081098.solivagant.navigation.internal.rememberNavigationExecutor
+import com.hoc081098.solivagant.navigation.internal.rememberPlatformLifecycleOwner
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -50,7 +52,12 @@ public fun NavHost(
   DestinationChangedCallback(executor, destinationChangedCallback)
 
   val saveableStateHolder = rememberSaveableStateHolder()
-  CompositionLocalProvider(LocalNavigationExecutor provides executor) {
+  val lifecycleOwner = rememberPlatformLifecycleOwner()
+
+  CompositionLocalProvider(
+    LocalNavigationExecutor provides executor,
+    LocalLifecycleOwner providesDefault lifecycleOwner,
+  ) {
     if (navEventNavigator != null) {
       NavigationSetup(navEventNavigator)
     }

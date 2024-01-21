@@ -23,6 +23,7 @@ dependencyResolutionManagement {
 rootProject.name = "solivagant"
 include(":navigation-core")
 include(":khonshu-navigation-core")
+include(":lifecycle")
 include(":navigation")
 include(":sample:app", ":sample:shared")
 

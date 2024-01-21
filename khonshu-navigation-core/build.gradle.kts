@@ -73,7 +73,9 @@ kotlin {
     commonMain {
       dependencies {
         api(compose.runtime)
+        api(compose.ui)
 
+        api(projects.lifecycle)
         api(libs.kmp.viewmodel.core)
         api(libs.kmp.viewmodel.savedstate)
         api(libs.kmp.viewmodel.compose)

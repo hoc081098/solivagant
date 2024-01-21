@@ -1,0 +1,155 @@
+public final class com/hoc081098/solivagant/lifecycle/AndroidKt {
+	public static final fun asSolivagantEventOrNull (Landroidx/lifecycle/Lifecycle$Event;)Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;
+	public static final fun asSolivagantLifecycle (Landroidx/lifecycle/Lifecycle;)Lcom/hoc081098/solivagant/lifecycle/Lifecycle;
+	public static final fun asSolivagantLifecycleOwner (Landroidx/lifecycle/LifecycleOwner;)Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;
+	public static final fun asSolivagantState (Landroidx/lifecycle/Lifecycle$State;)Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;
+}
+
+public final class com/hoc081098/solivagant/lifecycle/FlowWithLifecycleKt {
+	public static final fun flowWithLifecycle (Lkotlinx/coroutines/flow/Flow;Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun flowWithLifecycle$default (Lkotlinx/coroutines/flow/Flow;Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public abstract interface class com/hoc081098/solivagant/lifecycle/Lifecycle {
+	public static final field Companion Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Companion;
+	public abstract fun getCurrentStateFlow ()Lkotlinx/coroutines/flow/StateFlow;
+	public abstract fun subscribe (Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Observer;)Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Cancellable;
+}
+
+public abstract interface class com/hoc081098/solivagant/lifecycle/Lifecycle$Cancellable {
+	public abstract fun cancel ()V
+}
+
+public final class com/hoc081098/solivagant/lifecycle/Lifecycle$Companion {
+	public final fun getCurrentState (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;)Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;
+}
+
+public final class com/hoc081098/solivagant/lifecycle/Lifecycle$Event : java/lang/Enum {
+	public static final field Companion Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event$Companion;
+	public static final field ON_CREATE Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;
+	public static final field ON_DESTROY Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;
+	public static final field ON_PAUSE Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;
+	public static final field ON_RESUME Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;
+	public static final field ON_START Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;
+	public static final field ON_STOP Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;
+	public static final fun downFrom (Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;)Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;
+	public static final fun downTo (Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;)Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getTargetState ()Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;
+	public static final fun upFrom (Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;)Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;
+	public static final fun upTo (Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;)Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;
+	public static fun valueOf (Ljava/lang/String;)Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;
+	public static fun values ()[Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;
+}
+
+public final class com/hoc081098/solivagant/lifecycle/Lifecycle$Event$Companion {
+	public final fun downFrom (Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;)Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;
+	public final fun downTo (Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;)Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;
+	public final fun upFrom (Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;)Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;
+	public final fun upTo (Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;)Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;
+}
+
+public abstract interface class com/hoc081098/solivagant/lifecycle/Lifecycle$Observer {
+	public abstract fun onStateChanged (Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;)V
+}
+
+public final class com/hoc081098/solivagant/lifecycle/Lifecycle$State : java/lang/Enum {
+	public static final field CREATED Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;
+	public static final field DESTROYED Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;
+	public static final field INITIALIZED Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;
+	public static final field RESUMED Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;
+	public static final field STARTED Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun isAtLeast (Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;)Z
+	public static fun valueOf (Ljava/lang/String;)Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;
+	public static fun values ()[Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;
+}
+
+public final class com/hoc081098/solivagant/lifecycle/LifecycleDestroyedException : java/util/concurrent/CancellationException {
+	public static final field $stable I
+	public fun <init> ()V
+}
+
+public abstract interface class com/hoc081098/solivagant/lifecycle/LifecycleOwner {
+	public abstract fun getLifecycle ()Lcom/hoc081098/solivagant/lifecycle/Lifecycle;
+}
+
+public final class com/hoc081098/solivagant/lifecycle/LifecycleOwnerRegistryKt {
+	public static final fun LifecycleRegistry ()Lcom/hoc081098/solivagant/lifecycle/LifecycleRegistry;
+	public static final fun LifecycleRegistry (Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;)Lcom/hoc081098/solivagant/lifecycle/LifecycleRegistry;
+}
+
+public abstract interface class com/hoc081098/solivagant/lifecycle/LifecycleRegistry : com/hoc081098/solivagant/lifecycle/Lifecycle, com/hoc081098/solivagant/lifecycle/Lifecycle$Observer {
+}
+
+public final class com/hoc081098/solivagant/lifecycle/LocalLifecycleOwner {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/hoc081098/solivagant/lifecycle/LocalLifecycleOwner;
+	public final fun getCurrent (Landroidx/compose/runtime/Composer;I)Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;
+	public final fun provides (Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;)Landroidx/compose/runtime/ProvidedValue;
+	public final fun providesDefault (Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;)Landroidx/compose/runtime/ProvidedValue;
+}
+
+public final class com/hoc081098/solivagant/lifecycle/RepeatOnLifecycleKt {
+	public static final fun repeatOnLifecycle (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun repeatOnLifecycle (Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/hoc081098/solivagant/lifecycle/WithLifecycleStateKt {
+	public static final fun suspendWithStateAtLeastUnchecked (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;ZLkotlinx/coroutines/CoroutineDispatcher;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withCreated (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withCreated (Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withResumed (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withResumed (Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withStarted (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withStarted (Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withStateAtLeast (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withStateAtLeast (Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withStateAtLeastUnchecked (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/hoc081098/solivagant/lifecycle/compose/CollectAsStateWithLifecycleKt {
+	public static final fun collectAsStateWithLifecycle (Lkotlinx/coroutines/flow/Flow;Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/coroutines/CoroutineContext;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/State;
+	public static final fun collectAsStateWithLifecycle (Lkotlinx/coroutines/flow/Flow;Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/coroutines/CoroutineContext;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/State;
+	public static final fun collectAsStateWithLifecycle (Lkotlinx/coroutines/flow/StateFlow;Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/coroutines/CoroutineContext;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/State;
+	public static final fun collectAsStateWithLifecycle (Lkotlinx/coroutines/flow/StateFlow;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;Lkotlin/coroutines/CoroutineContext;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/State;
+}
+
+public final class com/hoc081098/solivagant/lifecycle/compose/CurrentStateAsStateKt {
+	public static final fun currentStateAsState (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+}
+
+public final class com/hoc081098/solivagant/lifecycle/compose/LifecycleEffectsKt {
+	public static final fun LifecycleEventEffect (Lcom/hoc081098/solivagant/lifecycle/Lifecycle$Event;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LifecycleResumeEffect (Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LifecycleResumeEffect (Ljava/lang/Object;Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LifecycleResumeEffect (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LifecycleResumeEffect ([Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LifecycleStartEffect (Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LifecycleStartEffect (Ljava/lang/Object;Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LifecycleStartEffect (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LifecycleStartEffect ([Ljava/lang/Object;Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+}
+
+public abstract interface class com/hoc081098/solivagant/lifecycle/compose/LifecyclePauseOrDisposeEffectResult {
+	public abstract fun runPauseOrOnDisposeEffect ()V
+}
+
+public final class com/hoc081098/solivagant/lifecycle/compose/LifecycleResumePauseEffectScope : com/hoc081098/solivagant/lifecycle/LifecycleOwner {
+	public static final field $stable I
+	public fun <init> (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;)V
+	public fun getLifecycle ()Lcom/hoc081098/solivagant/lifecycle/Lifecycle;
+	public final fun onPauseOrDispose (Lkotlin/jvm/functions/Function1;)Lcom/hoc081098/solivagant/lifecycle/compose/LifecyclePauseOrDisposeEffectResult;
+}
+
+public final class com/hoc081098/solivagant/lifecycle/compose/LifecycleStartStopEffectScope : com/hoc081098/solivagant/lifecycle/LifecycleOwner {
+	public static final field $stable I
+	public fun <init> (Lcom/hoc081098/solivagant/lifecycle/Lifecycle;)V
+	public fun getLifecycle ()Lcom/hoc081098/solivagant/lifecycle/Lifecycle;
+	public final fun onStopOrDispose (Lkotlin/jvm/functions/Function1;)Lcom/hoc081098/solivagant/lifecycle/compose/LifecycleStopOrDisposeEffectResult;
+}
+
+public abstract interface class com/hoc081098/solivagant/lifecycle/compose/LifecycleStopOrDisposeEffectResult {
+	public abstract fun runStopOrDisposeEffect ()V
+}
+

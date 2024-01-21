@@ -44,6 +44,7 @@ public fun NavHost(
 ) {
   val saveableStateHolder = rememberSaveableStateHolder()
 
+  @Suppress("ViewModelInjection")
   val navStoreViewModel = kmpViewModel(
     factory = viewModelFactory {
       NavStoreViewModel(

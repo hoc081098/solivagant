@@ -9,6 +9,7 @@ import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.Serializable
 import kotlinx.collections.immutable.ImmutableList
 
+@Suppress("TooManyFunctions")
 internal class MultiStackNavigationExecutor(
   private val stack: MultiStack,
   private val viewModel: StoreViewModel,
@@ -89,7 +90,7 @@ internal class MultiStackNavigationExecutor(
 
   private fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T> {
     return stack.entryFor(destinationId)
-      ?: throw IllegalStateException("Route $destinationId not found on back stack")
+      ?: error("Route $destinationId not found on back stack")
   }
 
   internal companion object {

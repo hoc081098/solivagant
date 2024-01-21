@@ -112,6 +112,7 @@ public interface BackInterceptor {
  * the correct events were emitted.
  */
 @MainThread
+@Suppress("TooManyFunctions")
 public open class NavEventNavigator : Navigator, ResultNavigator, BackInterceptor {
 
   private val _navEvents = Channel<NavEvent>(Channel.UNLIMITED)
@@ -131,8 +132,12 @@ public open class NavEventNavigator : Navigator, ResultNavigator, BackIntercepto
    *
    * Note: You must call this before [NavigationSetup] is called with this navigator."
    */
-  protected inline fun <reified T : BaseRoute, reified O : Parcelable> registerForNavigationResult(): NavigationResultRequest<O> {
-    return registerForNavigationResult(DestinationId(T::class), O::class.qualifiedName!!)
+  protected inline fun <
+    reified T : BaseRoute,
+    reified O : Parcelable,
+    > registerForNavigationResult(): NavigationResultRequest<O> {
+    // TODO(js): cannot use qualifiedName
+    return registerForNavigationResult(DestinationId(T::class), O::class.simpleName!!)
   }
 
   @PublishedApi
@@ -141,7 +146,8 @@ public open class NavEventNavigator : Navigator, ResultNavigator, BackIntercepto
     resultType: String,
   ): NavigationResultRequest<O> {
     checkAllowedToAddRequests()
-    val requestKey = "${id.route.qualifiedName!!}-$resultType"
+    // TODO(js): cannot use qualifiedName
+    val requestKey = "${id.route.simpleName!!}-$resultType"
     val key = NavigationResultRequest.Key<O>(id, requestKey)
     val request = NavigationResultRequest(key)
     _navigationResultRequests.add(request)
