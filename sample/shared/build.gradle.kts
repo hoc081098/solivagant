@@ -61,7 +61,7 @@ kotlin {
         implementation(libs.kmp.viewmodel.koin.compose)
 
         implementation("io.coil-kt.coil3:coil-core:3.0.0-alpha02")
-        implementation("io.coil-kt.coil3:coil-compose:3.0.0-alpha02")
+        implementation("io.coil-kt.coil3:coil-compose:3.0.0-alpha03")
 
         // Import coil-network and an HTTP client engine.
         implementation("io.coil-kt.coil3:coil-network:3.0.0-alpha02")
