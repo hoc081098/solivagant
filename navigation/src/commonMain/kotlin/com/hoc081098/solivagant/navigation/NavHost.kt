@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import com.hoc081098.kmp.viewmodel.Closeable
 import com.hoc081098.kmp.viewmodel.compose.LocalSavedStateHandleFactory
 import com.hoc081098.kmp.viewmodel.compose.LocalViewModelStoreOwner
+import com.hoc081098.solivagant.lifecycle.Lifecycle
 import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 import com.hoc081098.solivagant.navigation.internal.MultiStackNavigationExecutor
 import com.hoc081098.solivagant.navigation.internal.OnBackPressedCallback
@@ -105,10 +106,20 @@ private fun <T : BaseRoute> Show(
     .value // <-- This will cause the recomposition when the value is cleared.
     ?: return
 
+  DisposableEffect(entry) {
+    println(">>> $entry to resumed")
+    entry.lifecycleOwner.maxLifecycle = Lifecycle.State.RESUMED
+
+    onDispose {
+      entry.lifecycleOwner.maxLifecycle = Lifecycle.State.CREATED
+      println(">>> $entry to created")
+    }
+  }
+
   CompositionLocalProvider(
     LocalViewModelStoreOwner provides viewModelStoreOwner,
     LocalSavedStateHandleFactory provides executor.savedStateHandleFactoryFor(entry.destinationId),
-    LocalLifecycleOwner provides entry,
+    LocalLifecycleOwner provides entry.lifecycleOwner,
   ) {
     saveableStateHolder.SaveableStateProvider(entry.id.value) {
       entry.destination.content(entry.route)

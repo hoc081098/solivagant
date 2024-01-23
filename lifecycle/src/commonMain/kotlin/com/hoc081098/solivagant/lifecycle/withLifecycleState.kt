@@ -16,7 +16,7 @@
 
 package com.hoc081098.solivagant.lifecycle
 
-import com.hoc081098.solivagant.lifecycle.Lifecycle.Companion.currentState
+
 import com.hoc081098.solivagant.lifecycle.internal.AtomicReference
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.coroutines.coroutineContext

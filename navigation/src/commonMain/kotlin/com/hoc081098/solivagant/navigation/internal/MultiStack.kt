@@ -4,7 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.benasher44.uuid.uuid4
-import com.hoc081098.solivagant.lifecycle.LifecycleOwner
+import com.hoc081098.solivagant.lifecycle.Lifecycle
 import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavRoot
@@ -18,11 +18,9 @@ internal class MultiStack constructor(
   private var startStack: Stack,
   private var currentStack: Stack,
   private val destinations: List<ContentDestination<*>>,
-  private val lifecycleOwner: LifecycleOwner,
   private val onStackEntryRemoved: (StackEntry.Id) -> Unit,
   private val idGenerator: () -> String,
 ) {
-
   private val visibleEntryState: MutableState<ImmutableList<StackEntry<*>>> =
     mutableStateOf(currentStack.computeVisibleEntries())
   val visibleEntries: State<ImmutableList<StackEntry<*>>>
@@ -34,6 +32,8 @@ internal class MultiStack constructor(
     get() = canNavigateBackState
 
   val startRoot = startStack.rootEntry.route as NavRoot
+
+  internal var hostLifecycleState: Lifecycle.State = Lifecycle.State.INITIALIZED
 
   @Suppress("ReturnCount")
   fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T>? {
@@ -59,7 +59,7 @@ internal class MultiStack constructor(
     val newStack = Stack.createWith(
       root = root,
       destinations = destinations,
-      lifecycleOwner = lifecycleOwner,
+      hostLifecycleState = hostLifecycleState,
       onStackEntryRemoved = onStackEntryRemoved,
       idGenerator = idGenerator,
     )
@@ -99,6 +99,7 @@ internal class MultiStack constructor(
       }
       removeBackStack(currentStack)
       currentStack = startStack
+
       // remove anything that the start stack could have shown before
       // can't use resetToRoot because that will also recreate the root
       currentStack.clear()
@@ -183,18 +184,24 @@ internal class MultiStack constructor(
     )
   }
 
+  fun handleLifecycleEvent(event: Lifecycle.Event) {
+    println("$this handleLifecycleEvent $event")
+    hostLifecycleState = event.targetState
+    currentStack.handleLifecycleEvent(event)
+  }
+
   companion object {
     fun createWith(
       root: NavRoot,
       destinations: List<ContentDestination<*>>,
-      lifecycleOwner: LifecycleOwner,
+      hostLifecycleState: Lifecycle.State,
       onStackEntryRemoved: (StackEntry.Id) -> Unit,
       idGenerator: () -> String = { uuid4().toString() },
     ): MultiStack {
       val startStack = Stack.createWith(
         root = root,
         destinations = destinations,
-        lifecycleOwner = lifecycleOwner,
+        hostLifecycleState = hostLifecycleState,
         onStackEntryRemoved = onStackEntryRemoved,
         idGenerator = idGenerator,
       )
@@ -203,7 +210,6 @@ internal class MultiStack constructor(
         startStack = startStack,
         currentStack = startStack,
         destinations = destinations,
-        lifecycleOwner = lifecycleOwner,
         onStackEntryRemoved = onStackEntryRemoved,
         idGenerator = idGenerator,
       )
@@ -214,7 +220,7 @@ internal class MultiStack constructor(
       root: NavRoot,
       bundle: Map<String, Any?>,
       destinations: List<ContentDestination<*>>,
-      lifecycleOwner: LifecycleOwner,
+      hostLifecycleState: Lifecycle.State,
       onStackEntryRemoved: (StackEntry.Id) -> Unit,
       idGenerator: () -> String = { uuid4().toString() },
     ): MultiStack {
@@ -225,7 +231,7 @@ internal class MultiStack constructor(
         Stack.fromState(
           bundle = it,
           destinations = destinations,
-          lifecycleOwner = lifecycleOwner,
+          hostLifecycleState = hostLifecycleState,
           onStackEntryRemoved = onStackEntryRemoved,
           idGenerator = idGenerator,
         )
@@ -237,7 +243,6 @@ internal class MultiStack constructor(
         startStack = startStack,
         currentStack = currentStack,
         destinations = destinations,
-        lifecycleOwner = lifecycleOwner,
         onStackEntryRemoved = onStackEntryRemoved,
         idGenerator = idGenerator,
       )

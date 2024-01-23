@@ -17,7 +17,7 @@
 package com.hoc081098.solivagant.lifecycle
 
 import com.hoc081098.solivagant.lifecycle.Lifecycle.Cancellable
-import com.hoc081098.solivagant.lifecycle.Lifecycle.Companion.currentState
+
 import kotlin.coroutines.resume
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

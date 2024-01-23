@@ -1,20 +1,35 @@
 package com.hoc081098.solivagant.navigation.internal
 
+import androidx.compose.runtime.RememberObserver
 import androidx.compose.runtime.State
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.SavedStateHandleFactory
+import com.hoc081098.solivagant.lifecycle.LifecycleOwner
+import com.hoc081098.solivagant.lifecycle.eventFlow
 import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.Serializable
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.plus
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Suppress("TooManyFunctions")
 internal class MultiStackNavigationExecutor(
   private val stack: MultiStack,
   private val viewModel: StoreViewModel,
   private val onRootChanged: (NavRoot) -> Unit,
-) : NavigationExecutor {
+) : NavigationExecutor, RememberObserver {
+  private val scope = viewModel.viewModelScope + Job()
+  private val _lifecycleOwner = Channel<LifecycleOwner>(capacity = Channel.UNLIMITED)
 
   val visibleEntries: State<ImmutableList<StackEntry<*>>>
     get() = stack.visibleEntries
@@ -26,6 +41,12 @@ internal class MultiStackNavigationExecutor(
     viewModel
       .globalSavedStateHandle
       .setSavedStateProvider(SAVED_STATE_STACK, stack::saveState)
+
+    _lifecycleOwner
+      .consumeAsFlow()
+      .flatMapLatest { it.lifecycle.eventFlow }
+      .onEach(stack::handleLifecycleEvent)
+      .launchIn(scope)
   }
 
   override fun navigateTo(route: NavRoute) {
@@ -93,7 +114,22 @@ internal class MultiStackNavigationExecutor(
       ?: error("Route $destinationId not found on back stack")
   }
 
+  fun setLifecycleOwner(lifecycleOwner: LifecycleOwner) {
+    _lifecycleOwner.trySend(lifecycleOwner)
+  }
+
   internal companion object {
     const val SAVED_STATE_STACK = "com.hoc081098.solivagant.navigation.stack"
+  }
+
+  override fun onAbandoned() {
+    scope.cancel()
+  }
+
+  override fun onForgotten() {
+    scope.cancel()
+  }
+
+  override fun onRemembered() {
   }
 }

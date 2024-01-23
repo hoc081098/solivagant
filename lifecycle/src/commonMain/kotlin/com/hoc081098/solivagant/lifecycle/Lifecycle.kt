@@ -32,8 +32,16 @@
 
 package com.hoc081098.solivagant.lifecycle
 
+import com.hoc081098.solivagant.lifecycle.Lifecycle.Event
 import kotlin.jvm.JvmStatic
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flowOn
 
 /**
  * A holder of [Lifecycle.State] that can be observed for changes.
@@ -59,6 +67,8 @@ import kotlinx.coroutines.flow.StateFlow
  */
 public interface Lifecycle {
   public val currentStateFlow: StateFlow<State>
+
+  public val currentState: State
 
   public fun subscribe(observer: Observer): Cancellable
 
@@ -189,9 +199,18 @@ public interface Lifecycle {
       }
     }
   }
-
-  public companion object {
-    public val Lifecycle.currentState: State
-      get() = currentStateFlow.value
-  }
 }
+
+/**
+ * Creates a [Flow] of [Event]s containing values dispatched by this [Lifecycle].
+ */
+public val Lifecycle.eventFlow: Flow<Event>
+  get() = callbackFlow {
+    val cancellable = Lifecycle.Observer { event ->
+      trySend(event)
+    }.let { subscribe(it) }
+
+    awaitClose(cancellable::cancel)
+  }
+    .buffer(Channel.UNLIMITED)
+    .flowOn(Dispatchers.Main.immediate)

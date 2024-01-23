@@ -78,6 +78,9 @@ private class LifecycleRegistryImpl(initialState: State) : LifecycleRegistry {
   override val currentStateFlow: StateFlow<State>
     get() = _currentStateFlow.asStateFlow()
 
+  override val currentState: State
+    get() = _state
+
   override fun onStateChanged(event: Event) {
     when (event) {
       Event.ON_CREATE -> onCreate()
