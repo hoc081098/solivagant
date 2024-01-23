@@ -18,20 +18,20 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
-import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
+import com.hoc081098.solivagant.lifecycle.compose.collectAsStateWithLifecycle
 import com.hoc081098.solivagant.sample.common.AppDispatchers
 import com.hoc081098.solivagant.sample.common.EmptyProducts
 import com.hoc081098.solivagant.sample.common.ErrorMessageAndRetryButton
 import com.hoc081098.solivagant.sample.common.LoadingIndicator
+import com.hoc081098.solivagant.sample.common.OnLifecycleEventWithBuilder
 import com.hoc081098.solivagant.sample.common.ProductItemUi
 import com.hoc081098.solivagant.sample.common.ProductItemsList
-import com.hoc081098.solivagant.sample.common.collectAsStateWithLifecycle
+import io.github.aakira.napier.Napier
 import org.koin.compose.koinInject
 
 @Suppress("ReturnCount")
@@ -40,21 +40,8 @@ fun SearchProductsScreen(
   modifier: Modifier = Modifier,
   viewModel: SearchProductsViewModel = koinKmpViewModel<SearchProductsViewModel>(),
 ) {
-  // TODO: OnLifecycleEventWithBuilder
-  //  OnLifecycleEventWithBuilder {
-  //    onEach { owner, event -> Napier.d("[SearchProductsScreen] event=$event, owner=$owner") }
-  //  }
-
-  val lifecycleOwner = LocalLifecycleOwner.current
-  DisposableEffect(lifecycleOwner) {
-    val cancellable = lifecycleOwner.lifecycle.subscribe { event ->
-      println("🚀🚀🚀 -->: $event")
-    }
-
-    onDispose {
-      cancellable.cancel()
-      println("🚀🚀🚀 --> disposed")
-    }
+  OnLifecycleEventWithBuilder {
+    onEach { event -> Napier.d("[SearchProductsScreen] event=$event") }
   }
 
   val state by viewModel.stateFlow.collectAsStateWithLifecycle()

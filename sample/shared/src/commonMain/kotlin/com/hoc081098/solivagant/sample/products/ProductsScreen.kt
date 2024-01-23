@@ -12,13 +12,15 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.withFrameMillis
 import androidx.compose.ui.Modifier
 import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
+import com.hoc081098.solivagant.lifecycle.compose.collectAsStateWithLifecycle
 import com.hoc081098.solivagant.sample.common.CollectWithLifecycleEffect
 import com.hoc081098.solivagant.sample.common.EmptyProducts
 import com.hoc081098.solivagant.sample.common.ErrorMessageAndRetryButton
 import com.hoc081098.solivagant.sample.common.LoadingIndicator
+import com.hoc081098.solivagant.sample.common.OnLifecycleEventWithBuilder
 import com.hoc081098.solivagant.sample.common.PlatformToastManager
 import com.hoc081098.solivagant.sample.common.ProductItemsList
-import com.hoc081098.solivagant.sample.common.collectAsStateWithLifecycle
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -35,10 +37,9 @@ fun ProductsScreen(
     onDispose { }
   }
 
-  // TODO: OnLifecycleEventWithBuilder
-  //  OnLifecycleEventWithBuilder {
-  //    onEach { owner, event -> Napier.d("[ProductsScreen] event=$event, owner=$owner") }
-  //  }
+  OnLifecycleEventWithBuilder {
+    onEach { event -> Napier.d("[ProductsScreen] event=$event") }
+  }
 
   val state by viewModel.stateFlow.collectAsStateWithLifecycle()
 
