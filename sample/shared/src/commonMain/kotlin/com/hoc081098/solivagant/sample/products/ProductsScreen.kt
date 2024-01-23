@@ -24,7 +24,7 @@ import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
-@Suppress("ReturnCount", "ModifierReused")
+@Suppress("ReturnCount", "ModifierReused", "LongMethod")
 @Composable
 fun ProductsScreen(
   modifier: Modifier = Modifier,

@@ -215,7 +215,7 @@ internal class MultiStack constructor(
       )
     }
 
-    @Suppress("DEPRECATION")
+    @Suppress("LongParameterList")
     fun fromState(
       root: NavRoot,
       bundle: Map<String, Any?>,

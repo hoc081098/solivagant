@@ -130,6 +130,5 @@ internal class MultiStackNavigationExecutor(
     scope.cancel()
   }
 
-  override fun onRemembered() {
-  }
+  override fun onRemembered() = Unit
 }

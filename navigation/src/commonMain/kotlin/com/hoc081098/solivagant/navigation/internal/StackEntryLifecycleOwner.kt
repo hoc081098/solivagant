@@ -38,99 +38,102 @@ internal class StackEntryLifecycleOwner(
 
   private fun moveTo(state: Lifecycle.State) {
     when (state) {
-      Lifecycle.State.DESTROYED -> {
-        when (_lifecycle.currentState) {
-          Lifecycle.State.DESTROYED ->
-            Unit
+      Lifecycle.State.DESTROYED -> moveToDestroyed()
+      Lifecycle.State.INITIALIZED -> Unit
+      Lifecycle.State.CREATED -> moveToCreated()
+      Lifecycle.State.STARTED -> moveToStarted()
+      Lifecycle.State.RESUMED -> moveToResumed()
+    }
+  }
 
-          Lifecycle.State.INITIALIZED -> {
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_CREATE)
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_DESTROY)
-          }
-
-          Lifecycle.State.CREATED ->
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_DESTROY)
-
-          Lifecycle.State.STARTED -> {
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_STOP)
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_DESTROY)
-          }
-
-          Lifecycle.State.RESUMED -> {
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_PAUSE)
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_STOP)
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_DESTROY)
-          }
-        }
+  private fun moveToResumed() {
+    when (_lifecycle.currentState) {
+      Lifecycle.State.INITIALIZED -> {
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_CREATE)
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_START)
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_RESUME)
       }
-
-      Lifecycle.State.INITIALIZED ->
-        Unit
 
       Lifecycle.State.CREATED -> {
-        when (_lifecycle.currentState) {
-          Lifecycle.State.DESTROYED ->
-            Unit
-
-          Lifecycle.State.INITIALIZED ->
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_CREATE)
-
-          Lifecycle.State.CREATED ->
-            Unit
-
-          Lifecycle.State.STARTED ->
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_STOP)
-
-          Lifecycle.State.RESUMED -> {
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_PAUSE)
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_STOP)
-          }
-        }
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_START)
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_RESUME)
       }
 
+      Lifecycle.State.STARTED ->
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_RESUME)
+
+      Lifecycle.State.RESUMED ->
+        Unit
+
+      Lifecycle.State.DESTROYED ->
+        Unit
+    }
+  }
+
+  private fun moveToStarted() {
+    when (_lifecycle.currentState) {
+      Lifecycle.State.INITIALIZED -> {
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_CREATE)
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_START)
+      }
+
+      Lifecycle.State.CREATED ->
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_START)
+
+      Lifecycle.State.STARTED ->
+        Unit
+
+      Lifecycle.State.RESUMED ->
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_PAUSE)
+
+      Lifecycle.State.DESTROYED ->
+        Unit
+    }
+  }
+
+  private fun moveToCreated() {
+    when (_lifecycle.currentState) {
+      Lifecycle.State.DESTROYED ->
+        Unit
+
+      Lifecycle.State.INITIALIZED ->
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_CREATE)
+
+      Lifecycle.State.CREATED ->
+        Unit
+
+      Lifecycle.State.STARTED ->
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_STOP)
+
+      Lifecycle.State.RESUMED -> {
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_PAUSE)
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_STOP)
+      }
+    }
+  }
+
+  private fun moveToDestroyed() {
+    when (_lifecycle.currentState) {
+      Lifecycle.State.DESTROYED ->
+        Unit
+
+      Lifecycle.State.INITIALIZED -> {
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_CREATE)
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_DESTROY)
+      }
+
+      Lifecycle.State.CREATED ->
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_DESTROY)
+
       Lifecycle.State.STARTED -> {
-        when (_lifecycle.currentState) {
-          Lifecycle.State.INITIALIZED -> {
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_CREATE)
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_START)
-          }
-
-          Lifecycle.State.CREATED ->
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_START)
-
-          Lifecycle.State.STARTED ->
-            Unit
-
-          Lifecycle.State.RESUMED ->
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_PAUSE)
-
-          Lifecycle.State.DESTROYED ->
-            Unit
-        }
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_STOP)
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_DESTROY)
       }
 
       Lifecycle.State.RESUMED -> {
-        when (_lifecycle.currentState) {
-          Lifecycle.State.INITIALIZED -> {
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_CREATE)
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_START)
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_RESUME)
-          }
-
-          Lifecycle.State.CREATED -> {
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_START)
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_RESUME)
-          }
-
-          Lifecycle.State.STARTED ->
-            _lifecycle.onStateChanged(Lifecycle.Event.ON_RESUME)
-
-          Lifecycle.State.RESUMED ->
-            Unit
-
-          Lifecycle.State.DESTROYED ->
-            Unit
-        }
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_PAUSE)
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_STOP)
+        _lifecycle.onStateChanged(Lifecycle.Event.ON_DESTROY)
       }
     }
   }
