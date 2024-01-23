@@ -14,8 +14,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -29,7 +29,7 @@ internal class MultiStackNavigationExecutor(
   private val onRootChanged: (NavRoot) -> Unit,
 ) : NavigationExecutor, RememberObserver {
   private val scope = viewModel.viewModelScope + Job()
-  private val _lifecycleOwner = Channel<LifecycleOwner>(capacity = Channel.UNLIMITED)
+  private val _lifecycleOwner = MutableStateFlow<LifecycleOwner?>(null)
 
   val visibleEntries: State<ImmutableList<StackEntry<*>>>
     get() = stack.visibleEntries
@@ -43,8 +43,7 @@ internal class MultiStackNavigationExecutor(
       .setSavedStateProvider(SAVED_STATE_STACK, stack::saveState)
 
     _lifecycleOwner
-      .consumeAsFlow()
-      .flatMapLatest { it.lifecycle.eventFlow }
+      .flatMapLatest { it?.lifecycle?.eventFlow ?: emptyFlow() }
       .onEach(stack::handleLifecycleEvent)
       .launchIn(scope)
   }
@@ -115,7 +114,7 @@ internal class MultiStackNavigationExecutor(
   }
 
   fun setLifecycleOwner(lifecycleOwner: LifecycleOwner) {
-    _lifecycleOwner.trySend(lifecycleOwner)
+    _lifecycleOwner.value = lifecycleOwner
   }
 
   internal companion object {
@@ -123,10 +122,12 @@ internal class MultiStackNavigationExecutor(
   }
 
   override fun onAbandoned() {
+    _lifecycleOwner.value = null
     scope.cancel()
   }
 
   override fun onForgotten() {
+    _lifecycleOwner.value = null
     scope.cancel()
   }
 

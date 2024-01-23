@@ -27,13 +27,11 @@ internal class StackEntryLifecycleOwner(
    * Update the state to be the lower of the two constraints:
    */
   internal fun updateState() {
-    println("$this updateState: $hostLifecycleState, $maxLifecycle")
     if (hostLifecycleState < maxLifecycle) {
       moveTo(hostLifecycleState)
     } else {
       moveTo(maxLifecycle)
     }
-    println("$this updateState: ${_lifecycle.currentState}")
   }
 
   private fun moveTo(state: Lifecycle.State) {

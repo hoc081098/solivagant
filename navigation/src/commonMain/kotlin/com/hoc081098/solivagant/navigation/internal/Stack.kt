@@ -113,6 +113,7 @@ internal class Stack private constructor(
     println("$this handleLifecycleEvent $event")
     hostLifecycleState = event.targetState
     stack.forEach { it.lifecycleOwner.handleLifecycleEvent(event) }
+    stack.forEach { println("  ${it.route} ${it.lifecycleOwner.lifecycle}") }
   }
 
   companion object {

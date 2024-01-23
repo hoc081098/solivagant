@@ -149,4 +149,6 @@ private class LifecycleRegistryImpl(initialState: State) : LifecycleRegistry {
   private fun checkState(required: State) {
     check(_state == required) { "Expected state $required but was $_state" }
   }
+
+  override fun toString(): String = "LifecycleRegistryImpl(_state=$_state)"
 }

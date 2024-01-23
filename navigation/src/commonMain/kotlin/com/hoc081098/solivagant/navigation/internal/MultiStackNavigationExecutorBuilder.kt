@@ -1,7 +1,6 @@
 package com.hoc081098.solivagant.navigation.internal
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
 import com.hoc081098.kmp.viewmodel.createSavedStateHandle
@@ -10,12 +9,12 @@ import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavDestination
 import com.hoc081098.solivagant.navigation.NavRoot
+import kotlinx.collections.immutable.ImmutableSet
 
-@Suppress("UnstableCollections")
 @Composable
 internal fun rememberNavigationExecutor(
   startRoot: NavRoot,
-  destinations: Set<NavDestination>,
+  destinations: ImmutableSet<NavDestination>,
 ): MultiStackNavigationExecutor {
   @Suppress("ViewModelInjection")
   val viewModel = kmpViewModel(
@@ -59,10 +58,7 @@ internal fun rememberNavigationExecutor(
     )
   }
 
-  DisposableEffect(lifecycleOwner, executor) {
-    executor.setLifecycleOwner(lifecycleOwner)
-    onDispose { }
-  }
+  executor.setLifecycleOwner(lifecycleOwner)
 
   return executor
 }

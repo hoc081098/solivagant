@@ -52,7 +52,10 @@ public fun NavHost(
   CompositionLocalProvider(
     LocalLifecycleOwner providesDefault lifecycleOwner,
   ) {
-    val executor = rememberNavigationExecutor(startRoute, destinations)
+    val executor = rememberNavigationExecutor(
+      startRoot = startRoute,
+      destinations = destinations,
+    )
 
     SystemBackHandling(executor)
     DestinationChangedCallback(executor, destinationChangedCallback)
@@ -107,10 +110,17 @@ private fun <T : BaseRoute> Show(
     ?: return
 
   DisposableEffect(entry) {
+    if (entry.lifecycleOwner.lifecycle.currentState == Lifecycle.State.DESTROYED) {
+      return@DisposableEffect onDispose {}
+    }
+
     println(">>> $entry to resumed")
     entry.lifecycleOwner.maxLifecycle = Lifecycle.State.RESUMED
 
     onDispose {
+      if (entry.lifecycleOwner.lifecycle.currentState == Lifecycle.State.DESTROYED) {
+        return@onDispose
+      }
       entry.lifecycleOwner.maxLifecycle = Lifecycle.State.CREATED
       println(">>> $entry to created")
     }
