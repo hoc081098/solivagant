@@ -12,7 +12,7 @@ import com.hoc081098.solivagant.navigation.NavRoute
 import kotlinx.collections.immutable.ImmutableList
 
 @Suppress("TooManyFunctions")
-internal class MultiStack constructor(
+internal class MultiStack(
   // Use ArrayList to make sure it is a RandomAccess
   private val allStacks: ArrayList<Stack>,
   private var startStack: Stack,
@@ -33,7 +33,7 @@ internal class MultiStack constructor(
 
   val startRoot = startStack.rootEntry.route as NavRoot
 
-  internal var hostLifecycleState: Lifecycle.State = Lifecycle.State.INITIALIZED
+  private var hostLifecycleState: Lifecycle.State = Lifecycle.State.INITIALIZED
 
   @Suppress("ReturnCount")
   fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T>? {
