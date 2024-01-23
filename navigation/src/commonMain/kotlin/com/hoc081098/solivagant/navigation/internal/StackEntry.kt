@@ -46,8 +46,8 @@ internal class StackEntry<T : BaseRoute> private constructor(
         route = route,
         destination = destination,
         lifecycleOwner = StackEntryLifecycleOwner(
-          hostLifecycleState = hostLifecycleState
-        )
+          hostLifecycleState = hostLifecycleState,
+        ),
       ).also {
         println("StackEntry.create: $it")
       }

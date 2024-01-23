@@ -1,7 +1,6 @@
 package com.hoc081098.solivagant.navigation.internal
 
 import com.hoc081098.solivagant.lifecycle.Lifecycle
-
 import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.lifecycle.LifecycleRegistry
 import dev.drewhamilton.poko.Poko

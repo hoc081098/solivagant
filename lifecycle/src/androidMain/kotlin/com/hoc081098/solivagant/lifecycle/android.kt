@@ -3,8 +3,8 @@ package com.hoc081098.solivagant.lifecycle
 import androidx.lifecycle.Lifecycle as AndroidXLifecycle
 import androidx.lifecycle.Lifecycle.Event as AndroidXLifecycleEvent
 import androidx.lifecycle.Lifecycle.State as AndroidXLifecycleState
-import androidx.lifecycle.LifecycleOwner as AndroidXLifecycleOwner
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner as AndroidXLifecycleOwner
 import com.hoc081098.solivagant.lifecycle.Lifecycle.Cancellable
 import com.hoc081098.solivagant.lifecycle.Lifecycle.Event
 import com.hoc081098.solivagant.lifecycle.Lifecycle.State

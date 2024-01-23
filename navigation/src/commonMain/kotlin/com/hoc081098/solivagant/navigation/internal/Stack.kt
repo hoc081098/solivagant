@@ -63,7 +63,7 @@ internal class Stack private constructor(
         idGenerator = idGenerator,
       ).apply {
         lifecycleOwner.maxLifecycle = Lifecycle.State.CREATED
-      }
+      },
     )
   }
 
@@ -153,7 +153,7 @@ internal class Stack private constructor(
         entry(
           route = routes[index],
           destinations = destinations,
-          hostLifecycleState = hostLifecycleState
+          hostLifecycleState = hostLifecycleState,
         ) { id }
       }
       return Stack(
