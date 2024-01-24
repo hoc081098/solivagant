@@ -18,6 +18,8 @@ internal class StackEntryLifecycleOwner(
   private val _lifecycle = LifecycleRegistry()
   override val lifecycle: Lifecycle get() = _lifecycle
 
+
+
   internal fun handleLifecycleEvent(event: Lifecycle.Event) {
     hostLifecycleState = event.targetState
     updateState()
@@ -36,9 +38,9 @@ internal class StackEntryLifecycleOwner(
 
   private fun moveTo(state: Lifecycle.State) {
     when (state) {
-      Lifecycle.State.DESTROYED -> moveToDestroyed()
       Lifecycle.State.INITIALIZED -> Unit
       Lifecycle.State.CREATED -> moveToCreated()
+      Lifecycle.State.DESTROYED -> moveToDestroyed()
       Lifecycle.State.STARTED -> moveToStarted()
       Lifecycle.State.RESUMED -> moveToResumed()
     }
@@ -134,5 +136,9 @@ internal class StackEntryLifecycleOwner(
         _lifecycle.onStateChanged(Lifecycle.Event.ON_DESTROY)
       }
     }
+  }
+
+  override fun toString(): String {
+    return "StackEntryLifecycleOwner(hostLifecycleState=$hostLifecycleState, maxLifecycle=$maxLifecycle, lifecycle=$lifecycle)"
   }
 }

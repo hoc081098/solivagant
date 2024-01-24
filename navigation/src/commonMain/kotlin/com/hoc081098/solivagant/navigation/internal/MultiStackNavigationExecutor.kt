@@ -43,7 +43,9 @@ internal class MultiStackNavigationExecutor(
       .setSavedStateProvider(SAVED_STATE_STACK, stack::saveState)
 
     _lifecycleOwner
+      .onEach { println("### >>> ${it?.lifecycle}") }
       .flatMapLatest { it?.lifecycle?.eventFlow ?: emptyFlow() }
+      .onEach { println("### >>> $it") }
       .onEach(stack::handleLifecycleEvent)
       .launchIn(scope)
   }
