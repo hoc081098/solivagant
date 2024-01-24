@@ -43,6 +43,9 @@ private class SolivagantLifecycleInterop(
     delegate.currentStateFlow.mapState { it.asSolivagantState() }
   }
 
+  override val currentState: State
+    get() = delegate.currentState.asSolivagantState()
+
   override fun subscribe(observer: Lifecycle.Observer): Cancellable {
     // @MainThread
     var removedObserver = false

@@ -3,13 +3,21 @@ package com.hoc081098.solivagant.sample.common
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
+import androidx.compose.runtime.NonRestartableComposable
+import androidx.compose.runtime.RememberObserver
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
+import com.hoc081098.solivagant.lifecycle.Lifecycle
+import com.hoc081098.solivagant.lifecycle.LifecycleOwner
+import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
+import com.hoc081098.solivagant.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 @Immutable
 enum class CollectWithLifecycleEffectDispatcher {
@@ -54,13 +62,77 @@ enum class CollectWithLifecycleEffectDispatcher {
  * @see [CollectWithLifecycleEffectDispatcher]
  */
 @Composable
-expect fun <T> Flow<T>.CollectWithLifecycleEffect(
+fun <T> Flow<T>.CollectWithLifecycleEffect(
   vararg keys: Any?,
+  lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+  minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
   dispatcher: CollectWithLifecycleEffectDispatcher = CollectWithLifecycleEffectDispatcher.ImmediateMain,
   collector: (T) -> Unit,
-)
+) {
+  val flow = this
+  val collectorState = rememberUpdatedState(collector)
+
+  val block: suspend CoroutineScope.() -> Unit = {
+    lifecycleOwner.repeatOnLifecycle(minActiveState) {
+      // NOTE: we don't use `flow.collect(collectState.value)` because it can use the old value
+      flow.collect { collectorState.value(it) }
+    }
+  }
+
+  when (dispatcher) {
+    CollectWithLifecycleEffectDispatcher.ImmediateMain -> {
+      LaunchedEffectInImmediateMain(flow, lifecycleOwner, minActiveState, *keys, block = block)
+    }
+
+    CollectWithLifecycleEffectDispatcher.Main -> {
+      LaunchedEffectInMain(flow, lifecycleOwner, minActiveState, *keys, block = block)
+    }
+
+    CollectWithLifecycleEffectDispatcher.Composer -> {
+      LaunchedEffect(flow, lifecycleOwner, minActiveState, *keys, block = block)
+    }
+  }
+}
 
 @Composable
-expect fun <T> StateFlow<T>.collectAsStateWithLifecycle(
-  context: CoroutineContext = EmptyCoroutineContext,
-): State<T>
+@NonRestartableComposable
+@Suppress("ArrayReturn")
+private fun LaunchedEffectInImmediateMain(
+  vararg keys: Any?,
+  block: suspend CoroutineScope.() -> Unit,
+) {
+  remember(*keys) { LaunchedEffectImpl(block, Dispatchers.Main.immediate) }
+}
+
+@Composable
+@NonRestartableComposable
+@Suppress("ArrayReturn")
+private fun LaunchedEffectInMain(
+  vararg keys: Any?,
+  block: suspend CoroutineScope.() -> Unit,
+) {
+  remember(*keys) { LaunchedEffectImpl(block, Dispatchers.Main) }
+}
+
+private class LaunchedEffectImpl(
+  private val task: suspend CoroutineScope.() -> Unit,
+  dispatcher: CoroutineDispatcher,
+) : RememberObserver {
+  private val scope = CoroutineScope(dispatcher)
+  private var job: Job? = null
+
+  override fun onRemembered() {
+    job?.cancel("Old job was still running!")
+    job = scope.launch(block = task)
+  }
+
+  override fun onForgotten() {
+    job?.cancel()
+    job = null
+  }
+
+  override fun onAbandoned() {
+    job?.cancel()
+    job = null
+  }
+}

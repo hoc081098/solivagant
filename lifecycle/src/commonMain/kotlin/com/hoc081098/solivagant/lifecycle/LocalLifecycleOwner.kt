@@ -15,7 +15,7 @@ public object LocalLifecycleOwner {
   /**
    * The CompositionLocal containing the current [LifecycleOwner].
    */
-  @Suppress("CompositionLocalAllowlist", "MemberNameEqualsClassName")
+  @Suppress("MemberNameEqualsClassName")
   private val LocalLifecycleOwner = staticCompositionLocalOf<LifecycleOwner> {
     error("No LifecycleOwner was provided")
   }

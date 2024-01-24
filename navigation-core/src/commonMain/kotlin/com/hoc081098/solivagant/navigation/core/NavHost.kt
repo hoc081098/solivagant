@@ -30,7 +30,6 @@ public fun <T : Route> SavedStateHandle.requireRoute(): T {
   }
 }
 
-@Suppress("CompositionLocalAllowlist")
 public val LocalNavigator: ProvidableCompositionLocal<Navigator> = staticCompositionLocalOf<Navigator> {
   error("Can't use Navigator outside of a navigator NavHost")
 }

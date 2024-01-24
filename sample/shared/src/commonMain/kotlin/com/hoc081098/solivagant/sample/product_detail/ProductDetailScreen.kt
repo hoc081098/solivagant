@@ -22,7 +22,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -36,10 +35,12 @@ import coil3.compose.AsyncImagePainter
 import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.SubcomposeAsyncImageContent
 import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
+import com.hoc081098.solivagant.lifecycle.compose.collectAsStateWithLifecycle
 import com.hoc081098.solivagant.sample.common.ErrorMessageAndRetryButton
 import com.hoc081098.solivagant.sample.common.LoadingIndicator
+import com.hoc081098.solivagant.sample.common.OnLifecycleEventWithBuilder
 import com.hoc081098.solivagant.sample.common.ProductItemUi
-import com.hoc081098.solivagant.sample.common.collectAsStateWithLifecycle
+import io.github.aakira.napier.Napier
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -49,17 +50,11 @@ fun ProductDetailScreen(
 ) {
   val refresh = remember(viewModel) { viewModel::refresh }
 
-  DisposableEffect(refresh) {
-    refresh()
-    onDispose { }
+  OnLifecycleEventWithBuilder(refresh) {
+    onResume { refresh() }
+    onPause { Napier.d("[ProductDetailScreen] paused") }
+    onEach { event -> Napier.d("[ProductDetailScreen] event=$event") }
   }
-
-  // TODO: OnLifecycleEventWithBuilder
-  //  OnLifecycleEventWithBuilder(refresh) {
-  //    onResume { refresh() }
-  //    onPause { Napier.d("[ProductDetailScreen] paused") }
-  //    onEach { owner, event -> Napier.d("[ProductDetailScreen] event=$event, owner=$owner") }
-  //  }
 
   val state by viewModel.stateFlow.collectAsStateWithLifecycle()
   when (val s = state) {

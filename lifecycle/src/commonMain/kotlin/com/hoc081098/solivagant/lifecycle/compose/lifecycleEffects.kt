@@ -322,6 +322,7 @@ public fun LifecycleStartEffect(
 private fun LifecycleStartEffectImpl(
   lifecycleOwner: LifecycleOwner,
   scope: LifecycleStartStopEffectScope,
+  @Suppress("LambdaParameterInRestartableEffect") // TODO: check this again!!!
   effects: LifecycleStartStopEffectScope.() -> LifecycleStopOrDisposeEffectResult,
 ) {
   DisposableEffect(lifecycleOwner, scope) {
@@ -625,6 +626,7 @@ public fun LifecycleResumeEffect(
 private fun LifecycleResumeEffectImpl(
   lifecycleOwner: LifecycleOwner,
   scope: LifecycleResumePauseEffectScope,
+  @Suppress("LambdaParameterInRestartableEffect") // TODO: check this again!!!
   effects: LifecycleResumePauseEffectScope.() -> LifecyclePauseOrDisposeEffectResult,
 ) {
   DisposableEffect(lifecycleOwner, scope) {

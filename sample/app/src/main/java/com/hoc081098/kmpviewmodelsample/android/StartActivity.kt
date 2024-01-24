@@ -7,6 +7,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.sample.SolivagantSampleApp
+import io.github.aakira.napier.Napier
 
 class StartActivity : ComponentActivity() {
   private var addedObserver = false
@@ -27,7 +28,7 @@ class StartActivity : ComponentActivity() {
 
       lifecycle.addObserver(object : LifecycleEventObserver {
         override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-          println("🚀🚀🚀 onStateChanged $event {${lifecycle.currentState}}")
+          Napier.d(message = "🚀🚀🚀 onStateChanged $event {${lifecycle.currentState}}")
         }
       })
     }

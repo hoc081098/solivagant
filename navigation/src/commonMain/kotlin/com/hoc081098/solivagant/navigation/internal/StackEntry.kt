@@ -1,6 +1,7 @@
 package com.hoc081098.solivagant.navigation.internal
 
 import androidx.compose.runtime.Immutable
+import com.hoc081098.solivagant.lifecycle.Lifecycle
 import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavRoot
@@ -10,10 +11,11 @@ import kotlin.jvm.JvmInline
 
 @Poko
 @Immutable
-internal class StackEntry<T : BaseRoute>(
+internal class StackEntry<T : BaseRoute> private constructor(
   val id: Id,
   val route: T,
   val destination: ContentDestination<T>,
+  val lifecycleOwner: StackEntryLifecycleOwner,
 ) {
   val destinationId
     get() = route.destinationId
@@ -28,4 +30,25 @@ internal class StackEntry<T : BaseRoute>(
 
   @JvmInline
   value class Id(val value: String)
+
+  companion object {
+    inline fun <T : BaseRoute> create(
+      route: T,
+      destinations: List<ContentDestination<*>>,
+      hostLifecycleState: Lifecycle.State,
+      idGenerator: () -> String,
+    ): StackEntry<T> {
+      @Suppress("UNCHECKED_CAST")
+      val destination = destinations.first { it.id == route.destinationId } as ContentDestination<T>
+
+      return StackEntry(
+        id = Id(idGenerator()),
+        route = route,
+        destination = destination,
+        lifecycleOwner = StackEntryLifecycleOwner(
+          hostLifecycleState = hostLifecycleState,
+        ),
+      )
+    }
+  }
 }
