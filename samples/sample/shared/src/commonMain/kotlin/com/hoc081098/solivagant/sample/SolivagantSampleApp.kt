@@ -80,11 +80,11 @@ fun SolivagantSampleApp(
               title = {
                 Text(
                   text = when (currentRoute) {
-                    StartScreenRoute -> "KMP ViewModel Sample"
+                    StartScreenRoute -> "Solivagant Sample"
                     is ProductsScreenRoute -> "Products screen"
                     is SearchProductScreenRoute -> "Search products screen"
                     is ProductDetailScreenRoute -> "Product detail screen"
-                    else -> "KMP ViewModel Sample"
+                    else -> "Unknown screen"
                   },
                 )
               },
