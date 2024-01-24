@@ -3,9 +3,7 @@ package com.hoc081098.solivagant.navigation.internal
 import com.hoc081098.solivagant.lifecycle.Lifecycle
 import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.lifecycle.LifecycleRegistry
-import dev.drewhamilton.poko.Poko
 
-@Poko
 internal class StackEntryLifecycleOwner(
   private var hostLifecycleState: Lifecycle.State = Lifecycle.State.CREATED,
 ) : LifecycleOwner {
@@ -136,7 +134,8 @@ internal class StackEntryLifecycleOwner(
     }
   }
 
-  override fun toString(): String {
-    return "StackEntryLifecycleOwner(hostLifecycleState=$hostLifecycleState, maxLifecycle=$maxLifecycle, lifecycle=$lifecycle)"
-  }
+  override fun toString(): String =
+    "StackEntryLifecycleOwner(hostLifecycleState=$hostLifecycleState, " +
+        "maxLifecycle=$maxLifecycle, " +
+        "lifecycle=$lifecycle)"
 }
