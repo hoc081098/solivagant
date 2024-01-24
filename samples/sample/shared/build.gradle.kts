@@ -60,11 +60,11 @@ kotlin {
         implementation(libs.kmp.viewmodel.koin)
         implementation(libs.kmp.viewmodel.koin.compose)
 
-        implementation("io.coil-kt.coil3:coil-core:3.0.0-alpha02")
-        implementation("io.coil-kt.coil3:coil-compose:3.0.0-alpha02")
-
-        // Import coil-network and an HTTP client engine.
-        implementation("io.coil-kt.coil3:coil-network:3.0.0-alpha02")
+        // TODO: use version catalog
+        val coil3Version = "3.0.0-alpha03"
+        implementation("io.coil-kt.coil3:coil-core:$coil3Version")
+        implementation("io.coil-kt.coil3:coil-compose:$coil3Version")
+        implementation("io.coil-kt.coil3:coil-network-ktor:$coil3Version")
 
         api(libs.napier)
         api(libs.coroutines.core)
