@@ -132,7 +132,6 @@ internal suspend fun <R : Parcelable> NavigationExecutor.collectAndHandleNavigat
 @Parcelize
 private object InitialValue : Parcelable
 
-@Suppress("CompositionLocalAllowlist")
 @InternalNavigationApi
 public val LocalNavigationExecutor: ProvidableCompositionLocal<NavigationExecutor> = staticCompositionLocalOf {
   throw IllegalStateException("Can't use NavEventNavigationHandler outside of a navigator NavHost")

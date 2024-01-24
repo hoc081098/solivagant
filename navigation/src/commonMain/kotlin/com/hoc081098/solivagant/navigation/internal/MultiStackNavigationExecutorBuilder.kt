@@ -15,18 +15,17 @@ import kotlinx.collections.immutable.ImmutableSet
 internal fun rememberNavigationExecutor(
   startRoot: NavRoot,
   destinations: ImmutableSet<NavDestination>,
-): MultiStackNavigationExecutor {
-  @Suppress("ViewModelInjection")
-  val viewModel = kmpViewModel(
+  viewModel: StoreViewModel = kmpViewModel(
     viewModelFactory {
       StoreViewModel(
         globalSavedStateHandle = createSavedStateHandle(),
       )
     },
   )
-  viewModel.setInputStartRoot(startRoot)
-
+): MultiStackNavigationExecutor {
   val lifecycleOwner = LocalLifecycleOwner.current
+
+  viewModel.setInputStartRoot(startRoot)
 
   val executor = remember(viewModel) {
     val contentDestinations = destinations.filterIsInstance<ContentDestination<*>>()
@@ -51,6 +50,7 @@ internal fun rememberNavigationExecutor(
       )
     }
 
+    @Suppress("ViewModelForwarding")
     MultiStackNavigationExecutor(
       stack = stack,
       viewModel = viewModel,

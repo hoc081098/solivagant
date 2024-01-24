@@ -800,4 +800,4 @@ Compose:
   ViewModelInjection:
     active: true
     # -- You can optionally add your own ViewModel factories here
-    viewModelFactories: hiltViewModel,potatoViewModel,koinViewModel,kmpViewModel
+    viewModelFactories: hiltViewModel,potatoViewModel,koinViewModel,kmpViewModel,koinKmpViewModel
