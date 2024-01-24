@@ -10,10 +10,10 @@ compose {
 }
 
 android {
-  namespace = "com.hoc081098.kmpviewmodelsample.android"
+  namespace = "com.hoc081098.solivagant.sample.android"
   compileSdk = libs.versions.sample.android.compile.get().toInt()
   defaultConfig {
-    applicationId = "com.hoc081098.kmpviewmodelsample.android"
+    applicationId = "com.hoc081098.solivagant.sample.android"
     minSdk = libs.versions.android.min.get().toInt()
     targetSdk = libs.versions.sample.android.target.get().toInt()
     versionCode = 1
@@ -42,6 +42,6 @@ android {
 }
 
 dependencies {
-  implementation(project(":sample:shared"))
+  implementation(project(":samples:sample:shared"))
   implementation(libs.androidx.activity.compose)
 }

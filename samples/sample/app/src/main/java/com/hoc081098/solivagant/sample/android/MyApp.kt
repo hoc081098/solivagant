@@ -1,6 +1,7 @@
-package com.hoc081098.kmpviewmodelsample.android
+package com.hoc081098.solivagant.sample.android
 
 import android.app.Application
+import com.hoc081098.sample.android.BuildConfig
 import com.hoc081098.solivagant.sample.setupNapier
 import com.hoc081098.solivagant.sample.startKoinCommon
 import org.koin.android.ext.koin.androidContext

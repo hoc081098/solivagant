@@ -25,7 +25,7 @@ include(":navigation-core")
 include(":khonshu-navigation-core")
 include(":lifecycle")
 include(":navigation")
-include(":sample:app", ":sample:shared")
+include(":samples:sample:app", ":samples:sample:shared")
 
 plugins {
   id("org.gradle.toolchains.foojay-resolver-convention") version("0.8.0")

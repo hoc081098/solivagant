@@ -4,12 +4,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".MyApp"
+        android:name="com.hoc081098.solivagant.sample.android.MyApp"
         android:allowBackup="false"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".StartActivity"
+            android:name="com.hoc081098.solivagant.sample.android.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

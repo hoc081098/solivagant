@@ -1,4 +1,4 @@
-package com.hoc081098.kmpviewmodelsample.android
+package com.hoc081098.solivagant.sample.android
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,7 +9,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.sample.SolivagantSampleApp
 import io.github.aakira.napier.Napier
 
-class StartActivity : ComponentActivity() {
+class MainActivity : ComponentActivity() {
   private var addedObserver = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
