@@ -114,7 +114,6 @@ private fun <T : BaseRoute> Show(
       return@DisposableEffect onDispose {}
     }
 
-    println(">>> $entry to resumed")
     entry.lifecycleOwner.maxLifecycle = Lifecycle.State.RESUMED
 
     onDispose {
@@ -122,7 +121,6 @@ private fun <T : BaseRoute> Show(
         return@onDispose
       }
       entry.lifecycleOwner.maxLifecycle = Lifecycle.State.CREATED
-      println(">>> $entry to created")
     }
   }
 

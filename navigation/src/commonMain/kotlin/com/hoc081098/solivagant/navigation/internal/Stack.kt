@@ -110,10 +110,8 @@ internal class Stack private constructor(
   }
 
   internal fun handleLifecycleEvent(event: Lifecycle.Event) {
-    println("$this handleLifecycleEvent $event")
     hostLifecycleState = event.targetState
     stack.forEach { it.lifecycleOwner.handleLifecycleEvent(event) }
-    stack.forEach { println(">>>  ${it.route} ${it.lifecycleOwner}") }
   }
 
   companion object {

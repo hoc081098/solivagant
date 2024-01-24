@@ -18,8 +18,6 @@ internal class StackEntryLifecycleOwner(
   private val _lifecycle = LifecycleRegistry()
   override val lifecycle: Lifecycle get() = _lifecycle
 
-
-
   internal fun handleLifecycleEvent(event: Lifecycle.Event) {
     hostLifecycleState = event.targetState
     updateState()

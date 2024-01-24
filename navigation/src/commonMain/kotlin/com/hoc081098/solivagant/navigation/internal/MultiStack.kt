@@ -189,7 +189,6 @@ internal class MultiStack(
   }
 
   fun handleLifecycleEvent(event: Lifecycle.Event) {
-    println("$this handleLifecycleEvent $event")
     hostLifecycleState = event.targetState
     currentStack.handleLifecycleEvent(event)
   }
