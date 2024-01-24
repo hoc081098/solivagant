@@ -8,15 +8,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
-import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 import com.hoc081098.solivagant.lifecycle.compose.LifecycleResumeEffect
+import com.hoc081098.solivagant.sample.common.OnLifecycleEventWithBuilder
+import io.github.aakira.napier.Napier
 
 @Composable
 internal fun StartScreen(
@@ -24,27 +23,15 @@ internal fun StartScreen(
   viewModel: StartViewModel = koinKmpViewModel(),
 ) {
   LifecycleResumeEffect(Unit) {
-    println(">>> LifecycleResumeEffect run")
-    onPauseOrDispose { println(">>> LifecycleResumeEffect onPauseOrDispose") }
+    Napier.d(">>> LifecycleResumeEffect run", tag = "[StartScreen]")
+
+    onPauseOrDispose {
+      Napier.d(">>> LifecycleResumeEffect onPauseOrDispose", tag = "[StartScreen]")
+    }
   }
 
-  LocalLifecycleOwner.current.let { owner ->
-    LaunchedEffect(owner) {
-      owner.lifecycle.currentStateFlow.collect {
-        println("🚀🚀🚀 Lifecycle STATE: $it")
-      }
-    }
-
-    DisposableEffect(owner) {
-      val cancellable = owner.lifecycle.subscribe { event ->
-        println("🚀🚀🚀 Lifecycle EVENT: $event")
-      }
-
-      onDispose {
-        cancellable.cancel()
-        println("🚀🚀🚀 Lifecycle EVENT disposed")
-      }
-    }
+  OnLifecycleEventWithBuilder {
+    onEach { event -> Napier.d("event=$event", tag = "[StartScreen]") }
   }
 
   Column(
