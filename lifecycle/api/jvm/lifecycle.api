@@ -70,6 +70,7 @@ public abstract interface class com/hoc081098/solivagant/lifecycle/LifecycleOwne
 public final class com/hoc081098/solivagant/lifecycle/LifecycleOwnerRegistryKt {
 	public static final fun LifecycleRegistry ()Lcom/hoc081098/solivagant/lifecycle/LifecycleRegistry;
 	public static final fun LifecycleRegistry (Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;)Lcom/hoc081098/solivagant/lifecycle/LifecycleRegistry;
+	public static final fun rememberLifecycleOwner (Lcom/hoc081098/solivagant/lifecycle/LifecycleRegistry;Landroidx/compose/runtime/Composer;I)Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;
 }
 
 public abstract interface class com/hoc081098/solivagant/lifecycle/LifecycleRegistry : com/hoc081098/solivagant/lifecycle/Lifecycle, com/hoc081098/solivagant/lifecycle/Lifecycle$Observer {
