@@ -46,6 +46,6 @@ fun main() {
 
 @Preview
 @Composable
-fun AppDesktopPreview() {
+private fun AppDesktopPreview() {
   SolivagantSampleApp()
 }
