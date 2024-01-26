@@ -7,9 +7,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.lifecycle.LifecycleRegistry
 import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
+import com.hoc081098.solivagant.lifecycle.rememberLifecycleOwner
 import com.hoc081098.solivagant.navigation.internal.LifecycleControllerEffect
 import com.hoc081098.solivagant.sample.common.OnLifecycleEventWithBuilder
 import io.github.aakira.napier.Napier
@@ -20,15 +20,11 @@ fun main() {
 
   application {
     val windowState = rememberWindowState()
-    val lifecycle = remember { LifecycleRegistry() }
-    val lifecycleOwner = remember(lifecycle) {
-      object : LifecycleOwner {
-        override val lifecycle get() = lifecycle
-      }
-    }
+    val lifecycleRegistry = remember { LifecycleRegistry() }
+    val lifecycleOwner = rememberLifecycleOwner(lifecycleRegistry)
 
     LifecycleControllerEffect(
-      lifecycleRegistry = lifecycle,
+      lifecycleRegistry = lifecycleRegistry,
       windowState = windowState,
     )
 

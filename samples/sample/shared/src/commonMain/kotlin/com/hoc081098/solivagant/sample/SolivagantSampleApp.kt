@@ -1,10 +1,14 @@
 package com.hoc081098.solivagant.sample
 
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
+import androidx.compose.material.Switch
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,7 +23,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import coil3.ImageLoader
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.setSingletonImageLoaderFactory
@@ -68,8 +74,12 @@ fun SolivagantSampleApp(
     )
   }
 
+  var isDarkTheme by remember { mutableStateOf(false) }
+
   KoinContext {
-    MyApplicationTheme {
+    MyApplicationTheme(
+      useDarkTheme = isDarkTheme,
+    ) {
       Surface(
         modifier = modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background,
@@ -99,6 +109,22 @@ fun SolivagantSampleApp(
                       tint = MaterialTheme.colorScheme.onBackground,
                     )
                   }
+                }
+              },
+              actions = {
+                Row(
+                  verticalAlignment = Alignment.CenterVertically,
+                ) {
+                  Switch(
+                    checked = isDarkTheme,
+                    onCheckedChange = { isDarkTheme = it },
+                  )
+
+                  Spacer(modifier = Modifier.width(8.dp))
+
+                  Text(
+                    text = "Dark theme",
+                  )
                 }
               },
             )
