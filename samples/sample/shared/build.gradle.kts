@@ -66,6 +66,8 @@ kotlin {
         implementation("io.coil-kt.coil3:coil-compose:$coil3Version")
         implementation("io.coil-kt.coil3:coil-network-ktor:$coil3Version")
 
+        implementation("io.ktor:ktor-client-core:2.3.7")
+
         api(libs.napier)
         api(libs.coroutines.core)
         api(libs.kotlinx.collections.immutable)

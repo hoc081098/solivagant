@@ -7,15 +7,15 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Icon
-import androidx.compose.material.Switch
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -30,6 +30,7 @@ import coil3.ImageLoader
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.setSingletonImageLoaderFactory
 import coil3.network.ktor.KtorNetworkFetcherFactory
+import coil3.util.DebugLogger
 import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.NavEventNavigator
 import com.hoc081098.solivagant.navigation.NavHost
@@ -61,6 +62,7 @@ fun SolivagantSampleApp(
   setSingletonImageLoaderFactory { context ->
     ImageLoader.Builder(context)
       .components { add(KtorNetworkFetcherFactory()) }
+      .logger(DebugLogger())
       .build()
   }
 
@@ -106,7 +108,6 @@ fun SolivagantSampleApp(
                     Icon(
                       imageVector = Icons.Default.ArrowBack,
                       contentDescription = "Back",
-                      tint = MaterialTheme.colorScheme.onBackground,
                     )
                   }
                 }
@@ -125,6 +126,8 @@ fun SolivagantSampleApp(
                   Text(
                     text = "Dark theme",
                   )
+
+                  Spacer(modifier = Modifier.width(8.dp))
                 }
               },
             )
