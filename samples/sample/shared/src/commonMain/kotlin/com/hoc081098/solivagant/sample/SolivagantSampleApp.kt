@@ -96,6 +96,7 @@ fun SolivagantSampleApp(
                     Icon(
                       imageVector = Icons.Default.ArrowBack,
                       contentDescription = "Back",
+                      tint = MaterialTheme.colorScheme.onBackground,
                     )
                   }
                 }

@@ -3,166 +3,153 @@
 package com.hoc081098.solivagant.sample.common
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Shapes
-import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
-internal val Blue10 = Color(0xFF001F28)
-internal val Blue20 = Color(0xFF003544)
-internal val Blue30 = Color(0xFF004D61)
-internal val Blue40 = Color(0xFF006780)
-internal val Blue80 = Color(0xFF5DD5FC)
-internal val Blue90 = Color(0xFFB8EAFF)
-internal val Blue95 = Color(0xFFDDF4FF)
-internal val DarkGreen10 = Color(0xFF0D1F12)
-internal val DarkGreen20 = Color(0xFF223526)
-internal val DarkGreen30 = Color(0xFF394B3C)
-internal val DarkGreen40 = Color(0xFF4F6352)
-internal val DarkGreen80 = Color(0xFFB7CCB8)
-internal val DarkGreen90 = Color(0xFFD3E8D3)
-internal val DarkGreenGray10 = Color(0xFF1A1C1A)
-internal val DarkGreenGray20 = Color(0xFF2F312E)
-internal val DarkGreenGray90 = Color(0xFFE2E3DE)
-internal val DarkGreenGray95 = Color(0xFFF0F1EC)
-internal val DarkGreenGray99 = Color(0xFFFBFDF7)
-internal val DarkPurpleGray10 = Color(0xFF201A1B)
-internal val DarkPurpleGray20 = Color(0xFF362F30)
-internal val DarkPurpleGray90 = Color(0xFFECDFE0)
-internal val DarkPurpleGray95 = Color(0xFFFAEEEF)
-internal val DarkPurpleGray99 = Color(0xFFFCFCFC)
-internal val Green10 = Color(0xFF00210B)
-internal val Green20 = Color(0xFF003919)
-internal val Green30 = Color(0xFF005227)
-internal val Green40 = Color(0xFF006D36)
-internal val Green80 = Color(0xFF0EE37C)
-internal val Green90 = Color(0xFF5AFF9D)
-internal val GreenGray30 = Color(0xFF414941)
-internal val GreenGray50 = Color(0xFF727971)
-internal val GreenGray60 = Color(0xFF8B938A)
-internal val GreenGray80 = Color(0xFFC1C9BF)
-internal val GreenGray90 = Color(0xFFDDE5DB)
-internal val Orange10 = Color(0xFF380D00)
-internal val Orange20 = Color(0xFF5B1A00)
-internal val Orange30 = Color(0xFF812800)
-internal val Orange40 = Color(0xFFA23F16)
-internal val Orange80 = Color(0xFFFFB59B)
-internal val Orange90 = Color(0xFFFFDBCF)
-internal val Orange95 = Color(0xFFFFEDE8)
-internal val Purple10 = Color(0xFF36003C)
-internal val Purple20 = Color(0xFF560A5D)
-internal val Purple30 = Color(0xFF702776)
-internal val Purple40 = Color(0xFF8B418F)
-internal val Purple80 = Color(0xFFFFA9FE)
-internal val Purple90 = Color(0xFFFFD6FA)
-internal val Purple95 = Color(0xFFFFEBFA)
-internal val PurpleGray30 = Color(0xFF4D444C)
-internal val PurpleGray50 = Color(0xFF7F747C)
-internal val PurpleGray60 = Color(0xFF998D96)
-internal val PurpleGray80 = Color(0xFFD0C3CC)
-internal val PurpleGray90 = Color(0xFFEDDEE8)
-internal val Red10 = Color(0xFF410002)
-internal val Red20 = Color(0xFF690005)
-internal val Red30 = Color(0xFF93000A)
-internal val Red40 = Color(0xFFBA1A1A)
-internal val Red80 = Color(0xFFFFB4AB)
-internal val Red90 = Color(0xFFFFDAD6)
-internal val Teal10 = Color(0xFF001F26)
-internal val Teal20 = Color(0xFF02363F)
-internal val Teal30 = Color(0xFF214D56)
-internal val Teal40 = Color(0xFF3A656F)
-internal val Teal80 = Color(0xFFA2CED9)
-internal val Teal90 = Color(0xFFBEEAF6)
+val md_theme_light_primary = Color(0xFF6750A4)
+val md_theme_light_onPrimary = Color(0xFFFFFFFF)
+val md_theme_light_primaryContainer = Color(0xFFEADDFF)
+val md_theme_light_onPrimaryContainer = Color(0xFF21005D)
+val md_theme_light_secondary = Color(0xFF625B71)
+val md_theme_light_onSecondary = Color(0xFFFFFFFF)
+val md_theme_light_secondaryContainer = Color(0xFFE8DEF8)
+val md_theme_light_onSecondaryContainer = Color(0xFF1D192B)
+val md_theme_light_tertiary = Color(0xFF7D5260)
+val md_theme_light_onTertiary = Color(0xFFFFFFFF)
+val md_theme_light_tertiaryContainer = Color(0xFFFFD8E4)
+val md_theme_light_onTertiaryContainer = Color(0xFF31111D)
+val md_theme_light_error = Color(0xFFB3261E)
+val md_theme_light_onError = Color(0xFFFFFFFF)
+val md_theme_light_errorContainer = Color(0xFFF9DEDC)
+val md_theme_light_onErrorContainer = Color(0xFF410E0B)
+val md_theme_light_outline = Color(0xFF79747E)
+val md_theme_light_background = Color(0xFFFFFBFE)
+val md_theme_light_onBackground = Color(0xFF1C1B1F)
+val md_theme_light_surface = Color(0xFFFFFBFE)
+val md_theme_light_onSurface = Color(0xFF1C1B1F)
+val md_theme_light_surfaceVariant = Color(0xFFE7E0EC)
+val md_theme_light_onSurfaceVariant = Color(0xFF49454F)
+val md_theme_light_inverseSurface = Color(0xFF313033)
+val md_theme_light_inverseOnSurface = Color(0xFFF4EFF4)
+val md_theme_light_inversePrimary = Color(0xFFD0BCFF)
+val md_theme_light_shadow = Color(0xFF000000)
+val md_theme_light_surfaceTint = Color(0xFF6750A4)
+val md_theme_light_outlineVariant = Color(0xFFCAC4D0)
+val md_theme_light_scrim = Color(0xFF000000)
+
+val md_theme_dark_primary = Color(0xFFD0BCFF)
+val md_theme_dark_onPrimary = Color(0xFF381E72)
+val md_theme_dark_primaryContainer = Color(0xFF4F378B)
+val md_theme_dark_onPrimaryContainer = Color(0xFFEADDFF)
+val md_theme_dark_secondary = Color(0xFFCCC2DC)
+val md_theme_dark_onSecondary = Color(0xFF332D41)
+val md_theme_dark_secondaryContainer = Color(0xFF4A4458)
+val md_theme_dark_onSecondaryContainer = Color(0xFFE8DEF8)
+val md_theme_dark_tertiary = Color(0xFFEFB8C8)
+val md_theme_dark_onTertiary = Color(0xFF492532)
+val md_theme_dark_tertiaryContainer = Color(0xFF633B48)
+val md_theme_dark_onTertiaryContainer = Color(0xFFFFD8E4)
+val md_theme_dark_error = Color(0xFFF2B8B5)
+val md_theme_dark_onError = Color(0xFF601410)
+val md_theme_dark_errorContainer = Color(0xFF8C1D18)
+val md_theme_dark_onErrorContainer = Color(0xFFF9DEDC)
+val md_theme_dark_outline = Color(0xFF938F99)
+val md_theme_dark_background = Color(0xFF1C1B1F)
+val md_theme_dark_onBackground = Color(0xFFE6E1E5)
+val md_theme_dark_surface = Color(0xFF1C1B1F)
+val md_theme_dark_onSurface = Color(0xFFE6E1E5)
+val md_theme_dark_surfaceVariant = Color(0xFF49454F)
+val md_theme_dark_onSurfaceVariant = Color(0xFFCAC4D0)
+val md_theme_dark_inverseSurface = Color(0xFFE6E1E5)
+val md_theme_dark_inverseOnSurface = Color(0xFF313033)
+val md_theme_dark_inversePrimary = Color(0xFF6750A4)
+val md_theme_dark_shadow = Color(0xFF000000)
+val md_theme_dark_surfaceTint = Color(0xFFD0BCFF)
+val md_theme_dark_outlineVariant = Color(0xFF49454F)
+val md_theme_dark_scrim = Color(0xFF000000)
+val seed = Color(0xFF6750A4)
+
+private val LightColors = lightColorScheme(
+  primary = md_theme_light_primary,
+  onPrimary = md_theme_light_onPrimary,
+  primaryContainer = md_theme_light_primaryContainer,
+  onPrimaryContainer = md_theme_light_onPrimaryContainer,
+  secondary = md_theme_light_secondary,
+  onSecondary = md_theme_light_onSecondary,
+  secondaryContainer = md_theme_light_secondaryContainer,
+  onSecondaryContainer = md_theme_light_onSecondaryContainer,
+  tertiary = md_theme_light_tertiary,
+  onTertiary = md_theme_light_onTertiary,
+  tertiaryContainer = md_theme_light_tertiaryContainer,
+  onTertiaryContainer = md_theme_light_onTertiaryContainer,
+  error = md_theme_light_error,
+  onError = md_theme_light_onError,
+  errorContainer = md_theme_light_errorContainer,
+  onErrorContainer = md_theme_light_onErrorContainer,
+  outline = md_theme_light_outline,
+  background = md_theme_light_background,
+  onBackground = md_theme_light_onBackground,
+  surface = md_theme_light_surface,
+  onSurface = md_theme_light_onSurface,
+  surfaceVariant = md_theme_light_surfaceVariant,
+  onSurfaceVariant = md_theme_light_onSurfaceVariant,
+  inverseSurface = md_theme_light_inverseSurface,
+  inverseOnSurface = md_theme_light_inverseOnSurface,
+  inversePrimary = md_theme_light_inversePrimary,
+  surfaceTint = md_theme_light_surfaceTint,
+  outlineVariant = md_theme_light_outlineVariant,
+  scrim = md_theme_light_scrim,
+)
+
+private val DarkColors = darkColorScheme(
+  primary = md_theme_dark_primary,
+  onPrimary = md_theme_dark_onPrimary,
+  primaryContainer = md_theme_dark_primaryContainer,
+  onPrimaryContainer = md_theme_dark_onPrimaryContainer,
+  secondary = md_theme_dark_secondary,
+  onSecondary = md_theme_dark_onSecondary,
+  secondaryContainer = md_theme_dark_secondaryContainer,
+  onSecondaryContainer = md_theme_dark_onSecondaryContainer,
+  tertiary = md_theme_dark_tertiary,
+  onTertiary = md_theme_dark_onTertiary,
+  tertiaryContainer = md_theme_dark_tertiaryContainer,
+  onTertiaryContainer = md_theme_dark_onTertiaryContainer,
+  error = md_theme_dark_error,
+  onError = md_theme_dark_onError,
+  errorContainer = md_theme_dark_errorContainer,
+  onErrorContainer = md_theme_dark_onErrorContainer,
+  outline = md_theme_dark_outline,
+  background = md_theme_dark_background,
+  onBackground = md_theme_dark_onBackground,
+  surface = md_theme_dark_surface,
+  onSurface = md_theme_dark_onSurface,
+  surfaceVariant = md_theme_dark_surfaceVariant,
+  onSurfaceVariant = md_theme_dark_onSurfaceVariant,
+  inverseSurface = md_theme_dark_inverseSurface,
+  inverseOnSurface = md_theme_dark_inverseOnSurface,
+  inversePrimary = md_theme_dark_inversePrimary,
+  surfaceTint = md_theme_dark_surfaceTint,
+  outlineVariant = md_theme_dark_outlineVariant,
+  scrim = md_theme_dark_scrim,
+)
 
 @Suppress("LongMethod")
 @Composable
 fun MyApplicationTheme(
-  darkTheme: Boolean = isSystemInDarkTheme(),
+  useDarkTheme: Boolean = isSystemInDarkTheme(),
   content: @Composable () -> Unit,
 ) {
-  val colorScheme = if (darkTheme) {
-    darkColorScheme(
-      primary = Purple80,
-      onPrimary = Purple20,
-      primaryContainer = Purple30,
-      onPrimaryContainer = Purple90,
-      secondary = Orange80,
-      onSecondary = Orange20,
-      secondaryContainer = Orange30,
-      onSecondaryContainer = Orange90,
-      tertiary = Blue80,
-      onTertiary = Blue20,
-      tertiaryContainer = Blue30,
-      onTertiaryContainer = Blue90,
-      error = Red80,
-      onError = Red20,
-      errorContainer = Red30,
-      onErrorContainer = Red90,
-      background = DarkPurpleGray10,
-      onBackground = DarkPurpleGray90,
-      surface = DarkPurpleGray10,
-      onSurface = DarkPurpleGray90,
-      surfaceVariant = PurpleGray30,
-      onSurfaceVariant = PurpleGray80,
-      inverseSurface = DarkPurpleGray90,
-      inverseOnSurface = DarkPurpleGray10,
-      outline = PurpleGray60,
-    )
+  val colors = if (!useDarkTheme) {
+    LightColors
   } else {
-    lightColorScheme(
-      primary = Purple40,
-      onPrimary = Color.White,
-      primaryContainer = Purple90,
-      onPrimaryContainer = Purple10,
-      secondary = Orange40,
-      onSecondary = Color.White,
-      secondaryContainer = Orange90,
-      onSecondaryContainer = Orange10,
-      tertiary = Blue40,
-      onTertiary = Color.White,
-      tertiaryContainer = Blue90,
-      onTertiaryContainer = Blue10,
-      error = Red40,
-      onError = Color.White,
-      errorContainer = Red90,
-      onErrorContainer = Red10,
-      background = DarkPurpleGray99,
-      onBackground = DarkPurpleGray10,
-      surface = DarkPurpleGray99,
-      onSurface = DarkPurpleGray10,
-      surfaceVariant = PurpleGray90,
-      onSurfaceVariant = PurpleGray30,
-      inverseSurface = DarkPurpleGray20,
-      inverseOnSurface = DarkPurpleGray95,
-      outline = PurpleGray50,
-    )
+    DarkColors
   }
-  val typography = Typography(
-    bodyLarge = TextStyle(
-      fontFamily = FontFamily.Default,
-      fontWeight = FontWeight.Normal,
-      fontSize = 16.sp,
-    ),
-  )
-  val shapes = Shapes(
-    small = RoundedCornerShape(4.dp),
-    medium = RoundedCornerShape(4.dp),
-    large = RoundedCornerShape(0.dp),
-  )
 
   MaterialTheme(
-    colorScheme = colorScheme,
-    typography = typography,
-    shapes = shapes,
+    colorScheme = colors,
     content = content,
   )
 }
