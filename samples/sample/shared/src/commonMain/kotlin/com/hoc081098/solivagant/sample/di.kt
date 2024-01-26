@@ -3,8 +3,11 @@ package com.hoc081098.solivagant.sample
 import com.hoc081098.solivagant.navigation.NavEventNavigator
 import com.hoc081098.solivagant.sample.common.SingleEventChannel
 import com.hoc081098.solivagant.sample.product_detail.GetProductById
+import com.hoc081098.solivagant.sample.product_detail.ProductDetailViewModel
 import com.hoc081098.solivagant.sample.products.GetProducts
+import com.hoc081098.solivagant.sample.products.ProductsViewModel
 import com.hoc081098.solivagant.sample.search_products.SearchProducts
+import com.hoc081098.solivagant.sample.search_products.SearchProductsViewModel
 import com.hoc081098.solivagant.sample.start.StartViewModel
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -21,6 +24,10 @@ private val CommonModule = module {
 
   factory { SingleEventChannel<Any?>() }
   singleOf(::NavEventNavigator)
+
+  factoryOf(::ProductsViewModel)
+  factoryOf(::SearchProductsViewModel)
+  factoryOf(::ProductDetailViewModel)
 }
 
 internal expect val PlatformModule: Module
