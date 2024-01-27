@@ -4,6 +4,5 @@ import androidx.compose.runtime.Stable
 
 @Stable
 actual class PlatformToastManager actual constructor() {
-  actual fun showToast(message: String) {
-  }
+  actual fun showToast(message: String) = Unit
 }
