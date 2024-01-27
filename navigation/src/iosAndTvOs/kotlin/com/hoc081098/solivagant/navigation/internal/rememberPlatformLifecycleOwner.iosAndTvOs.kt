@@ -51,13 +51,18 @@ private class AppLifecycleOwner : LifecycleOwner {
     NSOperationQueue.mainQueue.addOperationWithBlock {
       if (lifecycle.currentState == Lifecycle.State.INITIALIZED) {
         when (UIApplication.sharedApplication.applicationState) {
-          UIApplicationState.UIApplicationStateActive ->
+          UIApplicationState.UIApplicationStateActive -> {
             // The app is running in the foreground and currently receiving events.
-            lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_RESUME)
-
-          UIApplicationState.UIApplicationStateInactive ->
-            // The app is running in the foreground but isn’t receiving events.
+            lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_CREATE)
             lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_START)
+            lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_RESUME)
+          }
+
+          UIApplicationState.UIApplicationStateInactive -> {
+            // The app is running in the foreground but isn’t receiving events.
+            lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_CREATE)
+            lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_START)
+          }
 
           UIApplicationState.UIApplicationStateBackground ->
             // The app is running in the background.
@@ -69,6 +74,8 @@ private class AppLifecycleOwner : LifecycleOwner {
     }
 
     lifecycleRegistry.subscribe { event ->
+      println("[main] [íosAndTvOS] Lifecycle event: $event")
+
       if (event == Lifecycle.Event.ON_DESTROY) {
         removeObserver(willEnterForegroundObserver)
         removeObserver(didBecomeActiveObserver)
