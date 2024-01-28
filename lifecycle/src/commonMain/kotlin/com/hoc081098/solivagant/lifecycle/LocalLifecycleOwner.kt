@@ -40,7 +40,6 @@ public object LocalLifecycleOwner {
     LocalLifecycleOwner.providesDefault(lifecycleOwner)
 }
 
-
 /**
  * Provides [LifecycleOwner] as [LocalLifecycleOwner] to the [content].
  */
@@ -54,4 +53,3 @@ public fun LifecycleOwnerProvider(
     content = content,
   )
 }
-

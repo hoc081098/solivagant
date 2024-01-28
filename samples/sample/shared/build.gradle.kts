@@ -111,6 +111,7 @@ kotlin {
         api(compose.preview)
 
         implementation(libs.coroutines.swing)
+        implementation("io.ktor:ktor-client-java:2.3.7")
       }
     }
     val desktopTest by getting
@@ -118,7 +119,11 @@ kotlin {
     val iosX64Main by getting
     val iosArm64Main by getting
     val iosSimulatorArm64Main by getting
-    iosMain {}
+    iosMain {
+      dependencies {
+        implementation("io.ktor:ktor-client-darwin:2.3.7")
+      }
+    }
 
     val iosX64Test by getting
     val iosArm64Test by getting
