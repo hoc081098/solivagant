@@ -94,7 +94,7 @@ fun SolivagantSampleApp(
               title = {
                 Text(
                   text = when (currentRoute) {
-                    StartScreenRoute -> "Solivagant Sample"
+                    StartScreenRoute -> "Solivagant sample"
                     is ProductsScreenRoute -> "Products"
                     is SearchProductScreenRoute -> "Search products"
                     is ProductDetailScreenRoute -> "Product detail"

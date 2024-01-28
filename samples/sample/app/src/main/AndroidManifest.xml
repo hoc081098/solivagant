@@ -6,6 +6,7 @@
     <application
         android:name="com.hoc081098.solivagant.sample.android.MyApp"
         android:allowBackup="false"
+        android:label="Solivagant sample"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity

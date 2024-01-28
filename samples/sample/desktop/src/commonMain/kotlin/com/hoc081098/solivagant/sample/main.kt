@@ -29,7 +29,7 @@ fun main() {
 
     Window(
       onCloseRequest = ::exitApplication,
-      title = "Solivagant Sample",
+      title = "Solivagant sample",
       state = windowState,
     ) {
       LifecycleOwnerProvider(lifecycleOwner) {
