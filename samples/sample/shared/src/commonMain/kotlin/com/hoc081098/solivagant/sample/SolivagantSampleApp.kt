@@ -93,10 +93,10 @@ fun SolivagantSampleApp(
                 Text(
                   text = when (currentRoute) {
                     StartScreenRoute -> "Solivagant Sample"
-                    is ProductsScreenRoute -> "Products screen"
-                    is SearchProductScreenRoute -> "Search products screen"
-                    is ProductDetailScreenRoute -> "Product detail screen"
-                    else -> "Unknown screen"
+                    is ProductsScreenRoute -> "Products"
+                    is SearchProductScreenRoute -> "Search products"
+                    is ProductDetailScreenRoute -> "Product detail"
+                    else -> "Unknown"
                   },
                 )
               },
