@@ -36,7 +36,7 @@ import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.NavDestination
 import com.hoc081098.solivagant.navigation.NavEventNavigator
 import com.hoc081098.solivagant.navigation.NavHost
-import com.hoc081098.solivagant.navigation.NavRoute
+import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.sample.common.MyApplicationTheme
 import com.hoc081098.solivagant.sample.product_detail.ProductDetailScreenDestination
 import com.hoc081098.solivagant.sample.product_detail.ProductDetailScreenRoute
@@ -103,7 +103,7 @@ fun SolivagantSampleApp(
                 )
               },
               navigationIcon = {
-                if (currentRoute is NavRoute) {
+                if (currentRoute !is NavRoot) {
                   IconButton(
                     onClick = remember { navigator::navigateBack },
                   ) {
