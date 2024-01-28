@@ -19,6 +19,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +33,7 @@ import coil3.compose.setSingletonImageLoaderFactory
 import coil3.network.ktor.KtorNetworkFetcherFactory
 import coil3.util.DebugLogger
 import com.hoc081098.solivagant.navigation.BaseRoute
+import com.hoc081098.solivagant.navigation.NavDestination
 import com.hoc081098.solivagant.navigation.NavEventNavigator
 import com.hoc081098.solivagant.navigation.NavHost
 import com.hoc081098.solivagant.navigation.NavRoute
@@ -44,9 +46,18 @@ import com.hoc081098.solivagant.sample.search_products.SearchProductScreenDestin
 import com.hoc081098.solivagant.sample.search_products.SearchProductScreenRoute
 import com.hoc081098.solivagant.sample.start.StartScreenDestination
 import com.hoc081098.solivagant.sample.start.StartScreenRoute
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
+
+@Stable
+private val AllDestinations: ImmutableSet<NavDestination> = persistentSetOf(
+  StartScreenDestination,
+  ProductsScreenDestination,
+  SearchProductScreenDestination,
+  ProductDetailScreenDestination,
+)
 
 @OptIn(
   ExperimentalLayoutApi::class,
@@ -67,15 +78,6 @@ fun SolivagantSampleApp(
   }
 
   var currentRoute: BaseRoute? by remember { mutableStateOf(null) }
-  val destinations = remember {
-    persistentSetOf(
-      StartScreenDestination,
-      ProductsScreenDestination,
-      SearchProductScreenDestination,
-      ProductDetailScreenDestination,
-    )
-  }
-
   var isDarkTheme by remember { mutableStateOf(false) }
 
   KoinContext {
@@ -120,13 +122,8 @@ fun SolivagantSampleApp(
                     checked = isDarkTheme,
                     onCheckedChange = { isDarkTheme = it },
                   )
-
                   Spacer(modifier = Modifier.width(8.dp))
-
-                  Text(
-                    text = "Dark theme",
-                  )
-
+                  Text(text = "Dark theme")
                   Spacer(modifier = Modifier.width(8.dp))
                 }
               },
@@ -139,7 +136,7 @@ fun SolivagantSampleApp(
               .consumeWindowInsets(innerPadding)
               .fillMaxSize(),
             startRoute = StartScreenRoute,
-            destinations = destinations,
+            destinations = AllDestinations,
             navEventNavigator = navigator,
             destinationChangedCallback = { currentRoute = it },
           )
