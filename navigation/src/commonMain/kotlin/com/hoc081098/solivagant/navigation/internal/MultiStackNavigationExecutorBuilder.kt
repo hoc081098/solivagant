@@ -21,7 +21,7 @@ internal fun rememberNavigationExecutor(
         globalSavedStateHandle = createSavedStateHandle(),
       )
     },
-  )
+  ),
 ): MultiStackNavigationExecutor {
   val lifecycleOwner = LocalLifecycleOwner.current
 

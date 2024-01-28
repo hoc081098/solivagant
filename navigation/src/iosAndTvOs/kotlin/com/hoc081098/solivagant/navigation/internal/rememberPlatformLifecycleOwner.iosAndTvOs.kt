@@ -18,46 +18,51 @@ import platform.UIKit.UIApplicationWillResignActiveNotification
 import platform.UIKit.UIApplicationWillTerminateNotification
 import platform.darwin.NSObjectProtocol
 
-private class AppLifecycleOwner : LifecycleOwner {
+private class AppLifecycleOwnerImpl : LifecycleOwner {
   private val lifecycleRegistry = LifecycleRegistry()
   override val lifecycle: Lifecycle get() = lifecycleRegistry
 
   // A notification that posts shortly before an app leaves the background state on its way to becoming the active app.
   private val willEnterForegroundObserver = addObserver(UIApplicationWillEnterForegroundNotification) {
-    lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_START)
+    moveToStarted(lifecycleRegistry)
   }
 
   // A notification that posts when the app becomes active.
   private val didBecomeActiveObserver = addObserver(UIApplicationDidBecomeActiveNotification) {
-    lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_RESUME)
+    moveToResumed(lifecycleRegistry)
   }
 
   // A notification that posts when the app is no longer active and loses focus.
   private val willResignActiveObserver = addObserver(UIApplicationWillResignActiveNotification) {
-    lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_PAUSE)
+    moveToPaused(lifecycleRegistry)
   }
 
   // A notification that posts when the app enters the background.
   private val didEnterBackgroundObserver = addObserver(UIApplicationDidEnterBackgroundNotification) {
-    lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_STOP)
+    moveToStopped(lifecycleRegistry)
   }
 
   // Tells the delegate when the app is about to terminate.
   private val willTerminateObserver = addObserver(UIApplicationWillTerminateNotification) {
-    lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_DESTROY)
+    moveToDestroyed(lifecycleRegistry)
   }
 
   init {
     NSOperationQueue.mainQueue.addOperationWithBlock {
       if (lifecycle.currentState == Lifecycle.State.INITIALIZED) {
         when (UIApplication.sharedApplication.applicationState) {
-          UIApplicationState.UIApplicationStateActive ->
+          UIApplicationState.UIApplicationStateActive -> {
             // The app is running in the foreground and currently receiving events.
-            lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_RESUME)
-
-          UIApplicationState.UIApplicationStateInactive ->
-            // The app is running in the foreground but isn’t receiving events.
+            lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_CREATE)
             lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_START)
+            lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_RESUME)
+          }
+
+          UIApplicationState.UIApplicationStateInactive -> {
+            // The app is running in the foreground but isn’t receiving events.
+            lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_CREATE)
+            lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_START)
+          }
 
           UIApplicationState.UIApplicationStateBackground ->
             // The app is running in the background.
@@ -91,7 +96,135 @@ private fun addObserver(name: NSNotificationName, block: (NSNotification?) -> Un
 private fun removeObserver(observer: NSObjectProtocol) =
   NSNotificationCenter.defaultCenter.removeObserver(observer)
 
+private fun moveToStarted(lifecycleRegistry: LifecycleRegistry) {
+  when (lifecycleRegistry.currentState) {
+    Lifecycle.State.INITIALIZED -> {
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_CREATE)
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_START)
+    }
+
+    Lifecycle.State.CREATED -> {
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_START)
+    }
+
+    Lifecycle.State.STARTED -> {
+      // Do nothing
+    }
+
+    Lifecycle.State.RESUMED, Lifecycle.State.DESTROYED -> {
+      error("Cannot move to STARTED state from RESUMED nor DESTROYED state")
+    }
+  }
+}
+
+private fun moveToResumed(lifecycleRegistry: LifecycleRegistry) {
+  when (lifecycleRegistry.currentState) {
+    Lifecycle.State.INITIALIZED -> {
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_CREATE)
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_START)
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_RESUME)
+    }
+
+    Lifecycle.State.CREATED -> {
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_START)
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_RESUME)
+    }
+
+    Lifecycle.State.STARTED -> {
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_RESUME)
+    }
+
+    Lifecycle.State.RESUMED -> {
+      // Do nothing
+    }
+
+    Lifecycle.State.DESTROYED -> {
+      error("Cannot move to RESUMED state from DESTROYED state")
+    }
+  }
+}
+
+private fun moveToPaused(lifecycleRegistry: LifecycleRegistry) {
+  when (lifecycleRegistry.currentState) {
+    Lifecycle.State.INITIALIZED -> {
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_CREATE)
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_START)
+    }
+
+    Lifecycle.State.CREATED -> {
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_START)
+    }
+
+    Lifecycle.State.STARTED -> {
+      // Do nothing
+    }
+
+    Lifecycle.State.RESUMED -> {
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_PAUSE)
+    }
+
+    Lifecycle.State.DESTROYED -> {
+      error("Cannot move to PAUSED state from DESTROYED state")
+    }
+  }
+}
+
+private fun moveToStopped(lifecycleRegistry: LifecycleRegistry) {
+  when (lifecycleRegistry.currentState) {
+    Lifecycle.State.INITIALIZED -> {
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_CREATE)
+    }
+
+    Lifecycle.State.CREATED -> {
+      // Do nothing
+    }
+
+    Lifecycle.State.STARTED -> {
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_STOP)
+    }
+
+    Lifecycle.State.RESUMED -> {
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_PAUSE)
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_STOP)
+    }
+
+    Lifecycle.State.DESTROYED -> {
+      error("Cannot move to STOPPED state from DESTROYED state")
+    }
+  }
+}
+
+private fun moveToDestroyed(lifecycleRegistry: LifecycleRegistry) {
+  when (lifecycleRegistry.currentState) {
+    Lifecycle.State.INITIALIZED -> {
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_CREATE)
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_DESTROY)
+    }
+
+    Lifecycle.State.CREATED -> {
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_DESTROY)
+    }
+
+    Lifecycle.State.STARTED -> {
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_STOP)
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_DESTROY)
+    }
+
+    Lifecycle.State.RESUMED -> {
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_PAUSE)
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_STOP)
+      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_DESTROY)
+    }
+
+    Lifecycle.State.DESTROYED ->
+      Unit
+  }
+}
+
+@Suppress("FunctionName") // Factory function
+public fun AppLifecycleOwner(): LifecycleOwner = AppLifecycleOwnerImpl()
+
 @Composable
 internal actual fun rememberPlatformLifecycleOwner(): LifecycleOwner {
-  return remember { AppLifecycleOwner() }
+  return remember { AppLifecycleOwnerImpl() }
 }

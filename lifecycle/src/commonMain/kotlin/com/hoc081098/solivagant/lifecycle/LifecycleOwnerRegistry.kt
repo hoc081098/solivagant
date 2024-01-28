@@ -16,6 +16,8 @@
 
 package com.hoc081098.solivagant.lifecycle
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import com.hoc081098.solivagant.lifecycle.Lifecycle.Cancellable
 import com.hoc081098.solivagant.lifecycle.Lifecycle.Event
 import com.hoc081098.solivagant.lifecycle.Lifecycle.Observer
@@ -43,6 +45,10 @@ public fun LifecycleRegistry(): LifecycleRegistry = LifecycleRegistry(initialSta
 public fun LifecycleRegistry(
   initialState: State,
 ): LifecycleRegistry = LifecycleRegistryImpl(initialState)
+
+@Composable
+public fun rememberLifecycleOwner(lifecycleRegistry: LifecycleRegistry): LifecycleOwner =
+  remember(lifecycleRegistry) { LifecycleRegistryOwner(lifecycleRegistry) }
 
 /**
  * Possible transitions:
@@ -151,4 +157,10 @@ private class LifecycleRegistryImpl(initialState: State) : LifecycleRegistry {
   }
 
   override fun toString(): String = "LifecycleRegistryImpl(_state=$_state)"
+}
+
+private class LifecycleRegistryOwner(
+  private val lifecycleRegistry: LifecycleRegistry,
+) : LifecycleOwner {
+  override val lifecycle get() = lifecycleRegistry
 }

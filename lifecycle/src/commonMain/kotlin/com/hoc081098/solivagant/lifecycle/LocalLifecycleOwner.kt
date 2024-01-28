@@ -39,3 +39,17 @@ public object LocalLifecycleOwner {
   public infix fun providesDefault(lifecycleOwner: LifecycleOwner): ProvidedValue<LifecycleOwner> =
     LocalLifecycleOwner.providesDefault(lifecycleOwner)
 }
+
+/**
+ * Provides [LifecycleOwner] as [LocalLifecycleOwner] to the [content].
+ */
+@Composable
+public fun LifecycleOwnerProvider(
+  lifecycleOwner: LifecycleOwner,
+  content: @Composable () -> Unit,
+) {
+  CompositionLocalProvider(
+    LocalLifecycleOwner provides lifecycleOwner,
+    content = content,
+  )
+}
