@@ -74,8 +74,6 @@ private class AppLifecycleOwnerImpl : LifecycleOwner {
     }
 
     lifecycleRegistry.subscribe { event ->
-      println("[main] [íosAndTvOS] Lifecycle event: $event")
-
       if (event == Lifecycle.Event.ON_DESTROY) {
         removeObserver(willEnterForegroundObserver)
         removeObserver(didBecomeActiveObserver)
