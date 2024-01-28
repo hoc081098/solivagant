@@ -67,13 +67,11 @@ kotlin {
         implementation(libs.kmp.viewmodel.koin)
         implementation(libs.kmp.viewmodel.koin.compose)
 
-        // TODO: use version catalog
-        val coil3Version = "3.0.0-alpha03"
-        implementation("io.coil-kt.coil3:coil-core:$coil3Version")
-        implementation("io.coil-kt.coil3:coil-compose:$coil3Version")
-        implementation("io.coil-kt.coil3:coil-network-ktor:$coil3Version")
+        implementation(libs.coil.core)
+        implementation(libs.coil.compose)
+        implementation(libs.coil.network.ktor)
 
-        implementation("io.ktor:ktor-client-core:2.3.7")
+        implementation(libs.ktor.client.core)
 
         api(libs.napier)
         api(libs.coroutines.core)
@@ -101,7 +99,7 @@ kotlin {
         implementation(libs.androidx.lifecycle.runtime.compose)
 
         implementation(libs.coroutines.android)
-        implementation("io.ktor:ktor-client-okhttp:2.3.7")
+        implementation(libs.ktor.client.okhttp)
       }
     }
     val androidUnitTest by getting
@@ -111,7 +109,7 @@ kotlin {
         api(compose.preview)
 
         implementation(libs.coroutines.swing)
-        implementation("io.ktor:ktor-client-java:2.3.7")
+        implementation(libs.ktor.client.java)
       }
     }
     val desktopTest by getting
@@ -121,7 +119,7 @@ kotlin {
     val iosSimulatorArm64Main by getting
     iosMain {
       dependencies {
-        implementation("io.ktor:ktor-client-darwin:2.3.7")
+        implementation(libs.ktor.client.darwin)
       }
     }
 

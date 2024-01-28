@@ -31,7 +31,6 @@ flowExt = "0.7.4"
 koin = "3.5.3"
 koin-compose = "1.1.2"
 koin-androidx-compose = "3.5.3"
-coil = "3.0.0-alpha03"
 compose-rules-detekt = "0.3.10"
 
 androidx-lifecycle = "2.7.0"
@@ -41,6 +40,9 @@ androidx-appcompat = "1.6.1"
 androidx-core-ktx = "1.12.0"
 androidx-navigation = "2.7.6"
 android-gradle = "8.2.1"
+
+coil = "3.0.0-alpha03"
+ktor = "2.3.7"
 
 kmp-viewmodel = "0.6.2-SNAPSHOT"
 uuid = "0.8.2"
@@ -93,6 +95,15 @@ androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core-ktx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
+
+coil-core = { module = "io.coil-kt.coil3:coil-core", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
+
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 
 kmp-viewmodel-core = { module = "io.github.hoc081098:kmp-viewmodel", version.ref = "kmp-viewmodel" }
 kmp-viewmodel-savedstate = { module = "io.github.hoc081098:kmp-viewmodel-savedstate", version.ref = "kmp-viewmodel" }
