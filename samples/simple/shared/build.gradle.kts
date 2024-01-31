@@ -5,8 +5,6 @@ plugins {
   alias(libs.plugins.kotlin.multiplatform)
   alias(libs.plugins.jetbrains.compose)
 
-  alias(libs.plugins.kotlin.serialization)
-
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.parcelize)
 }
@@ -67,20 +65,10 @@ kotlin {
         implementation(libs.kmp.viewmodel.koin)
         implementation(libs.kmp.viewmodel.koin.compose)
 
-        implementation(libs.coil.core)
-        implementation(libs.coil.compose)
-        implementation(libs.coil.network.ktor)
-
-        implementation(libs.ktor.client.core)
-
         api(libs.napier)
         api(libs.coroutines.core)
         api(libs.kotlinx.collections.immutable)
 
-        api(libs.koin.core)
-        implementation(libs.koin.compose)
-
-        implementation(libs.kotlinx.serialization.json)
         implementation(libs.flowExt)
       }
     }
@@ -91,15 +79,7 @@ kotlin {
     }
     androidMain {
       dependencies {
-        api(libs.koin.android)
-
-        implementation(libs.androidx.appcompat)
-        implementation(libs.androidx.core.ktx)
-        implementation(libs.androidx.activity.compose)
-        implementation(libs.androidx.lifecycle.runtime.compose)
-
         implementation(libs.coroutines.android)
-        implementation(libs.ktor.client.okhttp)
       }
     }
     val androidUnitTest by getting
@@ -109,7 +89,6 @@ kotlin {
         api(compose.preview)
 
         implementation(libs.coroutines.swing)
-        implementation(libs.ktor.client.java)
       }
     }
     val desktopTest by getting
@@ -117,11 +96,7 @@ kotlin {
     val iosX64Main by getting
     val iosArm64Main by getting
     val iosSimulatorArm64Main by getting
-    iosMain {
-      dependencies {
-        implementation(libs.ktor.client.darwin)
-      }
-    }
+    iosMain{}
 
     val iosX64Test by getting
     val iosArm64Test by getting

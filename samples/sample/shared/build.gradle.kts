@@ -91,13 +91,6 @@ kotlin {
     }
     androidMain {
       dependencies {
-        api(libs.koin.android)
-
-        implementation(libs.androidx.appcompat)
-        implementation(libs.androidx.core.ktx)
-        implementation(libs.androidx.activity.compose)
-        implementation(libs.androidx.lifecycle.runtime.compose)
-
         implementation(libs.coroutines.android)
         implementation(libs.ktor.client.okhttp)
       }
