@@ -44,4 +44,5 @@ android {
 dependencies {
   implementation(project(":samples:sample:shared"))
   implementation(libs.androidx.activity.compose)
+  implementation(libs.koin.android)
 }
