@@ -23,6 +23,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -77,8 +78,8 @@ fun SolivagantSampleApp(
       .build()
   }
 
-  var currentRoute: BaseRoute? by remember { mutableStateOf(null) }
-  var isDarkTheme by remember { mutableStateOf(false) }
+  var currentRoute: BaseRoute? by rememberSaveable { mutableStateOf(null) }
+  var isDarkTheme by rememberSaveable { mutableStateOf(false) }
 
   KoinContext {
     MyApplicationTheme(
