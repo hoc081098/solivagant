@@ -18,6 +18,8 @@
 
 - Supports `Lifecycle` events, similar to `AndroidX Lifecycle` library.
 
+## Note: This library is still in alpha, so the API may change in the future.
+
 ## Credits
 
 - Most of code in `solivagant-khonshu-navigation-core` and `solivagant-navigation` libraries is
@@ -80,7 +82,140 @@ allprojects {
 implementation("io.github.hoc081098:solivagant-navigation:0.0.1-alpha01")
 ```
 
+## Getting started
+
+- The concept is similar to `Freeletics Navigation` library, so you can read
+  the [Freeletics Navigation](https://freeletics.github.io/khonshu/navigation/get-started/) to understand
+  the concept.
+
+### 1. Create `NavRoot`s, `NavRoute`s
+
+```kotlin
+@Immutable
+@Parcelize
+data object StartScreenRoute : NavRoute, NavRoot
+
+@Immutable
+@Parcelize
+data object SearchProductScreenRoute : NavRoute
+```
+
+### 2. Create `NavDestination`s along with `Composable`s and `ViewModel`s
+
+```kotlin
+@JvmField
+val StartScreenDestination: NavDestination =
+  ScreenDestination<StartScreenRoute> { StartScreen() }
+
+@Composable
+internal fun StartScreen(
+  modifier: Modifier = Modifier,
+  viewModel: StartViewModel = koinKmpViewModel(),
+) {
+  // UI Composable
+}
+
+class StartViewModel(
+  // used to trigger navigation actions from outside the view layer (e.g. from a ViewModel).
+  // Usually, it is singleton object, or the host Activity retained scope.
+  private val navigator: NavEventNavigator,
+) : ViewModel() {
+  internal fun navigateToProductsScreen() = navigator.navigateTo(ProductsScreenRoute)
+  internal fun navigateToSearchProductScreen() = navigator.navigateTo(SearchProductScreenRoute)
+}
+```
+
+```kotlin
+@JvmField
+val SearchProductScreenDestination: NavDestination =
+  ScreenDestination<SearchProductScreenRoute> { SearchProductsScreen() }
+
+@Composable
+fun SearchProductsScreen(
+  modifier: Modifier = Modifier,
+  viewModel: SearchProductsViewModel = koinKmpViewModel<SearchProductsViewModel>(),
+) {
+  // UI Composable
+}
+
+class SearchProductsViewModel(
+  private val searchProducts: SearchProducts,
+  private val savedStateHandle: SavedStateHandle,
+  // used to trigger navigation actions from outside the view layer (e.g. from a ViewModel).
+  // Usually, it is singleton object, or the host Activity retained scope.
+  private val navigator: NavEventNavigator,
+) : ViewModel() {
+  fun navigateToProductDetail(id: Int) {
+    navigator.navigateTo(ProductDetailScreenRoute(id))
+  }
+}
+```
+
+### 3. Setup
+
+```kotlin
+@Stable
+private val AllDestinations: ImmutableSet<NavDestination> = persistentSetOf(
+  StartScreenDestination,
+  SearchProductScreenDestination,
+  // and more ...
+)
+
+@Composable
+fun MyAwesomeApp(
+  // used to trigger navigation actions from outside the view layer (e.g. from a ViewModel).
+  // Usually, it is singleton object, or the host Activity retained scope.
+  navigator: NavEventNavigator,
+  modifier: Modifier = Modifier,
+) {
+  var currentRoute: BaseRoute? by remember { mutableStateOf(null) }
+
+  NavHost(
+    modifier = modifier,
+    // route to the screen that should be shown initially
+    startRoute = StartScreenRoute,
+    // should contain all destinations that can be navigated to
+    destinations = AllDestinations,
+    navEventNavigator = navigator,
+    destinationChangedCallback = { currentRoute = it },
+  )
+}
+```
+
+```kotlin
+class MainActivity : ComponentActivity() {
+  override fun onCreate(savedInstanceState: Bundle) {
+    super.onCreate()
+
+    // navigator can be retrieved from the DI container, such as Koin, Dagger Hilt, etc.
+
+    setContent {
+      MyAwesomeApp(
+        navigator = navigator
+      )
+    }
+  }
+}
+```
+
+### 4. Use `NavEventNavigator` in `ViewModel`s
+
+```kotlin
+// navigate to the destination that the given route leads to
+navigator.navigateTo(DetailScreenRoute("some-id"))
+// navigate up in the hierarchy
+navigator.navigateUp()
+// navigate to the previous destination in the backstack
+navigator.navigateBack()
+// navigate back to the destination belonging to the referenced route and remove all destinations
+// in between from the back stack, depending on inclusive the destination
+navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
+```
+
 ## Roadmap
+
+- [ ] Add more tests
+- [ ] Support transition when navigating
 
 ## License
 
