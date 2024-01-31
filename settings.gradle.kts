@@ -21,15 +21,18 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "solivagant"
-include(":navigation-core")
+
 include(":khonshu-navigation-core")
 include(":lifecycle")
 include(":navigation")
+
 include(
   ":samples:sample:app",
   ":samples:sample:shared",
   ":samples:sample:desktop",
 )
+
+include(":obsolete:navigation-core")
 
 plugins {
   id("org.gradle.toolchains.foojay-resolver-convention") version ("0.8.0")
