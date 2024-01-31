@@ -4,7 +4,7 @@
 
 - Integrate with `Jetpack Compose` and `Compose Multiplatform` seamlessly.
 
-- Integrate with `kmp-viewmodel` library seamlessly
+- Integrate with [kmp-viewmodel](https://github.com/hoc081098/kmp-viewmodel) library seamlessly
   - Stack entry scoped `ViewModel`, exists as long as the
     stack entry is on the navigation stack, including the configuration changes on `Android`.
   - Supports `SavedStateHandle`, used to save and restore data over configuration changes
