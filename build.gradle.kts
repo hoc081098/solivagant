@@ -44,7 +44,9 @@ subprojects {
 }
 
 dependencies {
-  kover(project(":navigation-core"))
+  kover(projects.khonshuNavigationCore)
+  kover(projects.lifecycle)
+  kover(projects.navigation)
 }
 
 val ktlintVersion = libs.versions.ktlint.get()

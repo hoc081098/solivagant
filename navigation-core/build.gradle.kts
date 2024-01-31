@@ -1,20 +1,12 @@
 @file:Suppress("ClassName")
 
-import java.net.URL
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   alias(libs.plugins.kotlin.multiplatform)
   alias(libs.plugins.android.library)
-
   alias(libs.plugins.jetbrains.compose)
-
-  alias(libs.plugins.vanniktech.maven.publish)
-
-  alias(libs.plugins.dokka)
-  alias(libs.plugins.kotlinx.binary.compatibility.validator)
-  alias(libs.plugins.kotlinx.kover)
 }
 
 compose {
@@ -179,21 +171,3 @@ android {
   }
 }
 
-mavenPublishing {
-  publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.S01, automaticRelease = true)
-  signAllPublications()
-}
-
-tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
-  dokkaSourceSets {
-    configureEach {
-      externalDocumentationLink("https://kotlinlang.org/api/kotlinx.coroutines/")
-
-      sourceLink {
-        localDirectory.set(projectDir.resolve("src"))
-        remoteUrl.set(URL("https://github.com/hoc081098/solivagant/tree/master/viewmodel-compose/src"))
-        remoteLineSuffix.set("#L")
-      }
-    }
-  }
-}
