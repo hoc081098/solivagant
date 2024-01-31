@@ -96,7 +96,7 @@ kotlin {
     val iosX64Main by getting
     val iosArm64Main by getting
     val iosSimulatorArm64Main by getting
-    iosMain{}
+    iosMain {}
 
     val iosX64Test by getting
     val iosArm64Test by getting

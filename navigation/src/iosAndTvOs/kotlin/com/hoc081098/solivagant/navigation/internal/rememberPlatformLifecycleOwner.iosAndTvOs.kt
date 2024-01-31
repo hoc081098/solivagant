@@ -18,7 +18,7 @@ import platform.UIKit.UIApplicationWillResignActiveNotification
 import platform.UIKit.UIApplicationWillTerminateNotification
 import platform.darwin.NSObjectProtocol
 
-private class AppLifecycleOwnerImpl : LifecycleOwner {
+internal class AppLifecycleOwnerImpl : LifecycleOwner {
   private val lifecycleRegistry = LifecycleRegistry()
   override val lifecycle: Lifecycle get() = lifecycleRegistry
 
@@ -220,9 +220,6 @@ private fun moveToDestroyed(lifecycleRegistry: LifecycleRegistry) {
       Unit
   }
 }
-
-@Suppress("FunctionName") // Factory function
-public fun AppLifecycleOwner(): LifecycleOwner = AppLifecycleOwnerImpl()
 
 @Composable
 internal actual fun rememberPlatformLifecycleOwner(): LifecycleOwner {
