@@ -214,10 +214,10 @@ navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 
 ## Samples
 
-- https://github.com/hoc081098/solivagant/tree/master/samples/sample: a completed sample using Compose Multiplatform (Android, Desktop, iOS)
+- [Samples sample](https://github.com/hoc081098/solivagant/tree/master/samples/sample): a complete sample using `Compose Multiplatform (Android, Desktop, iOS)`
   - `solivagant-navigation` for navigation in Compose Multiplatform.
   - `kmp-viewmodel` to share `ViewModel` and `SavedStateHandle`.
-  - Koin DI.
+  - `Koin DI`.
 
 ## Roadmap
 
