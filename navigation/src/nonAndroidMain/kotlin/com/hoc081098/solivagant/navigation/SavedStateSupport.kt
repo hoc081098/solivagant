@@ -13,9 +13,8 @@ public class SavedStateSupport :
   SavedStateHandleFactory,
   SaveableStateRegistry,
   ViewModelStoreOwner {
-  private var restoredValues = emptyMap<String, List<Any?>>()
   private var registry = SaveableStateRegistry(
-    restoredValues = restoredValues,
+    restoredValues = emptyMap(),
     canBeSaved = { true },
   )
 
@@ -51,9 +50,8 @@ public class SavedStateSupport :
   override fun performSave(): Map<String, List<Any?>> = registry
     .performSave()
     .also {
-      restoredValues = it
       registry = SaveableStateRegistry(
-        restoredValues = restoredValues,
+        restoredValues = it,
         canBeSaved = { true },
       )
     }
