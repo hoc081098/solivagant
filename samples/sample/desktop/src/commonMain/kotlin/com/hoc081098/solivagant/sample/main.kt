@@ -25,14 +25,18 @@ fun main() {
 
   application {
     val windowState = rememberWindowState()
-    val savedStateSupport = remember { SavedStateSupport() }
+
     val lifecycleRegistry = remember { LifecycleRegistry() }
     val lifecycleOwner = rememberLifecycleOwner(lifecycleRegistry)
-
     LifecycleControllerEffect(
       lifecycleRegistry = lifecycleRegistry,
       windowState = windowState,
     )
+
+    val savedStateSupport = remember { SavedStateSupport() }
+    DisposableEffect(Unit) {
+      onDispose(savedStateSupport::clear)
+    }
 
     Window(
       onCloseRequest = ::exitApplication,

@@ -13,49 +13,51 @@ public class SavedStateSupport :
   SavedStateHandleFactory,
   SaveableStateRegistry,
   ViewModelStoreOwner {
-  private var registry = SaveableStateRegistry(
+  private var registry: SaveableStateRegistry? = SaveableStateRegistry(
     restoredValues = emptyMap(),
     canBeSaved = { true },
   )
 
-  private val viewModelStoreLazy = lazy(NONE) { ViewModelStore() }
   private val savedStateHandle by lazy(NONE) { SavedStateHandle() }
-  private var isCleared = false
-
-  override val viewModelStore: ViewModelStore
-    get() {
-      check(!isCleared) { "Cannot access ViewModelStore after it's cleared" }
-      return viewModelStoreLazy.value
-    }
+  private val viewModelStoreLazy = lazy(NONE) { ViewModelStore() }
+  override val viewModelStore: ViewModelStore by viewModelStoreLazy
 
   public fun clear() {
-    if (isCleared) {
+    if (registry == null) {
+      // Already cleared
       return
     }
-    isCleared = true
+
+    registry = null
     if (viewModelStoreLazy.isInitialized()) {
       viewModelStore.clear()
     }
   }
 
-  override fun create(): SavedStateHandle {
-    check(!isCleared) { "Cannot create SavedStateHandle after it's cleared" }
-    return savedStateHandle
-  }
+  override fun create(): SavedStateHandle = savedStateHandle
 
-  override fun canBeSaved(value: Any): Boolean = registry.canBeSaved(value)
+  override fun canBeSaved(value: Any): Boolean = registry?.canBeSaved(value) == true
 
-  override fun consumeRestored(key: String): Any? = registry.consumeRestored(key)
+  override fun consumeRestored(key: String): Any? = registry?.consumeRestored(key)
 
   override fun performSave(): Map<String, List<Any?>> = registry
-    .performSave()
-    .also {
+    ?.performSave()
+    ?.also {
       registry = SaveableStateRegistry(
         restoredValues = it,
         canBeSaved = { true },
       )
     }
+    .orEmpty()
 
   override fun registerProvider(key: String, valueProvider: () -> Any?): SaveableStateRegistry.Entry =
-    registry.registerProvider(key, valueProvider)
+    registry
+      ?.registerProvider(key, valueProvider)
+      ?: NoOpSaveableStateRegistryEntry
+}
+
+private val NoOpSaveableStateRegistryEntry = object : SaveableStateRegistry.Entry {
+  override fun unregister() {
+    // No-op
+  }
 }
