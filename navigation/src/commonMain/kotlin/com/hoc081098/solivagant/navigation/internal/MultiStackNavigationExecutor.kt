@@ -37,6 +37,10 @@ internal class MultiStackNavigationExecutor(
   val canNavigateBack: State<Boolean>
     get() = stack.canNavigateBack
 
+  internal fun saveState() {
+    viewModel.globalSavedStateHandle[SAVED_STATE_STACK] = stack.saveState()
+  }
+
   init {
     viewModel
       .globalSavedStateHandle

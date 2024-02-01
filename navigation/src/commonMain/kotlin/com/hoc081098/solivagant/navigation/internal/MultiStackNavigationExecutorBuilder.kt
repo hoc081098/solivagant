@@ -60,5 +60,7 @@ internal fun rememberNavigationExecutor(
 
   executor.setLifecycleOwner(lifecycleOwner)
 
+  NonAndroidSaveStackState(executor)
+
   return executor
 }
