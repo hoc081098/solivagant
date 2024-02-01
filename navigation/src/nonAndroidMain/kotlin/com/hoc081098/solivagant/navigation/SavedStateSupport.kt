@@ -1,18 +1,21 @@
 package com.hoc081098.solivagant.navigation
 
 import androidx.compose.runtime.saveable.SaveableStateRegistry
+import com.hoc081098.kmp.viewmodel.MainThread
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.SavedStateHandleFactory
 import com.hoc081098.kmp.viewmodel.ViewModelStore
 import com.hoc081098.kmp.viewmodel.ViewModelStoreOwner
 import kotlin.LazyThreadSafetyMode.NONE
 
+@MainThread
 public class SavedStateSupport :
   SavedStateHandleFactory,
   SaveableStateRegistry,
   ViewModelStoreOwner {
-  private val registry = SaveableStateRegistry(
-    restoredValues = emptyMap(),
+  private var restoredValues = emptyMap<String, List<Any?>>()
+  private var registry = SaveableStateRegistry(
+    restoredValues = restoredValues,
     canBeSaved = { true },
   )
 
@@ -44,12 +47,17 @@ public class SavedStateSupport :
   override fun canBeSaved(value: Any): Boolean = registry.canBeSaved(value)
 
   override fun consumeRestored(key: String): Any? = registry.consumeRestored(key)
-    .also { println("consumeRestored 1: key=$key -> $it") }
 
-  override fun performSave(): Map<String, List<Any?>> = registry.performSave()
-    .also { println("performSave 2: map=${it.size}") }
+  override fun performSave(): Map<String, List<Any?>> = registry
+    .performSave()
+    .also {
+      restoredValues = it
+      registry = SaveableStateRegistry(
+        restoredValues = restoredValues,
+        canBeSaved = { true },
+      )
+    }
 
   override fun registerProvider(key: String, valueProvider: () -> Any?): SaveableStateRegistry.Entry =
     registry.registerProvider(key, valueProvider)
-      .also { println("registerProvider 1: key=$key -> $it") }
 }

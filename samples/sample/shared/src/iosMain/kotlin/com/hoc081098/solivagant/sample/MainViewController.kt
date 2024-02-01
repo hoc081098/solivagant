@@ -23,16 +23,19 @@ fun MainViewController(savedStateSupport: SavedStateSupport?): UIViewController 
     }
 
     if (savedStateSupport != null) {
-      DisposableEffect(Unit) {
-        onDispose(savedStateSupport::performSave)
-      }
-
       CompositionLocalProvider(
         LocalViewModelStoreOwner provides savedStateSupport,
         LocalSaveableStateRegistry provides savedStateSupport,
         LocalSavedStateHandleFactory provides savedStateSupport,
       ) {
         SolivagantSampleApp()
+
+        // Must be at the last,
+        // because onDispose is called in reverse order, so we want to save state first,
+        // before [SaveableStateRegistry.Entry]s are unregistered.
+        DisposableEffect(Unit) {
+          onDispose(savedStateSupport::performSave)
+        }
       }
     } else {
       SolivagantSampleApp()
