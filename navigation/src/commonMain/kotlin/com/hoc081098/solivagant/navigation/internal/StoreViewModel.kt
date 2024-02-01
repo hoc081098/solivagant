@@ -20,7 +20,7 @@ internal class StoreViewModel(
   private var executor: MultiStackNavigationExecutor? = null
 
   init {
-    globalSavedStateHandle.setSavedStateProviderX(SAVED_STATE_STACK) {
+    globalSavedStateHandle.setSavedStateProviderWithMap(SAVED_STATE_STACK) {
       checkNotNull(stack) { "Stack is null. This should never happen" }.saveState()
     }
   }
