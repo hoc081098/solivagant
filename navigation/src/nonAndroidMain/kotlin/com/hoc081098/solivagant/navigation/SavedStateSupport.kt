@@ -11,9 +11,7 @@ public class SavedStateSupport :
   SavedStateHandleFactory,
   SaveableStateRegistry,
   ViewModelStoreOwner {
-
-  private var restoredValues: Map<String, List<Any?>> = emptyMap()
-  private var registry = SaveableStateRegistry(
+  private val registry = SaveableStateRegistry(
     restoredValues = emptyMap(),
     canBeSaved = { true },
   )
@@ -33,8 +31,6 @@ public class SavedStateSupport :
       return
     }
     isCleared = true
-
-    restoredValues = emptyMap()
     if (viewModelStoreLazy.isInitialized()) {
       viewModelStore.clear()
     }
@@ -46,36 +42,14 @@ public class SavedStateSupport :
   }
 
   override fun canBeSaved(value: Any): Boolean = registry.canBeSaved(value)
-    .also {
-      println("canBeSaved 1: value=$value -> $it")
-      println("canBeSaved 2: restoredValues=${restoredValues.size}, registry=$registry")
-    }
 
   override fun consumeRestored(key: String): Any? = registry.consumeRestored(key)
-    .also {
-      println("consumeRestored 1: key=$key -> $it")
-      println("consumeRestored 2: restoredValues=${restoredValues.size}, registry=$registry")
-    }
+    .also { println("consumeRestored 1: key=$key -> $it") }
 
-  override fun performSave(): Map<String, List<Any?>> {
-    val map = registry.performSave()
-
-    println("performSave 1: restoredValues=${restoredValues.size}, registry=$registry")
-
-    restoredValues = map
-    registry = SaveableStateRegistry(
-      restoredValues = map,
-      canBeSaved = { true },
-    )
-    println("performSave 2: map=${map.size}, registry=$registry")
-
-    return map
-  }
+  override fun performSave(): Map<String, List<Any?>> = registry.performSave()
+    .also { println("performSave 2: map=${it.size}") }
 
   override fun registerProvider(key: String, valueProvider: () -> Any?): SaveableStateRegistry.Entry =
     registry.registerProvider(key, valueProvider)
-      .also {
-        println("registerProvider 1: key=$key, valueProvider=$valueProvider -> $it")
-        println("registerProvider 2: restoredValues=${restoredValues.size}, registry=$registry")
-      }
+      .also { println("registerProvider 1: key=$key -> $it") }
 }
