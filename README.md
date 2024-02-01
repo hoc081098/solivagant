@@ -1,6 +1,6 @@
 # solivagant 🔆
 
-## Compose Multiplatform Navigation - Pragmatic, type safety navigation for Compose Multiplatform. Based on [Freeletics Navigation](https://freeletics.github.io/khonshu/navigation/get-started/).
+## Compose Multiplatform Navigation - Pragmatic, type safety navigation for Compose Multiplatform. Based on [Freeletics Khonshu Navigation](https://freeletics.github.io/khonshu/navigation/get-started/).
 
 - Integrate with `Jetpack Compose` and `Compose Multiplatform` seamlessly.
 
@@ -14,7 +14,7 @@
 
 - Supports Multi-Backstacks, this is most commonly used in apps that use bottom navigation to
   separate the back stack of each tab.
-  See [Freeletics Navigation - Multiple back stacks](https://freeletics.github.io/khonshu/navigation/back-stacks/).
+  See [Freeletics Khonshu Navigation - Multiple back stacks](https://freeletics.github.io/khonshu/navigation/back-stacks/).
 
 - Supports `Lifecycle` events, similar to `AndroidX Lifecycle` library.
 
@@ -23,7 +23,7 @@
 ## Credits
 
 - Most of code in `solivagant-khonshu-navigation-core` and `solivagant-navigation` libraries is
-  taken from [Freeletics Navigation](https://freeletics.github.io/khonshu/navigation/get-started/),
+  taken from [Freeletics Khonshu Navigation](https://freeletics.github.io/khonshu/navigation/get-started/),
   and ported to `Kotlin Multiplatform` and `Compose Multiplatform`.
 
 - The `solivagant-lifecycle` library is inspired
@@ -85,7 +85,7 @@ implementation("io.github.hoc081098:solivagant-navigation:0.0.1-alpha01")
 ## Getting started
 
 - The concept is similar to `Freeletics Navigation` library, so you can read
-  the [Freeletics Navigation](https://freeletics.github.io/khonshu/navigation/get-started/) to understand
+  the [Freeletics Khonshu Navigation](https://freeletics.github.io/khonshu/navigation/get-started/) to understand
   the concept.
 
 ### 1. Create `NavRoot`s, `NavRoute`s
