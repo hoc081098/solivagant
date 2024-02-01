@@ -63,24 +63,21 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      # TODO: https://github.com/JetBrains/compose-multiplatform/issues/4076
-      # ./gradlew :navigation-core:build --stacktrace
       - name: Build
-        run: |
-          ./gradlew :navigation:compileKotlinJvm :navigation:compileDebugKotlinAndroid :navigation:compileKotlinIosX64 --stacktrace
+        run: ./gradlew :navigation:build --stacktrace
 
-#      - name: Kover Xml Report
-#        run: ./gradlew :koverXmlReport
-#
-#      - name: Upload Test Report
-#        uses: codecov/codecov-action@v3.1.4
-#
-#      - name: Upload test report artifact
-#        if: ${{ failure() }}
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: test-report
-#          path: build/reports/tests/allTests/
+      - name: Kover Xml Report
+        run: ./gradlew :koverXmlReport
+
+      - name: Upload Test Report
+        uses: codecov/codecov-action@v3.1.4
+
+      - name: Upload test report artifact
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: build/reports/tests/allTests/
 
   publish:
     needs: [ build ]
