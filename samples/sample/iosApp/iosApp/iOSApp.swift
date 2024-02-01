@@ -6,12 +6,12 @@ struct iOSApp: App {
   init() {
     DIContainer.shared.doInit(appDeclaration: { _ in })
   }
-  
-	var body: some Scene {
-		WindowGroup {
+
+  var body: some Scene {
+    WindowGroup {
       NavigationView {
         ContentView()
-      }
-		}
-	}
+      }.navigationViewStyle(.stack)
+    }
+  }
 }

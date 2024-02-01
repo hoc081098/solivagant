@@ -1,10 +1,24 @@
 import UIKit
 import SwiftUI
+import Combine
 import SolivagantSampleAppShared
+
+struct ContentView: View {
+
+  var body: some View {
+    ZStack(alignment: .center) {
+      NavigationLink("To Compose View") { SecondView() }
+        .buttonStyle(.plain)
+        .padding()
+    }
+  }
+}
+
+// MARK: - ComposeView
 
 struct ComposeView: UIViewControllerRepresentable {
   let savedStateSupport: NavigationSavedStateSupport
-  
+
   func makeUIViewController(context: Context) -> UIViewController {
     MainViewControllerKt.MainViewController(savedStateSupport: savedStateSupport)
   }
@@ -12,33 +26,44 @@ struct ComposeView: UIViewControllerRepresentable {
   func updateUIViewController(_ uiViewController: UIViewController, context: Context) { }
 }
 
-let savedStateSupport: NavigationSavedStateSupport = NavigationSavedStateSupport()
 
-struct ContentView: View {
-  
-  var body: some View {
-    ZStack {
-      ComposeView(savedStateSupport: savedStateSupport)
-        .ignoresSafeArea(.keyboard) // Compose has own keyboard handler
-      
-      VStack {
-        NavigationLink("Click me", destination: SecondView())
-      }
-    }
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
+@MainActor
+class SecondViewModel: ObservableObject {
+  let savedStateSupport = NavigationSavedStateSupport()
+
+  init() {
+    print("Init \(savedStateSupport)")
+  }
+
+  deinit {
+    self.savedStateSupport.clear()
+    print("Cleared \(savedStateSupport)")
   }
 }
-
 
 struct SecondView: View {
+  @StateObject private var viewModel = SecondViewModel()
+
   var body: some View {
-    Text("OK")
-      .navigationTitle("Second")
+    ComposeView(savedStateSupport: viewModel.savedStateSupport)
+      .ignoresSafeArea(.keyboard) // Compose has own keyboard handler
+      .overlay(
+        NavigationLink("To Third View") { ThirdView() }
+          .buttonStyle(.plain)
+          .padding(),
+        alignment: .bottomTrailing
+      )
+      .onAppear { print("onAppear") }
+      .onDisappear { print("onDisappear") }
+      .navigationBarTitle("", displayMode: .inline)
   }
 }
 
-struct SecondView_Previews: PreviewProvider {
-  static var previews: some View {
-    SecondView()
+// MARK: - ThirdView
+
+struct ThirdView: View {
+  var body: some View {
+    Text("It is good!")
+      .navigationTitle("Third view")
   }
 }
