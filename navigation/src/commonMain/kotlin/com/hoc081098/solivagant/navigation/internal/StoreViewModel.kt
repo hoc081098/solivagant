@@ -3,10 +3,11 @@ package com.hoc081098.solivagant.navigation.internal
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.SavedStateHandleFactory
 import com.hoc081098.kmp.viewmodel.ViewModel
+import com.hoc081098.solivagant.lifecycle.Lifecycle
 import com.hoc081098.solivagant.navigation.BaseRoute
+import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.EXTRA_ROUTE
 import com.hoc081098.solivagant.navigation.NavRoot
-import com.hoc081098.solivagant.navigation.internal.MultiStackNavigationExecutor.Companion.SAVED_STATE_STACK
 
 internal class StoreViewModel(
   internal val globalSavedStateHandle: SavedStateHandle,
@@ -15,7 +16,14 @@ internal class StoreViewModel(
   private val savedStateHandles = mutableMapOf<StackEntry.Id, SavedStateHandle>()
   private val savedStateHandleFactories = mutableMapOf<StackEntry.Id, SavedStateHandleFactory>()
 
-  internal val savedNavRoot: NavRoot? get() = globalSavedStateHandle[SAVED_START_ROOT_KEY]
+  private var stack: MultiStack? = null
+  private var executor: MultiStackNavigationExecutor? = null
+
+  init {
+    globalSavedStateHandle.setSavedStateProviderX(SAVED_STATE_STACK) {
+      checkNotNull(stack) { "Stack is null. This should never happen" }.saveState()
+    }
+  }
 
   internal fun provideStore(id: StackEntry.Id): NavigationExecutor.Store {
     return stores.getOrPut(id) { NavigationExecutorStore() }
@@ -34,7 +42,7 @@ internal class StoreViewModel(
     }
   }
 
-  internal fun removeEntry(id: StackEntry.Id) {
+  private fun removeEntry(id: StackEntry.Id) {
     val store = stores.remove(id)
     store?.close()
 
@@ -82,14 +90,49 @@ internal class StoreViewModel(
     }
   }
 
-  internal fun setStartRoot(root: NavRoot) {
+  private fun setStartRoot(root: NavRoot) {
     globalSavedStateHandle[SAVED_START_ROOT_KEY] = root
   }
 
-  internal fun getSavedStackState(): Map<String, Any?>? =
-    globalSavedStateHandle.getAsMap(SAVED_STATE_STACK)
+  fun createMultiStackNavigationExecutor(
+    contentDestinations: List<ContentDestination<*>>,
+    hostLifecycleState: Lifecycle.State,
+  ): MultiStackNavigationExecutor =
+    executor
+      ?: MultiStackNavigationExecutor(
+        stack = createMultiStackIfNeeded(contentDestinations, hostLifecycleState),
+        viewModel = this,
+        onRootChanged = ::setStartRoot,
+      ).also { this.executor = it }
+
+  private fun createMultiStackIfNeeded(
+    contentDestinations: List<ContentDestination<*>>,
+    hostLifecycleState: Lifecycle.State,
+  ): MultiStack {
+    this.stack?.let { return it }
+
+    val navState = globalSavedStateHandle.getAsMap(SAVED_STATE_STACK)
+    val savedNavRoot: NavRoot? = globalSavedStateHandle[SAVED_START_ROOT_KEY]
+    return if (navState == null) {
+      MultiStack.createWith(
+        root = savedNavRoot!!,
+        destinations = contentDestinations,
+        hostLifecycleState = hostLifecycleState,
+        onStackEntryRemoved = ::removeEntry,
+      )
+    } else {
+      MultiStack.fromState(
+        root = savedNavRoot!!,
+        bundle = navState,
+        destinations = contentDestinations,
+        hostLifecycleState = hostLifecycleState,
+        onStackEntryRemoved = ::removeEntry,
+      )
+    }.also { this.stack = it }
+  }
 
   private companion object {
+    private const val SAVED_STATE_STACK = "com.hoc081098.solivagant.navigation.stack"
     private const val SAVED_START_ROOT_KEY = "com.hoc081098.solivagant.navigation.store.start_root"
     private const val SAVED_INPUT_START_ROOT_KEY = "com.hoc081098.solivagant.navigation.store.input_start_root"
   }

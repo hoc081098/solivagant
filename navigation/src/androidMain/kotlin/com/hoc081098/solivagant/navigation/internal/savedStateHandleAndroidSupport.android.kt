@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 
-internal actual fun SavedStateHandle.setSavedStateProvider(
+internal actual fun SavedStateHandle.setSavedStateProviderX(
   key: String,
   savedStateFactory: () -> Map<String, Any?>,
 ) = setSavedStateProvider(key) {
