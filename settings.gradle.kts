@@ -34,6 +34,7 @@ include(
 
 include(
   ":samples:simple:shared",
+  ":samples:simple:desktop",
 )
 
 include(":obsolete:navigation-core")
