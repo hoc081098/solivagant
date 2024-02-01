@@ -5,8 +5,6 @@ plugins {
   alias(libs.plugins.kotlin.multiplatform)
   alias(libs.plugins.jetbrains.compose)
 
-  alias(libs.plugins.kotlin.serialization)
-
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.parcelize)
 }
@@ -43,7 +41,7 @@ kotlin {
     iosSimulatorArm64(),
   ).forEach { iosTarget ->
     iosTarget.binaries.framework {
-      baseName = "SolivagantSampleAppShared"
+      baseName = "SolivagantSimpleSampleAppShared"
       isStatic = true
     }
   }
@@ -67,20 +65,10 @@ kotlin {
         implementation(libs.kmp.viewmodel.koin)
         implementation(libs.kmp.viewmodel.koin.compose)
 
-        implementation(libs.coil.core)
-        implementation(libs.coil.compose)
-        implementation(libs.coil.network.ktor)
-
-        implementation(libs.ktor.client.core)
-
         api(libs.napier)
         api(libs.coroutines.core)
         api(libs.kotlinx.collections.immutable)
 
-        api(libs.koin.core)
-        implementation(libs.koin.compose)
-
-        implementation(libs.kotlinx.serialization.json)
         implementation(libs.flowExt)
       }
     }
@@ -92,7 +80,6 @@ kotlin {
     androidMain {
       dependencies {
         implementation(libs.coroutines.android)
-        implementation(libs.ktor.client.okhttp)
       }
     }
     val androidUnitTest by getting
@@ -102,7 +89,6 @@ kotlin {
         api(compose.preview)
 
         implementation(libs.coroutines.swing)
-        implementation(libs.ktor.client.java)
       }
     }
     val desktopTest by getting
@@ -110,11 +96,7 @@ kotlin {
     val iosX64Main by getting
     val iosArm64Main by getting
     val iosSimulatorArm64Main by getting
-    iosMain {
-      dependencies {
-        implementation(libs.ktor.client.darwin)
-      }
-    }
+    iosMain {}
 
     val iosX64Test by getting
     val iosArm64Test by getting
@@ -137,7 +119,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach
 }
 
 android {
-  namespace = "com.hoc081098.solivagant.sample"
+  namespace = "com.hoc081098.solivagant.sample.simple"
   compileSdk = libs.versions.sample.android.compile.get().toInt()
   defaultConfig {
     minSdk = libs.versions.android.min.get().toInt()

@@ -23,41 +23,16 @@ internal fun rememberNavigationExecutor(
     },
   ),
 ): MultiStackNavigationExecutor {
-  val lifecycleOwner = LocalLifecycleOwner.current
-
+  // setInputStartRoot must be called before getMultiStackNavigationExecutor
   viewModel.setInputStartRoot(startRoot)
 
+  val lifecycleOwner = LocalLifecycleOwner.current
   val executor = remember(viewModel) {
-    val contentDestinations = destinations.filterIsInstance<ContentDestination<*>>()
-
-    val navState = viewModel.getSavedStackState()
-    val hostLifecycleState = lifecycleOwner.lifecycle.currentState
-
-    val stack = if (navState == null) {
-      MultiStack.createWith(
-        root = viewModel.savedNavRoot!!,
-        destinations = contentDestinations,
-        hostLifecycleState = hostLifecycleState,
-        onStackEntryRemoved = viewModel::removeEntry,
-      )
-    } else {
-      MultiStack.fromState(
-        root = viewModel.savedNavRoot!!,
-        bundle = navState,
-        destinations = contentDestinations,
-        hostLifecycleState = hostLifecycleState,
-        onStackEntryRemoved = viewModel::removeEntry,
-      )
-    }
-
-    @Suppress("ViewModelForwarding")
-    MultiStackNavigationExecutor(
-      stack = stack,
-      viewModel = viewModel,
-      onRootChanged = viewModel::setStartRoot,
+    viewModel.createMultiStackNavigationExecutor(
+      contentDestinations = destinations.filterIsInstance<ContentDestination<*>>(),
+      hostLifecycleState = lifecycleOwner.lifecycle.currentState,
     )
   }
-
   executor.setLifecycleOwner(lifecycleOwner)
 
   return executor

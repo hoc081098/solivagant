@@ -38,10 +38,6 @@ internal class MultiStackNavigationExecutor(
     get() = stack.canNavigateBack
 
   init {
-    viewModel
-      .globalSavedStateHandle
-      .setSavedStateProvider(SAVED_STATE_STACK, stack::saveState)
-
     _lifecycleOwner
       .flatMapLatest { it?.lifecycle?.eventFlow ?: emptyFlow() }
       .onEach(stack::handleLifecycleEvent)
@@ -117,10 +113,7 @@ internal class MultiStackNavigationExecutor(
     _lifecycleOwner.value = lifecycleOwner
   }
 
-  internal companion object {
-    const val SAVED_STATE_STACK = "com.hoc081098.solivagant.navigation.stack"
-  }
-
+  //region RememberObserver
   override fun onAbandoned() {
     _lifecycleOwner.value = null
     scope.cancel()
@@ -132,4 +125,5 @@ internal class MultiStackNavigationExecutor(
   }
 
   override fun onRemembered() = Unit
+  //endregion
 }

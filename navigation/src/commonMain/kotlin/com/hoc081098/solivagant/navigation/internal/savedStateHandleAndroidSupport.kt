@@ -2,7 +2,7 @@ package com.hoc081098.solivagant.navigation.internal
 
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 
-internal expect fun SavedStateHandle.setSavedStateProvider(
+internal expect fun SavedStateHandle.setSavedStateProviderWithMap(
   key: String,
   savedStateFactory: () -> Map<String, Any?>,
 )

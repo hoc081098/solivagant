@@ -32,6 +32,10 @@ include(
   ":samples:sample:desktop",
 )
 
+include(
+  ":samples:simple:shared",
+)
+
 include(":obsolete:navigation-core")
 
 plugins {

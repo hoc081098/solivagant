@@ -170,4 +170,3 @@ android {
     targetCompatibility = JavaVersion.toVersion(libs.versions.java.target.get())
   }
 }
-
