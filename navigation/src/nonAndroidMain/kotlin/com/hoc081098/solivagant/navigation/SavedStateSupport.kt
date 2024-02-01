@@ -14,60 +14,68 @@ public class SavedStateSupport :
 
   private var restoredValues: Map<String, List<Any?>> = emptyMap()
   private var registry = SaveableStateRegistry(
-    restoredValues = restoredValues,
+    restoredValues = emptyMap(),
     canBeSaved = { true },
   )
 
   private val viewModelStoreLazy = lazy(NONE) { ViewModelStore() }
   private val savedStateHandle by lazy(NONE) { SavedStateHandle() }
+  private var isCleared = false
 
-  override val viewModelStore: ViewModelStore by viewModelStoreLazy
+  override val viewModelStore: ViewModelStore
+    get() {
+      check(!isCleared) { "Cannot access ViewModelStore after it's cleared" }
+      return viewModelStoreLazy.value
+    }
 
   public fun clear() {
+    if (isCleared) {
+      return
+    }
+    isCleared = true
+
     restoredValues = emptyMap()
-    savedStateHandle.keys().forEach { savedStateHandle.remove<Any?>(it) }
     if (viewModelStoreLazy.isInitialized()) {
       viewModelStore.clear()
     }
   }
 
-  override fun create(): SavedStateHandle = savedStateHandle
+  override fun create(): SavedStateHandle {
+    check(!isCleared) { "Cannot create SavedStateHandle after it's cleared" }
+    return savedStateHandle
+  }
 
   override fun canBeSaved(value: Any): Boolean = registry.canBeSaved(value)
     .also {
-      println("canBeSaved: value=$value -> $it")
-      println("canBeSaved: restoredValues=$restoredValues, registry=$registry")
+      println("canBeSaved 1: value=$value -> $it")
+      println("canBeSaved 2: restoredValues=${restoredValues.size}, registry=$registry")
     }
 
   override fun consumeRestored(key: String): Any? = registry.consumeRestored(key)
     .also {
-      println("consumeRestored: key=$key -> $it")
-      println("consumeRestored: restoredValues=$restoredValues, registry=$registry")
+      println("consumeRestored 1: key=$key -> $it")
+      println("consumeRestored 2: restoredValues=${restoredValues.size}, registry=$registry")
     }
 
   override fun performSave(): Map<String, List<Any?>> {
-    val listMap = registry.performSave()
-    val savedStateHandleMap = savedStateHandle.keys().associateWith { savedStateHandle.get<Any?>(it) }
-    val finalMap = listMap + mapOf(savedStateHandle.toString() to listOf(savedStateHandleMap))
+    val map = registry.performSave()
 
-    println("performSave: restoredValues=$restoredValues, registry=$registry")
+    println("performSave 1: restoredValues=${restoredValues.size}, registry=$registry")
 
-    restoredValues = finalMap
+    restoredValues = map
     registry = SaveableStateRegistry(
-      restoredValues = finalMap,
+      restoredValues = map,
       canBeSaved = { true },
     )
+    println("performSave 2: map=${map.size}, registry=$registry")
 
-    println("performSave: finalMap=$finalMap")
-    println("performSave: restoredValues=$restoredValues, registry=$registry")
-
-    return finalMap
+    return map
   }
 
   override fun registerProvider(key: String, valueProvider: () -> Any?): SaveableStateRegistry.Entry =
     registry.registerProvider(key, valueProvider)
       .also {
-        println("registerProvider: key=$key, valueProvider=$valueProvider -> $it")
-        println("registerProvider: restoredValues=$restoredValues, registry=$registry")
+        println("registerProvider 1: key=$key, valueProvider=$valueProvider -> $it")
+        println("registerProvider 2: restoredValues=${restoredValues.size}, registry=$registry")
       }
 }
