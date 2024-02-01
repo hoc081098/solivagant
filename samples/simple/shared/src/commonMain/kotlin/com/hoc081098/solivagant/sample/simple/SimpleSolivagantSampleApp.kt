@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -73,11 +74,7 @@ fun SimpleSolivagantSampleApp(
             CenterAlignedTopAppBar(
               title = { Text(text = currentRoute.toString()) },
               navigationIcon = {
-                IconButton(
-                  onClick = {
-                    navigator.navigateBack()
-                  },
-                ) {
+                IconButton(onClick = remember { navigator::navigateBack }) {
                   Icon(
                     imageVector = Icons.Filled.ArrowBack,
                     contentDescription = "Back",
