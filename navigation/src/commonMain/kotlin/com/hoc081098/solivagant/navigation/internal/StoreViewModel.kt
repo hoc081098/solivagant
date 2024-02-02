@@ -96,18 +96,18 @@ internal class StoreViewModel(
 
   fun createMultiStackNavigationExecutor(
     contentDestinations: List<ContentDestination<*>>,
-    hostLifecycleState: Lifecycle.State,
+    getHostLifecycleState: () -> Lifecycle.State,
   ): MultiStackNavigationExecutor =
     executor
       ?: MultiStackNavigationExecutor(
-        stack = createMultiStackIfNeeded(contentDestinations, hostLifecycleState),
+        stack = createMultiStackIfNeeded(contentDestinations, getHostLifecycleState),
         viewModel = this,
         onRootChanged = ::setStartRoot,
       ).also { this.executor = it }
 
   private fun createMultiStackIfNeeded(
     contentDestinations: List<ContentDestination<*>>,
-    hostLifecycleState: Lifecycle.State,
+    getHostLifecycleState: () -> Lifecycle.State,
   ): MultiStack {
     this.stack?.let { return it }
 
@@ -117,7 +117,7 @@ internal class StoreViewModel(
       MultiStack.createWith(
         root = savedNavRoot!!,
         destinations = contentDestinations,
-        hostLifecycleState = hostLifecycleState,
+        getHostLifecycleState = getHostLifecycleState,
         onStackEntryRemoved = ::removeEntry,
       )
     } else {
@@ -125,7 +125,7 @@ internal class StoreViewModel(
         root = savedNavRoot!!,
         bundle = navState,
         destinations = contentDestinations,
-        hostLifecycleState = hostLifecycleState,
+        getHostLifecycleState = getHostLifecycleState,
         onStackEntryRemoved = ::removeEntry,
       )
     }.also { this.stack = it }

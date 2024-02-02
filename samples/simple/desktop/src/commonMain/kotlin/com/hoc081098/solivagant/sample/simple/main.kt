@@ -4,6 +4,7 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.LocalSaveableStateRegistry
 import androidx.compose.ui.window.Window
@@ -13,6 +14,7 @@ import com.hoc081098.kmp.viewmodel.compose.LocalSavedStateHandleFactory
 import com.hoc081098.kmp.viewmodel.compose.LocalViewModelStoreOwner
 import com.hoc081098.solivagant.lifecycle.LifecycleRegistry
 import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
+import com.hoc081098.solivagant.lifecycle.compose.currentStateAsState
 import com.hoc081098.solivagant.lifecycle.rememberLifecycleOwner
 import com.hoc081098.solivagant.navigation.SavedStateSupport
 import com.hoc081098.solivagant.navigation.internal.LifecycleControllerEffect
@@ -30,6 +32,7 @@ fun main() {
       lifecycleRegistry = lifecycleRegistry,
       windowState = windowState,
     )
+    val lifecycleState by lifecycleRegistry.currentStateAsState()
 
     val savedStateSupport = remember { SavedStateSupport() }
     DisposableEffect(Unit) {
@@ -38,7 +41,7 @@ fun main() {
 
     Window(
       onCloseRequest = ::exitApplication,
-      title = "Solivagant sample",
+      title = "Solivagant sample $lifecycleState",
       state = windowState,
     ) {
       CompositionLocalProvider(

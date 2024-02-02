@@ -120,6 +120,7 @@ private fun <T : BaseRoute> Show(
       if (entry.lifecycleOwner.lifecycle.currentState == Lifecycle.State.DESTROYED) {
         return@onDispose
       }
+
       entry.lifecycleOwner.maxLifecycle = Lifecycle.State.CREATED
     }
   }

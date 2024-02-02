@@ -59,9 +59,9 @@ internal class MultiStack(
     val newStack = Stack.createWith(
       root = root,
       destinations = destinations,
-      hostLifecycleState = hostLifecycleState,
       onStackEntryRemoved = onStackEntryRemoved,
       idGenerator = idGenerator,
+      getHostLifecycleState = { hostLifecycleState },
     )
     allStacks.add(newStack)
     return newStack
@@ -190,22 +190,22 @@ internal class MultiStack(
 
   fun handleLifecycleEvent(event: Lifecycle.Event) {
     hostLifecycleState = event.targetState
-    currentStack.handleLifecycleEvent(event)
+    allStacks.forEach { it.handleLifecycleEvent(event) }
   }
 
   companion object {
     fun createWith(
       root: NavRoot,
       destinations: List<ContentDestination<*>>,
-      hostLifecycleState: Lifecycle.State,
       onStackEntryRemoved: (StackEntry.Id) -> Unit,
+      getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): MultiStack {
       val startStack = Stack.createWith(
         root = root,
         destinations = destinations,
-        hostLifecycleState = hostLifecycleState,
         onStackEntryRemoved = onStackEntryRemoved,
+        getHostLifecycleState = getHostLifecycleState,
         idGenerator = idGenerator,
       )
       return MultiStack(
@@ -223,7 +223,7 @@ internal class MultiStack(
       root: NavRoot,
       bundle: Map<String, Any?>,
       destinations: List<ContentDestination<*>>,
-      hostLifecycleState: Lifecycle.State,
+      getHostLifecycleState: () -> Lifecycle.State,
       onStackEntryRemoved: (StackEntry.Id) -> Unit,
       idGenerator: () -> String = { uuid4().toString() },
     ): MultiStack {
@@ -234,8 +234,8 @@ internal class MultiStack(
         Stack.fromState(
           bundle = it,
           destinations = destinations,
-          hostLifecycleState = hostLifecycleState,
           onStackEntryRemoved = onStackEntryRemoved,
+          getHostLifecycleState = getHostLifecycleState,
           idGenerator = idGenerator,
         )
       }
