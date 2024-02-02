@@ -28,6 +28,7 @@ import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.NavDestination
 import com.hoc081098.solivagant.navigation.NavEventNavigator
 import com.hoc081098.solivagant.navigation.NavHost
+import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.sample.simple.common.MyApplicationTheme
 import com.hoc081098.solivagant.sample.simple.ui.home.BottomNavigationInfo
 import com.hoc081098.solivagant.sample.simple.ui.home.feed.FeedTabDestination
@@ -62,6 +63,25 @@ fun SimpleSolivagantSampleApp(
 ) {
   var currentRoute by rememberSaveable { mutableStateOf<BaseRoute?>(null) }
 
+  val onClickNavigationBarItem: (Boolean, BottomNavigationInfo) -> Unit = remember(navigator) {
+    {
+        isSelected, item ->
+      if (isSelected) {
+        // If the current tab is already selected,
+        // reset to the root of the tab if not already there
+        if (currentRoute !is NavRoot) {
+          navigator.resetToRoot(root = item.root)
+        }
+      } else {
+        // Switch to the new tab if it is not already selected
+        navigator.navigateToRoot(
+          root = item.root,
+          restoreRootState = true,
+        )
+      }
+    }
+  }
+
   KoinContext {
     MyApplicationTheme(useDarkTheme = false) {
       Surface(
@@ -74,11 +94,13 @@ fun SimpleSolivagantSampleApp(
             CenterAlignedTopAppBar(
               title = { Text(text = currentRoute.toString()) },
               navigationIcon = {
-                IconButton(onClick = remember { navigator::navigateBack }) {
-                  Icon(
-                    imageVector = Icons.Filled.ArrowBack,
-                    contentDescription = "Back",
-                  )
+                if (currentRoute !is NavRoot) {
+                  IconButton(onClick = remember { navigator::navigateBack }) {
+                    Icon(
+                      imageVector = Icons.Filled.ArrowBack,
+                      contentDescription = "Back",
+                    )
+                  }
                 }
               },
             )
@@ -90,16 +112,13 @@ fun SimpleSolivagantSampleApp(
 
             NavigationBar {
               BottomNavigationInfo.ALL.forEach { item ->
+                val selected = item.root == selectedBottomNavigationInfo.root
+
                 NavigationBarItem(
                   icon = { Icon(imageVector = item.iconVector, contentDescription = item.title) },
                   label = { Text(item.title) },
-                  selected = item.root == selectedBottomNavigationInfo.root,
-                  onClick = {
-                    navigator.navigateToRoot(
-                      root = item.root,
-                      restoreRootState = true,
-                    )
-                  },
+                  selected = selected,
+                  onClick = { onClickNavigationBarItem(selected, item) },
                 )
               }
             }
