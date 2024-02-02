@@ -71,7 +71,7 @@ internal fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         ElevatedButton(onClick = remember { viewModel::login }) {
-          Text(text = "Login")
+          Text(text = "To home")
         }
       }
     }

@@ -34,6 +34,7 @@ import com.hoc081098.solivagant.sample.simple.ui.home.BottomNavigationInfo
 import com.hoc081098.solivagant.sample.simple.ui.home.feed.FeedTabDestination
 import com.hoc081098.solivagant.sample.simple.ui.home.feed.nested_feed.NestedFeedScreenDestination
 import com.hoc081098.solivagant.sample.simple.ui.home.notifications.NotificationsTabDestination
+import com.hoc081098.solivagant.sample.simple.ui.home.notifications.nested_notifications.NestedNotificationsScreenDestination
 import com.hoc081098.solivagant.sample.simple.ui.home.profile.ProfileTabDestination
 import com.hoc081098.solivagant.sample.simple.ui.login.LoginScreenDestination
 import com.hoc081098.solivagant.sample.simple.ui.login.LoginScreenRoute
@@ -48,6 +49,7 @@ private val AllDestinations: ImmutableSet<NavDestination> = persistentSetOf(
   FeedTabDestination,
   NestedFeedScreenDestination,
   NotificationsTabDestination,
+  NestedNotificationsScreenDestination,
   ProfileTabDestination,
 )
 

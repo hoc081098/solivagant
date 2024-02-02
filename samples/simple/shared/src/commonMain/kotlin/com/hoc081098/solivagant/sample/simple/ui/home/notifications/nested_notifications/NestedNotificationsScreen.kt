@@ -1,6 +1,6 @@
 @file:Suppress("PackageNaming")
 
-package com.hoc081098.solivagant.sample.simple.ui.home.feed.nested_feed
+package com.hoc081098.solivagant.sample.simple.ui.home.notifications.nested_notifications
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,9 +26,9 @@ import com.hoc081098.solivagant.lifecycle.compose.collectAsStateWithLifecycle
 import com.hoc081098.solivagant.sample.simple.common.debugDescription
 
 @Composable
-internal fun NestedFeedScreen(
+internal fun NestedNotificationsScreen(
   modifier: Modifier = Modifier,
-  viewModel: NestedFeedViewModel = koinKmpViewModel(),
+  viewModel: NestedNotificationsViewModel = koinKmpViewModel(),
 ) {
   var savableCount by rememberSaveable { mutableIntStateOf(0) }
   val savedStateHandleCount by viewModel.countStateFlow.collectAsStateWithLifecycle()
@@ -45,7 +45,7 @@ internal fun NestedFeedScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
         Text(
-          text = "Nested feed: viewModel=${viewModel.debugDescription}, route=${viewModel.route}",
+          text = "Nested notifications: viewModel=${viewModel.debugDescription}, route=${viewModel.route}",
           style = MaterialTheme.typography.headlineSmall,
           textAlign = TextAlign.Center,
         )

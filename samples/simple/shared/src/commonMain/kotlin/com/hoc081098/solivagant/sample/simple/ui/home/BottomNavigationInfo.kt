@@ -12,6 +12,7 @@ import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.sample.simple.ui.home.feed.FeedTabRoute
 import com.hoc081098.solivagant.sample.simple.ui.home.feed.nested_feed.NestedFeedScreenRoute
 import com.hoc081098.solivagant.sample.simple.ui.home.notifications.NotificationsTabRoute
+import com.hoc081098.solivagant.sample.simple.ui.home.notifications.nested_notifications.NestedNotificationsScreenRoute
 import com.hoc081098.solivagant.sample.simple.ui.home.profile.ProfileTabRoute
 import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableList
@@ -56,6 +57,7 @@ enum class BottomNavigationInfo {
         NestedFeedScreenRoute::class to FEED,
         // Notifications
         NotificationsTabRoute::class to NOTIFICATIONS,
+        NestedNotificationsScreenRoute::class to NOTIFICATIONS,
         // Profile
         ProfileTabRoute::class to PROFILE,
       )

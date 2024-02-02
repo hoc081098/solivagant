@@ -71,7 +71,7 @@ internal fun FeedTab(
         Spacer(modifier = Modifier.height(16.dp))
 
         ElevatedButton(onClick = remember { viewModel::navigateToNestedFeed }) {
-          Text(text = "Feed")
+          Text(text = "To nested feed")
         }
       }
     }
