@@ -39,7 +39,11 @@ internal class StackEntry<T : BaseRoute> private constructor(
       idGenerator: () -> String,
     ): StackEntry<T> {
       @Suppress("UNCHECKED_CAST")
-      val destination = destinations.first { it.id == route.destinationId } as ContentDestination<T>
+      val destination = destinations.find { it.id == route.destinationId } as? ContentDestination<T>
+        ?: error(
+          "Can not find ContentDestination for route $route." +
+            "You must add a ContentDestination to the NavHost(destinations = ...).",
+        )
 
       return StackEntry(
         id = Id(idGenerator()),

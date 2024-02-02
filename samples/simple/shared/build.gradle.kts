@@ -41,7 +41,7 @@ kotlin {
     iosSimulatorArm64(),
   ).forEach { iosTarget ->
     iosTarget.binaries.framework {
-      baseName = "SolivagantSimpleSampleAppShared"
+      baseName = "SimpleSolivagantSampleAppShared"
       isStatic = true
     }
   }

@@ -14,13 +14,13 @@ internal class Stack private constructor(
   initialStack: List<StackEntry<*>>,
   private val destinations: List<ContentDestination<*>>,
   private val onStackEntryRemoved: (StackEntry.Id) -> Unit,
+  private val getHostLifecycleState: () -> Lifecycle.State,
   private val idGenerator: () -> String,
 ) {
   @Suppress("MemberNameEqualsClassName")
   private val stack = ArrayDeque<StackEntry<*>>(@Suppress("MagicNumber") 20).also {
     it.addAll(initialStack)
   }
-  internal var hostLifecycleState: Lifecycle.State = Lifecycle.State.INITIALIZED
 
   val id: DestinationId<*> get() = rootEntry.destinationId
   val rootEntry: StackEntry<*> get() = stack.first()
@@ -59,7 +59,7 @@ internal class Stack private constructor(
       entry(
         route = route,
         destinations = destinations,
-        hostLifecycleState = hostLifecycleState,
+        hostLifecycleState = getHostLifecycleState(),
         idGenerator = idGenerator,
       ).apply {
         lifecycleOwner.maxLifecycle = Lifecycle.State.CREATED
@@ -110,7 +110,6 @@ internal class Stack private constructor(
   }
 
   internal fun handleLifecycleEvent(event: Lifecycle.Event) {
-    hostLifecycleState = event.targetState
     stack.forEach { it.lifecycleOwner.handleLifecycleEvent(event) }
   }
 
@@ -118,20 +117,21 @@ internal class Stack private constructor(
     fun createWith(
       root: NavRoot,
       destinations: List<ContentDestination<*>>,
-      hostLifecycleState: Lifecycle.State,
       onStackEntryRemoved: (StackEntry.Id) -> Unit,
+      getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
       val rootEntry = entry(
         route = root,
         destinations = destinations,
         idGenerator = idGenerator,
-        hostLifecycleState = hostLifecycleState,
+        hostLifecycleState = getHostLifecycleState(),
       )
       return Stack(
         initialStack = listOf(rootEntry),
         destinations = destinations,
         onStackEntryRemoved = onStackEntryRemoved,
+        getHostLifecycleState = getHostLifecycleState,
         idGenerator = idGenerator,
       )
     }
@@ -139,8 +139,8 @@ internal class Stack private constructor(
     fun fromState(
       bundle: Map<String, ArrayList<out Any>>,
       destinations: List<ContentDestination<*>>,
-      hostLifecycleState: Lifecycle.State,
       onStackEntryRemoved: (StackEntry.Id) -> Unit,
+      getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
       @Suppress("UNCHECKED_CAST")
@@ -152,13 +152,14 @@ internal class Stack private constructor(
         entry(
           route = routes[index],
           destinations = destinations,
-          hostLifecycleState = hostLifecycleState,
+          hostLifecycleState = getHostLifecycleState(),
         ) { id }
       }
       return Stack(
         initialStack = entries,
         destinations = destinations,
         onStackEntryRemoved = onStackEntryRemoved,
+        getHostLifecycleState = getHostLifecycleState,
         idGenerator = idGenerator,
       )
     }
