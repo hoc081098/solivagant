@@ -67,11 +67,7 @@ fun SimpleSolivagantSampleApp(
     {
         isSelected, item ->
       if (isSelected) {
-        // If the current tab is already selected,
-        // reset to the root of the tab if not already there
-        if (currentRoute !is NavRoot) {
-          navigator.resetToRoot(root = item.root)
-        }
+        // TODO: Handle re-selection of the same tab
       } else {
         // Switch to the new tab if it is not already selected
         navigator.navigateToRoot(
