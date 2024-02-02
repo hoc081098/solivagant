@@ -2,23 +2,6 @@
 
 ## Compose Multiplatform Navigation - Pragmatic, type safety navigation for Compose Multiplatform. Based on [Freeletics Khonshu Navigation](https://freeletics.github.io/khonshu/navigation/get-started/).
 
-- Integrate with `Jetpack Compose` and `Compose Multiplatform` seamlessly.
-
-- Integrate with [kmp-viewmodel](https://github.com/hoc081098/kmp-viewmodel) library seamlessly
-  - Stack entry scoped `ViewModel`, exists as long as the
-    stack entry is on the navigation stack, including the configuration changes on `Android`.
-  - Supports `SavedStateHandle`, used to save and restore data over configuration changes
-    or process death on `Android`.
-
-- Type safety navigation, easy to pass data between destinations.
-
-- Supports Multi-Backstacks, this is most commonly used in apps that use bottom navigation to
-  separate the back stack of each tab.
-  See [Freeletics Khonshu Navigation - Multiple back stacks](https://freeletics.github.io/khonshu/navigation/back-stacks/).
-
-- Supports `Lifecycle` events, similar to `AndroidX Lifecycle` library.
-
-
 [![maven-central](https://img.shields.io/maven-central/v/io.github.hoc081098/solivagant-navigation)](https://search.maven.org/search?q=g:io.github.hoc081098%20solivagant-navigation)
 [![codecov](https://codecov.io/gh/hoc081098/solivagant/branch/master/graph/badge.svg?token=jBFg12osvP)](https://codecov.io/gh/hoc081098/solivagant)
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
@@ -40,6 +23,34 @@
 ![badge][badge-tvos]
 ![badge][badge-apple-silicon]
 
+- Integrates with `Jetbrains Compose Multiplatform` seamlessly and easily.
+
+- Integrates with [**kmp-viewmodel**](https://github.com/hoc081098/kmp-viewmodel) library seamlessly and smoothly
+  - Stack entry scoped `ViewModel`, exists as long as the
+    stack entry is on the navigation stack, including the configuration changes on `Android`.
+
+  - Supports `SavedStateHandle`, used to save and restore data over configuration changes
+    or process death on `Android`.
+
+- The **navigation stack state** is saved and restored automatically over configuration changes and process
+  death on `Android`.
+  On other platforms, you can use a support class provided by this library to store the navigation stack state
+  as long as you want.
+
+- **Type safety navigation**, easy to pass data between destinations.
+  No more `String` route and dynamic query parameters.
+  The `Solivagant` library uses `NavRoute`s and `NavRoot`s to define routes that can be navigated to.
+  Arguments can be defined as part of the route (a.ka. properties of the route class) and are type safe.
+  Each `NavRoute` and `NavRoot` has a corresponding `NavDestination` that describes the UI (a.k.a `@Composable`) of the
+  route.
+
+- Supports **Multi-Backstacks**, this is most commonly used in apps that use bottom navigation to
+  separate the back stack of each tab.
+  See [Freeletics Khonshu Navigation - Multiple back stacks](https://freeletics.github.io/khonshu/navigation/back-stacks/)
+  for more details.
+
+- Supports `LifecycleOwner`, `Lifecycle` events and states, similar to `AndroidX Lifecycle` library.
+
 <p align="center">
     <img src="https://github.com/hoc081098/solivagant/raw/master/logo.png" width="400">
 </p>
@@ -49,7 +60,7 @@
 
 ## Credits
 
-- Most of code in `solivagant-khonshu-navigation-core` and `solivagant-navigation` libraries is
+- Most of the code in `solivagant-khonshu-navigation-core` and `solivagant-navigation` libraries is
   taken from [Freeletics Khonshu Navigation](https://freeletics.github.io/khonshu/navigation/get-started/),
   and ported to `Kotlin Multiplatform` and `Compose Multiplatform`.
 
@@ -86,25 +97,33 @@ implementation("io.github.hoc081098:solivagant-navigation:0.0.1-alpha01")
 
 ## Getting started
 
-- The concept is similar to `Freeletics Navigation` library, so you can read
-  the [Freeletics Khonshu Navigation](https://freeletics.github.io/khonshu/navigation/get-started/) to understand
-  the concept.
+The library is ported from `Freeletics Khonshu Navigation` library, so the concepts is similar.
+You can read the [Freeletics Khonshu Navigation](https://freeletics.github.io/khonshu/navigation/get-started/) to
+understand
+the concepts.
 
 ### 1. Create `NavRoot`s, `NavRoute`s
 
 ```kotlin
 @Immutable
 @Parcelize
-data object StartScreenRoute : NavRoute, NavRoot
+data object StartScreenRoute : NavRoot
 
 @Immutable
 @Parcelize
 data object SearchProductScreenRoute : NavRoute
 ```
 
+> [!NOTE]
+> `@Parcelize` is provided by `kmp-viewmodel-parcelize` library.
+> See [kmp-viewmodel-parcelize](https://github.com/hoc081098/kmp-viewmodel) for more details.
+
 ### 2. Create `NavDestination`s along with `Composable`s and `ViewModel`s
 
+- `StartScreen`: `StartScreenDestination`, `@Composable fun StartScreen()` and `StartViewModel`
+
 ```kotlin
+
 @JvmField
 val StartScreenDestination: NavDestination =
   ScreenDestination<StartScreenRoute> { StartScreen() }
@@ -126,6 +145,9 @@ class StartViewModel(
   internal fun navigateToSearchProductScreen() = navigator.navigateTo(SearchProductScreenRoute)
 }
 ```
+
+- `SearchProductScreen`: `SearchProductScreenDestination`, `@Composable fun SearchProductsScreen()`
+  and `SearchProductsViewModel`
 
 ```kotlin
 @JvmField
@@ -155,6 +177,8 @@ class SearchProductsViewModel(
 
 ### 3. Setup
 
+- Gather all `NavDestination`s in a set and use `NavEventNavigator` to trigger navigation actions.
+
 ```kotlin
 @Stable
 private val AllDestinations: ImmutableSet<NavDestination> = persistentSetOf(
@@ -170,7 +194,9 @@ fun MyAwesomeApp(
   navigator: NavEventNavigator,
   modifier: Modifier = Modifier,
 ) {
-  var currentRoute: BaseRoute? by remember { mutableStateOf(null) }
+  // BaseRoute is the parent interface of NavRoute and NavRoot.
+  // It implements Parcelable, so it can be used with rememberSavable.
+  var currentRoute: BaseRoute? by rememberSavable { mutableStateOf(null) }
 
   NavHost(
     modifier = modifier,
@@ -183,6 +209,8 @@ fun MyAwesomeApp(
   )
 }
 ```
+
+- To display `MyAwesomeApp` on `Android`, use `setContent` in `Activity` or `Fragment`.
 
 ```kotlin
 class MainActivity : ComponentActivity() {
@@ -200,7 +228,11 @@ class MainActivity : ComponentActivity() {
 }
 ```
 
-### 4. Use `NavEventNavigator` in `ViewModel`s
+- To display `MyAwesomeApp` on `Desktop`, ... TBD ...
+
+- To display `MyAwesomeApp` on `iOS/tvOS/watchOS`, ... TBD ...
+
+### 4.Use `NavEventNavigator` in `ViewModel` s or in `@Composable` s to trigger navigation actions
 
 ```kotlin
 // navigate to the destination that the given route leads to
@@ -216,14 +248,24 @@ navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 
 ## Samples
 
-- [Samples sample](https://github.com/hoc081098/solivagant/tree/master/samples/sample): a complete sample using `Compose Multiplatform (Android, Desktop, iOS)`
+- [Complete sample](https://github.com/hoc081098/solivagant/tree/master/samples/sample): a complete sample
+  that demonstrates how to use `solivagant-navigation` in `Compose Multiplatform (Android, Desktop, iOS)`
   - `solivagant-navigation` for navigation in Compose Multiplatform.
   - `kmp-viewmodel` to share `ViewModel` and `SavedStateHandle`.
   - `Koin DI`.
 
+- [Simple sample](https://github.com/hoc081098/solivagant/tree/master/samples/simple): a simple sample
+  that demonstrates how to use `solivagant-navigation` in `Compose Multiplatform (Android, Desktop, iOS)` to
+  switch between tabs (bottom navigation), but can keep the back stack state of each tab.
+  Basically, it's a **multi-backstack** demo sample.
+
 ## Roadmap
 
 - [ ] Add more tests
+- [ ] Add more samples
+- [ ] Add docs
+- [ ] Review supported targets
+- [ ] Polish and improve the implementation and the public API
 - [ ] Support transition when navigating
 
 ## License
