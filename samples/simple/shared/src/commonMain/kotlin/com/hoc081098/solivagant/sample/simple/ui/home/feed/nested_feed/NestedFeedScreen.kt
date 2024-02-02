@@ -56,7 +56,8 @@ internal fun NestedFeedScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-          text = "savableCount=$savableCount, savedStateHandleCount=$savedStateHandleCount, lifecycleState=$lifecycleState",
+          text = "savableCount=$savableCount, savedStateHandleCount=$savedStateHandleCount, " +
+              "lifecycleState=$lifecycleState",
           style = MaterialTheme.typography.titleMedium,
           textAlign = TextAlign.Center,
         )
