@@ -23,7 +23,7 @@ sample-android-target = "34"
 # the Android compileSdkVersion to use in sample
 sample-android-compile = "34"
 
-jetbrains-compose = "1.5.11"
+jetbrains-compose = "1.5.12"
 jetbrains-compose-compiler = "1.5.7.1"
 
 napier = "2.7.1"
@@ -31,7 +31,7 @@ flowExt = "0.7.5"
 koin = "3.5.3"
 koin-compose = "1.1.2"
 koin-androidx-compose = "3.5.3"
-compose-rules-detekt = "0.3.10"
+compose-rules-detekt = "0.3.11"
 
 androidx-lifecycle = "2.7.0"
 androidx-annotation = "1.7.1"
@@ -39,20 +39,20 @@ androidx-activity = "1.8.2"
 androidx-appcompat = "1.6.1"
 androidx-core-ktx = "1.12.0"
 androidx-navigation = "2.7.6"
-android-gradle = "8.2.1"
+android-gradle = "8.2.2"
 
-coil = "3.0.0-alpha03"
-ktor = "2.3.7"
+coil = "3.0.0-alpha04"
+ktor = "2.3.8"
 
 kmp-viewmodel = "0.6.2-SNAPSHOT"
 uuid = "0.8.2"
 
-spotless = "6.23.3"
-detekt = "1.23.4"
+spotless = "6.25.0"
+detekt = "1.23.5"
 
 kotlinx-kover = "0.7.5"
 dokka = "1.9.10"
-kotlinx-binary-compatibility-validator = "0.13.2"
+kotlinx-binary-compatibility-validator = "0.14.0"
 poko = "0.15.2"
 
 vanniktech-maven-publish = "0.27.0"
