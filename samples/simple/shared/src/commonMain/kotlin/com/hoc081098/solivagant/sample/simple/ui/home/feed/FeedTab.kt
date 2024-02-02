@@ -44,7 +44,7 @@ internal fun FeedTab(
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
         Text(
-          text = "Login viewModel=${viewModel.debugDescription}, route=${viewModel.route}",
+          text = "Feed: viewModel=${viewModel.debugDescription}, route=${viewModel.route}",
           style = MaterialTheme.typography.headlineSmall,
           textAlign = TextAlign.Center,
         )

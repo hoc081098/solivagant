@@ -44,7 +44,7 @@ internal fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
         Text(
-          text = "Login viewModel=${viewModel.debugDescription}, route=${viewModel.route}",
+          text = "Login: viewModel=${viewModel.debugDescription}, route=${viewModel.route}",
           style = MaterialTheme.typography.headlineSmall,
           textAlign = TextAlign.Center,
         )
