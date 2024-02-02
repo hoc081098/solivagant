@@ -1,3 +1,4 @@
+@file:Suppress("PackageNaming")
 package com.hoc081098.solivagant.sample.simple.ui.home.feed.nested_feed
 
 import androidx.compose.foundation.layout.Box
