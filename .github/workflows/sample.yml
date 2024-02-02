@@ -15,7 +15,7 @@ env:
   GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.daemon=false -Dkotlin.incremental=false -XX:+UseParallelGC -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
 
 jobs:
-  android:
+  samples-sample-android:
     strategy:
       matrix:
         os: [ macos-11 ]
@@ -60,7 +60,7 @@ jobs:
 
       - name: Build
         run: ./gradlew :samples:sample:app:assembleDebug --stacktrace
-  ios:
+  samples-sample-ios:
     strategy:
       matrix:
         os: [ macos-12 ]
