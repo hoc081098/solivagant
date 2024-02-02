@@ -18,17 +18,6 @@
 
 - Supports `Lifecycle` events, similar to `AndroidX Lifecycle` library.
 
-## Note: This library is still in alpha, so the API may change in the future.
-
-## Credits
-
-- Most of code in `solivagant-khonshu-navigation-core` and `solivagant-navigation` libraries is
-  taken from [Freeletics Khonshu Navigation](https://freeletics.github.io/khonshu/navigation/get-started/),
-  and ported to `Kotlin Multiplatform` and `Compose Multiplatform`.
-
-- The `solivagant-lifecycle` library is inspired
-  by [Essenty Lifecycle](https://github.com/arkivanov/Essenty?tab=readme-ov-file#lifecycle),
-  and [AndroidX Lifecycle](https://developer.android.com/jetpack/androidx/releases/lifecycle).
 
 [![maven-central](https://img.shields.io/maven-central/v/io.github.hoc081098/solivagant-navigation)](https://search.maven.org/search?q=g:io.github.hoc081098%20solivagant-navigation)
 [![codecov](https://codecov.io/gh/hoc081098/solivagant/branch/master/graph/badge.svg?token=jBFg12osvP)](https://codecov.io/gh/hoc081098/solivagant)
@@ -54,6 +43,19 @@
 <p align="center">
     <img src="https://github.com/hoc081098/solivagant/raw/master/logo.png" width="400">
 </p>
+
+> [!NOTE]
+> This library is still in alpha, so the API may change in the future.
+
+## Credits
+
+- Most of code in `solivagant-khonshu-navigation-core` and `solivagant-navigation` libraries is
+  taken from [Freeletics Khonshu Navigation](https://freeletics.github.io/khonshu/navigation/get-started/),
+  and ported to `Kotlin Multiplatform` and `Compose Multiplatform`.
+
+- The `solivagant-lifecycle` library is inspired
+  by [Essenty Lifecycle](https://github.com/arkivanov/Essenty?tab=readme-ov-file#lifecycle),
+  and [AndroidX Lifecycle](https://developer.android.com/jetpack/androidx/releases/lifecycle).
 
 ## Author: [Petrus Nguyễn Thái Học](https://github.com/hoc081098)
 
