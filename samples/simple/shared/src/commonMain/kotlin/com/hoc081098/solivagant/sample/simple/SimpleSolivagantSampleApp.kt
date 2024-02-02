@@ -65,7 +65,7 @@ fun SimpleSolivagantSampleApp(
 
   val onClickNavigationBarItem: (Boolean, BottomNavigationInfo) -> Unit = remember(navigator) {
     {
-        isSelected, item ->
+        isSelected: Boolean, item: BottomNavigationInfo ->
       if (isSelected) {
         // TODO: Handle re-selection of the same tab
       } else {
