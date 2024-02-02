@@ -4,6 +4,7 @@ import com.hoc081098.solivagant.navigation.NavEventNavigator
 import com.hoc081098.solivagant.sample.simple.ui.home.feed.FeedTabViewModel
 import com.hoc081098.solivagant.sample.simple.ui.home.feed.nested_feed.NestedFeedViewModel
 import com.hoc081098.solivagant.sample.simple.ui.home.notifications.NotificationsTabViewModel
+import com.hoc081098.solivagant.sample.simple.ui.home.notifications.nested_notifications.NestedNotificationsViewModel
 import com.hoc081098.solivagant.sample.simple.ui.home.profile.ProfileTabViewModel
 import com.hoc081098.solivagant.sample.simple.ui.login.LoginViewModel
 import org.koin.core.context.startKoin
@@ -16,9 +17,13 @@ private val CommonModule = module {
   singleOf(::NavEventNavigator)
 
   factoryOf(::LoginViewModel)
+
   factoryOf(::FeedTabViewModel)
   factoryOf(::NestedFeedViewModel)
+
   factoryOf(::NotificationsTabViewModel)
+  factoryOf(::NestedNotificationsViewModel)
+
   factoryOf(::ProfileTabViewModel)
 }
 
