@@ -17,8 +17,8 @@ internal class ProfileTabViewModel(
   val countStateFlow = savedStateHandle.safe.getStateFlow(COUNTER_KEY)
 
   init {
-    Napier.d("${debugDescription}::init")
-    addCloseable { Napier.d("${debugDescription}::close") }
+    Napier.d("$debugDescription::init")
+    addCloseable { Napier.d("$debugDescription::close") }
   }
 
   fun increment() = savedStateHandle.safe { it[COUNTER_KEY] = it[COUNTER_KEY] + 1 }

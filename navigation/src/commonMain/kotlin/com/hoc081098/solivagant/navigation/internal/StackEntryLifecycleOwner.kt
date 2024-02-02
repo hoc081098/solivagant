@@ -136,6 +136,6 @@ internal class StackEntryLifecycleOwner(
 
   override fun toString(): String =
     "StackEntryLifecycleOwner(hostLifecycleState=$hostLifecycleState, " +
-        "maxLifecycle=$maxLifecycle, " +
-        "lifecycle=$lifecycle)"
+      "maxLifecycle=$maxLifecycle, " +
+      "lifecycle=$lifecycle)"
 }

@@ -18,8 +18,8 @@ internal class FeedTabViewModel(
   val countStateFlow = savedStateHandle.safe.getStateFlow(COUNTER_KEY)
 
   init {
-    Napier.d("${debugDescription}::init")
-    addCloseable { Napier.d("${debugDescription}::close") }
+    Napier.d("$debugDescription::init")
+    addCloseable { Napier.d("$debugDescription::close") }
   }
 
   fun navigateToNestedFeed() = navigator.navigateTo(NestedFeedScreenRoute)
