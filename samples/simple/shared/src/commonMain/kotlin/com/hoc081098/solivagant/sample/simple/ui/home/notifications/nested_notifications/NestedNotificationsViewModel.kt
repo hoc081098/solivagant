@@ -9,6 +9,7 @@ import com.hoc081098.solivagant.navigation.NavEventNavigator
 import com.hoc081098.solivagant.navigation.requireRoute
 import com.hoc081098.solivagant.sample.simple.common.COUNTER_KEY
 import com.hoc081098.solivagant.sample.simple.common.debugDescription
+import com.hoc081098.solivagant.sample.simple.ui.detail.DetailScreenRoute
 import io.github.aakira.napier.Napier
 
 internal class NestedNotificationsViewModel(
@@ -24,4 +25,6 @@ internal class NestedNotificationsViewModel(
   }
 
   fun increment() = savedStateHandle.safe { it[COUNTER_KEY] = it[COUNTER_KEY] + 1 }
+
+  fun navigateToDetail() = navigator.navigateTo(DetailScreenRoute(id = "id-from-nested-notifications"))
 }

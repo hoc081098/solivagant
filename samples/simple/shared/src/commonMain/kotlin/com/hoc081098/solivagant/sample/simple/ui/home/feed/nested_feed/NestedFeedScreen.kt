@@ -15,10 +15,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
@@ -38,6 +40,7 @@ internal fun NestedFeedScreen(
 
   Surface(
     modifier = modifier.fillMaxSize(),
+    color = Color.Magenta.copy(alpha = 0.2f),
   ) {
     Box(
       modifier = Modifier.fillMaxSize(),
@@ -57,7 +60,7 @@ internal fun NestedFeedScreen(
 
         Text(
           text = "savableCount=$savableCount, savedStateHandleCount=$savedStateHandleCount, " +
-              "lifecycleState=$lifecycleState",
+            "lifecycleState=$lifecycleState",
           style = MaterialTheme.typography.titleMedium,
           textAlign = TextAlign.Center,
         )
@@ -75,7 +78,7 @@ internal fun NestedFeedScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ElevatedButton(onClick = {}) {
+        ElevatedButton(onClick = remember { viewModel::navigateToDetail }) {
           Text(text = "To detail")
         }
       }

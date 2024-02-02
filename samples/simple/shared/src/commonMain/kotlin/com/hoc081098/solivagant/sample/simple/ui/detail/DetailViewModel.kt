@@ -1,6 +1,4 @@
-@file:Suppress("PackageNaming")
-
-package com.hoc081098.solivagant.sample.simple.ui.home.feed.nested_feed
+package com.hoc081098.solivagant.sample.simple.ui.detail
 
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.ViewModel
@@ -9,14 +7,13 @@ import com.hoc081098.solivagant.navigation.NavEventNavigator
 import com.hoc081098.solivagant.navigation.requireRoute
 import com.hoc081098.solivagant.sample.simple.common.COUNTER_KEY
 import com.hoc081098.solivagant.sample.simple.common.debugDescription
-import com.hoc081098.solivagant.sample.simple.ui.detail.DetailScreenRoute
 import io.github.aakira.napier.Napier
 
-internal class NestedFeedViewModel(
-  private val navigator: NavEventNavigator,
+internal class DetailViewModel(
   private val savedStateHandle: SavedStateHandle,
+  private val navigator: NavEventNavigator,
 ) : ViewModel() {
-  val route = savedStateHandle.requireRoute<NestedFeedScreenRoute>()
+  val route = savedStateHandle.requireRoute<DetailScreenRoute>()
   val countStateFlow = savedStateHandle.safe.getStateFlow(COUNTER_KEY)
 
   init {
@@ -26,5 +23,5 @@ internal class NestedFeedViewModel(
 
   fun increment() = savedStateHandle.safe { it[COUNTER_KEY] = it[COUNTER_KEY] + 1 }
 
-  fun navigateToDetail() = navigator.navigateTo(DetailScreenRoute(id = "id-from-nested-feed"))
+  fun navigateBack() = navigator.navigateBack()
 }

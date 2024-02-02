@@ -1,4 +1,4 @@
-package com.hoc081098.solivagant.sample.simple.ui.home.feed
+package com.hoc081098.solivagant.sample.simple.ui.detail
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +18,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
@@ -28,9 +27,10 @@ import com.hoc081098.solivagant.lifecycle.compose.currentStateAsState
 import com.hoc081098.solivagant.sample.simple.common.debugDescription
 
 @Composable
-internal fun FeedTab(
+internal fun DetailScreen(
+  route: DetailScreenRoute,
   modifier: Modifier = Modifier,
-  viewModel: FeedTabViewModel = koinKmpViewModel(),
+  viewModel: DetailViewModel = koinKmpViewModel(),
 ) {
   var savableCount by rememberSaveable { mutableIntStateOf(0) }
   val savedStateHandleCount by viewModel.countStateFlow.collectAsStateWithLifecycle()
@@ -38,7 +38,6 @@ internal fun FeedTab(
 
   Surface(
     modifier = modifier.fillMaxSize(),
-    color = Color.Red.copy(alpha = 0.2f),
   ) {
     Box(
       modifier = Modifier.fillMaxSize(),
@@ -49,7 +48,7 @@ internal fun FeedTab(
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
         Text(
-          text = "Feed: viewModel=${viewModel.debugDescription}, route=${viewModel.route}",
+          text = "Detail: viewModel=${viewModel.debugDescription}, route=$route",
           style = MaterialTheme.typography.headlineSmall,
           textAlign = TextAlign.Center,
         )
@@ -76,8 +75,8 @@ internal fun FeedTab(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ElevatedButton(onClick = remember { viewModel::navigateToNestedFeed }) {
-          Text(text = "To nested feed")
+        ElevatedButton(onClick = remember { viewModel::navigateBack }) {
+          Text(text = "Back")
         }
       }
     }

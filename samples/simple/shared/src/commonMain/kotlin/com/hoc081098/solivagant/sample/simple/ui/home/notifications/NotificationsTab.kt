@@ -18,6 +18,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
@@ -37,6 +38,7 @@ internal fun NotificationsTab(
 
   Surface(
     modifier = modifier.fillMaxSize(),
+    color = Color.Yellow.copy(alpha = 0.2f),
   ) {
     Box(
       modifier = Modifier.fillMaxSize(),
@@ -56,7 +58,7 @@ internal fun NotificationsTab(
 
         Text(
           text = "savableCount=$savableCount, savedStateHandleCount=$savedStateHandleCount, " +
-              "lifecycleState=$lifecycleState",
+            "lifecycleState=$lifecycleState",
           style = MaterialTheme.typography.titleMedium,
           textAlign = TextAlign.Center,
         )

@@ -1,6 +1,7 @@
 package com.hoc081098.solivagant.sample.simple
 
 import com.hoc081098.solivagant.navigation.NavEventNavigator
+import com.hoc081098.solivagant.sample.simple.ui.detail.DetailViewModel
 import com.hoc081098.solivagant.sample.simple.ui.home.feed.FeedTabViewModel
 import com.hoc081098.solivagant.sample.simple.ui.home.feed.nested_feed.NestedFeedViewModel
 import com.hoc081098.solivagant.sample.simple.ui.home.notifications.NotificationsTabViewModel
@@ -25,6 +26,8 @@ private val CommonModule = module {
   factoryOf(::NestedNotificationsViewModel)
 
   factoryOf(::ProfileTabViewModel)
+
+  factoryOf(::DetailViewModel)
 }
 
 expect fun setupNapier()

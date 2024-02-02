@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -55,7 +56,7 @@ internal fun ProfileTab(
 
         Text(
           text = "savableCount=$savableCount, savedStateHandleCount=$savedStateHandleCount, " +
-              "lifecycleState=$lifecycleState",
+            "lifecycleState=$lifecycleState",
           style = MaterialTheme.typography.titleMedium,
           textAlign = TextAlign.Center,
         )
@@ -73,8 +74,8 @@ internal fun ProfileTab(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ElevatedButton(onClick = {}) {
-          Text(text = "To nested profile")
+        ElevatedButton(onClick = remember { viewModel::navigateToDetail }) {
+          Text(text = "To detail")
         }
       }
     }
