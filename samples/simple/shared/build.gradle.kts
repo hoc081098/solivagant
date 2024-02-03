@@ -134,24 +134,6 @@ android {
   }
 }
 
-workaroundForIssueKT51970()
-
-// Workaround for https://youtrack.jetbrains.com/issue/KT-51970
-fun Project.workaroundForIssueKT51970() {
-  afterEvaluate {
-    afterEvaluate {
-      tasks.configureEach {
-        if (
-          name.startsWith("compile") &&
-          name.endsWith("KotlinMetadata")
-        ) {
-          enabled = false
-        }
-      }
-    }
-  }
-}
-
 // Monitor GC performance: https://kotlinlang.org/docs/native-memory-manager.html#monitor-gc-performance
 kotlin.targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java) {
   binaries.all {
