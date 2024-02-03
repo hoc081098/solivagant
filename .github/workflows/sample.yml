@@ -120,7 +120,7 @@ jobs:
       - name: Build iosApp scheme
         uses: sersoft-gmbh/xcodebuild-action@v2
         with:
-          workspace: samples/sample/iosApp/iosApp.xcworkspace
+          project: samples/sample/iosApp/iosApp.xcodeproj
           scheme: iosApp
           action: build
           sdk: iphonesimulator
