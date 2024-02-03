@@ -115,8 +115,8 @@ data object SearchProductScreenRoute : NavRoute
 ```
 
 > [!NOTE]
-> `@Parcelize` is provided by `kmp-viewmodel-parcelize` library.
-> See [kmp-viewmodel-parcelize](https://github.com/hoc081098/kmp-viewmodel) for more details.
+> `@Parcelize` is provided by `kmp-viewmodel-savedstate` library.
+> See [kmp-viewmodel-savedstate](https://github.com/hoc081098/kmp-viewmodel?tab=readme-ov-file#2-kmp-viewmodel-savedstate-library) for more details.
 
 ### 2. Create `NavDestination`s along with `Composable`s and `ViewModel`s
 
