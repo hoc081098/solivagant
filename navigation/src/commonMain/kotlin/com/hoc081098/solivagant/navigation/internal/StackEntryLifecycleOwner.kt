@@ -1,22 +1,183 @@
 package com.hoc081098.solivagant.navigation.internal
 
 import com.hoc081098.solivagant.lifecycle.Lifecycle
+import com.hoc081098.solivagant.lifecycle.Lifecycle.Event
+import com.hoc081098.solivagant.lifecycle.Lifecycle.State
 import com.hoc081098.solivagant.lifecycle.LifecycleOwner
-import com.hoc081098.solivagant.lifecycle.LifecycleRegistry
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+
+private class StackEntryLifecycle : Lifecycle {
+  private val _currentStateFlow = MutableStateFlow(State.INITIALIZED)
+  private var _state: State = _currentStateFlow.value
+    set(value) {
+      field = value
+      _currentStateFlow.value = value
+    }
+  private var observers: List<Lifecycle.Observer> = emptyList()
+
+  override val currentStateFlow: StateFlow<State>
+    get() = _currentStateFlow.asStateFlow()
+
+  override val currentState: State
+    get() = _state
+
+  override fun subscribe(observer: Lifecycle.Observer): Lifecycle.Cancellable {
+    observers += observer
+
+    val state = _state
+    if (state >= State.CREATED) {
+      observer.onStateChanged(Event.ON_CREATE)
+    }
+    if (state >= State.STARTED) {
+      observer.onStateChanged(Event.ON_START)
+    }
+    if (state >= State.RESUMED) {
+      observer.onStateChanged(Event.ON_RESUME)
+    }
+
+    return Lifecycle.Cancellable { observers -= observer }
+  }
+
+  fun moveTo(state: State) {
+    when (state) {
+      State.INITIALIZED -> checkState(State.INITIALIZED)
+      State.CREATED -> moveToCreated()
+      State.DESTROYED -> moveToDestroyed()
+      State.STARTED -> moveToStarted()
+      State.RESUMED -> moveToResumed()
+    }
+  }
+
+  override fun toString(): String = "StackEntryLifecycle(currentState=$_state)"
+
+  //region Move to state
+  private fun moveToResumed() {
+    when (currentState) {
+      State.INITIALIZED -> {
+        onCreate()
+        onStart()
+        onResume()
+      }
+
+      State.CREATED -> {
+        onStart()
+        onResume()
+      }
+
+      State.STARTED -> onResume()
+      State.RESUMED -> Unit
+      State.DESTROYED -> error("Can't move to RESUMED state from DESTROYED")
+    }
+  }
+
+  private fun moveToStarted() {
+    when (currentState) {
+      State.INITIALIZED -> {
+        onCreate()
+        onStart()
+      }
+
+      State.CREATED -> onStart()
+      State.STARTED -> Unit
+      State.RESUMED -> onPause()
+      State.DESTROYED -> error("Can't move to STARTED state from DESTROYED")
+    }
+  }
+
+  private fun moveToCreated() {
+    when (currentState) {
+      State.DESTROYED -> onCreate()
+      State.INITIALIZED -> onCreate()
+      State.CREATED -> Unit
+      State.STARTED -> onStop()
+      State.RESUMED -> {
+        onPause()
+        onStop()
+      }
+    }
+  }
+
+  private fun moveToDestroyed() {
+    when (currentState) {
+      State.DESTROYED -> Unit
+      State.INITIALIZED -> {
+        onCreate()
+        onDestroy()
+      }
+
+      State.CREATED -> onDestroy()
+      State.STARTED -> {
+        onStop()
+        onDestroy()
+      }
+
+      State.RESUMED -> {
+        onPause()
+        onStop()
+        onDestroy()
+      }
+    }
+  }
+  //endregion
+
+  //region Copy from LifecycleRegistryImpl, but remove `checkState` for `onCreate`.
+  private fun onCreate() {
+    _state = State.CREATED
+    observers.forEach { it.onStateChanged(Event.ON_CREATE) }
+  }
+
+  private fun onStart() {
+    checkState(State.CREATED)
+    _state = State.STARTED
+    observers.forEach { it.onStateChanged(Event.ON_START) }
+  }
+
+  private fun onResume() {
+    checkState(State.STARTED)
+    _state = State.RESUMED
+    observers.forEach { it.onStateChanged(Event.ON_RESUME) }
+  }
+
+  private fun onPause() {
+    checkState(State.RESUMED)
+    _state = State.STARTED
+    observers.reversed().forEach { it.onStateChanged(Event.ON_PAUSE) }
+  }
+
+  private fun onStop() {
+    checkState(State.STARTED)
+    _state = State.CREATED
+    observers.asReversed().forEach { it.onStateChanged(Event.ON_STOP) }
+  }
+
+  private fun onDestroy() {
+    checkState(State.CREATED)
+    _state = State.DESTROYED
+    observers.asReversed().forEach { it.onStateChanged(Event.ON_DESTROY) }
+    observers = emptyList()
+  }
+
+  private fun checkState(required: State) {
+    check(_state == required) { "Expected state $required but was $_state" }
+  }
+  //endregion
+}
 
 internal class StackEntryLifecycleOwner(
-  private var hostLifecycleState: Lifecycle.State = Lifecycle.State.CREATED,
+  private var hostLifecycleState: State = State.CREATED,
 ) : LifecycleOwner {
-  internal var maxLifecycle: Lifecycle.State = Lifecycle.State.INITIALIZED
+  internal var maxLifecycle: State = State.INITIALIZED
     set(maxState) {
       field = maxState
       updateState()
     }
 
-  private val _lifecycle = LifecycleRegistry()
+  private val _lifecycle = StackEntryLifecycle()
   override val lifecycle: Lifecycle get() = _lifecycle
 
-  internal fun handleLifecycleEvent(event: Lifecycle.Event) {
+  internal fun handleLifecycleEvent(event: Event) {
     hostLifecycleState = event.targetState
     updateState()
   }
@@ -26,116 +187,17 @@ internal class StackEntryLifecycleOwner(
    */
   private fun updateState() {
     if (hostLifecycleState < maxLifecycle) {
-      moveTo(hostLifecycleState)
+      _lifecycle.moveTo(hostLifecycleState)
     } else {
-      moveTo(maxLifecycle)
+      _lifecycle.moveTo(maxLifecycle)
     }
   }
 
-  private fun moveTo(state: Lifecycle.State) {
-    when (state) {
-      Lifecycle.State.INITIALIZED -> Unit
-      Lifecycle.State.CREATED -> moveToCreated()
-      Lifecycle.State.DESTROYED -> moveToDestroyed()
-      Lifecycle.State.STARTED -> moveToStarted()
-      Lifecycle.State.RESUMED -> moveToResumed()
-    }
+  override fun toString(): String = buildString {
+    append("StackEntryLifecycleOwner(")
+    append("hostLifecycleState=$hostLifecycleState, ")
+    append("maxLifecycle=$maxLifecycle, ")
+    append("lifecycle=$lifecycle")
+    append(")")
   }
-
-  private fun moveToResumed() {
-    when (_lifecycle.currentState) {
-      Lifecycle.State.INITIALIZED -> {
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_CREATE)
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_START)
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_RESUME)
-      }
-
-      Lifecycle.State.CREATED -> {
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_START)
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_RESUME)
-      }
-
-      Lifecycle.State.STARTED ->
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_RESUME)
-
-      Lifecycle.State.RESUMED ->
-        Unit
-
-      Lifecycle.State.DESTROYED ->
-        Unit
-    }
-  }
-
-  private fun moveToStarted() {
-    when (_lifecycle.currentState) {
-      Lifecycle.State.INITIALIZED -> {
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_CREATE)
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_START)
-      }
-
-      Lifecycle.State.CREATED ->
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_START)
-
-      Lifecycle.State.STARTED ->
-        Unit
-
-      Lifecycle.State.RESUMED ->
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_PAUSE)
-
-      Lifecycle.State.DESTROYED ->
-        Unit
-    }
-  }
-
-  private fun moveToCreated() {
-    when (_lifecycle.currentState) {
-      Lifecycle.State.DESTROYED ->
-        Unit
-
-      Lifecycle.State.INITIALIZED ->
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_CREATE)
-
-      Lifecycle.State.CREATED ->
-        Unit
-
-      Lifecycle.State.STARTED ->
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_STOP)
-
-      Lifecycle.State.RESUMED -> {
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_PAUSE)
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_STOP)
-      }
-    }
-  }
-
-  private fun moveToDestroyed() {
-    when (_lifecycle.currentState) {
-      Lifecycle.State.DESTROYED ->
-        Unit
-
-      Lifecycle.State.INITIALIZED -> {
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_CREATE)
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_DESTROY)
-      }
-
-      Lifecycle.State.CREATED ->
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_DESTROY)
-
-      Lifecycle.State.STARTED -> {
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_STOP)
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_DESTROY)
-      }
-
-      Lifecycle.State.RESUMED -> {
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_PAUSE)
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_STOP)
-        _lifecycle.onStateChanged(Lifecycle.Event.ON_DESTROY)
-      }
-    }
-  }
-
-  override fun toString(): String =
-    "StackEntryLifecycleOwner(hostLifecycleState=$hostLifecycleState, " +
-      "maxLifecycle=$maxLifecycle, " +
-      "lifecycle=$lifecycle)"
 }
