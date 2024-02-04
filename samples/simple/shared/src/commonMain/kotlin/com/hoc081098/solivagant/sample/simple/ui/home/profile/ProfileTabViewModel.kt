@@ -13,12 +13,14 @@ import io.github.aakira.napier.Napier
 internal class ProfileTabViewModel(
   private val navigator: NavEventNavigator,
   private val savedStateHandle: SavedStateHandle,
+  intArg: Int,
+  stringArg: String,
 ) : ViewModel() {
   val route = savedStateHandle.requireRoute<ProfileTabRoute>()
   val countStateFlow = savedStateHandle.safe.getStateFlow(COUNTER_KEY)
 
   init {
-    Napier.d("$debugDescription::init")
+    Napier.d("$debugDescription::init with args: $intArg, $stringArg")
     addCloseable { Napier.d("$debugDescription::close") }
   }
 

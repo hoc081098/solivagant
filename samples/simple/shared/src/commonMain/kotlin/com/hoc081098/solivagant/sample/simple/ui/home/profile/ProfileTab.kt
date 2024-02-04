@@ -25,11 +25,14 @@ import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 import com.hoc081098.solivagant.lifecycle.compose.collectAsStateWithLifecycle
 import com.hoc081098.solivagant.lifecycle.compose.currentStateAsState
 import com.hoc081098.solivagant.sample.simple.common.debugDescription
+import org.koin.core.parameter.parametersOf
 
 @Composable
 internal fun ProfileTab(
   modifier: Modifier = Modifier,
-  viewModel: ProfileTabViewModel = koinKmpViewModel(),
+  viewModel: ProfileTabViewModel = koinKmpViewModel(
+    parameters = { parametersOf(1998, "hoc081098") },
+  ),
 ) {
   var savableCount by rememberSaveable { mutableIntStateOf(0) }
   val savedStateHandleCount by viewModel.countStateFlow.collectAsStateWithLifecycle()
