@@ -27,7 +27,7 @@ include(":lifecycle")
 include(":navigation")
 
 include(
-  ":samples:sample:app",
+  ":samples:sample:androidApp",
   ":samples:sample:shared",
   ":samples:sample:desktop",
 )
