@@ -94,18 +94,18 @@ internal class StoreViewModel(
     globalSavedStateHandle[SAVED_START_ROOT_KEY] = root
   }
 
-  fun createMultiStackNavigationExecutor(
+  fun getMultiStackNavigationExecutor(
     contentDestinations: List<ContentDestination<*>>,
     getHostLifecycleState: () -> Lifecycle.State,
   ): MultiStackNavigationExecutor =
     executor
       ?: MultiStackNavigationExecutor(
-        stack = createMultiStackIfNeeded(contentDestinations, getHostLifecycleState),
+        stack = getMultiStack(contentDestinations, getHostLifecycleState),
         viewModel = this,
         onRootChanged = ::setStartRoot,
       ).also { this.executor = it }
 
-  private fun createMultiStackIfNeeded(
+  private fun getMultiStack(
     contentDestinations: List<ContentDestination<*>>,
     getHostLifecycleState: () -> Lifecycle.State,
   ): MultiStack {

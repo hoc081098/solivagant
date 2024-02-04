@@ -41,7 +41,7 @@ fun main() {
 
     Window(
       onCloseRequest = ::exitApplication,
-      title = "Solivagant sample $lifecycleState",
+      title = "Simple Solivagant sample $lifecycleState",
       state = windowState,
     ) {
       CompositionLocalProvider(

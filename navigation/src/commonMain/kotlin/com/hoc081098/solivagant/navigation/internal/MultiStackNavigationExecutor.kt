@@ -1,6 +1,5 @@
 package com.hoc081098.solivagant.navigation.internal
 
-import androidx.compose.runtime.RememberObserver
 import androidx.compose.runtime.State
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.SavedStateHandleFactory
@@ -11,15 +10,12 @@ import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.Serializable
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.plus
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Suppress("TooManyFunctions")
@@ -27,8 +23,7 @@ internal class MultiStackNavigationExecutor(
   private val stack: MultiStack,
   private val viewModel: StoreViewModel,
   private val onRootChanged: (NavRoot) -> Unit,
-) : NavigationExecutor, RememberObserver {
-  private val scope = viewModel.viewModelScope + Job()
+) : NavigationExecutor {
   private val _lifecycleOwner = MutableStateFlow<LifecycleOwner?>(null)
 
   val visibleEntries: State<ImmutableList<StackEntry<*>>>
@@ -38,10 +33,11 @@ internal class MultiStackNavigationExecutor(
     get() = stack.canNavigateBack
 
   init {
-    _lifecycleOwner
-      .flatMapLatest { it?.lifecycle?.eventFlow ?: emptyFlow() }
-      .onEach(stack::handleLifecycleEvent)
-      .launchIn(scope)
+    viewModel.viewModelScope.launch(start = CoroutineStart.UNDISPATCHED) {
+      _lifecycleOwner
+        .flatMapLatest { it?.lifecycle?.eventFlow ?: emptyFlow() }
+        .collect(stack::handleLifecycleEvent)
+    }
   }
 
   override fun navigateTo(route: NavRoute) {
@@ -109,21 +105,7 @@ internal class MultiStackNavigationExecutor(
       ?: error("Route $destinationId not found on back stack")
   }
 
-  fun setLifecycleOwner(lifecycleOwner: LifecycleOwner) {
+  fun setLifecycleOwner(lifecycleOwner: LifecycleOwner?) {
     _lifecycleOwner.value = lifecycleOwner
   }
-
-  //region RememberObserver
-  override fun onAbandoned() {
-    _lifecycleOwner.value = null
-    scope.cancel()
-  }
-
-  override fun onForgotten() {
-    _lifecycleOwner.value = null
-    scope.cancel()
-  }
-
-  override fun onRemembered() = Unit
-  //endregion
 }
