@@ -109,20 +109,15 @@ private fun <T : BaseRoute> Show(
     .value // <-- This will cause the recomposition when the value is cleared.
     ?: return
 
+  // We already checked that viewModelStoreOwner is not null (meaning the entry has not been removed).
+  // So, we can safely update entry.lifecycleOwner.maxLifecycle.
+  //
+  // Previously, we have checked `entry.lifecycleOwner.lifecycle.currentState == Lifecycle.State.DESTROYED,
+  // but there was an issue on Android platform, the entry state was moved to DESTROYED (due to configuration change)
+  // but it was not removed from the stack.
   DisposableEffect(entry) {
-    if (entry.lifecycleOwner.lifecycle.currentState == Lifecycle.State.DESTROYED) {
-      return@DisposableEffect onDispose {}
-    }
-
     entry.lifecycleOwner.maxLifecycle = Lifecycle.State.RESUMED
-
-    onDispose {
-      if (entry.lifecycleOwner.lifecycle.currentState == Lifecycle.State.DESTROYED) {
-        return@onDispose
-      }
-
-      entry.lifecycleOwner.maxLifecycle = Lifecycle.State.CREATED
-    }
+    onDispose { entry.lifecycleOwner.maxLifecycle = Lifecycle.State.CREATED }
   }
 
   CompositionLocalProvider(
