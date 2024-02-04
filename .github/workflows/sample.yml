@@ -59,7 +59,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build
-        run: ./gradlew :samples:sample:app:assembleDebug --stacktrace
+        run: ./gradlew :samples:sample:androidApp:assembleDebug --stacktrace
   samples-sample-ios:
     strategy:
       matrix:
