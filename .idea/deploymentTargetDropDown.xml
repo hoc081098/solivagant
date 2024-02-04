@@ -5,6 +5,9 @@
       <entry key="samples.sample.app">
         <State />
       </entry>
+      <entry key="samples.simple.androidApp">
+        <State />
+      </entry>
     </value>
   </component>
 </project>

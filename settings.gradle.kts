@@ -35,6 +35,7 @@ include(
 include(
   ":samples:simple:shared",
   ":samples:simple:desktop",
+  ":samples:simple:androidApp",
 )
 
 include(":obsolete:navigation-core")
