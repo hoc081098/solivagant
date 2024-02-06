@@ -51,7 +51,10 @@ internal fun LoginScreen(
   val savedStateHandleCount by viewModel.countStateFlow.collectAsStateWithLifecycle()
   val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
 
-  val loginScreenDemoCloseable = rememberCloseableOnRoute(route) { LoginScreenDemoCloseable() }
+  val loginScreenDemoCloseable = rememberCloseableOnRoute(
+    route = route,
+    factory = ::LoginScreenDemoCloseable,
+  )
   SideEffect { loginScreenDemoCloseable.doSomething() }
 
   Surface(
