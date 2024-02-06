@@ -12,4 +12,4 @@ import kotlin.jvm.JvmField
 data object LoginScreenRoute : NavRoot
 
 @JvmField
-val LoginScreenDestination: NavDestination = ScreenDestination<LoginScreenRoute> { LoginScreen() }
+val LoginScreenDestination: NavDestination = ScreenDestination<LoginScreenRoute> { LoginScreen(route = it) }

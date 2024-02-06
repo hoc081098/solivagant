@@ -2,6 +2,10 @@ public final class com/hoc081098/solivagant/navigation/NavHostKt {
 	public static final fun NavHost (Lcom/hoc081098/solivagant/navigation/NavRoot;Lkotlinx/collections/immutable/ImmutableSet;Landroidx/compose/ui/Modifier;Lcom/hoc081098/solivagant/navigation/NavEventNavigator;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/hoc081098/solivagant/navigation/RememberCloseableOnRouteKt {
+	public static final fun rememberCloseableOnRoute (Lcom/hoc081098/solivagant/navigation/BaseRoute;Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)Ljava/io/Closeable;
+}
+
 public final class com/hoc081098/solivagant/navigation/SavedStateSupport : androidx/compose/runtime/saveable/SaveableStateRegistry, com/hoc081098/kmp/viewmodel/SavedStateHandleFactory, com/hoc081098/kmp/viewmodel/ViewModelStoreOwner {
 	public static final field $stable I
 	public fun <init> ()V
