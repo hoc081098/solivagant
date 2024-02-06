@@ -6,4 +6,5 @@ package com.hoc081098.solivagant.navigation.internal
  */
 @RequiresOptIn
 @Retention(AnnotationRetention.BINARY)
+@MustBeDocumented
 public annotation class InternalNavigationApi

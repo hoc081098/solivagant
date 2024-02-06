@@ -217,6 +217,11 @@ tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
       externalDocumentationLink("https://kotlinlang.org/api/kotlinx.coroutines/")
       externalDocumentationLink("https://hoc081098.github.io/kmp-viewmodel/docs/0.x/API/")
 
+      perPackageOption {
+        matchingRegex.set(".*\\.internal.*")
+        suppress.set(true)
+      }
+
       sourceLink {
         localDirectory.set(projectDir.resolve("src"))
         remoteUrl.set(URL("https://github.com/hoc081098/solivagant/tree/master/khonshu-navigation-core/src"))
