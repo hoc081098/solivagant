@@ -218,7 +218,7 @@ tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
       externalDocumentationLink("https://hoc081098.github.io/kmp-viewmodel/docs/0.x/API/")
 
       perPackageOption {
-        matchingRegex.set(".*\\.internal.*")
+        matchingRegex.set(".*\\.internal")
         suppress.set(true)
       }
 

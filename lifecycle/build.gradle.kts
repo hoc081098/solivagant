@@ -213,7 +213,7 @@ tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
       externalDocumentationLink("https://kotlinlang.org/api/kotlinx.coroutines/")
 
       perPackageOption {
-        matchingRegex.set(".*\\.internal.*")
+        matchingRegex.set(".*\\.internal")
         suppress.set(true)
       }
 
