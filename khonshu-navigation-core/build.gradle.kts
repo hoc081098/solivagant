@@ -215,10 +215,14 @@ tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
   dokkaSourceSets {
     configureEach {
       externalDocumentationLink("https://kotlinlang.org/api/kotlinx.coroutines/")
-      externalDocumentationLink("https://hoc081098.github.io/kmp-viewmodel/docs/0.x/API/")
+      externalDocumentationLink {
+        url = URL("https://hoc081098.github.io/kmp-viewmodel/docs/0.x/API/")
+        packageListUrl = URL("https://hoc081098.github.io/kmp-viewmodel/docs/0.x/API/package-list")
+      }
 
       perPackageOption {
-        matchingRegex.set(".*\\.internal")
+        // Will match all .internal packages and sub-packages, regardless of module.
+        matchingRegex.set(""".*\.internal.*""")
         suppress.set(true)
       }
 
