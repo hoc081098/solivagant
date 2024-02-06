@@ -218,7 +218,7 @@ tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
 
       sourceLink {
         localDirectory.set(projectDir.resolve("src"))
-        remoteUrl.set(URL("https://github.com/hoc081098/solivagant/tree/master/viewmodel-compose/src"))
+        remoteUrl.set(URL("https://github.com/hoc081098/solivagant/tree/master/khonshu-navigation-core/src"))
         remoteLineSuffix.set("#L")
       }
     }
