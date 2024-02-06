@@ -28,6 +28,8 @@ kotlin {
     vendor.set(JvmVendorSpec.AZUL)
   }
 
+  // Supports targets that have MainCoroutineDispatcher (following kmp-viewmodel artifact)
+
   androidTarget {
     publishAllLibraryVariants()
 

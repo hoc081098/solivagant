@@ -31,6 +31,9 @@ kotlin {
     vendor.set(JvmVendorSpec.AZUL)
   }
 
+  // Supports targets that have MainCoroutineDispatcher (following kmp-viewmodel artifact)
+  // Ref: https://github.com/JetBrains/compose-multiplatform-core/blob/9806d785bf33e25b0dda4853d492b319cf9a819f/buildSrc/private/src/main/kotlin/androidx/build/AndroidXComposeMultiplatformExtensionImpl.kt#L171-L176
+
   androidTarget {
     publishAllLibraryVariants()
 
