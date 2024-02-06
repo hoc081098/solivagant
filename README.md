@@ -139,7 +139,7 @@ internal fun StartScreen(
   // UI Composable
 }
 
-class StartViewModel(
+internal class StartViewModel(
   // used to trigger navigation actions from outside the view layer (e.g. from a ViewModel).
   // Usually, it is singleton object, or the host Activity retained scope.
   private val navigator: NavEventNavigator,
@@ -158,14 +158,14 @@ val SearchProductScreenDestination: NavDestination =
   ScreenDestination<SearchProductScreenRoute> { SearchProductsScreen() }
 
 @Composable
-fun SearchProductsScreen(
+internal fun SearchProductsScreen(
   modifier: Modifier = Modifier,
   viewModel: SearchProductsViewModel = koinKmpViewModel<SearchProductsViewModel>(),
 ) {
   // UI Composable
 }
 
-class SearchProductsViewModel(
+internal class SearchProductsViewModel(
   private val searchProducts: SearchProducts,
   private val savedStateHandle: SavedStateHandle,
   // used to trigger navigation actions from outside the view layer (e.g. from a ViewModel).
