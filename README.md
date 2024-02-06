@@ -231,9 +231,9 @@ class MainActivity : ComponentActivity() {
 }
 ```
 
-- To display `MyAwesomeApp` on `Desktop`, ... TBD ...
+- To display `MyAwesomeApp` on `Desktop`, ... TBD ... please check out [samples/sample/desktop/src/commonMain/kotlin/com/hoc081098/solivagant/sample/main.kt](https://github.com/hoc081098/solivagant/blob/e47468b13fbd98c619cd973cd470036090ceed43/samples/sample/desktop/src/commonMain/kotlin/com/hoc081098/solivagant/sample/main.kt#L22-L68)
 
-- To display `MyAwesomeApp` on `iOS/tvOS/watchOS`, ... TBD ...
+- To display `MyAwesomeApp` on `iOS/tvOS/watchOS`, ... TBD ... please check out [samples/sample/iosApp/iosApp/ContentView.swift](https://github.com/hoc081098/solivagant/blob/e47468b13fbd98c619cd973cd470036090ceed43/samples/sample/iosApp/iosApp/ContentView.swift#L19-L60)
 
 ### 4.Use `NavEventNavigator` in `ViewModel` s or in `@Composable` s to trigger navigation actions
 
