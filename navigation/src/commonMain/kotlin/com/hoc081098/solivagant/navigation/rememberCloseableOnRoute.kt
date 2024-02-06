@@ -9,11 +9,17 @@ import com.hoc081098.kmp.viewmodel.Closeable
 import com.hoc081098.solivagant.navigation.internal.destinationId
 import kotlin.reflect.KClass
 
+/**
+ * Remember a [Closeable] on the route.
+ *
+ * The [Closeable] will be created by [factory] once at the first access.
+ * It will be closed when the [route] is removed from the back stack.
+ */
 @Composable
 public fun <T : Closeable> rememberCloseableOnRoute(
   route: BaseRoute,
   type: KClass<T>,
-  factory: @DisallowComposableCalls () -> T,
+  factory: () -> T,
 ): T {
   val executor = LocalNavigationExecutor.current
   val currentFactory by rememberUpdatedState(factory)
@@ -27,6 +33,12 @@ public fun <T : Closeable> rememberCloseableOnRoute(
   }
 }
 
+/**
+ * Remember a [Closeable] on the route.
+ *
+ * The [Closeable] will be created by [factory] once at the first access.
+ * It will be closed when the [route] is removed from the back stack.
+ */
 @Composable
 public inline fun <reified T : Closeable> rememberCloseableOnRoute(
   route: BaseRoute,
