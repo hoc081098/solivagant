@@ -4,10 +4,13 @@
 
 [![maven-central](https://img.shields.io/maven-central/v/io.github.hoc081098/solivagant-navigation)](https://search.maven.org/search?q=g:io.github.hoc081098%20solivagant-navigation)
 [![codecov](https://codecov.io/gh/hoc081098/solivagant/branch/master/graph/badge.svg?token=jBFg12osvP)](https://codecov.io/gh/hoc081098/solivagant)
+[![Build and publish snapshot](https://github.com/hoc081098/solivagant/actions/workflows/build.yml/badge.svg)](https://github.com/hoc081098/solivagant/actions/workflows/build.yml)
+[![Build sample](https://github.com/hoc081098/solivagant/actions/workflows/sample.yml/badge.svg)](https://github.com/hoc081098/solivagant/actions/workflows/sample.yml)
+[![Publish Release](https://github.com/hoc081098/solivagant/actions/workflows/publish-release.yml/badge.svg)](https://github.com/hoc081098/solivagant/actions/workflows/publish-release.yml)
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Kotlin version](https://img.shields.io/badge/Kotlin-1.9.22-blueviolet?logo=kotlin&logoColor=white)](http://kotlinlang.org)
+[![Kotlin version](https://img.shields.io/badge/Kotlin-1.9.22-blueviolet?logo=kotlin&logoColor=white)](https://github.com/JetBrains/kotlin/releases/tag/v1.9.22)
 [![KotlinX Coroutines version](https://img.shields.io/badge/Kotlinx_Coroutines-1.7.3-blueviolet?logo=kotlin&logoColor=white)](https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.7.3)
-[![Compose Multiplatform version](https://img.shields.io/badge/Compose_Multiplatform-1.5.11-blueviolet?logo=kotlin&logoColor=white)](https://github.com/JetBrains/compose-multiplatform/releases/tag/v1.5.11)
+[![Compose Multiplatform version](https://img.shields.io/badge/Compose_Multiplatform-1.5.12-blueviolet?logo=kotlin&logoColor=white)](https://github.com/JetBrains/compose-multiplatform/releases/tag/v1.5.12)
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fhoc081098%2Fsolivagant&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 
 ![badge][badge-android]
