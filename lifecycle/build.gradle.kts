@@ -29,6 +29,8 @@ kotlin {
   }
 
   // Supports targets that have MainCoroutineDispatcher (following kmp-viewmodel artifact)
+  // Also constrained by https://github.comhttps://github.com/JetBrains/compose-multiplatform-core/blob/71ccb291b6fc5d840da05cef108ae11384bfe584/compose/runtime/runtime/build.gradle#L72-L84
+  // Ref: https://github.com/JetBrains/compose-multiplatform-core/blob/9806d785bf33e25b0dda4853d492b319cf9a819f/buildSrc/private/src/main/kotlin/androidx/build/AndroidXComposeMultiplatformExtensionImpl.kt#L171-L176
 
   androidTarget {
     publishAllLibraryVariants()
