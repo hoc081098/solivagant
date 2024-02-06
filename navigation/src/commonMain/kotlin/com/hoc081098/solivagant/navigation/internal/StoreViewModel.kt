@@ -12,9 +12,9 @@ import com.hoc081098.solivagant.navigation.NavRoot
 internal class StoreViewModel(
   internal val globalSavedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-  private val stores = mutableMapOf<StackEntry.Id, NavigationExecutorStore>()
-  private val savedStateHandles = mutableMapOf<StackEntry.Id, SavedStateHandle>()
-  private val savedStateHandleFactories = mutableMapOf<StackEntry.Id, SavedStateHandleFactory>()
+  private val stores = mutableMapOf<StackEntryId, NavigationExecutorStore>()
+  private val savedStateHandles = mutableMapOf<StackEntryId, SavedStateHandle>()
+  private val savedStateHandleFactories = mutableMapOf<StackEntryId, SavedStateHandleFactory>()
 
   private var stack: MultiStack? = null
   private var executor: MultiStackNavigationExecutor? = null
@@ -25,24 +25,24 @@ internal class StoreViewModel(
     }
   }
 
-  internal fun provideStore(id: StackEntry.Id): NavigationExecutor.Store {
+  internal fun provideStore(id: StackEntryId): NavigationExecutor.Store {
     return stores.getOrPut(id) { NavigationExecutorStore() }
   }
 
-  internal fun provideSavedStateHandle(id: StackEntry.Id, route: BaseRoute): SavedStateHandle {
+  internal fun provideSavedStateHandle(id: StackEntryId, route: BaseRoute): SavedStateHandle {
     return savedStateHandles.getOrPut(id) {
       createSavedStateHandleAndSetSavedStateProvider(id.value, globalSavedStateHandle)
         .apply { this[EXTRA_ROUTE] = route }
     }
   }
 
-  internal fun provideSavedStateHandleFactory(id: StackEntry.Id, route: BaseRoute): SavedStateHandleFactory {
+  internal fun provideSavedStateHandleFactory(id: StackEntryId, route: BaseRoute): SavedStateHandleFactory {
     return savedStateHandleFactories.getOrPut(id) {
       SavedStateHandleFactory { provideSavedStateHandle(id, route) }
     }
   }
 
-  private fun removeEntry(id: StackEntry.Id) {
+  private fun removeEntry(id: StackEntryId) {
     val store = stores.remove(id)
     store?.close()
 

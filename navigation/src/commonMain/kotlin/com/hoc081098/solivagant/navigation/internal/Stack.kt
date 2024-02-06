@@ -13,7 +13,7 @@ import kotlinx.collections.immutable.adapters.ImmutableListAdapter
 internal class Stack private constructor(
   initialStack: List<StackEntry<*>>,
   private val destinations: List<ContentDestination<*>>,
-  private val onStackEntryRemoved: (StackEntry.Id) -> Unit,
+  private val onStackEntryRemoved: (StackEntryId) -> Unit,
   private val getHostLifecycleState: () -> Lifecycle.State,
   private val idGenerator: () -> String,
 ) {
@@ -22,9 +22,19 @@ internal class Stack private constructor(
     it.addAll(initialStack)
   }
 
-  val id: DestinationId<*> get() = rootEntry.destinationId
+  val destinationId: DestinationId<*> get() = rootEntry.destinationId
   val rootEntry: StackEntry<*> get() = stack.first()
   val isAtRoot: Boolean get() = !stack.last().removable
+
+  @Suppress("UNCHECKED_CAST")
+  fun <T : BaseRoute> entryFor(id: StackEntryId): StackEntry<T>? {
+    return stack.findLast { it.id == id } as StackEntry<T>?
+  }
+
+  @Suppress("UNCHECKED_CAST")
+  fun <T : BaseRoute> entryFor(route: T): StackEntry<T>? {
+    return stack.findLast { it.route == route } as StackEntry<T>?
+  }
 
   @Suppress("UNCHECKED_CAST")
   fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T>? {
@@ -117,7 +127,7 @@ internal class Stack private constructor(
     fun createWith(
       root: NavRoot,
       destinations: List<ContentDestination<*>>,
-      onStackEntryRemoved: (StackEntry.Id) -> Unit,
+      onStackEntryRemoved: (StackEntryId) -> Unit,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
@@ -139,7 +149,7 @@ internal class Stack private constructor(
     fun fromState(
       bundle: Map<String, ArrayList<out Any>>,
       destinations: List<ContentDestination<*>>,
-      onStackEntryRemoved: (StackEntry.Id) -> Unit,
+      onStackEntryRemoved: (StackEntryId) -> Unit,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {

@@ -6,7 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import com.hoc081098.kmp.viewmodel.Closeable
-import com.hoc081098.solivagant.navigation.internal.destinationId
 import kotlin.reflect.KClass
 
 /**
@@ -28,7 +27,7 @@ public fun <T : Closeable> rememberCloseableOnRoute(
     // Don't use getOrCreate(key = type, factory = currentFactory) because it can refer to the old factory.
     // `{ currentFactory() }` is the right way.
     executor
-      .storeFor(route.destinationId)
+      .storeFor(executor.stackEntryIdFor(route))
       .getOrCreate(key = type) { currentFactory() }
   }
 }

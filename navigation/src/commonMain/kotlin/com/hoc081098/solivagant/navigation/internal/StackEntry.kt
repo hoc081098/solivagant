@@ -7,12 +7,11 @@ import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
 import dev.drewhamilton.poko.Poko
-import kotlin.jvm.JvmInline
 
 @Poko
 @Immutable
 internal class StackEntry<T : BaseRoute> private constructor(
-  val id: Id,
+  val id: StackEntryId,
   val route: T,
   val destination: ContentDestination<T>,
   val lifecycleOwner: StackEntryLifecycleOwner,
@@ -27,9 +26,6 @@ internal class StackEntry<T : BaseRoute> private constructor(
       is NavRoute -> true
       is NavRoot -> false
     }
-
-  @JvmInline
-  value class Id(val value: String)
 
   companion object {
     inline fun <T : BaseRoute> create(
@@ -46,7 +42,7 @@ internal class StackEntry<T : BaseRoute> private constructor(
         )
 
       return StackEntry(
-        id = Id(idGenerator()),
+        id = StackEntryId(idGenerator()),
         route = route,
         destination = destination,
         lifecycleOwner = StackEntryLifecycleOwner(

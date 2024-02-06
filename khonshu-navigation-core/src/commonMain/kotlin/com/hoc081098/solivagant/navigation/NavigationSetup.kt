@@ -105,7 +105,8 @@ private fun NavigationExecutor.navigateTo(
     }
 
     is NavEvent.DestinationResultEvent<*> -> {
-      savedStateHandleFor(event.key.destinationId)[event.key.requestKey] = event.result
+      val id = stackEntryIdFor(event.key.destinationId)
+      savedStateHandleFor(id)[event.key.requestKey] = event.result
     }
 
     is NavEvent.MultiNavEvent -> {
@@ -118,7 +119,8 @@ private fun NavigationExecutor.navigateTo(
 internal suspend fun <R : Parcelable> NavigationExecutor.collectAndHandleNavigationResults(
   request: NavigationResultRequest<R>,
 ) {
-  val savedStateHandle = savedStateHandleFor(request.key.destinationId)
+  val id = stackEntryIdFor(request.key.destinationId)
+  val savedStateHandle = savedStateHandleFor(id)
   savedStateHandle.getStateFlow<Parcelable>(request.key.requestKey, InitialValue)
     .collect {
       if (it != InitialValue) {

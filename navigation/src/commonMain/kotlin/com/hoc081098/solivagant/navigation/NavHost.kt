@@ -122,7 +122,7 @@ private fun <T : BaseRoute> Show(
 
   CompositionLocalProvider(
     LocalViewModelStoreOwner provides viewModelStoreOwner,
-    LocalSavedStateHandleFactory provides executor.savedStateHandleFactoryFor(entry.destinationId),
+    LocalSavedStateHandleFactory provides executor.savedStateHandleFactoryFor(entry.id),
     LocalLifecycleOwner provides entry.lifecycleOwner,
   ) {
     saveableStateHolder.SaveableStateProvider(entry.id.value) {
