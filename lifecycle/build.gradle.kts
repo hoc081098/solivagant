@@ -64,6 +64,15 @@ kotlin {
   macosX64()
   macosArm64()
 
+  tvosX64()
+  tvosSimulatorArm64()
+  tvosArm64()
+
+  watchosArm32()
+  watchosArm64()
+  watchosX64()
+  watchosSimulatorArm64()
+
   applyDefaultHierarchyTemplate()
 
   sourceSets {
