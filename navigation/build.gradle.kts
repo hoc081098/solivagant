@@ -169,7 +169,7 @@ kotlin {
       dependsOn(nonJvmTest)
     }
 
-    val iosAndTvOs by creating {
+    val iosAndTvOsMain by creating {
       dependsOn(appleMain.get())
     }
     val iosAndTvOsTest by creating {
@@ -177,14 +177,14 @@ kotlin {
     }
 
     iosMain {
-      dependsOn(iosAndTvOs)
+      dependsOn(iosAndTvOsMain)
     }
     iosTest {
       dependsOn(iosAndTvOsTest)
     }
 
     tvosMain {
-      dependsOn(iosAndTvOs)
+      dependsOn(iosAndTvOsMain)
     }
     tvosTest {
       dependsOn(iosAndTvOsTest)
@@ -242,6 +242,7 @@ tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
   dokkaSourceSets {
     configureEach {
       externalDocumentationLink("https://kotlinlang.org/api/kotlinx.coroutines/")
+      externalDocumentationLink("https://hoc081098.github.io/kmp-viewmodel/docs/0.x/API/")
 
       sourceLink {
         localDirectory.set(projectDir.resolve("src"))
