@@ -17,7 +17,6 @@
 package com.hoc081098.solivagant.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -30,6 +29,10 @@ import kotlin.reflect.KClass
  *
  * The [Closeable] will be created by [factory] once at the first access.
  * It will be closed when the [route] is removed from the back stack.
+ *
+ * @param route The route to remember the [Closeable] on.
+ * @param type The type of [Closeable].
+ * @param factory The factory to create the [Closeable].
  */
 @OptIn(DelicateNavigationApi::class)
 @Composable
@@ -55,9 +58,12 @@ public fun <T : Closeable> rememberCloseableOnRoute(
  *
  * The [Closeable] will be created by [factory] once at the first access.
  * It will be closed when the [route] is removed from the back stack.
+ *
+ * @param route The route to remember the [Closeable] on.
+ * @param factory The factory to create the [Closeable].
  */
 @Composable
 public inline fun <reified T : Closeable> rememberCloseableOnRoute(
   route: BaseRoute,
-  noinline factory: @DisallowComposableCalls () -> T,
+  noinline factory: () -> T,
 ): T = rememberCloseableOnRoute(route, T::class, factory)
