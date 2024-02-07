@@ -1,0 +1,833 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="🔆 Compose Multiplatform Navigation - 🌸 Pragmatic, type safety navigation for Compose Multiplatform. Based on Freeletics Khonshu Navigation.">
+      
+      
+        <meta name="author" content="Petrus Nguyễn Thái Học">
+      
+      
+        <link rel="canonical" href="https://hoc081098.github.io/solivagant/docs/0.x/">
+      
+      
+      
+        <link rel="next" href="multiplatform/">
+      
+      
+      <link rel="icon" href="images/logo.jpeg">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.6">
+    
+    
+      
+        <title>Solivagant</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.50c56a3b.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="white">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#solivagant" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="Solivagant" class="md-header__button md-logo" aria-label="Solivagant" data-md-component="logo">
+      
+  <img src="images/logo.jpeg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Solivagant
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Overview
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/hoc081098/solivagant" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    solivagant
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="Solivagant" class="md-nav__button md-logo" aria-label="Solivagant" data-md-component="logo">
+      
+  <img src="images/logo.jpeg" alt="logo">
+
+    </a>
+    Solivagant
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/hoc081098/solivagant" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    solivagant
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#compose-multiplatform-navigation-pragmatic-type-safety-navigation-for-compose-multiplatform-based-on-freeletics-khonshu-navigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔆 Compose Multiplatform Navigation - 🌸 Pragmatic, type safety navigation for Compose Multiplatform. Based on Freeletics Khonshu Navigation.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Credits
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#author-petrus-nguyen-thai-hoc" class="md-nav__link">
+    <span class="md-ellipsis">
+      Author: Petrus Nguyễn Thái Học
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Docs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Docs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0x-release-docs-httpshoc081098githubiosolivagantdocs0x" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.x release docs: https://hoc081098.github.io/solivagant/docs/0.x
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#snapshot-docs-httpshoc081098githubiosolivagantdocslatest" class="md-nav__link">
+    <span class="md-ellipsis">
+      Snapshot docs: https://hoc081098.github.io/solivagant/docs/latest
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting started
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Getting started">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-create-navroots-navroutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Create NavRoots, NavRoutes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-create-navdestinations-along-with-composables-and-viewmodels" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Create NavDestinations along with Composables and ViewModels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4use-naveventnavigator-in-viewmodel-s-or-in-composable-s-to-trigger-navigation-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.Use NavEventNavigator in ViewModel s or in @Composable s to trigger navigation actions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#samples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Samples
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Roadmap
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#license" class="md-nav__link">
+    <span class="md-ellipsis">
+      License
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="multiplatform/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Multiplatform
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="changelog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Change Log
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="solivagant">solivagant 🔆<a class="headerlink" href="#solivagant" title="Permanent link">&para;</a></h1>
+<h2 id="compose-multiplatform-navigation-pragmatic-type-safety-navigation-for-compose-multiplatform-based-on-freeletics-khonshu-navigation">🔆 Compose Multiplatform Navigation - 🌸 Pragmatic, type safety navigation for Compose Multiplatform. Based on <a href="https://freeletics.github.io/khonshu/navigation/get-started/">Freeletics Khonshu Navigation</a>.<a class="headerlink" href="#compose-multiplatform-navigation-pragmatic-type-safety-navigation-for-compose-multiplatform-based-on-freeletics-khonshu-navigation" title="Permanent link">&para;</a></h2>
+<p><a href="https://search.maven.org/search?q=g:io.github.hoc081098%20solivagant-navigation"><img alt="maven-central" src="https://img.shields.io/maven-central/v/io.github.hoc081098/solivagant-navigation" /></a>
+<a href="https://codecov.io/gh/hoc081098/solivagant"><img alt="codecov" src="https://codecov.io/gh/hoc081098/solivagant/branch/master/graph/badge.svg?token=jBFg12osvP" /></a>
+<a href="https://github.com/hoc081098/solivagant/actions/workflows/build.yml"><img alt="Build and publish snapshot" src="https://github.com/hoc081098/solivagant/actions/workflows/build.yml/badge.svg" /></a>
+<a href="https://github.com/hoc081098/solivagant/actions/workflows/sample.yml"><img alt="Build sample" src="https://github.com/hoc081098/solivagant/actions/workflows/sample.yml/badge.svg" /></a>
+<a href="https://github.com/hoc081098/solivagant/actions/workflows/publish-release.yml"><img alt="Publish Release" src="https://github.com/hoc081098/solivagant/actions/workflows/publish-release.yml/badge.svg" /></a>
+<a href="https://www.apache.org/licenses/LICENSE-2.0"><img alt="GitHub license" src="https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat" /></a>
+<a href="https://github.com/JetBrains/kotlin/releases/tag/v1.9.22"><img alt="Kotlin version" src="https://img.shields.io/badge/Kotlin-1.9.22-blueviolet?logo=kotlin&amp;logoColor=white" /></a>
+<a href="https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.7.3"><img alt="KotlinX Coroutines version" src="https://img.shields.io/badge/Kotlinx_Coroutines-1.7.3-blueviolet?logo=kotlin&amp;logoColor=white" /></a>
+<a href="https://github.com/JetBrains/compose-multiplatform/releases/tag/v1.5.12"><img alt="Compose Multiplatform version" src="https://img.shields.io/badge/Compose_Multiplatform-1.5.12-blueviolet?logo=kotlin&amp;logoColor=white" /></a>
+<a href="https://hits.seeyoufarm.com"><img alt="Hits" src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fhoc081098%2Fsolivagant&amp;count_bg=%2379C83D&amp;title_bg=%23555555&amp;icon=&amp;icon_color=%23E7E7E7&amp;title=hits&amp;edge_flat=false" /></a></p>
+<p><img alt="badge" src="http://img.shields.io/badge/-android-6EDB8D.svg?style=flat" />
+<img alt="badge" src="http://img.shields.io/badge/-jvm-DB413D.svg?style=flat" />
+<img alt="badge" src="http://img.shields.io/badge/-js-F8DB5D.svg?style=flat" />
+<img alt="badge" src="https://img.shields.io/badge/support-[IR]-AAC4E0.svg?style=flat" />
+<img alt="badge" src="https://img.shields.io/badge/-nodejs-68a063.svg?style=flat" />
+<img alt="badge" src="http://img.shields.io/badge/-linux-2D3F6C.svg?style=flat" />
+<img alt="badge" src="http://img.shields.io/badge/-windows-4D76CD.svg?style=flat" />
+<img alt="badge" src="http://img.shields.io/badge/-ios-CDCDCD.svg?style=flat" />
+<img alt="badge" src="http://img.shields.io/badge/-macos-111111.svg?style=flat" />
+<img alt="badge" src="http://img.shields.io/badge/-watchos-C0C0C0.svg?style=flat" />
+<img alt="badge" src="http://img.shields.io/badge/-tvos-808080.svg?style=flat" />
+<img alt="badge" src="http://img.shields.io/badge/support-[AppleSilicon]-43BBFF.svg?style=flat" /></p>
+<ul>
+<li>Integrates with <code>Jetbrains Compose Multiplatform</code> seamlessly and easily.</li>
+</ul>
+<ul>
+<li>
+<p>Integrates with <a href="https://github.com/hoc081098/kmp-viewmodel"><strong>kmp-viewmodel</strong></a> library seamlessly and smoothly</p>
+<ul>
+<li>Stack entry scoped <code>ViewModel</code>, exists as long as the
+  stack entry is on the navigation stack, including the configuration changes on <code>Android</code>.</li>
+</ul>
+<ul>
+<li>Supports <code>SavedStateHandle</code>, used to save and restore data over configuration changes
+  or process death on <code>Android</code>.</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>The <strong>navigation stack state</strong> is saved and restored automatically over configuration changes and process
+  death on <code>Android</code>.
+  On other platforms, you can use a support class provided by this library to store the navigation stack state
+  as long as you want.</li>
+</ul>
+<ul>
+<li><strong>Type safety navigation</strong>, easy to pass data between destinations.
+  No more <code>String</code> route and dynamic query parameters.
+  The <code>Solivagant</code> library uses <code>NavRoute</code>s and <code>NavRoot</code>s to define routes that can be navigated to.
+  Arguments can be defined as part of the route (a.ka. properties of the route class) and are type safe.
+  Each <code>NavRoute</code> and <code>NavRoot</code> has a corresponding <code>NavDestination</code> that describes the UI (a.k.a <code>@Composable</code>) of the
+  route.</li>
+</ul>
+<ul>
+<li>Supports <strong>Multi-Backstacks</strong>, this is most commonly used in apps that use bottom navigation to
+  separate the back stack of each tab.
+  See <a href="https://freeletics.github.io/khonshu/navigation/back-stacks/">Freeletics Khonshu Navigation - Multiple back stacks</a>
+  for more details.</li>
+</ul>
+<ul>
+<li>Supports <code>LifecycleOwner</code>, <code>Lifecycle</code> events and states, similar to <code>AndroidX Lifecycle</code> library.</li>
+</ul>
+<p align="center">
+    <img src="https://github.com/hoc081098/solivagant/raw/master/logo.png" width="400">
+</p>
+
+<blockquote>
+<p>[!NOTE]
+This library is still in alpha, so the API may change in the future.</p>
+</blockquote>
+<h2 id="credits">Credits<a class="headerlink" href="#credits" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Most of the code in <code>solivagant-khonshu-navigation-core</code> and <code>solivagant-navigation</code> libraries is
+  taken from <a href="https://freeletics.github.io/khonshu/navigation/get-started/">Freeletics Khonshu Navigation</a>,
+  and ported to <code>Kotlin Multiplatform</code> and <code>Compose Multiplatform</code>.</li>
+</ul>
+<ul>
+<li>The <code>solivagant-lifecycle</code> library is inspired
+  by <a href="https://github.com/arkivanov/Essenty?tab=readme-ov-file#lifecycle">Essenty Lifecycle</a>,
+  and <a href="https://developer.android.com/jetpack/androidx/releases/lifecycle">AndroidX Lifecycle</a>.</li>
+</ul>
+<h2 id="author-petrus-nguyen-thai-hoc">Author: <a href="https://github.com/hoc081098">Petrus Nguyễn Thái Học</a><a class="headerlink" href="#author-petrus-nguyen-thai-hoc" title="Permanent link">&para;</a></h2>
+<p>Liked some of my work? Buy me a coffee (or more likely a beer)</p>
+<p><a href="https://www.buymeacoffee.com/hoc081098" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" height=64></a></p>
+<h2 id="docs">Docs<a class="headerlink" href="#docs" title="Permanent link">&para;</a></h2>
+<h3 id="0x-release-docs-httpshoc081098githubiosolivagantdocs0x"><strong>0.x release</strong> docs: <a href="https://hoc081098.github.io/solivagant/docs/0.x">https://hoc081098.github.io/solivagant/docs/0.x</a><a class="headerlink" href="#0x-release-docs-httpshoc081098githubiosolivagantdocs0x" title="Permanent link">&para;</a></h3>
+<h3 id="snapshot-docs-httpshoc081098githubiosolivagantdocslatest">Snapshot docs: <a href="https://hoc081098.github.io/solivagant/docs/latest">https://hoc081098.github.io/solivagant/docs/latest</a><a class="headerlink" href="#snapshot-docs-httpshoc081098githubiosolivagantdocslatest" title="Permanent link">&para;</a></h3>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">allprojects</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">repositories</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="o">[</span><span class="p">...</span><span class="o">]</span>
+<span class="w">    </span><span class="n">mavenCentral</span><span class="p">()</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">implementation</span><span class="p">(</span><span class="s">&quot;io.github.hoc081098:solivagant-navigation:0.0.1-alpha01&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
+<p>The library is ported from <code>Freeletics Khonshu Navigation</code> library, so the concepts is similar.
+You can read the <a href="https://freeletics.github.io/khonshu/navigation/get-started/">Freeletics Khonshu Navigation</a> to
+understand
+the concepts.</p>
+<h3 id="1-create-navroots-navroutes">1. Create <code>NavRoot</code>s, <code>NavRoute</code>s<a class="headerlink" href="#1-create-navroots-navroutes" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nd">@Immutable</span>
+<span class="nd">@Parcelize</span>
+<span class="kd">data</span><span class="w"> </span><span class="kd">object</span><span class="w"> </span><span class="nc">StartScreenRoute</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">NavRoot</span>
+
+<span class="nd">@Immutable</span>
+<span class="nd">@Parcelize</span>
+<span class="kd">data</span><span class="w"> </span><span class="kd">object</span><span class="w"> </span><span class="nc">SearchProductScreenRoute</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">NavRoute</span>
+</code></pre></div>
+<blockquote>
+<p>[!NOTE]
+<code>@Parcelize</code> is provided by <code>kmp-viewmodel-savedstate</code> library.
+See <a href="https://github.com/hoc081098/kmp-viewmodel?tab=readme-ov-file#2-kmp-viewmodel-savedstate-library">kmp-viewmodel-savedstate</a> for more details.</p>
+</blockquote>
+<h3 id="2-create-navdestinations-along-with-composables-and-viewmodels">2. Create <code>NavDestination</code>s along with <code>Composable</code>s and <code>ViewModel</code>s<a class="headerlink" href="#2-create-navdestinations-along-with-composables-and-viewmodels" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>StartScreen</code>: <code>StartScreenDestination</code>, <code>@Composable fun StartScreen()</code> and <code>StartViewModel</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nd">@JvmField</span>
+<span class="kd">val</span><span class="w"> </span><span class="nv">StartScreenDestination</span><span class="p">:</span><span class="w"> </span><span class="n">NavDestination</span><span class="w"> </span><span class="o">=</span>
+<span class="w">  </span><span class="n">ScreenDestination</span><span class="o">&lt;</span><span class="n">StartScreenRoute</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">StartScreen</span><span class="p">()</span><span class="w"> </span><span class="p">}</span>
+
+<span class="nd">@Composable</span>
+<span class="kd">internal</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">StartScreen</span><span class="p">(</span>
+<span class="w">  </span><span class="n">modifier</span><span class="p">:</span><span class="w"> </span><span class="n">Modifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Modifier</span><span class="p">,</span>
+<span class="w">  </span><span class="n">viewModel</span><span class="p">:</span><span class="w"> </span><span class="n">StartViewModel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">koinKmpViewModel</span><span class="p">(),</span>
+<span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// UI Composable</span>
+<span class="p">}</span>
+
+<span class="kd">internal</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nc">StartViewModel</span><span class="p">(</span>
+<span class="w">  </span><span class="c1">// used to trigger navigation actions from outside the view layer (e.g. from a ViewModel).</span>
+<span class="w">  </span><span class="c1">// Usually, it is singleton object, or the host Activity retained scope.</span>
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">navigator</span><span class="p">:</span><span class="w"> </span><span class="n">NavEventNavigator</span><span class="p">,</span>
+<span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ViewModel</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">internal</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">navigateToProductsScreen</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">navigator</span><span class="p">.</span><span class="na">navigateTo</span><span class="p">(</span><span class="n">ProductsScreenRoute</span><span class="p">)</span>
+<span class="w">  </span><span class="kd">internal</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">navigateToSearchProductScreen</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">navigator</span><span class="p">.</span><span class="na">navigateTo</span><span class="p">(</span><span class="n">SearchProductScreenRoute</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code>SearchProductScreen</code>: <code>SearchProductScreenDestination</code>, <code>@Composable fun SearchProductsScreen()</code>
+  and <code>SearchProductsViewModel</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nd">@JvmField</span>
+<span class="kd">val</span><span class="w"> </span><span class="nv">SearchProductScreenDestination</span><span class="p">:</span><span class="w"> </span><span class="n">NavDestination</span><span class="w"> </span><span class="o">=</span>
+<span class="w">  </span><span class="n">ScreenDestination</span><span class="o">&lt;</span><span class="n">SearchProductScreenRoute</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">SearchProductsScreen</span><span class="p">()</span><span class="w"> </span><span class="p">}</span>
+
+<span class="nd">@Composable</span>
+<span class="kd">internal</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">SearchProductsScreen</span><span class="p">(</span>
+<span class="w">  </span><span class="n">modifier</span><span class="p">:</span><span class="w"> </span><span class="n">Modifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Modifier</span><span class="p">,</span>
+<span class="w">  </span><span class="n">viewModel</span><span class="p">:</span><span class="w"> </span><span class="n">SearchProductsViewModel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">koinKmpViewModel</span><span class="o">&lt;</span><span class="n">SearchProductsViewModel</span><span class="o">&gt;</span><span class="p">(),</span>
+<span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// UI Composable</span>
+<span class="p">}</span>
+
+<span class="kd">internal</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nc">SearchProductsViewModel</span><span class="p">(</span>
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">searchProducts</span><span class="p">:</span><span class="w"> </span><span class="n">SearchProducts</span><span class="p">,</span>
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">savedStateHandle</span><span class="p">:</span><span class="w"> </span><span class="n">SavedStateHandle</span><span class="p">,</span>
+<span class="w">  </span><span class="c1">// used to trigger navigation actions from outside the view layer (e.g. from a ViewModel).</span>
+<span class="w">  </span><span class="c1">// Usually, it is singleton object, or the host Activity retained scope.</span>
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">navigator</span><span class="p">:</span><span class="w"> </span><span class="n">NavEventNavigator</span><span class="p">,</span>
+<span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ViewModel</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">fun</span><span class="w"> </span><span class="nf">navigateToProductDetail</span><span class="p">(</span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">navigator</span><span class="p">.</span><span class="na">navigateTo</span><span class="p">(</span><span class="n">ProductDetailScreenRoute</span><span class="p">(</span><span class="n">id</span><span class="p">))</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="3-setup">3. Setup<a class="headerlink" href="#3-setup" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Gather all <code>NavDestination</code>s in a set and use <code>NavEventNavigator</code> to trigger navigation actions.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nd">@Stable</span>
+<span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">AllDestinations</span><span class="p">:</span><span class="w"> </span><span class="n">ImmutableSet</span><span class="o">&lt;</span><span class="n">NavDestination</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">persistentSetOf</span><span class="p">(</span>
+<span class="w">  </span><span class="n">StartScreenDestination</span><span class="p">,</span>
+<span class="w">  </span><span class="n">SearchProductScreenDestination</span><span class="p">,</span>
+<span class="w">  </span><span class="c1">// and more ...</span>
+<span class="p">)</span>
+
+<span class="nd">@Composable</span>
+<span class="kd">fun</span><span class="w"> </span><span class="nf">MyAwesomeApp</span><span class="p">(</span>
+<span class="w">  </span><span class="c1">// used to trigger navigation actions from outside the view layer (e.g. from a ViewModel).</span>
+<span class="w">  </span><span class="c1">// Usually, it is singleton object, or the host Activity retained scope.</span>
+<span class="w">  </span><span class="n">navigator</span><span class="p">:</span><span class="w"> </span><span class="n">NavEventNavigator</span><span class="p">,</span>
+<span class="w">  </span><span class="n">modifier</span><span class="p">:</span><span class="w"> </span><span class="n">Modifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Modifier</span><span class="p">,</span>
+<span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// BaseRoute is the parent interface of NavRoute and NavRoot.</span>
+<span class="w">  </span><span class="c1">// It implements Parcelable, so it can be used with rememberSavable.</span>
+<span class="w">  </span><span class="kd">var</span><span class="w"> </span><span class="nv">currentRoute</span><span class="p">:</span><span class="w"> </span><span class="n">BaseRoute? </span><span class="k">by</span><span class="w"> </span><span class="n">rememberSavable</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">mutableStateOf</span><span class="p">(</span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">NavHost</span><span class="p">(</span>
+<span class="w">    </span><span class="n">modifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">modifier</span><span class="p">,</span>
+<span class="w">    </span><span class="c1">// route to the screen that should be shown initially</span>
+<span class="w">    </span><span class="n">startRoute</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">StartScreenRoute</span><span class="p">,</span>
+<span class="w">    </span><span class="c1">// should contain all destinations that can be navigated to</span>
+<span class="w">    </span><span class="n">destinations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AllDestinations</span><span class="p">,</span>
+<span class="w">    </span><span class="n">navEventNavigator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">navigator</span><span class="p">,</span>
+<span class="w">    </span><span class="n">destinationChangedCallback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">currentRoute</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">it</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>To display <code>MyAwesomeApp</code> on <code>Android</code>, use <code>setContent</code> in <code>Activity</code> or <code>Fragment</code>.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kd">class</span><span class="w"> </span><span class="nc">MainActivity</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ComponentActivity</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">override</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span><span class="w"> </span><span class="n">Bundle</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">super</span><span class="p">.</span><span class="na">onCreate</span><span class="p">()</span>
+
+<span class="w">    </span><span class="c1">// navigator can be retrieved from the DI container, such as Koin, Dagger Hilt, etc.</span>
+
+<span class="w">    </span><span class="n">setContent</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">MyAwesomeApp</span><span class="p">(</span>
+<span class="w">        </span><span class="n">navigator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">navigator</span>
+<span class="w">      </span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>To display <code>MyAwesomeApp</code> on <code>Desktop</code>, &hellip; TBD &hellip; please check out <a href="https://github.com/hoc081098/solivagant/blob/e47468b13fbd98c619cd973cd470036090ceed43/samples/sample/desktop/src/commonMain/kotlin/com/hoc081098/solivagant/sample/main.kt#L22-L68">samples/sample/desktop/src/commonMain/kotlin/com/hoc081098/solivagant/sample/main.kt</a></li>
+</ul>
+<ul>
+<li>To display <code>MyAwesomeApp</code> on <code>iOS/tvOS/watchOS</code>, &hellip; TBD &hellip; please check out <a href="https://github.com/hoc081098/solivagant/blob/e47468b13fbd98c619cd973cd470036090ceed43/samples/sample/iosApp/iosApp/ContentView.swift#L19-L60">samples/sample/iosApp/iosApp/ContentView.swift</a></li>
+</ul>
+<h3 id="4use-naveventnavigator-in-viewmodel-s-or-in-composable-s-to-trigger-navigation-actions">4.Use <code>NavEventNavigator</code> in <code>ViewModel</code> s or in <code>@Composable</code> s to trigger navigation actions<a class="headerlink" href="#4use-naveventnavigator-in-viewmodel-s-or-in-composable-s-to-trigger-navigation-actions" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// navigate to the destination that the given route leads to</span>
+<span class="n">navigator</span><span class="p">.</span><span class="na">navigateTo</span><span class="p">(</span><span class="n">DetailScreenRoute</span><span class="p">(</span><span class="s">&quot;some-id&quot;</span><span class="p">))</span>
+<span class="c1">// navigate up in the hierarchy</span>
+<span class="n">navigator</span><span class="p">.</span><span class="na">navigateUp</span><span class="p">()</span>
+<span class="c1">// navigate to the previous destination in the backstack</span>
+<span class="n">navigator</span><span class="p">.</span><span class="na">navigateBack</span><span class="p">()</span>
+<span class="c1">// navigate back to the destination belonging to the referenced route and remove all destinations</span>
+<span class="c1">// in between from the back stack, depending on inclusive the destination</span>
+<span class="n">navigator</span><span class="p">.</span><span class="na">navigateBackTo</span><span class="o">&lt;</span><span class="n">MainScreenRoute</span><span class="o">&gt;</span><span class="p">(</span><span class="n">inclusive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="samples">Samples<a class="headerlink" href="#samples" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://github.com/hoc081098/solivagant/tree/master/samples/sample">Complete sample</a>: a complete sample
+  that demonstrates how to use <code>solivagant-navigation</code> in <code>Compose Multiplatform (Android, Desktop, iOS)</code><ul>
+<li><code>solivagant-navigation</code> for navigation in Compose Multiplatform.</li>
+<li><code>kmp-viewmodel</code> to share <code>ViewModel</code> and <code>SavedStateHandle</code>.</li>
+<li><code>Koin DI</code>.</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><a href="https://github.com/hoc081098/solivagant/tree/master/samples/simple">Simple sample</a>: a simple sample
+  that demonstrates how to use <code>solivagant-navigation</code> in <code>Compose Multiplatform (Android, Desktop, iOS)</code> to
+  switch between tabs (bottom navigation), but can keep the back stack state of each tab.
+  Basically, it&rsquo;s a <strong>multi-backstack</strong> demo sample.</li>
+</ul>
+<h2 id="roadmap">Roadmap<a class="headerlink" href="#roadmap" title="Permanent link">&para;</a></h2>
+<ul>
+<li>[ ] Add more tests</li>
+<li>[ ] Add more samples</li>
+<li>[ ] Add docs</li>
+<li>[ ] Review supported targets</li>
+<li>[ ] Polish and improve the implementation and the public API</li>
+<li>[ ] Support transition when navigating</li>
+<li>[ ] Support more targets such as wasm, watchOS, tvOS, etc&hellip;</li>
+</ul>
+<h2 id="license">License<a class="headerlink" href="#license" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 Petrus Nguyễn Thái Học.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["toc.integrate"], "search": "assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.e1c3ead8.min.js"></script>
+      
+    
+  </body>
+</html>

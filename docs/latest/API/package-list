@@ -1,0 +1,10 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+
+module:khonshu-navigation-core
+com.hoc081098.solivagant.navigation
+module:lifecycle
+com.hoc081098.solivagant.lifecycle
+com.hoc081098.solivagant.lifecycle.compose
+module:navigation
+com.hoc081098.solivagant.navigation
