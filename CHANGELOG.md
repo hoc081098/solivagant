@@ -7,6 +7,7 @@
 - Initial release of `solivagant` 🔆.
   A Compose Multiplatform Navigation - 🌸 Pragmatic, type safety navigation for Compose Multiplatform.
   Based on [Freeletics Khonshu Navigation](https://freeletics.github.io/khonshu/navigation/get-started/).
+  ♥️ ViewModel, SavedStateHandle, Lifecycle, Multi-Backstacks, and more...
 
 - Dependencies
   - [Kotlin `1.9.22`](https://github.com/JetBrains/kotlin/releases/tag/v1.9.22).
