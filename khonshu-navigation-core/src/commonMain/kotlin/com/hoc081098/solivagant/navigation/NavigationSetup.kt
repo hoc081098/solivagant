@@ -27,6 +27,7 @@ import com.hoc081098.solivagant.lifecycle.Lifecycle
 import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 import com.hoc081098.solivagant.lifecycle.repeatOnLifecycle
+import com.hoc081098.solivagant.navigation.internal.DelicateNavigationApi
 import com.hoc081098.solivagant.navigation.internal.NavEvent
 import com.hoc081098.solivagant.navigation.internal.NavigationExecutor
 import com.hoc081098.solivagant.navigation.internal.VisibleForTesting
@@ -87,6 +88,7 @@ internal suspend fun NavEventNavigator.collectAndHandleNavEvents(
   }
 }
 
+@OptIn(DelicateNavigationApi::class)
 private fun NavigationExecutor.navigateTo(
   event: NavEvent,
 ) {
@@ -120,6 +122,7 @@ private fun NavigationExecutor.navigateTo(
     }
 
     is NavEvent.DestinationResultEvent<*> -> {
+      @Suppress("DEPRECATION")
       val id = stackEntryIdFor(event.key.destinationId)
       savedStateHandleFor(id)[event.key.requestKey] = event.result
     }
@@ -130,10 +133,12 @@ private fun NavigationExecutor.navigateTo(
   }
 }
 
+@OptIn(DelicateNavigationApi::class)
 @VisibleForTesting
 internal suspend fun <R : Parcelable> NavigationExecutor.collectAndHandleNavigationResults(
   request: NavigationResultRequest<R>,
 ) {
+  @Suppress("DEPRECATION")
   val id = stackEntryIdFor(request.key.destinationId)
   val savedStateHandle = savedStateHandleFor(id)
   savedStateHandle.getStateFlow<Parcelable>(request.key.requestKey, InitialValue)

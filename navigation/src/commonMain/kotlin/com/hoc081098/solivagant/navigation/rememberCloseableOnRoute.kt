@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import com.hoc081098.kmp.viewmodel.Closeable
+import com.hoc081098.solivagant.navigation.internal.DelicateNavigationApi
 import kotlin.reflect.KClass
 
 /**
@@ -30,6 +31,7 @@ import kotlin.reflect.KClass
  * The [Closeable] will be created by [factory] once at the first access.
  * It will be closed when the [route] is removed from the back stack.
  */
+@OptIn(DelicateNavigationApi::class)
 @Composable
 public fun <T : Closeable> rememberCloseableOnRoute(
   route: BaseRoute,

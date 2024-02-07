@@ -104,8 +104,10 @@ internal class MultiStackNavigationExecutor(
     onRootChanged(root)
   }
 
+  @DelicateNavigationApi
   override fun stackEntryIdFor(route: BaseRoute): StackEntryId = entryFor(route).id
 
+  @DelicateNavigationApi
   @Deprecated("Should not use destinationId directly, use route instead.")
   override fun stackEntryIdFor(destinationId: DestinationId<*>): StackEntryId = entryFor(destinationId).id
 

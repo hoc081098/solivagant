@@ -41,6 +41,14 @@ import com.hoc081098.solivagant.navigation.Serializable
 import kotlin.jvm.JvmInline
 import kotlin.reflect.KClass
 
+@Retention(value = AnnotationRetention.BINARY)
+@RequiresOptIn(
+  level = RequiresOptIn.Level.WARNING,
+  message = "This is a delicate API and its use requires care." +
+    " Make sure you fully read and understand documentation of the declaration that is marked as a delicate API.",
+)
+public annotation class DelicateNavigationApi
+
 /**
  * A unique identifier for an entry in the navigation stack.
  */
@@ -56,11 +64,13 @@ public interface NavigationExecutor : Navigator {
   /**
    * Find the [StackEntryId] by the given [route].
    */
+  @DelicateNavigationApi
   public fun stackEntryIdFor(route: BaseRoute): StackEntryId
 
   /**
    * Find the [StackEntryId] by the given [destinationId].
    */
+  @DelicateNavigationApi
   @Deprecated("Should not use destinationId directly, use route instead.")
   public fun stackEntryIdFor(destinationId: DestinationId<*>): StackEntryId
 
