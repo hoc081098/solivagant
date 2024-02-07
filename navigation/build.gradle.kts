@@ -238,7 +238,7 @@ mavenPublishing {
   signAllPublications()
 }
 
-tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
+tasks.withType<org.jetbrains.dokka.gradle.DokkaTaskPartial>().configureEach {
   dokkaSourceSets {
     configureEach {
       externalDocumentationLink("https://kotlinlang.org/api/kotlinx.coroutines/")
