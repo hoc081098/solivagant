@@ -64,7 +64,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build
-        run: ./gradlew :lifecycle:assemble :khonshu-navigation-core:assemble :navigation:assemble --stacktrace
+        run: ./gradlew :lifecycle:build :khonshu-navigation-core:build :navigation:build --stacktrace
 
       - name: Kover Xml Report
         run: ./gradlew :koverXmlReport

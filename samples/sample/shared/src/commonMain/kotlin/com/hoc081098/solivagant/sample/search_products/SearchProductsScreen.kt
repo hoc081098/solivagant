@@ -91,34 +91,31 @@ private fun ListContent(
   onItemClick: (ProductItemUi) -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  if (state.isLoading) {
-    LoadingIndicator(
-      modifier = modifier,
-    )
-    return
-  }
+  when {
+    state.isLoading -> {
+      LoadingIndicator(modifier = modifier)
+    }
 
-  state.error?.let { error ->
-    ErrorMessageAndRetryButton(
-      modifier = modifier,
-      onRetry = { },
-      errorMessage = error.message ?: "Unknown error",
-    )
-    return
-  }
+    state.error != null -> {
+      ErrorMessageAndRetryButton(
+        modifier = modifier,
+        onRetry = { },
+        errorMessage = state.error.message ?: "Unknown error",
+      )
+    }
 
-  val products = state.products.ifEmpty {
-    EmptyProducts(
-      modifier = modifier,
-    )
-    return
-  }
+    state.products.isEmpty() -> {
+      EmptyProducts(modifier = modifier)
+    }
 
-  ProductItemsList(
-    modifier = Modifier.fillMaxSize(),
-    products = products,
-    isRefreshing = false,
-    pullRefreshState = null,
-    onItemClick = onItemClick,
-  )
+    else -> {
+      ProductItemsList(
+        modifier = modifier.fillMaxSize(),
+        products = state.products,
+        isRefreshing = false,
+        pullRefreshState = null,
+        onItemClick = onItemClick,
+      )
+    }
+  }
 }

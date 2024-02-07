@@ -42,6 +42,7 @@ import com.hoc081098.solivagant.navigation.ScreenDestination
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.adapters.ImmutableListAdapter
 
+@Suppress("TooManyFunctions")
 internal class Stack private constructor(
   initialStack: List<StackEntry<*>>,
   private val destinations: List<ContentDestination<*>>,

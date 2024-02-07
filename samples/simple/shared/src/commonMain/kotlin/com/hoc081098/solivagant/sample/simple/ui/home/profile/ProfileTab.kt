@@ -31,7 +31,10 @@ import org.koin.core.parameter.parametersOf
 internal fun ProfileTab(
   modifier: Modifier = Modifier,
   viewModel: ProfileTabViewModel = koinKmpViewModel(
-    parameters = { parametersOf(1998, "hoc081098") },
+    parameters = {
+      @Suppress("MagicNumber")
+      parametersOf(1998, "hoc081098")
+    },
   ),
 ) {
   var savableCount by rememberSaveable { mutableIntStateOf(0) }

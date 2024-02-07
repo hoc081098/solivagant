@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+@Suppress("TooManyFunctions")
 private class StackEntryLifecycle : Lifecycle {
   private val _currentStateFlow = MutableStateFlow(State.INITIALIZED)
   private var _state: State = _currentStateFlow.value
