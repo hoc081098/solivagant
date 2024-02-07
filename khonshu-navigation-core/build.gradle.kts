@@ -217,7 +217,7 @@ tasks.withType<org.jetbrains.dokka.gradle.DokkaTaskPartial>().configureEach {
       externalDocumentationLink("https://kotlinlang.org/api/kotlinx.coroutines/")
       externalDocumentationLink(
         url = "https://hoc081098.github.io/kmp-viewmodel/docs/0.x/API/",
-        packageListUrl = "https://hoc081098.github.io/kmp-viewmodel/docs/0.x/API/package-list"
+        packageListUrl = "https://hoc081098.github.io/kmp-viewmodel/docs/0.x/API/package-list",
       )
 
       perPackageOption {
