@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -21,20 +22,40 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.hoc081098.kmp.viewmodel.Closeable
 import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
 import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 import com.hoc081098.solivagant.lifecycle.compose.collectAsStateWithLifecycle
 import com.hoc081098.solivagant.lifecycle.compose.currentStateAsState
+import com.hoc081098.solivagant.navigation.rememberCloseableOnRoute
 import com.hoc081098.solivagant.sample.simple.common.debugDescription
+import io.github.aakira.napier.Napier
+
+private class LoginScreenDemoCloseable : Closeable {
+  init {
+    Napier.d("$debugDescription::init")
+  }
+
+  fun doSomething() = Napier.d("$debugDescription::doSomething")
+
+  override fun close() = Napier.d("$debugDescription::close")
+}
 
 @Composable
 internal fun LoginScreen(
+  route: LoginScreenRoute,
   modifier: Modifier = Modifier,
   viewModel: LoginViewModel = koinKmpViewModel(),
 ) {
   var savableCount by rememberSaveable { mutableIntStateOf(0) }
   val savedStateHandleCount by viewModel.countStateFlow.collectAsStateWithLifecycle()
   val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
+
+  val loginScreenDemoCloseable = rememberCloseableOnRoute(
+    route = route,
+    factory = ::LoginScreenDemoCloseable,
+  )
+  SideEffect { loginScreenDemoCloseable.doSomething() }
 
   Surface(
     modifier = modifier.fillMaxSize(),

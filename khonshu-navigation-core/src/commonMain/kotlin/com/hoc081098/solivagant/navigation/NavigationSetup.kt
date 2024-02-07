@@ -1,3 +1,19 @@
+/*
+ * Copyright 2021 Freeletics GmbH.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.hoc081098.solivagant.navigation
 
 import androidx.compose.runtime.Composable
@@ -11,7 +27,7 @@ import com.hoc081098.solivagant.lifecycle.Lifecycle
 import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 import com.hoc081098.solivagant.lifecycle.repeatOnLifecycle
-import com.hoc081098.solivagant.navigation.internal.InternalNavigationApi
+import com.hoc081098.solivagant.navigation.internal.DelicateNavigationApi
 import com.hoc081098.solivagant.navigation.internal.NavEvent
 import com.hoc081098.solivagant.navigation.internal.NavigationExecutor
 import com.hoc081098.solivagant.navigation.internal.VisibleForTesting
@@ -72,6 +88,7 @@ internal suspend fun NavEventNavigator.collectAndHandleNavEvents(
   }
 }
 
+@OptIn(DelicateNavigationApi::class)
 private fun NavigationExecutor.navigateTo(
   event: NavEvent,
 ) {
@@ -105,7 +122,9 @@ private fun NavigationExecutor.navigateTo(
     }
 
     is NavEvent.DestinationResultEvent<*> -> {
-      savedStateHandleFor(event.key.destinationId)[event.key.requestKey] = event.result
+      @Suppress("DEPRECATION")
+      val id = stackEntryIdFor(event.key.destinationId)
+      savedStateHandleFor(id)[event.key.requestKey] = event.result
     }
 
     is NavEvent.MultiNavEvent -> {
@@ -114,11 +133,14 @@ private fun NavigationExecutor.navigateTo(
   }
 }
 
+@OptIn(DelicateNavigationApi::class)
 @VisibleForTesting
 internal suspend fun <R : Parcelable> NavigationExecutor.collectAndHandleNavigationResults(
   request: NavigationResultRequest<R>,
 ) {
-  val savedStateHandle = savedStateHandleFor(request.key.destinationId)
+  @Suppress("DEPRECATION")
+  val id = stackEntryIdFor(request.key.destinationId)
+  val savedStateHandle = savedStateHandleFor(id)
   savedStateHandle.getStateFlow<Parcelable>(request.key.requestKey, InitialValue)
     .collect {
       if (it != InitialValue) {

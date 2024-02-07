@@ -31,6 +31,10 @@ kotlin {
     vendor.set(JvmVendorSpec.AZUL)
   }
 
+  // Supports targets that have MainCoroutineDispatcher (following kmp-viewmodel artifact)
+  // Also constrained by https://github.com/JetBrains/compose-multiplatform-core/blob/71ccb291b6fc5d840da05cef108ae11384bfe584/compose/ui/ui/build.gradle#L142-L150
+  // Ref: https://github.com/JetBrains/compose-multiplatform-core/blob/9806d785bf33e25b0dda4853d492b319cf9a819f/buildSrc/private/src/main/kotlin/androidx/build/AndroidXComposeMultiplatformExtensionImpl.kt#L171-L176
+
   androidTarget {
     publishAllLibraryVariants()
 
@@ -168,7 +172,7 @@ kotlin {
 
   sourceSets.configureEach {
     languageSettings {
-      optIn("com.hoc081098.solivagant.navigation.internal.InternalNavigationApi")
+      optIn("com.hoc081098.solivagant.navigation.InternalNavigationApi")
     }
   }
 }
@@ -207,14 +211,26 @@ mavenPublishing {
   signAllPublications()
 }
 
-tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
+tasks.withType<org.jetbrains.dokka.gradle.DokkaTaskPartial>().configureEach {
   dokkaSourceSets {
     configureEach {
       externalDocumentationLink("https://kotlinlang.org/api/kotlinx.coroutines/")
 
+      // TODO: Issue https://github.com/Kotlin/dokka/issues/3368 and https://github.com/Kotlin/dokka/issues/2037
+      externalDocumentationLink(
+        url = "https://hoc081098.github.io/kmp-viewmodel/docs/0.x/API/",
+        packageListUrl = "https://hoc081098.github.io/kmp-viewmodel/docs/0.x/API/package-list",
+      )
+
+      perPackageOption {
+        // Will match all .internal packages and sub-packages, regardless of module.
+        matchingRegex.set(""".*\.internal.*""")
+        suppress.set(true)
+      }
+
       sourceLink {
         localDirectory.set(projectDir.resolve("src"))
-        remoteUrl.set(URL("https://github.com/hoc081098/solivagant/tree/master/viewmodel-compose/src"))
+        remoteUrl.set(URL("https://github.com/hoc081098/solivagant/tree/master/khonshu-navigation-core/src"))
         remoteLineSuffix.set("#L")
       }
     }

@@ -1,3 +1,35 @@
+/*
+ * Copyright 2021 Freeletics GmbH.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ * Copyright 2024 Petrus Nguyễn Thái Học
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.hoc081098.solivagant.navigation.internal
 
 import com.benasher44.uuid.uuid4
@@ -10,10 +42,11 @@ import com.hoc081098.solivagant.navigation.ScreenDestination
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.adapters.ImmutableListAdapter
 
+@Suppress("TooManyFunctions")
 internal class Stack private constructor(
   initialStack: List<StackEntry<*>>,
   private val destinations: List<ContentDestination<*>>,
-  private val onStackEntryRemoved: (StackEntry.Id) -> Unit,
+  private val onStackEntryRemoved: (StackEntryId) -> Unit,
   private val getHostLifecycleState: () -> Lifecycle.State,
   private val idGenerator: () -> String,
 ) {
@@ -22,9 +55,19 @@ internal class Stack private constructor(
     it.addAll(initialStack)
   }
 
-  val id: DestinationId<*> get() = rootEntry.destinationId
+  val destinationId: DestinationId<*> get() = rootEntry.destinationId
   val rootEntry: StackEntry<*> get() = stack.first()
   val isAtRoot: Boolean get() = !stack.last().removable
+
+  @Suppress("UNCHECKED_CAST")
+  fun <T : BaseRoute> entryFor(id: StackEntryId): StackEntry<T>? {
+    return stack.findLast { it.id == id } as StackEntry<T>?
+  }
+
+  @Suppress("UNCHECKED_CAST")
+  fun <T : BaseRoute> entryFor(route: T): StackEntry<T>? {
+    return stack.findLast { it.route == route } as StackEntry<T>?
+  }
 
   @Suppress("UNCHECKED_CAST")
   fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T>? {
@@ -117,7 +160,7 @@ internal class Stack private constructor(
     fun createWith(
       root: NavRoot,
       destinations: List<ContentDestination<*>>,
-      onStackEntryRemoved: (StackEntry.Id) -> Unit,
+      onStackEntryRemoved: (StackEntryId) -> Unit,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
@@ -139,7 +182,7 @@ internal class Stack private constructor(
     fun fromState(
       bundle: Map<String, ArrayList<out Any>>,
       destinations: List<ContentDestination<*>>,
-      onStackEntryRemoved: (StackEntry.Id) -> Unit,
+      onStackEntryRemoved: (StackEntryId) -> Unit,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {

@@ -1,3 +1,35 @@
+/*
+ * Copyright 2021 Freeletics GmbH.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ * Copyright 2024 Petrus Nguyễn Thái Học
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.hoc081098.solivagant.navigation.internal
 
 import androidx.compose.runtime.MutableState
@@ -18,7 +50,7 @@ internal class MultiStack(
   private var startStack: Stack,
   private var currentStack: Stack,
   private val destinations: List<ContentDestination<*>>,
-  private val onStackEntryRemoved: (StackEntry.Id) -> Unit,
+  private val onStackEntryRemoved: (StackEntryId) -> Unit,
   private val idGenerator: () -> String,
 ) {
   private val visibleEntryState: MutableState<ImmutableList<StackEntry<*>>> =
@@ -36,8 +68,40 @@ internal class MultiStack(
   private var hostLifecycleState: Lifecycle.State = Lifecycle.State.INITIALIZED
 
   @Suppress("ReturnCount")
+  fun <T : BaseRoute> entryFor(route: T): StackEntry<T>? {
+    val entry = currentStack.entryFor<T>(route)
+    if (entry != null) {
+      return entry
+    }
+
+    // the root of the default back stack is always on the back stack
+    if (startStack.rootEntry.route == route) {
+      @Suppress("UNCHECKED_CAST")
+      return startStack.rootEntry as StackEntry<T>
+    }
+
+    return null
+  }
+
+  @Suppress("ReturnCount")
+  fun <T : BaseRoute> entryFor(id: StackEntryId): StackEntry<T>? {
+    val entry = currentStack.entryFor<T>(id)
+    if (entry != null) {
+      return entry
+    }
+
+    // the root of the default back stack is always on the back stack
+    if (startStack.rootEntry.id == id) {
+      @Suppress("UNCHECKED_CAST")
+      return startStack.rootEntry as StackEntry<T>
+    }
+
+    return null
+  }
+
+  @Suppress("ReturnCount")
   fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T>? {
-    val entry = currentStack.entryFor(destinationId)
+    val entry = currentStack.entryFor<T>(destinationId)
     if (entry != null) {
       return entry
     }
@@ -52,7 +116,7 @@ internal class MultiStack(
   }
 
   private fun getBackStack(root: NavRoot): Stack? {
-    return allStacks.find { it.id == root.destinationId }
+    return allStacks.find { it.destinationId == root.destinationId }
   }
 
   private fun createBackStack(root: NavRoot): Stack {
@@ -79,7 +143,7 @@ internal class MultiStack(
   }
 
   private fun canNavigateBack(): Boolean {
-    return currentStack.id != startStack.id || !currentStack.isAtRoot
+    return currentStack.destinationId != startStack.destinationId || !currentStack.isAtRoot
   }
 
   fun push(route: NavRoute) {
@@ -94,7 +158,7 @@ internal class MultiStack(
 
   fun pop() {
     if (currentStack.isAtRoot) {
-      check(currentStack.id != startStack.id) {
+      check(currentStack.destinationId != startStack.destinationId) {
         "Can't navigate back from the root of the start back stack"
       }
       removeBackStack(currentStack)
@@ -119,8 +183,9 @@ internal class MultiStack(
 
   fun push(root: NavRoot, clearTargetStack: Boolean) {
     val stack = getBackStack(root)
+
     currentStack = if (stack != null) {
-      check(currentStack.id != stack.id) {
+      check(currentStack.destinationId != stack.destinationId) {
         "$root is already the current stack"
       }
       if (clearTargetStack) {
@@ -132,7 +197,7 @@ internal class MultiStack(
     } else {
       createBackStack(root)
     }
-    if (stack?.id == startStack.id) {
+    if (stack?.destinationId == startStack.destinationId) {
       startStack = currentStack
     }
     updateVisibleDestinations()
@@ -140,8 +205,8 @@ internal class MultiStack(
 
   fun resetToRoot(root: NavRoot) {
     when (root.destinationId) {
-      startStack.id -> {
-        if (currentStack.id != startStack.id) {
+      startStack.destinationId -> {
+        if (currentStack.destinationId != startStack.destinationId) {
           removeBackStack(currentStack)
         }
         removeBackStack(startStack)
@@ -150,7 +215,7 @@ internal class MultiStack(
         currentStack = newStack
       }
 
-      currentStack.id -> {
+      currentStack.destinationId -> {
         removeBackStack(currentStack)
         val newStack = createBackStack(root)
         currentStack = newStack
@@ -184,7 +249,7 @@ internal class MultiStack(
   fun saveState(): Map<String, Any> {
     return mapOf(
       SAVED_STATE_ALL_STACKS to ArrayList(allStacks.map { it.saveState() }),
-      SAVED_STATE_CURRENT_STACK to currentStack.id,
+      SAVED_STATE_CURRENT_STACK to currentStack.destinationId,
     )
   }
 
@@ -197,7 +262,7 @@ internal class MultiStack(
     fun createWith(
       root: NavRoot,
       destinations: List<ContentDestination<*>>,
-      onStackEntryRemoved: (StackEntry.Id) -> Unit,
+      onStackEntryRemoved: (StackEntryId) -> Unit,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): MultiStack {
@@ -224,7 +289,7 @@ internal class MultiStack(
       bundle: Map<String, Any?>,
       destinations: List<ContentDestination<*>>,
       getHostLifecycleState: () -> Lifecycle.State,
-      onStackEntryRemoved: (StackEntry.Id) -> Unit,
+      onStackEntryRemoved: (StackEntryId) -> Unit,
       idGenerator: () -> String = { uuid4().toString() },
     ): MultiStack {
       @Suppress("UNCHECKED_CAST")
@@ -239,8 +304,8 @@ internal class MultiStack(
           idGenerator = idGenerator,
         )
       }
-      val startStack = allStacks.first { it.id == root.destinationId }
-      val currentStack = allStacks.first { it.id.route == currentStackId.route }
+      val startStack = allStacks.first { it.destinationId == root.destinationId }
+      val currentStack = allStacks.first { it.destinationId.route == currentStackId.route }
       return MultiStack(
         allStacks = allStacks,
         startStack = startStack,

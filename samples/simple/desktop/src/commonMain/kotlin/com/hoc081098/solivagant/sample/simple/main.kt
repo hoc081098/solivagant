@@ -16,8 +16,8 @@ import com.hoc081098.solivagant.lifecycle.LifecycleRegistry
 import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 import com.hoc081098.solivagant.lifecycle.compose.currentStateAsState
 import com.hoc081098.solivagant.lifecycle.rememberLifecycleOwner
+import com.hoc081098.solivagant.navigation.LifecycleControllerEffect
 import com.hoc081098.solivagant.navigation.SavedStateSupport
-import com.hoc081098.solivagant.navigation.internal.LifecycleControllerEffect
 
 fun main() {
   startKoinCommon()

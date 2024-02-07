@@ -1,3 +1,35 @@
+/*
+ * Copyright 2021 Freeletics GmbH.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ * Copyright 2024 Petrus Nguyễn Thái Học
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.hoc081098.solivagant.navigation.internal
 
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
@@ -12,9 +44,9 @@ import com.hoc081098.solivagant.navigation.NavRoot
 internal class StoreViewModel(
   internal val globalSavedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-  private val stores = mutableMapOf<StackEntry.Id, NavigationExecutorStore>()
-  private val savedStateHandles = mutableMapOf<StackEntry.Id, SavedStateHandle>()
-  private val savedStateHandleFactories = mutableMapOf<StackEntry.Id, SavedStateHandleFactory>()
+  private val stores = mutableMapOf<StackEntryId, NavigationExecutorStore>()
+  private val savedStateHandles = mutableMapOf<StackEntryId, SavedStateHandle>()
+  private val savedStateHandleFactories = mutableMapOf<StackEntryId, SavedStateHandleFactory>()
 
   private var stack: MultiStack? = null
   private var executor: MultiStackNavigationExecutor? = null
@@ -25,24 +57,24 @@ internal class StoreViewModel(
     }
   }
 
-  internal fun provideStore(id: StackEntry.Id): NavigationExecutor.Store {
+  internal fun provideStore(id: StackEntryId): NavigationExecutor.Store {
     return stores.getOrPut(id) { NavigationExecutorStore() }
   }
 
-  internal fun provideSavedStateHandle(id: StackEntry.Id, route: BaseRoute): SavedStateHandle {
+  internal fun provideSavedStateHandle(id: StackEntryId, route: BaseRoute): SavedStateHandle {
     return savedStateHandles.getOrPut(id) {
       createSavedStateHandleAndSetSavedStateProvider(id.value, globalSavedStateHandle)
         .apply { this[EXTRA_ROUTE] = route }
     }
   }
 
-  internal fun provideSavedStateHandleFactory(id: StackEntry.Id, route: BaseRoute): SavedStateHandleFactory {
+  internal fun provideSavedStateHandleFactory(id: StackEntryId, route: BaseRoute): SavedStateHandleFactory {
     return savedStateHandleFactories.getOrPut(id) {
       SavedStateHandleFactory { provideSavedStateHandle(id, route) }
     }
   }
 
-  private fun removeEntry(id: StackEntry.Id) {
+  private fun removeEntry(id: StackEntryId) {
     val store = stores.remove(id)
     store?.close()
 

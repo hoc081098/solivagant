@@ -24,6 +24,9 @@ public final class com/hoc081098/solivagant/navigation/InitialValue$Creator : an
 	public synthetic fun newArray (I)[Ljava/lang/Object;
 }
 
+public abstract interface annotation class com/hoc081098/solivagant/navigation/InternalNavigationApi : java/lang/annotation/Annotation {
+}
+
 public abstract interface class com/hoc081098/solivagant/navigation/NavDestination {
 }
 
@@ -132,6 +135,9 @@ public final class com/hoc081098/solivagant/navigation/ScreenDestination : com/h
 	public fun getId ()Lcom/hoc081098/solivagant/navigation/internal/DestinationId;
 }
 
+public abstract interface annotation class com/hoc081098/solivagant/navigation/internal/DelicateNavigationApi : java/lang/annotation/Annotation {
+}
+
 public final class com/hoc081098/solivagant/navigation/internal/DestinationId : android/os/Parcelable {
 	public static final field $stable I
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
@@ -157,9 +163,6 @@ public final class com/hoc081098/solivagant/navigation/internal/DestinationId$Cr
 
 public final class com/hoc081098/solivagant/navigation/internal/DestinationIdKt {
 	public static final fun getDestinationId (Lcom/hoc081098/solivagant/navigation/BaseRoute;)Lcom/hoc081098/solivagant/navigation/internal/DestinationId;
-}
-
-public abstract interface annotation class com/hoc081098/solivagant/navigation/internal/InternalNavigationApi : java/lang/annotation/Annotation {
 }
 
 public abstract interface class com/hoc081098/solivagant/navigation/internal/NavEvent {
@@ -238,11 +241,12 @@ public final class com/hoc081098/solivagant/navigation/internal/NavEvent$UpEvent
 }
 
 public abstract interface class com/hoc081098/solivagant/navigation/internal/NavigationExecutor : com/hoc081098/solivagant/navigation/Navigator {
-	public abstract fun extra (Lcom/hoc081098/solivagant/navigation/internal/DestinationId;)Ljava/io/Serializable;
-	public abstract fun routeFor (Lcom/hoc081098/solivagant/navigation/internal/DestinationId;)Lcom/hoc081098/solivagant/navigation/BaseRoute;
-	public abstract fun savedStateHandleFactoryFor (Lcom/hoc081098/solivagant/navigation/internal/DestinationId;)Lcom/hoc081098/kmp/viewmodel/SavedStateHandleFactory;
-	public abstract fun savedStateHandleFor (Lcom/hoc081098/solivagant/navigation/internal/DestinationId;)Landroidx/lifecycle/SavedStateHandle;
-	public abstract fun storeFor (Lcom/hoc081098/solivagant/navigation/internal/DestinationId;)Lcom/hoc081098/solivagant/navigation/internal/NavigationExecutor$Store;
+	public abstract fun extra-3IqVRSk (Ljava/lang/String;)Ljava/io/Serializable;
+	public abstract fun savedStateHandleFactoryFor-3IqVRSk (Ljava/lang/String;)Lcom/hoc081098/kmp/viewmodel/SavedStateHandleFactory;
+	public abstract fun savedStateHandleFor-3IqVRSk (Ljava/lang/String;)Landroidx/lifecycle/SavedStateHandle;
+	public abstract fun stackEntryIdFor-l9GXND0 (Lcom/hoc081098/solivagant/navigation/BaseRoute;)Ljava/lang/String;
+	public abstract fun stackEntryIdFor-l9GXND0 (Lcom/hoc081098/solivagant/navigation/internal/DestinationId;)Ljava/lang/String;
+	public abstract fun storeFor-3IqVRSk (Ljava/lang/String;)Lcom/hoc081098/solivagant/navigation/internal/NavigationExecutor$Store;
 }
 
 public abstract interface class com/hoc081098/solivagant/navigation/internal/NavigationExecutor$Store {
@@ -264,5 +268,19 @@ public final class com/hoc081098/solivagant/navigation/internal/OnBackPressedDis
 
 public final class com/hoc081098/solivagant/navigation/internal/OnBackPressedDispatcherOwner_androidKt {
 	public static final fun currentBackPressedDispatcher (Landroidx/compose/runtime/Composer;I)Lcom/hoc081098/solivagant/navigation/internal/OnBackPressedDispatcherOwner;
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/StackEntryId {
+	public static final synthetic fun box-impl (Ljava/lang/String;)Lcom/hoc081098/solivagant/navigation/internal/StackEntryId;
+	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/lang/String;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/lang/String;
 }
 

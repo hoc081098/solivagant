@@ -1,3 +1,35 @@
+/*
+ * Copyright 2021 Freeletics GmbH.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ * Copyright 2024 Petrus Nguyễn Thái Học
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.hoc081098.solivagant.navigation.internal
 
 import androidx.compose.runtime.State
@@ -72,38 +104,49 @@ internal class MultiStackNavigationExecutor(
     onRootChanged(root)
   }
 
-  override fun <T : BaseRoute> routeFor(destinationId: DestinationId<T>): T {
-    return entryFor(destinationId).route
-  }
+  @DelicateNavigationApi
+  override fun stackEntryIdFor(route: BaseRoute): StackEntryId = entryFor(route).id
 
-  override fun <T : BaseRoute> savedStateHandleFor(destinationId: DestinationId<T>): SavedStateHandle {
-    val entry = entryFor(destinationId)
+  @DelicateNavigationApi
+  @Deprecated("Should not use destinationId directly, use route instead.")
+  override fun stackEntryIdFor(destinationId: DestinationId<*>): StackEntryId = entryFor(destinationId).id
+
+  override fun savedStateHandleFor(id: StackEntryId): SavedStateHandle {
+    val entry = entryFor<BaseRoute>(id)
     return viewModel.provideSavedStateHandle(entry.id, entry.route)
   }
 
-  override fun <T : BaseRoute> savedStateHandleFactoryFor(destinationId: DestinationId<T>): SavedStateHandleFactory {
-    val entry = entryFor(destinationId)
+  override fun savedStateHandleFactoryFor(id: StackEntryId): SavedStateHandleFactory {
+    val entry = entryFor<BaseRoute>(id)
     return viewModel.provideSavedStateHandleFactory(entry.id, entry.route)
   }
 
-  override fun <T : BaseRoute> storeFor(destinationId: DestinationId<T>): NavigationExecutor.Store {
-    val entry = entryFor(destinationId)
-    return storeFor(entry.id)
+  override fun storeFor(id: StackEntryId): NavigationExecutor.Store {
+    val entry = entryFor<BaseRoute>(id)
+    return viewModel.provideStore(entry.id)
   }
 
-  override fun <T : BaseRoute> extra(destinationId: DestinationId<T>): Serializable {
-    val entry = entryFor(destinationId)
+  override fun extra(id: StackEntryId): Serializable {
+    val entry = entryFor<BaseRoute>(id)
     return entry.destination.extra!!
   }
 
-  internal fun storeFor(entryId: StackEntry.Id): NavigationExecutor.Store {
-    return viewModel.provideStore(entryId)
+  //region Find StackEntry by id or route or destinationId
+  private fun <T : BaseRoute> entryFor(id: StackEntryId): StackEntry<T> {
+    return stack.entryFor(id)
+      ?: error("Route with id=$id not found on back stack")
+  }
+
+  private fun <T : BaseRoute> entryFor(route: T): StackEntry<T> {
+    return stack.entryFor(route)
+      ?: error("Route $route not found on back stack")
   }
 
   private fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T> {
     return stack.entryFor(destinationId)
-      ?: error("Route $destinationId not found on back stack")
+      ?: error("Route with destinationId=$destinationId not found on back stack")
   }
+  //endregion
 
   fun setLifecycleOwner(lifecycleOwner: LifecycleOwner?) {
     _lifecycleOwner.value = lifecycleOwner

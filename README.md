@@ -270,6 +270,7 @@ navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 - [ ] Review supported targets
 - [ ] Polish and improve the implementation and the public API
 - [ ] Support transition when navigating
+- [ ] Support more targets such as wasm, watchOS, tvOS, etc...
 
 ## License
 
