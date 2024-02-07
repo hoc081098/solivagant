@@ -79,6 +79,55 @@ jobs:
           name: test-report
           path: build/reports/tests/allTests/
 
+  checks:
+    name: Checks (spotless, detekt and binary-compatibility-validator)
+    strategy:
+      matrix:
+        os: [ macos-11 ]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    if: ${{ github.repository == 'hoc081098/solivagant' }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Cache gradle, wrapper and buildSrc
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ matrix.os }}-gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
+          restore-keys: |
+            ${{ matrix.os }}-gradle-
+      - name: Cache konan
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.konan/cache
+            ~/.konan/dependencies
+            ~/.konan/kotlin-native-macos*
+            ~/.konan/kotlin-native-mingw*
+            ~/.konan/kotlin-native-windows*
+            ~/.konan/kotlin-native-linux*
+            ~/.konan/kotlin-native-prebuilt-macos*
+            ~/.konan/kotlin-native-prebuilt-mingw*
+            ~/.konan/kotlin-native-prebuilt-windows*
+            ~/.konan/kotlin-native-prebuilt-linux*
+          key: ${{ matrix.os }}-konan-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ matrix.os }}-konan-
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: spotlessCheck, detekt and apiCheck
+        run: ./gradlew spotlessCheck detekt apiCheck --stacktrace
+
   publish:
     needs: [ build ]
     if: ${{ github.ref == 'refs/heads/master' && github.repository == 'hoc081098/solivagant' }}
