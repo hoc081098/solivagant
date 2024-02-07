@@ -7,15 +7,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.window.WindowState
 import com.hoc081098.solivagant.lifecycle.Lifecycle
+import com.hoc081098.solivagant.lifecycle.LifecycleDestroyedException
 import com.hoc081098.solivagant.lifecycle.LifecycleRegistry
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-
-private class DestroyedLifecycleException : CancellationException("Lifecycle was destroyed")
 
 @Composable
 public fun LifecycleControllerEffect(
@@ -34,7 +32,7 @@ public fun LifecycleControllerEffect(
     // Wait the first state is not INITIALIZED
     when (lifecycleRegistry.currentStateFlow.first { it != Lifecycle.State.INITIALIZED }) {
       Lifecycle.State.DESTROYED ->
-        throw DestroyedLifecycleException()
+        throw LifecycleDestroyedException()
 
       Lifecycle.State.INITIALIZED ->
         error("Can not happen")
@@ -42,8 +40,7 @@ public fun LifecycleControllerEffect(
       Lifecycle.State.CREATED,
       Lifecycle.State.STARTED,
       Lifecycle.State.RESUMED,
-      ->
-        Unit
+      -> Unit
     }
 
     snapshotFlow { windowState.isMinimized }
@@ -52,7 +49,7 @@ public fun LifecycleControllerEffect(
           lifecycleRegistry.currentState == Lifecycle.State.DESTROYED ||
           leavedComposition.value
         ) {
-          throw DestroyedLifecycleException()
+          throw LifecycleDestroyedException()
         }
 
         if (isMinimized) {
@@ -121,7 +118,7 @@ private fun moveToResumed(lifecycleRegistry: LifecycleRegistry) {
       Unit
 
     Lifecycle.State.DESTROYED ->
-      throw DestroyedLifecycleException()
+      throw LifecycleDestroyedException()
   }
 }
 
@@ -144,6 +141,6 @@ private fun moveToStopped(lifecycleRegistry: LifecycleRegistry) {
     }
 
     Lifecycle.State.DESTROYED ->
-      throw DestroyedLifecycleException()
+      throw LifecycleDestroyedException()
   }
 }
