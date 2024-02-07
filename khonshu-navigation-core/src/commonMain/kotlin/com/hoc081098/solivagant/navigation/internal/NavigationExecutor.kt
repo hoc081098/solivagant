@@ -35,6 +35,7 @@ package com.hoc081098.solivagant.navigation.internal
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.SavedStateHandleFactory
 import com.hoc081098.solivagant.navigation.BaseRoute
+import com.hoc081098.solivagant.navigation.InternalNavigationApi
 import com.hoc081098.solivagant.navigation.Navigator
 import com.hoc081098.solivagant.navigation.Serializable
 import kotlin.jvm.JvmInline

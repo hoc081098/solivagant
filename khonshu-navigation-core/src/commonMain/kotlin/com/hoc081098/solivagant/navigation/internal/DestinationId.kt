@@ -39,6 +39,7 @@ import com.hoc081098.kmp.viewmodel.parcelable.Parceler
 import com.hoc081098.kmp.viewmodel.parcelable.Parcelize
 import com.hoc081098.kmp.viewmodel.parcelable.WriteWith
 import com.hoc081098.solivagant.navigation.BaseRoute
+import com.hoc081098.solivagant.navigation.InternalNavigationApi
 import kotlin.jvm.JvmField
 import kotlin.reflect.KClass
 

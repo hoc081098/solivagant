@@ -17,7 +17,6 @@
 package com.hoc081098.solivagant.navigation
 
 import androidx.compose.runtime.Stable
-import com.hoc081098.solivagant.navigation.internal.InternalNavigationApi
 
 @InternalNavigationApi
 @Stable

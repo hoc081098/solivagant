@@ -18,6 +18,7 @@ package com.hoc081098.solivagant.navigation.internal
 
 import com.hoc081098.kmp.viewmodel.parcelable.Parcelable
 import com.hoc081098.solivagant.navigation.BaseRoute
+import com.hoc081098.solivagant.navigation.InternalNavigationApi
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.NavigationResultRequest

@@ -18,6 +18,7 @@
 package com.hoc081098.solivagant.navigation.internal
 
 import com.hoc081098.kmp.viewmodel.MainThread
+import com.hoc081098.solivagant.navigation.InternalNavigationApi
 
 @InternalNavigationApi
 public expect abstract class OnBackPressedCallback(enabled: Boolean) {

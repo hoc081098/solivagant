@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hoc081098.solivagant.navigation.internal
+package com.hoc081098.solivagant.navigation
 
 /**
  * Code marked with [InternalNavigationApi] has no guarantees about API stability and can be changed

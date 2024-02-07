@@ -19,6 +19,7 @@ package com.hoc081098.solivagant.navigation.internal
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import com.hoc081098.solivagant.navigation.InternalNavigationApi
 
 @InternalNavigationApi
 public actual class OnBackPressedDispatcherOwner(

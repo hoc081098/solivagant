@@ -20,7 +20,6 @@ import com.hoc081098.kmp.viewmodel.MainThread
 import com.hoc081098.kmp.viewmodel.parcelable.Parcelable
 import com.hoc081098.solivagant.navigation.internal.DelegatingOnBackPressedCallback
 import com.hoc081098.solivagant.navigation.internal.DestinationId
-import com.hoc081098.solivagant.navigation.internal.InternalNavigationApi
 import com.hoc081098.solivagant.navigation.internal.NavEvent
 import com.hoc081098.solivagant.navigation.internal.NavEvent.BackEvent
 import com.hoc081098.solivagant.navigation.internal.NavEvent.BackToEvent

@@ -17,6 +17,7 @@
 package com.hoc081098.solivagant.navigation.internal
 
 import androidx.compose.runtime.Composable
+import com.hoc081098.solivagant.navigation.InternalNavigationApi
 
 @InternalNavigationApi
 public expect class OnBackPressedDispatcherOwner {

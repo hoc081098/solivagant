@@ -17,6 +17,7 @@
 package com.hoc081098.solivagant.navigation.internal
 
 import com.hoc081098.kmp.viewmodel.Closeable
+import com.hoc081098.solivagant.navigation.InternalNavigationApi
 import kotlin.reflect.KClass
 
 @InternalNavigationApi
