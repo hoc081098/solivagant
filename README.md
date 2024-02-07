@@ -2,8 +2,6 @@
 
 ## 🔆 Compose Multiplatform Navigation - 🌸 Pragmatic, type safety navigation for Compose Multiplatform. Based on [Freeletics Khonshu Navigation](https://freeletics.github.io/khonshu/navigation/get-started/). ♥️ ViewModel, SavedStateHandle, Lifecycle, Multi-Backstacks, and more...
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/hoc081098/solivagant/Build%20and%20publish%20snapshot?label=Build%20and%20publish%20snapshot&logo=github)]
-
 [![maven-central](https://img.shields.io/maven-central/v/io.github.hoc081098/solivagant-navigation)](https://search.maven.org/search?q=g:io.github.hoc081098%20solivagant-navigation)
 [![codecov](https://codecov.io/gh/hoc081098/solivagant/branch/master/graph/badge.svg?token=jBFg12osvP)](https://codecov.io/gh/hoc081098/solivagant)
 [![Build and publish snapshot](https://github.com/hoc081098/solivagant/actions/workflows/build.yml/badge.svg)](https://github.com/hoc081098/solivagant/actions/workflows/build.yml)
