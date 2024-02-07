@@ -129,7 +129,7 @@ jobs:
         run: ./gradlew spotlessCheck detekt apiCheck --stacktrace
 
   publish:
-    needs: [ build ]
+    needs: [ build, checks ]
     if: ${{ github.ref == 'refs/heads/master' && github.repository == 'hoc081098/solivagant' }}
     strategy:
       matrix:
