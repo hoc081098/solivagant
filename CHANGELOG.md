@@ -5,7 +5,7 @@
 ## [0.0.1] - Feb 7, 2024
 
 - Initial release of `solivagant` 🔆.
-  A Compose Multiplatform Navigation - 🌸 Pragmatic, type safety navigation for Compose Multiplatform.
+  Compose Multiplatform Navigation - 🌸 Pragmatic, type safety navigation for Compose Multiplatform.
   Based on [Freeletics Khonshu Navigation](https://freeletics.github.io/khonshu/navigation/get-started/).
   ♥️ ViewModel, SavedStateHandle, Lifecycle, Multi-Backstacks, and more...
 
