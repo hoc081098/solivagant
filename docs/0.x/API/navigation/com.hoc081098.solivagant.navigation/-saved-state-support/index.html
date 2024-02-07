@@ -1,0 +1,231 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>SavedStateSupport</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../index.html">
+                            solivagant
+                    </a>            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector common-like" data-active="" data-filter=":navigation:dokkaHtmlPartial/nonAndroidMain">nonAndroid</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="navigation::com.hoc081098.solivagant.navigation/SavedStateSupport///PointingToDeclaration//-556340193">
+  <div class="breadcrumbs"><a href="../../index.html">navigation</a><span class="delimiter">/</span><a href="../index.html">com.hoc081098.solivagant.navigation</a><span class="delimiter">/</span><span class="current">SavedStateSupport</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Saved</span><wbr><span>State</span><wbr><span><span>Support</span></span></h1>
+    <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+      <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":navigation:dokkaHtmlPartial/nonAndroidMain" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain" data-active="" data-toggle=":navigation:dokkaHtmlPartial/nonAndroidMain">nonAndroid</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":navigation:dokkaHtmlPartial/nonAndroidMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://hoc081098.github.io/kmp-viewmodel/docs/0.x/API/viewmodel/com.hoc081098.kmp.viewmodel/-main-thread/index.html"><span class="token annotation builtin">MainThread</span></a></div></div><span class="token keyword">class </span><a href="index.html">SavedStateSupport</a> : <a href="https://hoc081098.github.io/kmp-viewmodel/docs/0.x/API/viewmodel/com.hoc081098.kmp.viewmodel/-saved-state-handle-factory/index.html">SavedStateHandleFactory</a>, <a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/saveable/SaveableStateRegistry.html">SaveableStateRegistry</a>, <a href="https://hoc081098.github.io/kmp-viewmodel/docs/0.x/API/viewmodel/com.hoc081098.kmp.viewmodel/-view-model-store-owner/index.html">ViewModelStoreOwner</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/hoc081098/solivagant/tree/master/navigation/src/nonAndroidMain/kotlin/com/hoc081098/solivagant/navigation/SavedStateSupport.kt#L70">source</a>)</span></span></div><p class="paragraph">A class helps to support saved state in Compose.</p><p class="paragraph">The <a href="clear.html">clear</a> method will clear all saved state and clear the <a href="https://hoc081098.github.io/kmp-viewmodel/docs/0.x/API/viewmodel/com.hoc081098.kmp.viewmodel/-view-model-store/index.html">ViewModelStore</a>. Usually, you should call <a href="clear.html">clear</a> in <code class="lang-kotlin">onDispose</code> of a <a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/package-summary.html">androidx.compose.runtime.DisposableEffect</a> that runs in the root @Composable.</p><p class="paragraph">The <a href="perform-save.html">performSave</a> method will save all the saved state. Usually, you should call <a href="perform-save.html">performSave</a> in <code class="lang-kotlin">onDispose</code> of a <a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/package-summary.html">androidx.compose.runtime.DisposableEffect</a> that runs in a child @Composable. That <a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/package-summary.html">androidx.compose.runtime.DisposableEffect</a> should be at the last of the child @Composable, because <a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/saveable/SaveableStateRegistry.Entry.html">SaveableStateRegistry.Entry</a>s are unregistered in reverse order. We want to save state first, before <a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/saveable/SaveableStateRegistry.Entry.html">SaveableStateRegistry.Entry</a>s are unregistered.</p><h2 class=""> Example</h2><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">// Remember a SavedStateSupport instance.<br>val savedStateSupport = remember { SavedStateSupport() }<br><br>// Clear the SavedStateSupport when the root @Composable exits the composition.<br>DisposableEffect(Unit) {<br>  onDispose(savedStateSupport::clear)<br>}<br><br>// Provide SavedStateSupport as ViewModelStoreOwner, SaveableStateRegistry and SavedStateHandleFactory.<br>CompositionLocalProvider(<br>  LocalViewModelStoreOwner provides savedStateSupport,<br>  LocalSaveableStateRegistry provides savedStateSupport,<br>  LocalSavedStateHandleFactory provides savedStateSupport,<br>) {<br>  MyApp()<br><br>  // Must be at the last,<br>  // because onDispose is called in reverse order, so we want to save state first,<br>  // before [SaveableStateRegistry.Entry]s are unregistered.<br>  DisposableEffect(Unit) {<br>    onDispose(savedStateSupport::performSave)<br>  }<br>}</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div>    </div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="293246252%2FConstructors%2F-556340193" anchor-label="SavedStateSupport" id="293246252%2FConstructors%2F-556340193" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":navigation:dokkaHtmlPartial/nonAndroidMain" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-saved-state-support.html"><span>Saved</span><wbr><span>State</span><wbr><span><span>Support</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="293246252%2FConstructors%2F-556340193"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":navigation:dokkaHtmlPartial/nonAndroidMain" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain" data-active="" data-toggle=":navigation:dokkaHtmlPartial/nonAndroidMain">nonAndroid</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":navigation:dokkaHtmlPartial/nonAndroidMain"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-1817122996%2FProperties%2F-556340193" anchor-label="viewModelStore" id="-1817122996%2FProperties%2F-556340193" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain"></a>
+          <div class="table-row" data-filterable-current=":navigation:dokkaHtmlPartial/nonAndroidMain" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="view-model-store.html"><span>view</span><wbr><span>Model</span><wbr><span><span>Store</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1817122996%2FProperties%2F-556340193"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":navigation:dokkaHtmlPartial/nonAndroidMain" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain" data-active="" data-toggle=":navigation:dokkaHtmlPartial/nonAndroidMain">nonAndroid</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":navigation:dokkaHtmlPartial/nonAndroidMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="view-model-store.html">viewModelStore</a><span class="token operator">: </span><a href="https://hoc081098.github.io/kmp-viewmodel/docs/0.x/API/viewmodel/com.hoc081098.kmp.viewmodel/-view-model-store/index.html">ViewModelStore</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-384066666%2FFunctions%2F-556340193" anchor-label="canBeSaved" id="-384066666%2FFunctions%2F-556340193" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain"></a>
+          <div class="table-row" data-filterable-current=":navigation:dokkaHtmlPartial/nonAndroidMain" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="can-be-saved.html"><span>can</span><wbr><span>Be</span><wbr><span><span>Saved</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-384066666%2FFunctions%2F-556340193"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":navigation:dokkaHtmlPartial/nonAndroidMain" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain" data-active="" data-toggle=":navigation:dokkaHtmlPartial/nonAndroidMain">nonAndroid</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":navigation:dokkaHtmlPartial/nonAndroidMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="can-be-saved.html"><span class="token function">canBeSaved</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1403718628%2FFunctions%2F-556340193" anchor-label="clear" id="1403718628%2FFunctions%2F-556340193" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain"></a>
+          <div class="table-row" data-filterable-current=":navigation:dokkaHtmlPartial/nonAndroidMain" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="clear.html"><span><span>clear</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1403718628%2FFunctions%2F-556340193"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":navigation:dokkaHtmlPartial/nonAndroidMain" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain" data-active="" data-toggle=":navigation:dokkaHtmlPartial/nonAndroidMain">nonAndroid</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":navigation:dokkaHtmlPartial/nonAndroidMain"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="clear.html"><span class="token function">clear</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1195330117%2FFunctions%2F-556340193" anchor-label="consumeRestored" id="1195330117%2FFunctions%2F-556340193" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain"></a>
+          <div class="table-row" data-filterable-current=":navigation:dokkaHtmlPartial/nonAndroidMain" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="consume-restored.html"><span>consume</span><wbr><span><span>Restored</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1195330117%2FFunctions%2F-556340193"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":navigation:dokkaHtmlPartial/nonAndroidMain" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain" data-active="" data-toggle=":navigation:dokkaHtmlPartial/nonAndroidMain">nonAndroid</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":navigation:dokkaHtmlPartial/nonAndroidMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="consume-restored.html"><span class="token function">consumeRestored</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-606260499%2FFunctions%2F-556340193" anchor-label="create" id="-606260499%2FFunctions%2F-556340193" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain"></a>
+          <div class="table-row" data-filterable-current=":navigation:dokkaHtmlPartial/nonAndroidMain" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="create.html"><span><span>create</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-606260499%2FFunctions%2F-556340193"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":navigation:dokkaHtmlPartial/nonAndroidMain" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain" data-active="" data-toggle=":navigation:dokkaHtmlPartial/nonAndroidMain">nonAndroid</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":navigation:dokkaHtmlPartial/nonAndroidMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="create.html"><span class="token function">create</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://hoc081098.github.io/kmp-viewmodel/docs/0.x/API/viewmodel/com.hoc081098.kmp.viewmodel/-saved-state-handle/index.html">SavedStateHandle</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1921005523%2FFunctions%2F-556340193" anchor-label="performSave" id="1921005523%2FFunctions%2F-556340193" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain"></a>
+          <div class="table-row" data-filterable-current=":navigation:dokkaHtmlPartial/nonAndroidMain" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="perform-save.html"><span>perform</span><wbr><span><span>Save</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1921005523%2FFunctions%2F-556340193"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":navigation:dokkaHtmlPartial/nonAndroidMain" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain" data-active="" data-toggle=":navigation:dokkaHtmlPartial/nonAndroidMain">nonAndroid</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":navigation:dokkaHtmlPartial/nonAndroidMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="perform-save.html"><span class="token function">performSave</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1552479141%2FFunctions%2F-556340193" anchor-label="registerProvider" id="1552479141%2FFunctions%2F-556340193" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain"></a>
+          <div class="table-row" data-filterable-current=":navigation:dokkaHtmlPartial/nonAndroidMain" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="register-provider.html"><span>register</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1552479141%2FFunctions%2F-556340193"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":navigation:dokkaHtmlPartial/nonAndroidMain" data-filterable-set=":navigation:dokkaHtmlPartial/nonAndroidMain" data-active="" data-toggle=":navigation:dokkaHtmlPartial/nonAndroidMain">nonAndroid</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":navigation:dokkaHtmlPartial/nonAndroidMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="register-provider.html"><span class="token function">registerProvider</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">valueProvider<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/saveable/SaveableStateRegistry.Entry.html">SaveableStateRegistry.Entry</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,213 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>LifecycleStartStopEffectScope</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../index.html">
+                            solivagant
+                    </a>            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector common-like" data-active="" data-filter=":lifecycle:dokkaHtmlPartial/commonMain">common</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="lifecycle::com.hoc081098.solivagant.lifecycle.compose/LifecycleStartStopEffectScope///PointingToDeclaration//1553588475">
+  <div class="breadcrumbs"><a href="../../index.html">lifecycle</a><span class="delimiter">/</span><a href="../index.html">com.hoc081098.solivagant.lifecycle.compose</a><span class="delimiter">/</span><span class="current">LifecycleStartStopEffectScope</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Lifecycle</span><wbr><span>Start</span><wbr><span>Stop</span><wbr><span>Effect</span><wbr><span><span>Scope</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":lifecycle:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">LifecycleStartStopEffectScope</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>lifecycle<span class="token operator">: </span><a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/index.html">Lifecycle</a></span></span><span class="token punctuation">)</span> : <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle-owner/index.html">LifecycleOwner</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/hoc081098/solivagant/tree/master/lifecycle/src/commonMain/kotlin/com/hoc081098/solivagant/lifecycle/compose/lifecycleEffects.kt#L385">source</a>)</span></span></div><p class="paragraph">Receiver scope for <a href="../-lifecycle-start-effect.html">LifecycleStartEffect</a> that offers the <a href="on-stop-or-dispose.html">onStopOrDispose</a> clause to couple the ON_START effect. This should be the last statement in any call to <a href="../-lifecycle-start-effect.html">LifecycleStartEffect</a>.</p><p class="paragraph">This scope is also a <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle-owner/index.html">LifecycleOwner</a> to allow access to the (lifecycle)<a href="lifecycle.html">LifecycleStartStopEffectScope.lifecycle</a> within the <a href="on-stop-or-dispose.html">onStopOrDispose</a> clause.</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":lifecycle:dokkaHtmlPartial/commonMain" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>lifecycle</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The lifecycle being observed by this receiver scope</p></div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button><button class="section-tab" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION,EXTENSION_PROPERTY,EXTENSION_FUNCTION">Members &amp; Extensions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-291875369%2FConstructors%2F1553588475" anchor-label="LifecycleStartStopEffectScope" id="-291875369%2FConstructors%2F1553588475" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":lifecycle:dokkaHtmlPartial/commonMain" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-lifecycle-start-stop-effect-scope.html"><span>Lifecycle</span><wbr><span>Start</span><wbr><span>Stop</span><wbr><span>Effect</span><wbr><span><span>Scope</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-291875369%2FConstructors%2F1553588475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":lifecycle:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">lifecycle<span class="token operator">: </span><a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/index.html">Lifecycle</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="2056391659%2FProperties%2F1553588475" anchor-label="lifecycle" id="2056391659%2FProperties%2F1553588475" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":lifecycle:dokkaHtmlPartial/commonMain" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="lifecycle.html"><span><span>lifecycle</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2056391659%2FProperties%2F1553588475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":lifecycle:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="lifecycle.html">lifecycle</a><span class="token operator">: </span><a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/index.html">Lifecycle</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="639220895%2FFunctions%2F1553588475" anchor-label="onStopOrDispose" id="639220895%2FFunctions%2F1553588475" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":lifecycle:dokkaHtmlPartial/commonMain" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-stop-or-dispose.html"><span>on</span><wbr><span>Stop</span><wbr><span>Or</span><wbr><span><span>Dispose</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="639220895%2FFunctions%2F1553588475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":lifecycle:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="on-stop-or-dispose.html"><span class="token function">onStopOrDispose</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">crossinline </span>onStopOrDisposeEffect<span class="token operator">: </span><span class="token keyword"></span><a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle-owner/index.html">LifecycleOwner</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-lifecycle-stop-or-dispose-effect-result/index.html">LifecycleStopOrDisposeEffectResult</a></div><div class="brief "><p class="paragraph">Provide the <a href="on-stop-or-dispose.html">onStopOrDisposeEffect</a> to the <a href="../-lifecycle-start-effect.html">LifecycleStartEffect</a> to run when the observer receives an (ON_STOP)<a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/-event/-o-n_-s-t-o-p/index.html">Lifecycle.Event.ON_STOP</a> event or must undergo cleanup.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="140811783%2FFunctions%2F1553588475" anchor-label="repeatOnLifecycle" id="140811783%2FFunctions%2F1553588475" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":lifecycle:dokkaHtmlPartial/commonMain" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.hoc081098.solivagant.lifecycle/repeat-on-lifecycle.html"><span>repeat</span><wbr><span>On</span><wbr><span><span>Lifecycle</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="140811783%2FFunctions%2F1553588475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":lifecycle:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle-owner/index.html">LifecycleOwner</a><span class="token punctuation">.</span><a href="../../com.hoc081098.solivagant.lifecycle/repeat-on-lifecycle.html"><span class="token function">repeatOnLifecycle</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">state<span class="token operator">: </span><a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/-state/index.html">Lifecycle.State</a><span class="token punctuation">, </span></span><span class="parameter ">block<span class="token operator">: </span><span class="token keyword">suspend </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-scope/index.html">CoroutineScope</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph"><a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle-owner/index.html">LifecycleOwner</a>'s extension function for <a href="../../com.hoc081098.solivagant.lifecycle/repeat-on-lifecycle.html">Lifecycle.repeatOnLifecycle</a> to allow an easier call to the API from LifecycleOwners such as Activities and Fragments.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="794459763%2FFunctions%2F1553588475" anchor-label="withCreated" id="794459763%2FFunctions%2F1553588475" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":lifecycle:dokkaHtmlPartial/commonMain" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.hoc081098.solivagant.lifecycle/with-created.html"><span>with</span><wbr><span><span>Created</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="794459763%2FFunctions%2F1553588475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":lifecycle:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">inline suspend </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../com.hoc081098.solivagant.lifecycle/with-created.html">R</a><span class="token operator">&gt; </span><a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle-owner/index.html">LifecycleOwner</a><span class="token punctuation">.</span><a href="../../com.hoc081098.solivagant.lifecycle/with-created.html"><span class="token function">withCreated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">crossinline </span>block<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="../../com.hoc081098.solivagant.lifecycle/with-created.html">R</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.hoc081098.solivagant.lifecycle/with-created.html">R</a></div><div class="brief "><p class="paragraph">Run <a href="../../com.hoc081098.solivagant.lifecycle/with-created.html">block</a> with this <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle-owner/index.html">LifecycleOwner</a>'s <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/index.html">Lifecycle</a> in a <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/-state/index.html">Lifecycle.State</a> of at least <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/-state/-c-r-e-a-t-e-d/index.html">Lifecycle.State.CREATED</a> and resume with the result. Throws the <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle-destroyed-exception/index.html">CancellationException</a> if the lifecycle has reached <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/-state/-d-e-s-t-r-o-y-e-d/index.html">Lifecycle.State.DESTROYED</a> by the time of the call or before <a href="../../com.hoc081098.solivagant.lifecycle/with-created.html">block</a> is able to run.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1356605916%2FFunctions%2F1553588475" anchor-label="withResumed" id="-1356605916%2FFunctions%2F1553588475" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":lifecycle:dokkaHtmlPartial/commonMain" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.hoc081098.solivagant.lifecycle/with-resumed.html"><span>with</span><wbr><span><span>Resumed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1356605916%2FFunctions%2F1553588475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":lifecycle:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">inline suspend </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../com.hoc081098.solivagant.lifecycle/with-resumed.html">R</a><span class="token operator">&gt; </span><a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle-owner/index.html">LifecycleOwner</a><span class="token punctuation">.</span><a href="../../com.hoc081098.solivagant.lifecycle/with-resumed.html"><span class="token function">withResumed</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">crossinline </span>block<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="../../com.hoc081098.solivagant.lifecycle/with-resumed.html">R</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.hoc081098.solivagant.lifecycle/with-resumed.html">R</a></div><div class="brief "><p class="paragraph">Run <a href="../../com.hoc081098.solivagant.lifecycle/with-resumed.html">block</a> with this <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle-owner/index.html">LifecycleOwner</a>'s <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/index.html">Lifecycle</a> in a <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/-state/index.html">Lifecycle.State</a> of at least <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/-state/-r-e-s-u-m-e-d/index.html">Lifecycle.State.RESUMED</a> and resume with the result. Throws the <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle-destroyed-exception/index.html">CancellationException</a> if the lifecycle has reached <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/-state/-d-e-s-t-r-o-y-e-d/index.html">Lifecycle.State.DESTROYED</a> by the time of the call or before <a href="../../com.hoc081098.solivagant.lifecycle/with-resumed.html">block</a> is able to run.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="576450874%2FFunctions%2F1553588475" anchor-label="withStarted" id="576450874%2FFunctions%2F1553588475" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":lifecycle:dokkaHtmlPartial/commonMain" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.hoc081098.solivagant.lifecycle/with-started.html"><span>with</span><wbr><span><span>Started</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="576450874%2FFunctions%2F1553588475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":lifecycle:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">inline suspend </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../com.hoc081098.solivagant.lifecycle/with-started.html">R</a><span class="token operator">&gt; </span><a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle-owner/index.html">LifecycleOwner</a><span class="token punctuation">.</span><a href="../../com.hoc081098.solivagant.lifecycle/with-started.html"><span class="token function">withStarted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">crossinline </span>block<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="../../com.hoc081098.solivagant.lifecycle/with-started.html">R</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.hoc081098.solivagant.lifecycle/with-started.html">R</a></div><div class="brief "><p class="paragraph">Run <a href="../../com.hoc081098.solivagant.lifecycle/with-started.html">block</a> with this <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle-owner/index.html">LifecycleOwner</a>'s <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/index.html">Lifecycle</a> in a <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/-state/index.html">Lifecycle.State</a> of at least <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/-state/-s-t-a-r-t-e-d/index.html">Lifecycle.State.STARTED</a> and resume with the result. Throws the <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle-destroyed-exception/index.html">CancellationException</a> if the lifecycle has reached <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/-state/-d-e-s-t-r-o-y-e-d/index.html">Lifecycle.State.DESTROYED</a> by the time of the call or before <a href="../../com.hoc081098.solivagant.lifecycle/with-started.html">block</a> is able to run.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="286334403%2FFunctions%2F1553588475" anchor-label="withStateAtLeast" id="286334403%2FFunctions%2F1553588475" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":lifecycle:dokkaHtmlPartial/commonMain" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.hoc081098.solivagant.lifecycle/with-state-at-least.html"><span>with</span><wbr><span>State</span><wbr><span>At</span><wbr><span><span>Least</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="286334403%2FFunctions%2F1553588475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":lifecycle:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">inline suspend </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../com.hoc081098.solivagant.lifecycle/with-state-at-least.html">R</a><span class="token operator">&gt; </span><a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle-owner/index.html">LifecycleOwner</a><span class="token punctuation">.</span><a href="../../com.hoc081098.solivagant.lifecycle/with-state-at-least.html"><span class="token function">withStateAtLeast</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">state<span class="token operator">: </span><a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/-state/index.html">Lifecycle.State</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">crossinline </span>block<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="../../com.hoc081098.solivagant.lifecycle/with-state-at-least.html">R</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.hoc081098.solivagant.lifecycle/with-state-at-least.html">R</a></div><div class="brief "><p class="paragraph">Run <a href="../../com.hoc081098.solivagant.lifecycle/with-state-at-least.html">block</a> with this <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle-owner/index.html">LifecycleOwner</a>'s <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/index.html">Lifecycle</a> in a <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/-state/index.html">Lifecycle.State</a> of at least <a href="../../com.hoc081098.solivagant.lifecycle/with-state-at-least.html">state</a> and resume with the result. Throws the <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle-destroyed-exception/index.html">CancellationException</a> if the lifecycle has reached <a href="../../com.hoc081098.solivagant.lifecycle/-lifecycle/-state/-d-e-s-t-r-o-y-e-d/index.html">Lifecycle.State.DESTROYED</a> by the time of the call or before <a href="../../com.hoc081098.solivagant.lifecycle/with-state-at-least.html">block</a> is able to run.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
