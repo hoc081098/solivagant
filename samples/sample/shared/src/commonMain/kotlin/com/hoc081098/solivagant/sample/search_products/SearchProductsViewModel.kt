@@ -9,9 +9,6 @@ import com.hoc081098.kmp.viewmodel.ViewModel
 import com.hoc081098.kmp.viewmodel.safe.NullableSavedStateHandleKey
 import com.hoc081098.kmp.viewmodel.safe.safe
 import com.hoc081098.kmp.viewmodel.safe.string
-import com.hoc081098.kmp.viewmodel.wrapper.NonNullStateFlowWrapper
-import com.hoc081098.kmp.viewmodel.wrapper.NullableStateFlowWrapper
-import com.hoc081098.kmp.viewmodel.wrapper.wrap
 import com.hoc081098.solivagant.navigation.NavEventNavigator
 import com.hoc081098.solivagant.sample.common.toProductItemUi
 import com.hoc081098.solivagant.sample.product_detail.ProductDetailScreenRoute
@@ -23,6 +20,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -37,10 +35,10 @@ class SearchProductsViewModel(
   private val savedStateHandle: SavedStateHandle,
   private val navigator: NavEventNavigator,
 ) : ViewModel() {
-  val searchTermStateFlow: NullableStateFlowWrapper<String?> =
-    savedStateHandle.safe { it.getStateFlow(SEARCH_TERM_KEY) }.wrap()
+  val searchTermStateFlow: StateFlow<String?> =
+    savedStateHandle.safe.getStateFlow(SEARCH_TERM_KEY)
 
-  val stateFlow: NonNullStateFlowWrapper<SearchProductsState> = searchTermStateFlow
+  val stateFlow: StateFlow<SearchProductsState> = searchTermStateFlow
     .debounce(400.milliseconds)
     .map { it.orEmpty().trim() }
     .distinctUntilChanged()
@@ -50,15 +48,12 @@ class SearchProductsViewModel(
       started = SharingStarted.Lazily,
       initialValue = SearchProductsState.INITIAL,
     )
-    .wrap()
 
-  fun search(term: String) {
+  fun search(term: String) =
     savedStateHandle.safe { it[SEARCH_TERM_KEY] = term }
-  }
 
-  fun navigateToProductDetail(id: Int) {
+  fun navigateToProductDetail(id: Int) =
     navigator.navigateTo(ProductDetailScreenRoute(id))
-  }
 
   companion object {
     private val SEARCH_TERM_KEY = NullableSavedStateHandleKey.string("com.hoc081098.kmpviewmodelsample.search_term")
