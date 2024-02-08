@@ -262,6 +262,8 @@ navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
   switch between tabs (bottom navigation), but can keep the back stack state of each tab.
   Basically, it's a **multi-backstack** demo sample.
 
+- [Compose Multiplatform KmpViewModel KMM Unsplash Sample](https://github.com/hoc081098/Compose-Multiplatform-KmpViewModel-KMM-Unsplash-Sample): A KMP template of the Unsplash App using Compose multiplatform for Android, Desktop, iOS. Share everything including data, domain, presentation, and UI.
+
 ## Roadmap
 
 - [ ] Add more tests
