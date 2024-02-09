@@ -32,6 +32,14 @@
 
 package com.hoc081098.solivagant.navigation
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.Transition
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -45,6 +53,7 @@ import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.Snapshot
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.hoc081098.kmp.viewmodel.Closeable
 import com.hoc081098.kmp.viewmodel.compose.LocalSavedStateHandleFactory
@@ -54,11 +63,13 @@ import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 import com.hoc081098.solivagant.navigation.internal.MultiStackNavigationExecutor
 import com.hoc081098.solivagant.navigation.internal.OnBackPressedCallback
 import com.hoc081098.solivagant.navigation.internal.StackEntry
+import com.hoc081098.solivagant.navigation.internal.StackEntryId
 import com.hoc081098.solivagant.navigation.internal.StackEntryViewModelStoreOwner
 import com.hoc081098.solivagant.navigation.internal.WeakReference
 import com.hoc081098.solivagant.navigation.internal.currentBackPressedDispatcher
 import com.hoc081098.solivagant.navigation.internal.rememberNavigationExecutor
 import com.hoc081098.solivagant.navigation.internal.rememberPlatformLifecycleOwner
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -78,6 +89,8 @@ public fun NavHost(
   modifier: Modifier = Modifier,
   navEventNavigator: NavEventNavigator? = null,
   destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
+  contentAlignment: Alignment = Alignment.Center,
+  transitionAnimations: NavHostTransitionAnimations = NavHostDefaults.transitionAnimations(),
 ) {
   val lifecycleOwner = rememberPlatformLifecycleOwner()
 
@@ -102,12 +115,94 @@ public fun NavHost(
       }
 
       Box(modifier = modifier) {
-        executor.visibleEntries.value.forEach { entry ->
-          Show(
-            entry = entry,
-            executor = executor,
-            saveableStateHolder = saveableStateHolder,
+        val zIndices = remember { mutableMapOf<StackEntryId, Float>() }
+
+        val visibleEntries: ImmutableList<StackEntry<*>> = executor.visibleEntries.value
+        val visibleStackEntry: StackEntry<*>? = visibleEntries.lastOrNull()
+
+        if (visibleStackEntry != null) {
+          val isPopState = executor.isPop
+
+          val finalEnter: AnimatedContentTransitionScope<StackEntry<*>>.() -> EnterTransition = {
+            if (isPopState.value) {
+              transitionAnimations.popEnterTransition.invoke(this)
+            } else {
+              transitionAnimations.enterTransition.invoke(this)
+            }
+          }
+
+          val finalExit: AnimatedContentTransitionScope<StackEntry<*>>.() -> ExitTransition = {
+            if (isPopState.value) {
+              transitionAnimations.popExitTransition.invoke(this)
+            } else {
+              transitionAnimations.exitTransition.invoke(this)
+            }
+          }
+
+          DisposableEffect(Unit) {
+            onDispose {
+              visibleEntries.forEach { entry ->
+                executor.onTransitionComplete(entry)
+              }
+            }
+          }
+
+          val transition: Transition<StackEntry<*>> = updateTransition(
+            targetState = visibleStackEntry,
+            label = "entry",
           )
+
+          transition.AnimatedContent<StackEntry<*>>(
+            modifier = modifier,
+            transitionSpec = {
+              // If the initialState of the AnimatedContent is not in visibleEntries, we are in
+              // a case where visible has cleared the old state for some reason, so instead of
+              // attempting to animate away from the initialState, we skip the animation.
+              if (initialState in visibleEntries) {
+                val initialZIndex = zIndices[initialState.id]
+                  ?: 0f.also { zIndices[initialState.id] = 0f }
+                val targetZIndex = when {
+                  targetState.id == initialState.id -> initialZIndex
+                  isPopState.value -> initialZIndex - 1f
+                  else -> initialZIndex + 1f
+                }.also { zIndices[targetState.id] = it }
+
+                ContentTransform(finalEnter(this), finalExit(this), targetZIndex)
+              } else {
+                EnterTransition.None togetherWith ExitTransition.None
+              }
+            },
+            contentAlignment = contentAlignment,
+            contentKey = { it.id },
+          ) { targetState ->
+            // In some specific cases, such as clearing your back stack by changing your
+            // start destination, AnimatedContent can contain an entry that is no longer
+            // part of visible entries since it was cleared from the back stack and is not
+            // animating. In these cases the currentEntry will be null, and in those cases,
+            // AnimatedContent will just skip attempting to transition the old entry.
+            // See https://issuetracker.google.com/238686802
+            val currentEntry = visibleEntries.lastOrNull { entry -> targetState == entry }
+
+            // while in the scope of the composable, we provide the ViewModelStoreOwner and LifecycleOwner
+            currentEntry?.let {
+              Show(
+                entry = it,
+                executor = executor,
+                saveableStateHolder = saveableStateHolder,
+              )
+            }
+          }
+
+          LaunchedEffect(transition.currentState, transition.targetState) {
+            if (transition.currentState == transition.targetState) {
+              visibleEntries.forEach { entry ->
+                executor.onTransitionComplete(entry)
+              }
+              zIndices
+                .filter { it.key != transition.targetState.id }
+                .forEach { zIndices.remove(it.key) }
+            }
+          }
         }
       }
     }
