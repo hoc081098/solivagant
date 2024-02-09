@@ -115,6 +115,9 @@ public fun NavHost(
       }
 
       Box(modifier = modifier) {
+        // From AndroidX:
+        // https://github.com/androidx/androidx/blob/5dda4ea48e68d10c8c5cc04d5f4ee299295e1835/navigation/navigation-compose/src/main/java/androidx/navigation/compose/NavHost.kt#L253-L372
+
         val zIndices = remember { mutableMapOf<StackEntryId, Float>() }
 
         val visibleEntries: ImmutableList<StackEntry<*>> = executor.visibleEntries.value
