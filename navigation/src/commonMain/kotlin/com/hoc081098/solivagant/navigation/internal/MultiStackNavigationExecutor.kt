@@ -158,6 +158,5 @@ internal class MultiStackNavigationExecutor(
   }
 
   fun onTransitionComplete(entry: StackEntry<*>) {
-    TODO("Not yet implemented")
   }
 }

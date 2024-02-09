@@ -155,6 +155,7 @@ public fun NavHost(
             label = "entry",
           )
 
+          @Suppress("RemoveExplicitTypeArguments") // Keep the type for better readability
           transition.AnimatedContent<StackEntry<*>>(
             modifier = modifier,
             transitionSpec = {
