@@ -33,7 +33,6 @@
 package com.hoc081098.solivagant.navigation.internal
 
 import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.SavedStateHandleFactory
 import com.hoc081098.solivagant.lifecycle.LifecycleOwner
@@ -58,7 +57,6 @@ internal class MultiStackNavigationExecutor(
   private val onRootChanged: (NavRoot) -> Unit,
 ) : NavigationExecutor {
   private val _lifecycleOwner = MutableStateFlow<LifecycleOwner?>(null)
-  private val isPopMutableState = mutableStateOf(false)
 
   val visibleEntries: State<ImmutableList<StackEntry<*>>>
     get() = stack.visibleEntries
@@ -66,8 +64,8 @@ internal class MultiStackNavigationExecutor(
   val canNavigateBack: State<Boolean>
     get() = stack.canNavigateBack
 
-  val isPop: State<Boolean>
-    get() = isPopMutableState
+  val lastEvent: State<StackEvent>
+    get() = stack.lastEvent
 
   init {
     viewModel.viewModelScope.launch(start = CoroutineStart.UNDISPATCHED) {

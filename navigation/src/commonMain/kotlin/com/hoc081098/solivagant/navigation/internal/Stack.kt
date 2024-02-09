@@ -121,16 +121,22 @@ internal class Stack private constructor(
     onStackEntryRemoved(entry.id)
   }
 
-  fun popUpTo(destinationId: DestinationId<*>, isInclusive: Boolean) {
+  fun popUpTo(destinationId: DestinationId<*>, isInclusive: Boolean): Boolean {
+    var isPopped = false
+
     while (stack.last().destinationId != destinationId) {
       check(stack.last().removable) { "Route ${destinationId.route} not found on back stack" }
       popInternal()
+      isPopped = true
     }
 
     if (isInclusive) {
       // using pop here to get the default removable check
       pop()
+      isPopped = true
     }
+
+    return isPopped
   }
 
   fun clear() {

@@ -1,5 +1,6 @@
 package com.hoc081098.solivagant.sample.simple
 
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +29,7 @@ import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.NavDestination
 import com.hoc081098.solivagant.navigation.NavEventNavigator
 import com.hoc081098.solivagant.navigation.NavHost
+import com.hoc081098.solivagant.navigation.NavHostDefaults
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.sample.simple.common.MyApplicationTheme
 import com.hoc081098.solivagant.sample.simple.ui.detail.DetailScreenDestination
@@ -132,6 +134,12 @@ fun SimpleSolivagantSampleApp(
             destinations = AllDestinations,
             navEventNavigator = navigator,
             destinationChangedCallback = { currentRoute = it },
+            transitionAnimations = NavHostDefaults.transitionAnimations(
+              enterTransition = { slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Left) },
+              exitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Left) },
+              popEnterTransition = { slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) },
+              popExitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) },
+            ),
           )
         }
       }

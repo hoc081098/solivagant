@@ -33,8 +33,10 @@
 package com.hoc081098.solivagant.navigation.internal
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshots.Snapshot
 import com.benasher44.uuid.uuid4
 import com.hoc081098.solivagant.lifecycle.Lifecycle
 import com.hoc081098.solivagant.navigation.BaseRoute
@@ -42,6 +44,15 @@ import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
 import kotlinx.collections.immutable.ImmutableList
+
+@Stable
+internal enum class StackEvent {
+  Idle,
+  Push,
+  PushRoot,
+  Pop,
+  ReplaceAll,
+}
 
 @Suppress("TooManyFunctions")
 internal class MultiStack(
@@ -62,6 +73,10 @@ internal class MultiStack(
     mutableStateOf(canNavigateBack())
   val canNavigateBack: State<Boolean>
     get() = canNavigateBackState
+
+  private val lastEventState: MutableState<StackEvent> = mutableStateOf(StackEvent.Idle)
+  val lastEvent: State<StackEvent>
+    get() = lastEventState
 
   val startRoot = startStack.rootEntry.route as NavRoot
 
@@ -137,9 +152,12 @@ internal class MultiStack(
     onStackEntryRemoved(stack.rootEntry.id)
   }
 
-  private fun updateVisibleDestinations() {
-    visibleEntryState.value = currentStack.computeVisibleEntries()
-    canNavigateBackState.value = canNavigateBack()
+  private fun updateVisibleDestinations(lastEvent: StackEvent) {
+    Snapshot.withMutableSnapshot {
+      lastEventState.value = lastEvent
+      visibleEntryState.value = currentStack.computeVisibleEntries()
+      canNavigateBackState.value = canNavigateBack()
+    }
   }
 
   private fun canNavigateBack(): Boolean {
@@ -148,12 +166,12 @@ internal class MultiStack(
 
   fun push(route: NavRoute) {
     currentStack.push(route)
-    updateVisibleDestinations()
+    updateVisibleDestinations(lastEvent = StackEvent.Push)
   }
 
   fun popCurrentStack() {
     currentStack.pop()
-    updateVisibleDestinations()
+    updateVisibleDestinations(lastEvent = StackEvent.Pop)
   }
 
   fun pop() {
@@ -170,37 +188,41 @@ internal class MultiStack(
     } else {
       currentStack.pop()
     }
-    updateVisibleDestinations()
+    updateVisibleDestinations(lastEvent = StackEvent.Pop)
   }
 
   fun <T : BaseRoute> popUpTo(
     destinationId: DestinationId<T>,
     isInclusive: Boolean,
   ) {
-    currentStack.popUpTo(destinationId, isInclusive)
-    updateVisibleDestinations()
+    val isPopped = currentStack.popUpTo(destinationId, isInclusive)
+    updateVisibleDestinations(lastEvent = if (isPopped) StackEvent.Pop else StackEvent.Idle)
   }
 
   fun push(root: NavRoot, clearTargetStack: Boolean) {
     val stack = getBackStack(root)
+    val lastEvent: StackEvent
 
     currentStack = if (stack != null) {
       check(currentStack.destinationId != stack.destinationId) {
         "$root is already the current stack"
       }
       if (clearTargetStack) {
+        lastEvent = StackEvent.PushRoot
         removeBackStack(stack)
         createBackStack(root)
       } else {
+        lastEvent = StackEvent.Idle
         stack
       }
     } else {
+      lastEvent = StackEvent.PushRoot
       createBackStack(root)
     }
     if (stack?.destinationId == startStack.destinationId) {
       startStack = currentStack
     }
-    updateVisibleDestinations()
+    updateVisibleDestinations(lastEvent = lastEvent)
   }
 
   fun resetToRoot(root: NavRoot) {
@@ -223,19 +245,13 @@ internal class MultiStack(
 
       else -> error("$root is not on the current back stack")
     }
-    updateVisibleDestinations()
+    updateVisibleDestinations(lastEvent = StackEvent.Pop)
   }
 
   fun replaceAll(root: NavRoot) {
     // remove all stacks
-    val iterator = allStacks.listIterator(allStacks.size)
-    while (iterator.hasPrevious()) {
-      val stack = iterator.previous()
-
-      // Cannot use removeBackStack because we're modifying the list while iterating
-      stack.clear()
-      iterator.remove()
-      onStackEntryRemoved(stack.rootEntry.id)
+    while (allStacks.isNotEmpty()) {
+      removeBackStack(allStacks.last())
     }
 
     // create new stack with the root
@@ -243,7 +259,7 @@ internal class MultiStack(
     startStack = newStack
     currentStack = newStack
 
-    updateVisibleDestinations()
+    updateVisibleDestinations(lastEvent = StackEvent.ReplaceAll)
   }
 
   fun saveState(): Map<String, Any> {

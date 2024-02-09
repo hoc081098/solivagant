@@ -37,16 +37,18 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.updateTransition
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaveableStateHolder
@@ -65,6 +67,7 @@ import com.hoc081098.solivagant.navigation.internal.OnBackPressedCallback
 import com.hoc081098.solivagant.navigation.internal.StackEntry
 import com.hoc081098.solivagant.navigation.internal.StackEntryId
 import com.hoc081098.solivagant.navigation.internal.StackEntryViewModelStoreOwner
+import com.hoc081098.solivagant.navigation.internal.StackEvent
 import com.hoc081098.solivagant.navigation.internal.WeakReference
 import com.hoc081098.solivagant.navigation.internal.currentBackPressedDispatcher
 import com.hoc081098.solivagant.navigation.internal.rememberNavigationExecutor
@@ -118,27 +121,33 @@ public fun NavHost(
         // From AndroidX:
         // https://github.com/androidx/androidx/blob/5dda4ea48e68d10c8c5cc04d5f4ee299295e1835/navigation/navigation-compose/src/main/java/androidx/navigation/compose/NavHost.kt#L253-L372
 
-        val zIndices = remember { mutableMapOf<StackEntryId, Float>() }
+        val zIndices = remember { mutableStateMapOf<StackEntryId, Float>() }
 
         val visibleEntries: ImmutableList<StackEntry<*>> = executor.visibleEntries.value
         val visibleStackEntry: StackEntry<*>? = visibleEntries.lastOrNull()
 
         if (visibleStackEntry != null) {
-          val isPopState = executor.isPop
+          val lastEventState = executor.lastEvent
 
-          val finalEnter: AnimatedContentTransitionScope<StackEntry<*>>.() -> EnterTransition = {
-            if (isPopState.value) {
-              transitionAnimations.popEnterTransition.invoke(this)
-            } else {
-              transitionAnimations.enterTransition.invoke(this)
+          val finalEnter: AnimatedContentTransitionScope<StackEntry<*>>.(StackEvent) -> EnterTransition = { event ->
+            println(">>> finalEnter: $event")
+            when (event) {
+              StackEvent.Idle -> EnterTransition.None
+              StackEvent.ReplaceAll -> transitionAnimations.enterTransition.invoke(this)
+              StackEvent.PushRoot -> transitionAnimations.enterTransition.invoke(this)
+              StackEvent.Push -> transitionAnimations.enterTransition.invoke(this)
+              StackEvent.Pop -> transitionAnimations.popEnterTransition.invoke(this)
             }
           }
 
-          val finalExit: AnimatedContentTransitionScope<StackEntry<*>>.() -> ExitTransition = {
-            if (isPopState.value) {
-              transitionAnimations.popExitTransition.invoke(this)
-            } else {
-              transitionAnimations.exitTransition.invoke(this)
+          val finalExit: AnimatedContentTransitionScope<StackEntry<*>>.(StackEvent) -> ExitTransition = { event ->
+            println(">>> finalExit: $event")
+            when (event) {
+              StackEvent.Idle -> ExitTransition.None
+              StackEvent.ReplaceAll -> transitionAnimations.exitTransition.invoke(this)
+              StackEvent.PushRoot -> transitionAnimations.exitTransition.invoke(this)
+              StackEvent.Push -> transitionAnimations.exitTransition.invoke(this)
+              StackEvent.Pop -> transitionAnimations.popExitTransition.invoke(this)
             }
           }
 
@@ -157,24 +166,29 @@ public fun NavHost(
 
           @Suppress("RemoveExplicitTypeArguments") // Keep the type for better readability
           transition.AnimatedContent<StackEntry<*>>(
-            modifier = modifier,
+            modifier = Modifier.fillMaxSize(),
             transitionSpec = {
-              // If the initialState of the AnimatedContent is not in visibleEntries, we are in
-              // a case where visible has cleared the old state for some reason, so instead of
-              // attempting to animate away from the initialState, we skip the animation.
-              if (initialState in visibleEntries) {
-                val initialZIndex = zIndices[initialState.id]
-                  ?: 0f.also { zIndices[initialState.id] = 0f }
-                val targetZIndex = when {
-                  targetState.id == initialState.id -> initialZIndex
-                  isPopState.value -> initialZIndex - 1f
-                  else -> initialZIndex + 1f
-                }.also { zIndices[targetState.id] = it }
+              val lastEvent = lastEventState.value
+              val initialZIndex = zIndices.getOrPut(initialState.id) { 0f }
 
-                ContentTransform(finalEnter(this), finalExit(this), targetZIndex)
-              } else {
-                EnterTransition.None togetherWith ExitTransition.None
-              }
+              val targetZIndex = when (targetState.id) {
+                initialState.id -> initialZIndex
+                else ->
+                  when (lastEvent) {
+                    StackEvent.Idle -> initialZIndex
+                    StackEvent.ReplaceAll -> initialZIndex + 1f
+                    StackEvent.Push -> initialZIndex + 1f
+                    StackEvent.PushRoot -> initialZIndex + 1f
+                    StackEvent.Pop -> initialZIndex - 1f
+                  }
+              }.also { zIndices[targetState.id] = it }
+              println(">>> transitionSpec: lastEvent=$lastEvent, $initialZIndex -> $targetZIndex")
+
+              ContentTransform(
+                targetContentEnter = this.finalEnter(lastEvent),
+                initialContentExit = this.finalExit(lastEvent),
+                targetContentZIndex = targetZIndex,
+              ).using(SizeTransform(clip = false))
             },
             contentAlignment = contentAlignment,
             contentKey = { it.id },
@@ -197,7 +211,8 @@ public fun NavHost(
             }
           }
 
-          LaunchedEffect(transition.currentState, transition.targetState) {
+          // Mark transition complete when the transition is finished
+          LaunchedEffect(executor, transition.currentState, transition.targetState) {
             if (transition.currentState == transition.targetState) {
               visibleEntries.forEach { entry ->
                 executor.onTransitionComplete(entry)
