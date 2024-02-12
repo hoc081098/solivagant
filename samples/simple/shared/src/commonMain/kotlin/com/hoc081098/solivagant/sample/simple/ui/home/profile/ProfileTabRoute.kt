@@ -11,4 +11,6 @@ import kotlin.jvm.JvmField
 data object ProfileTabRoute : NavRoot
 
 @JvmField
-val ProfileTabDestination = ScreenDestination<ProfileTabRoute> { ProfileTab() }
+val ProfileTabDestination = ScreenDestination<ProfileTabRoute> { route, modifier ->
+  ProfileTab(modifier = modifier)
+}

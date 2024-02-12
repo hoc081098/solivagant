@@ -33,6 +33,9 @@
 package com.hoc081098.solivagant.navigation.internal
 
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import com.hoc081098.solivagant.lifecycle.Lifecycle
 import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.ContentDestination
@@ -48,6 +51,15 @@ internal class StackEntry<T : BaseRoute> private constructor(
   val destination: ContentDestination<T>,
   val lifecycleOwner: StackEntryLifecycleOwner,
 ) {
+  private val _removedFromBackstack: MutableState<Boolean> = mutableStateOf(false)
+
+  internal fun markRemovedFromBackstack() {
+    check(!_removedFromBackstack.value) { "Can not mark twice" }
+    _removedFromBackstack.value = true
+  }
+
+  val removedFromBackstack: State<Boolean> get() = _removedFromBackstack
+
   val destinationId
     get() = route.destinationId
 

@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.LocalSaveableStateRegistry
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
@@ -18,15 +17,20 @@ import com.hoc081098.solivagant.lifecycle.compose.currentStateAsState
 import com.hoc081098.solivagant.lifecycle.rememberLifecycleOwner
 import com.hoc081098.solivagant.navigation.LifecycleControllerEffect
 import com.hoc081098.solivagant.navigation.SavedStateSupport
+import org.koin.core.logger.Level
 
 fun main() {
-  startKoinCommon()
+  startKoinCommon {
+    printLogger(level = Level.DEBUG)
+  }
   setupNapier()
+
+  val lifecycleRegistry = LifecycleRegistry()
+  val savedStateSupport = SavedStateSupport()
 
   application {
     val windowState = rememberWindowState()
 
-    val lifecycleRegistry = remember { LifecycleRegistry() }
     val lifecycleOwner = rememberLifecycleOwner(lifecycleRegistry)
     LifecycleControllerEffect(
       lifecycleRegistry = lifecycleRegistry,
@@ -34,11 +38,11 @@ fun main() {
     )
     val lifecycleState by lifecycleRegistry.currentStateAsState()
 
-    val savedStateSupport = remember { SavedStateSupport() }
     DisposableEffect(Unit) {
       onDispose(savedStateSupport::clear)
     }
 
+    // if (produceState<Boolean>(true) { while (true) { delay(7000); value=!value }  }.value)
     Window(
       onCloseRequest = ::exitApplication,
       title = "Simple Solivagant sample $lifecycleState",

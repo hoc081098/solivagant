@@ -11,4 +11,6 @@ import kotlin.jvm.JvmField
 data object FeedTabRoute : NavRoot
 
 @JvmField
-val FeedTabDestination = ScreenDestination<FeedTabRoute> { FeedTab() }
+val FeedTabDestination = ScreenDestination<FeedTabRoute> { route, modifier ->
+  FeedTab(modifier = modifier)
+}

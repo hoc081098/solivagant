@@ -40,13 +40,13 @@ import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.ScreenDestination
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.adapters.ImmutableListAdapter
+import kotlinx.collections.immutable.mutate
+import kotlinx.collections.immutable.persistentListOf
 
 @Suppress("TooManyFunctions")
 internal class Stack private constructor(
   initialStack: List<StackEntry<*>>,
   private val destinations: List<ContentDestination<*>>,
-  private val onStackEntryRemoved: (StackEntryId) -> Unit,
   private val getHostLifecycleState: () -> Lifecycle.State,
   private val idGenerator: () -> String,
 ) {
@@ -59,6 +59,7 @@ internal class Stack private constructor(
   val rootEntry: StackEntry<*> get() = stack.first()
   val isAtRoot: Boolean get() = !stack.last().removable
 
+  //region Entry lookup
   @Suppress("UNCHECKED_CAST")
   fun <T : BaseRoute> entryFor(id: StackEntryId): StackEntry<T>? {
     return stack.findLast { it.id == id } as StackEntry<T>?
@@ -73,11 +74,13 @@ internal class Stack private constructor(
   fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T>? {
     return stack.findLast { it.destinationId == destinationId } as StackEntry<T>?
   }
+  //endregion
 
+  @CheckResult
   @Suppress("NestedBlockDepth")
-  fun computeVisibleEntries(): ImmutableList<StackEntry<*>> {
+  fun computeVisibleEntries(): NonEmptyImmutableList<StackEntry<*>> {
     if (stack.size == 1) {
-      return ImmutableListAdapter(listOf(stack.single()))
+      return NonEmptyImmutableList.adapt(listOf(stack.single()))
     }
 
     // go through the stack from the top until reaching the first ScreenDestination
@@ -90,61 +93,57 @@ internal class Stack private constructor(
           while (iterator.hasNext()) {
             add(iterator.next())
           }
-        }.let(::ImmutableListAdapter)
+        }.let { NonEmptyImmutableList.adapt(it) }
       }
     }
 
     error("Stack did not contain a ScreenDestination $stack")
   }
 
+  //region Stack operations
   fun push(route: NavRoute) {
-    stack.add(
-      entry(
-        route = route,
-        destinations = destinations,
-        hostLifecycleState = getHostLifecycleState(),
-        idGenerator = idGenerator,
-      ).apply {
-        lifecycleOwner.maxLifecycle = Lifecycle.State.CREATED
-      },
-    )
+    val stackEntry = entry(
+      route = route,
+      destinations = destinations,
+      hostLifecycleState = getHostLifecycleState(),
+      idGenerator = idGenerator,
+    ).apply { lifecycleOwner.maxLifecycle = Lifecycle.State.CREATED }
+    stack.add(stackEntry)
   }
 
-  fun pop() {
+  @CheckResult
+  fun pop(): StackEntry<*> {
     check(stack.last().removable) { "Can't pop the root of the back stack" }
-    popInternal()
+    return popInternal()
   }
 
-  private fun popInternal() {
-    val entry = stack.removeLast()
-    entry.lifecycleOwner.maxLifecycle = Lifecycle.State.DESTROYED
-    onStackEntryRemoved(entry.id)
-  }
+  @CheckResult
+  private fun popInternal(): StackEntry<*> = stack.removeLast()
 
-  fun popUpTo(destinationId: DestinationId<*>, isInclusive: Boolean): Boolean {
-    var isPopped = false
+  @CheckResult
+  fun popUpTo(destinationId: DestinationId<*>, isInclusive: Boolean): ImmutableList<StackEntry<*>> =
+    persistentListOf<StackEntry<*>>().mutate { builder ->
+      while (stack.last().destinationId != destinationId) {
+        check(stack.last().removable) { "Route ${destinationId.route} not found on back stack" }
+        popInternal().also(builder::add)
+      }
 
-    while (stack.last().destinationId != destinationId) {
-      check(stack.last().removable) { "Route ${destinationId.route} not found on back stack" }
-      popInternal()
-      isPopped = true
+      if (isInclusive) {
+        // using pop here to get the default removable check
+        pop().also(builder::add)
+      }
     }
 
-    if (isInclusive) {
-      // using pop here to get the default removable check
-      pop()
-      isPopped = true
-    }
-
-    return isPopped
-  }
-
-  fun clear() {
+  @CheckResult
+  fun clear(): ImmutableList<StackEntry<*>> = persistentListOf<StackEntry<*>>().mutate { builder ->
     while (stack.last().removable) {
       popInternal()
+        .also(builder::add)
     }
   }
+  //endregion
 
+  @CheckResult
   fun saveState(): Map<String, ArrayList<out Any>> {
     val ids = ArrayList<String>(stack.size)
     val routes = ArrayList<BaseRoute>(stack.size)
@@ -166,7 +165,6 @@ internal class Stack private constructor(
     fun createWith(
       root: NavRoot,
       destinations: List<ContentDestination<*>>,
-      onStackEntryRemoved: (StackEntryId) -> Unit,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
@@ -179,7 +177,6 @@ internal class Stack private constructor(
       return Stack(
         initialStack = listOf(rootEntry),
         destinations = destinations,
-        onStackEntryRemoved = onStackEntryRemoved,
         getHostLifecycleState = getHostLifecycleState,
         idGenerator = idGenerator,
       )
@@ -188,7 +185,6 @@ internal class Stack private constructor(
     fun fromState(
       bundle: Map<String, ArrayList<out Any>>,
       destinations: List<ContentDestination<*>>,
-      onStackEntryRemoved: (StackEntryId) -> Unit,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
@@ -207,7 +203,6 @@ internal class Stack private constructor(
       return Stack(
         initialStack = entries,
         destinations = destinations,
-        onStackEntryRemoved = onStackEntryRemoved,
         getHostLifecycleState = getHostLifecycleState,
         idGenerator = idGenerator,
       )

@@ -1,6 +1,8 @@
 package com.hoc081098.solivagant.sample.simple
 
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.IntOffset
 import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.NavDestination
 import com.hoc081098.solivagant.navigation.NavEventNavigator
@@ -33,6 +36,7 @@ import com.hoc081098.solivagant.navigation.NavHostDefaults
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.sample.simple.common.MyApplicationTheme
 import com.hoc081098.solivagant.sample.simple.ui.detail.DetailScreenDestination
+import com.hoc081098.solivagant.sample.simple.ui.detail.overlay.DetailScreenOverlayDestination
 import com.hoc081098.solivagant.sample.simple.ui.home.BottomNavigationInfo
 import com.hoc081098.solivagant.sample.simple.ui.home.feed.FeedTabDestination
 import com.hoc081098.solivagant.sample.simple.ui.home.feed.nested_feed.NestedFeedScreenDestination
@@ -55,6 +59,7 @@ private val AllDestinations: ImmutableSet<NavDestination> = persistentSetOf(
   NestedNotificationsScreenDestination,
   ProfileTabDestination,
   DetailScreenDestination,
+  DetailScreenOverlayDestination,
 )
 
 @OptIn(
@@ -83,6 +88,11 @@ fun SimpleSolivagantSampleApp(
       }
     }
   }
+
+  val animationSpec = tween<IntOffset>(
+    durationMillis = 4_000,
+    easing = LinearEasing,
+  )
 
   KoinContext {
     MyApplicationTheme(useDarkTheme = false) {
@@ -135,10 +145,30 @@ fun SimpleSolivagantSampleApp(
             navEventNavigator = navigator,
             destinationChangedCallback = { currentRoute = it },
             transitionAnimations = NavHostDefaults.transitionAnimations(
-              enterTransition = { slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Left) },
-              exitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Left) },
-              popEnterTransition = { slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) },
-              popExitTransition = { slideOutOfContainer(towards = AnimatedContentTransitionScope.SlideDirection.Right) },
+              enterTransition = {
+                slideIntoContainer(
+                  towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                  animationSpec = animationSpec,
+                )
+              },
+              exitTransition = {
+                slideOutOfContainer(
+                  towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                  animationSpec = animationSpec,
+                )
+              },
+              popEnterTransition = {
+                slideIntoContainer(
+                  towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                  animationSpec = animationSpec,
+                )
+              },
+              popExitTransition = {
+                slideOutOfContainer(
+                  towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                  animationSpec = animationSpec,
+                )
+              },
             ),
           )
         }

@@ -32,6 +32,7 @@
 
 package com.hoc081098.solivagant.navigation.internal
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.State
@@ -43,30 +44,76 @@ import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
+import com.hoc081098.solivagant.navigation.OverlayDestination
+import com.hoc081098.solivagant.navigation.ScreenDestination
+import dev.drewhamilton.poko.Poko
 import kotlinx.collections.immutable.ImmutableList
 
 @Stable
 internal enum class StackEvent {
   Idle,
   Push,
-  PushRoot,
   Pop,
+  PushRoot,
   ReplaceAll,
 }
 
+@Immutable
+@Poko
+internal class VisibleEntryState(
+  val visibleEntries: NonEmptyImmutableList<StackEntry<*>>,
+  val previousVisibleEntry: StackEntry<*>?,
+  val lastEvent: StackEvent,
+) {
+  inline val currentVisibleEntry get() = visibleEntries.first()
+
+  init {
+    if (previousVisibleEntry != null) {
+      require(previousVisibleEntry.destination is ScreenDestination<*>) {
+        "The destination of the previousVisibleEntry must be a ScreenDestination"
+      }
+    }
+    visibleEntries.forEachIndexed { index, stackEntry ->
+      if (index == 0) {
+        require(stackEntry.destination is ScreenDestination<*>) {
+          "The destination of the first visible entry must be a ScreenDestination"
+        }
+      } else {
+        require(stackEntry.destination is OverlayDestination<*>) {
+          "The destination of the non-first visible entry must be an OverlayDestination"
+        }
+      }
+    }
+  }
+}
+
+internal typealias OnStackEntryRemoved = (
+  entry: StackEntry<*>,
+  shouldRemoveImmediately: Boolean,
+) -> Unit
+
+private inline val StackEntry<*>.isOverlayDestination get() = destination is OverlayDestination<*>
+private inline val StackEntry<*>.isScreenDestination get() = destination is ScreenDestination<*>
+
 @Suppress("TooManyFunctions")
-internal class MultiStack(
+internal class MultiStack private constructor(
   // Use ArrayList to make sure it is a RandomAccess
   private val allStacks: ArrayList<Stack>,
   private var startStack: Stack,
   private var currentStack: Stack,
   private val destinations: List<ContentDestination<*>>,
-  private val onStackEntryRemoved: (StackEntryId) -> Unit,
+  private val onStackEntryRemoved: OnStackEntryRemoved,
   private val idGenerator: () -> String,
 ) {
-  private val visibleEntryState: MutableState<ImmutableList<StackEntry<*>>> =
-    mutableStateOf(currentStack.computeVisibleEntries())
-  val visibleEntries: State<ImmutableList<StackEntry<*>>>
+  private val visibleEntryState: MutableState<VisibleEntryState> =
+    mutableStateOf(
+      VisibleEntryState(
+        visibleEntries = currentStack.computeVisibleEntries(),
+        previousVisibleEntry = null,
+        lastEvent = StackEvent.Idle,
+      ),
+    )
+  val visibleEntries: State<VisibleEntryState>
     get() = visibleEntryState
 
   private val canNavigateBackState: MutableState<Boolean> =
@@ -74,60 +121,23 @@ internal class MultiStack(
   val canNavigateBack: State<Boolean>
     get() = canNavigateBackState
 
-  private val lastEventState: MutableState<StackEvent> = mutableStateOf(StackEvent.Idle)
-  val lastEvent: State<StackEvent>
-    get() = lastEventState
-
   val startRoot = startStack.rootEntry.route as NavRoot
 
   private var hostLifecycleState: Lifecycle.State = Lifecycle.State.INITIALIZED
 
   @Suppress("ReturnCount")
   fun <T : BaseRoute> entryFor(route: T): StackEntry<T>? {
-    val entry = currentStack.entryFor<T>(route)
-    if (entry != null) {
-      return entry
-    }
-
-    // the root of the default back stack is always on the back stack
-    if (startStack.rootEntry.route == route) {
-      @Suppress("UNCHECKED_CAST")
-      return startStack.rootEntry as StackEntry<T>
-    }
-
-    return null
+    return allStacks.firstNotNullOfOrNull { it.entryFor(route) }
   }
 
   @Suppress("ReturnCount")
   fun <T : BaseRoute> entryFor(id: StackEntryId): StackEntry<T>? {
-    val entry = currentStack.entryFor<T>(id)
-    if (entry != null) {
-      return entry
-    }
-
-    // the root of the default back stack is always on the back stack
-    if (startStack.rootEntry.id == id) {
-      @Suppress("UNCHECKED_CAST")
-      return startStack.rootEntry as StackEntry<T>
-    }
-
-    return null
+    return allStacks.firstNotNullOfOrNull { it.entryFor(id) }
   }
 
   @Suppress("ReturnCount")
   fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T>? {
-    val entry = currentStack.entryFor<T>(destinationId)
-    if (entry != null) {
-      return entry
-    }
-
-    // the root of the default back stack is always on the back stack
-    if (startStack.rootEntry.destinationId == destinationId) {
-      @Suppress("UNCHECKED_CAST")
-      return startStack.rootEntry as StackEntry<T>
-    }
-
-    return null
+    return allStacks.firstNotNullOfOrNull { it.entryFor(destinationId) }
   }
 
   private fun getBackStack(root: NavRoot): Stack? {
@@ -138,7 +148,6 @@ internal class MultiStack(
     val newStack = Stack.createWith(
       root = root,
       destinations = destinations,
-      onStackEntryRemoved = onStackEntryRemoved,
       idGenerator = idGenerator,
       getHostLifecycleState = { hostLifecycleState },
     )
@@ -146,16 +155,31 @@ internal class MultiStack(
     return newStack
   }
 
-  private fun removeBackStack(stack: Stack) {
-    stack.clear()
+  private fun removeBackStack(stack: Stack, shouldRemoveImmediately: Boolean) {
+    stack.clear().run {
+      if (shouldRemoveImmediately) {
+        onEach { onStackEntryRemoved(it, true) }
+      } else {
+        invokeOnStackEntryRemoved(onStackEntryRemoved)
+      }
+    }
     allStacks.remove(stack)
-    onStackEntryRemoved(stack.rootEntry.id)
+    onStackEntryRemoved(
+      stack.rootEntry,
+      shouldRemoveImmediately || stack.rootEntry.isOverlayDestination,
+    )
   }
 
   private fun updateVisibleDestinations(lastEvent: StackEvent) {
+    // Run this in a mutable snapshot (bit like a transaction)
     Snapshot.withMutableSnapshot {
-      lastEventState.value = lastEvent
-      visibleEntryState.value = currentStack.computeVisibleEntries()
+      val previousVisibleEntry = visibleEntryState.value.currentVisibleEntry
+
+      visibleEntryState.value = VisibleEntryState(
+        visibleEntries = currentStack.computeVisibleEntries(),
+        previousVisibleEntry = previousVisibleEntry,
+        lastEvent = lastEvent,
+      )
       canNavigateBackState.value = canNavigateBack()
     }
   }
@@ -164,14 +188,23 @@ internal class MultiStack(
     return currentStack.destinationId != startStack.destinationId || !currentStack.isAtRoot
   }
 
+  //region Stack operations
   fun push(route: NavRoute) {
     currentStack.push(route)
     updateVisibleDestinations(lastEvent = StackEvent.Push)
   }
 
   fun popCurrentStack() {
-    currentStack.pop()
-    updateVisibleDestinations(lastEvent = StackEvent.Pop)
+    currentStack.pop().also {
+      onStackEntryRemoved(it, it.isOverlayDestination)
+      updateVisibleDestinations(
+        lastEvent = if (it.isOverlayDestination) {
+          StackEvent.Idle
+        } else {
+          StackEvent.Pop
+        },
+      )
+    }
   }
 
   fun pop() {
@@ -179,24 +212,42 @@ internal class MultiStack(
       check(currentStack.destinationId != startStack.destinationId) {
         "Can't navigate back from the root of the start back stack"
       }
-      removeBackStack(currentStack)
+      removeBackStack(stack = currentStack, shouldRemoveImmediately = false)
       currentStack = startStack
 
       // remove anything that the start stack could have shown before
       // can't use resetToRoot because that will also recreate the root
-      currentStack.clear()
+      currentStack.clear().onEach { onStackEntryRemoved(it, true) }
+      updateVisibleDestinations(lastEvent = StackEvent.Pop)
     } else {
-      currentStack.pop()
+      currentStack.pop().also {
+        onStackEntryRemoved(it, it.isOverlayDestination)
+        updateVisibleDestinations(
+          lastEvent = if (it.isOverlayDestination) {
+            StackEvent.Idle
+          } else {
+            StackEvent.Pop
+          },
+        )
+      }
     }
-    updateVisibleDestinations(lastEvent = StackEvent.Pop)
   }
 
   fun <T : BaseRoute> popUpTo(
     destinationId: DestinationId<T>,
     isInclusive: Boolean,
   ) {
-    val isPopped = currentStack.popUpTo(destinationId, isInclusive)
-    updateVisibleDestinations(lastEvent = if (isPopped) StackEvent.Pop else StackEvent.Idle)
+    val (screenDestinationCount, _) = currentStack
+      .popUpTo(destinationId, isInclusive)
+      .invokeOnStackEntryRemoved(onStackEntryRemoved)
+
+    updateVisibleDestinations(
+      lastEvent = if (screenDestinationCount > 0) {
+        StackEvent.Pop
+      } else {
+        StackEvent.Idle
+      },
+    )
   }
 
   fun push(root: NavRoot, clearTargetStack: Boolean) {
@@ -209,14 +260,21 @@ internal class MultiStack(
       }
       if (clearTargetStack) {
         lastEvent = StackEvent.PushRoot
-        removeBackStack(stack)
+
+        removeBackStack(stack = stack, shouldRemoveImmediately = true)
         createBackStack(root)
       } else {
-        lastEvent = StackEvent.Idle
+        lastEvent = if (currentStack == stack) {
+          StackEvent.Idle
+        } else {
+          StackEvent.PushRoot
+        }
+
         stack
       }
     } else {
       lastEvent = StackEvent.PushRoot
+
       createBackStack(root)
     }
     if (stack?.destinationId == startStack.destinationId) {
@@ -229,29 +287,43 @@ internal class MultiStack(
     when (root.destinationId) {
       startStack.destinationId -> {
         if (currentStack.destinationId != startStack.destinationId) {
-          removeBackStack(currentStack)
+          removeBackStack(stack = currentStack, shouldRemoveImmediately = false)
+          removeBackStack(stack = startStack, shouldRemoveImmediately = true)
+        } else {
+          removeBackStack(stack = startStack, shouldRemoveImmediately = false)
         }
-        removeBackStack(startStack)
         val newStack = createBackStack(root)
         startStack = newStack
         currentStack = newStack
+
+        updateVisibleDestinations(lastEvent = StackEvent.Pop)
       }
 
       currentStack.destinationId -> {
-        removeBackStack(currentStack)
+        removeBackStack(stack = currentStack, shouldRemoveImmediately = false)
         val newStack = createBackStack(root)
         currentStack = newStack
+
+        updateVisibleDestinations(lastEvent = StackEvent.Pop)
       }
 
       else -> error("$root is not on the current back stack")
     }
-    updateVisibleDestinations(lastEvent = StackEvent.Pop)
   }
 
   fun replaceAll(root: NavRoot) {
+    val currentVisibleEntry = visibleEntries.value.currentVisibleEntry
+
     // remove all stacks
     while (allStacks.isNotEmpty()) {
-      removeBackStack(allStacks.last())
+      val stack = allStacks.last()
+
+      stack.clear().onEach { onStackEntryRemoved(it, it != currentVisibleEntry) }
+      allStacks.remove(stack)
+      onStackEntryRemoved(
+        stack.rootEntry,
+        stack.rootEntry != currentVisibleEntry,
+      )
     }
 
     // create new stack with the root
@@ -261,6 +333,7 @@ internal class MultiStack(
 
     updateVisibleDestinations(lastEvent = StackEvent.ReplaceAll)
   }
+  //endregion
 
   fun saveState(): Map<String, Any> {
     return mapOf(
@@ -278,14 +351,13 @@ internal class MultiStack(
     fun createWith(
       root: NavRoot,
       destinations: List<ContentDestination<*>>,
-      onStackEntryRemoved: (StackEntryId) -> Unit,
+      onStackEntryRemoved: OnStackEntryRemoved,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): MultiStack {
       val startStack = Stack.createWith(
         root = root,
         destinations = destinations,
-        onStackEntryRemoved = onStackEntryRemoved,
         getHostLifecycleState = getHostLifecycleState,
         idGenerator = idGenerator,
       )
@@ -305,7 +377,7 @@ internal class MultiStack(
       bundle: Map<String, Any?>,
       destinations: List<ContentDestination<*>>,
       getHostLifecycleState: () -> Lifecycle.State,
-      onStackEntryRemoved: (StackEntryId) -> Unit,
+      onStackEntryRemoved: OnStackEntryRemoved,
       idGenerator: () -> String = { uuid4().toString() },
     ): MultiStack {
       @Suppress("UNCHECKED_CAST")
@@ -315,7 +387,6 @@ internal class MultiStack(
         Stack.fromState(
           bundle = it,
           destinations = destinations,
-          onStackEntryRemoved = onStackEntryRemoved,
           getHostLifecycleState = getHostLifecycleState,
           idGenerator = idGenerator,
         )
@@ -335,4 +406,24 @@ internal class MultiStack(
     private const val SAVED_STATE_ALL_STACKS = "com.hoc081098.solivagant.navigation.stack.all_stacks"
     private const val SAVED_STATE_CURRENT_STACK = "com.hoc081098.solivagant.navigation.stack.current_stack"
   }
+}
+
+private fun ImmutableList<StackEntry<*>>.invokeOnStackEntryRemoved(onStackEntryRemoved: OnStackEntryRemoved): Pair<Int, ImmutableList<StackEntry<*>>> {
+  var screenDestinationEntriesCount = 0
+  var soFar: Int
+
+  return screenDestinationEntriesCount to this
+    .onEach {
+      if (it.isScreenDestination) {
+        screenDestinationEntriesCount++
+      }
+    }
+    .also { soFar = screenDestinationEntriesCount }
+    .onEach {
+      if (it.isOverlayDestination) {
+        onStackEntryRemoved(it, true)
+      } else {
+        onStackEntryRemoved(it, soFar-- < screenDestinationEntriesCount)
+      }
+    }
 }

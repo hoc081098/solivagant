@@ -11,4 +11,6 @@ import kotlin.jvm.JvmField
 data object NotificationsTabRoute : NavRoot
 
 @JvmField
-val NotificationsTabDestination = ScreenDestination<NotificationsTabRoute> { NotificationsTab() }
+val NotificationsTabDestination = ScreenDestination<NotificationsTabRoute> { route, modifier ->
+  NotificationsTab(modifier = modifier)
+}

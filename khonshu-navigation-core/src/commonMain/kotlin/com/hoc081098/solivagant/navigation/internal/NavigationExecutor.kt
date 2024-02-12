@@ -33,7 +33,6 @@
 package com.hoc081098.solivagant.navigation.internal
 
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
-import com.hoc081098.kmp.viewmodel.SavedStateHandleFactory
 import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.InternalNavigationApi
 import com.hoc081098.solivagant.navigation.Navigator
@@ -78,11 +77,6 @@ public interface NavigationExecutor : Navigator {
    * Returns the [SavedStateHandle] for the given [id].
    */
   public fun savedStateHandleFor(id: StackEntryId): SavedStateHandle
-
-  /**
-   * Returns the [SavedStateHandleFactory] for the given [id].
-   */
-  public fun savedStateHandleFactoryFor(id: StackEntryId): SavedStateHandleFactory
 
   /**
    * Returns the [Store] for the given [id].

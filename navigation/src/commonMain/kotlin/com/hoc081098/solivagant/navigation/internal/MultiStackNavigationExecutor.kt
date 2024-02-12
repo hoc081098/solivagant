@@ -34,14 +34,12 @@ package com.hoc081098.solivagant.navigation.internal
 
 import androidx.compose.runtime.State
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
-import com.hoc081098.kmp.viewmodel.SavedStateHandleFactory
 import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.lifecycle.eventFlow
 import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.Serializable
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -58,14 +56,11 @@ internal class MultiStackNavigationExecutor(
 ) : NavigationExecutor {
   private val _lifecycleOwner = MutableStateFlow<LifecycleOwner?>(null)
 
-  val visibleEntries: State<ImmutableList<StackEntry<*>>>
+  val visibleEntries: State<VisibleEntryState>
     get() = stack.visibleEntries
 
   val canNavigateBack: State<Boolean>
     get() = stack.canNavigateBack
-
-  val lastEvent: State<StackEvent>
-    get() = stack.lastEvent
 
   init {
     viewModel.viewModelScope.launch(start = CoroutineStart.UNDISPATCHED) {
@@ -119,11 +114,6 @@ internal class MultiStackNavigationExecutor(
     return viewModel.provideSavedStateHandle(entry.id, entry.route)
   }
 
-  override fun savedStateHandleFactoryFor(id: StackEntryId): SavedStateHandleFactory {
-    val entry = entryFor<BaseRoute>(id)
-    return viewModel.provideSavedStateHandleFactory(entry.id, entry.route)
-  }
-
   override fun storeFor(id: StackEntryId): NavigationExecutor.Store {
     val entry = entryFor<BaseRoute>(id)
     return viewModel.provideStore(entry.id)
@@ -155,6 +145,11 @@ internal class MultiStackNavigationExecutor(
     _lifecycleOwner.value = lifecycleOwner
   }
 
-  fun onTransitionComplete(entry: StackEntry<*>) {
+  fun removeAllPendingRemovedEntries() = viewModel.removeAllPendingRemovedEntries()
+
+  fun removeEntryIfNeeded(entry: StackEntry<*>) {
+    if (entry.removedFromBackstack.value) {
+      viewModel.removeEntry(entry)
+    }
   }
 }

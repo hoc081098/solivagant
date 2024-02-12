@@ -50,6 +50,7 @@ internal class StoreViewModel(
 
   private var stack: MultiStack? = null
   private var executor: MultiStackNavigationExecutor? = null
+  private val pendingRemovedEntries = mutableSetOf<StackEntry<*>>()
 
   init {
     globalSavedStateHandle.setSavedStateProviderWithMap(SAVED_STATE_STACK) {
@@ -68,13 +69,15 @@ internal class StoreViewModel(
     }
   }
 
-  internal fun provideSavedStateHandleFactory(id: StackEntryId, route: BaseRoute): SavedStateHandleFactory {
-    return savedStateHandleFactories.getOrPut(id) {
-      SavedStateHandleFactory { provideSavedStateHandle(id, route) }
-    }
-  }
+  /**
+   * Pre-condition: the value of [StackEntry.removedFromBackstack] must be `true`
+   */
+  internal fun removeEntry(entry: StackEntry<*>) {
+    require(entry.removedFromBackstack.value) { "$entry is not removed from backstack" }
 
-  private fun removeEntry(id: StackEntryId) {
+    println(">>>>>>> removeEntry: $entry")
+    val id = entry.id
+
     val store = stores.remove(id)
     store?.close()
 
@@ -82,6 +85,15 @@ internal class StoreViewModel(
     savedStateHandleFactories.remove(id)
     globalSavedStateHandle.removeSavedStateProvider(id.value)
     globalSavedStateHandle.remove<Any>(id.value)
+
+    pendingRemovedEntries.remove(entry)
+  }
+
+  internal fun removeAllPendingRemovedEntries() {
+    if (pendingRemovedEntries.isNotEmpty()) {
+      println(">>> removeAllPendingRemovedEntries: $pendingRemovedEntries")
+      pendingRemovedEntries.forEach { removeEntry(it) }
+    }
   }
 
   // @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
@@ -145,12 +157,24 @@ internal class StoreViewModel(
 
     val navState = globalSavedStateHandle.getAsMap(SAVED_STATE_STACK)
     val savedNavRoot: NavRoot? = globalSavedStateHandle[SAVED_START_ROOT_KEY]
+    val onStackEntryRemoved: OnStackEntryRemoved = { entry, shouldRemoveImmediately ->
+      println("${entry.route} -> shouldRemoveImmediately=$shouldRemoveImmediately")
+
+      entry.markRemovedFromBackstack()
+
+      if (shouldRemoveImmediately) {
+        removeEntry(entry)
+      } else {
+        pendingRemovedEntries.add(entry)
+      }
+    }
+
     return if (navState == null) {
       MultiStack.createWith(
         root = savedNavRoot!!,
         destinations = contentDestinations,
         getHostLifecycleState = getHostLifecycleState,
-        onStackEntryRemoved = ::removeEntry,
+        onStackEntryRemoved = onStackEntryRemoved,
       )
     } else {
       MultiStack.fromState(
@@ -158,7 +182,7 @@ internal class StoreViewModel(
         bundle = navState,
         destinations = contentDestinations,
         getHostLifecycleState = getHostLifecycleState,
-        onStackEntryRemoved = ::removeEntry,
+        onStackEntryRemoved = onStackEntryRemoved,
       )
     }.also { this.stack = it }
   }
