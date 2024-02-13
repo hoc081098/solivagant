@@ -66,25 +66,6 @@ internal class VisibleEntryState(
   val lastEvent: StackEvent,
 ) {
   inline val currentVisibleEntry get() = visibleEntries.first()
-
-  init {
-    if (previousVisibleEntry != null) {
-      require(previousVisibleEntry.destination is ScreenDestination<*>) {
-        "The destination of the previousVisibleEntry must be a ScreenDestination"
-      }
-    }
-    visibleEntries.forEachIndexed { index, stackEntry ->
-      if (index == 0) {
-        require(stackEntry.destination is ScreenDestination<*>) {
-          "The destination of the first visible entry must be a ScreenDestination"
-        }
-      } else {
-        require(stackEntry.destination is OverlayDestination<*>) {
-          "The destination of the non-first visible entry must be an OverlayDestination"
-        }
-      }
-    }
-  }
 }
 
 internal typealias OnStackEntryRemoved = (
@@ -237,7 +218,7 @@ internal class MultiStack private constructor(
     destinationId: DestinationId<T>,
     isInclusive: Boolean,
   ) {
-    val (screenDestinationCount, _) = currentStack
+    val screenDestinationCount = currentStack
       .popUpTo(destinationId, isInclusive)
       .invokeOnStackEntryRemoved(onStackEntryRemoved)
 
@@ -408,22 +389,33 @@ internal class MultiStack private constructor(
   }
 }
 
-private fun ImmutableList<StackEntry<*>>.invokeOnStackEntryRemoved(onStackEntryRemoved: OnStackEntryRemoved): Pair<Int, ImmutableList<StackEntry<*>>> {
-  var screenDestinationEntriesCount = 0
-  var soFar: Int
+/**
+ * Invoke [onStackEntryRemoved] on each [StackEntry] in this list.
+ * If the destination of the [StackEntry] is an [OverlayDestination], [onStackEntryRemoved] will be invoked with `true`.
+ * Otherwise, [onStackEntryRemoved] will be invoked with `false` for the first [ScreenDestination] and `true` for the rest.
+ */
+private fun ImmutableList<StackEntry<*>>.invokeOnStackEntryRemoved(onStackEntryRemoved: OnStackEntryRemoved): Int {
+  var screenDestinationCount = 0
+  var index: Int
 
-  return screenDestinationEntriesCount to this
+  this
     .onEach {
       if (it.isScreenDestination) {
-        screenDestinationEntriesCount++
+        screenDestinationCount++
       }
     }
-    .also { soFar = screenDestinationEntriesCount }
-    .onEach {
+    .also { index = screenDestinationCount }
+    .forEach {
       if (it.isOverlayDestination) {
         onStackEntryRemoved(it, true)
       } else {
-        onStackEntryRemoved(it, soFar-- < screenDestinationEntriesCount)
+        // [3]--[2]--[1]
+        // [3] -> false
+        // [2] -> true
+        // [1] -> true
+        onStackEntryRemoved(it, index-- < screenDestinationCount)
       }
     }
+
+  return screenDestinationCount
 }
