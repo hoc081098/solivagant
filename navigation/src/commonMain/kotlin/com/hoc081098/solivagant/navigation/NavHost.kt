@@ -189,8 +189,6 @@ public fun NavHost(
               }
               ).also { zIndices[targetId] = it }
 
-            println("--> $initialZIndex -> $targetZIndex")
-
             ContentTransform(
               targetContentEnter = finalEnter(lastEvent),
               initialContentExit = finalExit(lastEvent),
