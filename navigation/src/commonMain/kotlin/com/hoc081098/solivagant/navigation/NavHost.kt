@@ -212,50 +212,38 @@ public fun NavHost(
             entry = currentEntry,
             executor = executor,
             saveableStateHolder = saveableStateHolder,
-            canMoveToResumed = false,
           )
+        }
 
-          DisposableEffect(currentEntry) {
-            onDispose {
-              println("### onDispose: $currentEntry")
-              executor.removeEntryIfNeeded(currentEntry)
+        DisposableEffect(executor, transition.targetState) {
+          transition.targetState.previousVisibleEntry?.run {
+            // Move the lifecycle state of the previousVisibleEntry to CREATED if the lifecycle state is STARTED or RESUMED
+            if (lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+              moveToCreated()
             }
           }
+
+          onDispose { }
         }
 
         // Mark transition complete when the transition is finished
-        LaunchedEffect(executor, transition.currentState, transition.targetState) {
+        DisposableEffect(executor, transition.currentState, transition.targetState) {
           if (transition.currentState == transition.targetState) {
-            println(
-              ">>> Move to RESUMED ${
-                transition
-                  .targetState
-                  .currentVisibleEntry
-                  .route
-              }",
-            )
-
+            // Move the lifecycle state of the currentVisibleEntry to RESUMED
             transition
               .targetState
               .currentVisibleEntry
-              .lifecycleOwner.maxLifecycle = Lifecycle.State.RESUMED
+              .moveToResumed()
 
-            transition
-              .targetState
-              .previousVisibleEntry
-              ?.let { entry ->
-                println("### LaunchedEffect: previousVisibleEntry=$entry")
-                executor.removeEntryIfNeeded(entry)
-              }
-
+            // Keep only the z-index of the currentVisibleEntry
             zIndices
               .filter { it.key != transition.targetState.currentVisibleEntry.id }
               .forEach { zIndices.remove(it.key) }
-
-            println(zIndices.toMap())
           }
+          onDispose { }
         }
 
+        // Show overlay destinations
         visibleEntryState.visibleEntries.forEachIndexed { index, entry ->
           // Skip the first entry because it's already shown by AnimatedContent
           if (index > 0) {
@@ -264,7 +252,6 @@ public fun NavHost(
               entry = entry,
               executor = executor,
               saveableStateHolder = saveableStateHolder,
-              canMoveToResumed = true,
             )
           }
         }
@@ -278,7 +265,6 @@ private fun <T : BaseRoute> Show(
   entry: StackEntry<T>,
   executor: MultiStackNavigationExecutor,
   saveableStateHolder: SaveableStateHolder,
-  canMoveToResumed: Boolean,
   modifier: Modifier = Modifier,
 ) {
   // Remember the `saveableCloseable` and `savedStateHandleFactory`
@@ -316,13 +302,18 @@ private fun <T : BaseRoute> Show(
   // Previously, we have checked `entry.lifecycleOwner.lifecycle.currentState == Lifecycle.State.DESTROYED,
   // but there was an issue on Android platform, the entry state was moved to DESTROYED (due to configuration change)
   // but it was not removed from the stack.
-  DisposableEffect(entry) {
-    entry.lifecycleOwner.maxLifecycle = if (canMoveToResumed) {
-      Lifecycle.State.RESUMED
-    } else {
-      Lifecycle.State.STARTED
-    }
-    onDispose { entry.lifecycleOwner.maxLifecycle = Lifecycle.State.CREATED }
+  when (entry.destination) {
+    is OverlayDestination ->
+      DisposableEffect(entry) {
+        entry.moveToResumed()
+        onDispose { executor.removeEntryIfNeeded(entry) }
+      }
+
+    is ScreenDestination ->
+      DisposableEffect(entry) {
+        entry.moveToStarted()
+        onDispose { executor.removeEntryIfNeeded(entry) }
+      }
   }
 
   CompositionLocalProvider(

@@ -37,6 +37,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.hoc081098.solivagant.lifecycle.Lifecycle
+import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavRoot
@@ -49,16 +50,18 @@ internal class StackEntry<T : BaseRoute> private constructor(
   val id: StackEntryId,
   val route: T,
   val destination: ContentDestination<T>,
-  val lifecycleOwner: StackEntryLifecycleOwner,
+  private val entryLifecycleOwner: StackEntryLifecycleOwner,
 ) {
-  private val _removedFromBackstack: MutableState<Boolean> = mutableStateOf(false)
+  //region Removed from backstack state
+  private val isRemovedFromBackstackState: MutableState<Boolean> = mutableStateOf(false)
 
   internal fun markRemovedFromBackstack() {
-    check(!_removedFromBackstack.value) { "Can not mark twice" }
-    _removedFromBackstack.value = true
+    check(!isRemovedFromBackstackState.value) { "Can not mark twice" }
+    isRemovedFromBackstackState.value = true
   }
 
-  val removedFromBackstack: State<Boolean> get() = _removedFromBackstack
+  val isRemovedFromBackstack: State<Boolean> get() = isRemovedFromBackstackState
+  //endregion
 
   val destinationId
     get() = route.destinationId
@@ -70,6 +73,30 @@ internal class StackEntry<T : BaseRoute> private constructor(
       is NavRoute -> true
       is NavRoot -> false
     }
+
+  //region Lifecycle
+  internal fun moveToCreated() {
+    entryLifecycleOwner.maxLifecycle = Lifecycle.State.CREATED
+  }
+
+  internal fun moveToStarted() {
+    check(!isRemovedFromBackstack.value) { "Can not move to RESUMED state if removed from backstack" }
+    entryLifecycleOwner.maxLifecycle = Lifecycle.State.STARTED
+  }
+
+  internal fun moveToResumed() {
+    check(!isRemovedFromBackstack.value) { "Can not move to RESUMED state if removed from backstack" }
+    entryLifecycleOwner.maxLifecycle = Lifecycle.State.RESUMED
+  }
+
+  internal fun moveToDestroyed() {
+    entryLifecycleOwner.maxLifecycle = Lifecycle.State.DESTROYED
+  }
+
+  internal val lifecycleOwner: LifecycleOwner get() = entryLifecycleOwner
+
+  internal fun handleLifecycleEvent(event: Lifecycle.Event) = entryLifecycleOwner.handleLifecycleEvent(event)
+  //endregion
 
   companion object {
     inline fun <T : BaseRoute> create(
@@ -89,7 +116,7 @@ internal class StackEntry<T : BaseRoute> private constructor(
         id = StackEntryId(idGenerator()),
         route = route,
         destination = destination,
-        lifecycleOwner = StackEntryLifecycleOwner(
+        entryLifecycleOwner = StackEntryLifecycleOwner(
           hostLifecycleState = hostLifecycleState,
         ),
       )

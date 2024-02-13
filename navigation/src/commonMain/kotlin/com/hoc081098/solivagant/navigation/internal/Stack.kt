@@ -107,7 +107,7 @@ internal class Stack private constructor(
       destinations = destinations,
       hostLifecycleState = getHostLifecycleState(),
       idGenerator = idGenerator,
-    ).apply { lifecycleOwner.maxLifecycle = Lifecycle.State.CREATED }
+    ).apply { moveToCreated() }
     stack.add(stackEntry)
   }
 
@@ -157,9 +157,7 @@ internal class Stack private constructor(
     )
   }
 
-  internal fun handleLifecycleEvent(event: Lifecycle.Event) {
-    stack.forEach { it.lifecycleOwner.handleLifecycleEvent(event) }
-  }
+  internal fun handleLifecycleEvent(event: Lifecycle.Event) = stack.forEach { it.handleLifecycleEvent(event) }
 
   companion object {
     fun createWith(

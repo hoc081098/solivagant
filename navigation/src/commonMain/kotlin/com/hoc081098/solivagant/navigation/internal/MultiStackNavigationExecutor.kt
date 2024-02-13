@@ -145,11 +145,13 @@ internal class MultiStackNavigationExecutor(
     _lifecycleOwner.value = lifecycleOwner
   }
 
+  /**
+   * Remove all pending removed entries.
+   */
   fun removeAllPendingRemovedEntries() = viewModel.removeAllPendingRemovedEntries()
 
-  fun removeEntryIfNeeded(entry: StackEntry<*>) {
-    if (entry.removedFromBackstack.value) {
-      viewModel.removeEntry(entry)
-    }
-  }
+  /**
+   * Remove the entry if it is removed from backstack, otherwise move its lifecycle to CREATED.
+   */
+  fun removeEntryIfNeeded(entry: StackEntry<*>) = viewModel.removeEntryIfNeeded(entry)
 }

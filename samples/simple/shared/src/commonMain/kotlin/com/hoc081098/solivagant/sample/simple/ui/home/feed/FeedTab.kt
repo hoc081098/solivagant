@@ -11,7 +11,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -36,14 +35,6 @@ internal fun FeedTab(
   var savableCount by rememberSaveable { mutableIntStateOf(0) }
   val savedStateHandleCount by viewModel.countStateFlow.collectAsStateWithLifecycle()
   val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
-
-  val current = LocalLifecycleOwner.current
-  DisposableEffect(current) {
-    val c = current.lifecycle.subscribe { event ->
-      println("FeedTab: event=$event")
-    }
-    onDispose { }
-  }
 
   Surface(
     modifier = modifier.fillMaxSize(),
