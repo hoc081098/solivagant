@@ -80,7 +80,7 @@ internal class StackEntry<T : BaseRoute> private constructor(
   }
 
   internal fun moveToStarted() {
-    check(!isRemovedFromBackstack.value) { "Can not move to RESUMED state if removed from backstack" }
+    check(!isRemovedFromBackstack.value) { "Can not move to STARTED state if removed from backstack" }
     entryLifecycleOwner.maxLifecycle = Lifecycle.State.STARTED
   }
 
