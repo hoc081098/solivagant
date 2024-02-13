@@ -38,12 +38,8 @@ import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.SizeTransform
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.Transition
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -128,15 +124,14 @@ public fun NavHost(
       ) {
         // From AndroidX:
         // https://github.com/androidx/androidx/blob/5dda4ea48e68d10c8c5cc04d5f4ee299295e1835/navigation/navigation-compose/src/main/java/androidx/navigation/compose/NavHost.kt#L253-L372
-
         val zIndices = remember { mutableStateMapOf<StackEntryId, Float>() }
         val visibleEntryState by executor.visibleEntries
 
         val finalEnter: AnimatedContentTransitionScope<*>.(StackEvent) -> EnterTransition = { event ->
           when (event) {
-            StackEvent.Idle -> fadeIn(animationSpec = tween(5000, easing = LinearEasing))
-            StackEvent.ReplaceAll -> fadeIn(animationSpec = tween(3000, easing = LinearEasing))
-            StackEvent.PushRoot -> fadeIn(animationSpec = tween(3000, easing = LinearEasing))
+            StackEvent.Idle -> EnterTransition.None
+            StackEvent.ReplaceAll -> transitionAnimations.replaceEnterTransition.invoke(this)
+            StackEvent.PushRoot -> transitionAnimations.replaceEnterTransition.invoke(this)
             StackEvent.Push -> transitionAnimations.enterTransition.invoke(this)
             StackEvent.Pop -> transitionAnimations.popEnterTransition.invoke(this)
           }
@@ -144,9 +139,9 @@ public fun NavHost(
 
         val finalExit: AnimatedContentTransitionScope<*>.(StackEvent) -> ExitTransition = { event ->
           when (event) {
-            StackEvent.Idle -> fadeOut(animationSpec = tween(5000, easing = LinearEasing))
-            StackEvent.ReplaceAll -> fadeOut(animationSpec = tween(3000, easing = LinearEasing))
-            StackEvent.PushRoot -> fadeOut(animationSpec = tween(3000, easing = LinearEasing))
+            StackEvent.Idle -> ExitTransition.None
+            StackEvent.ReplaceAll -> transitionAnimations.replaceExitTransition.invoke(this)
+            StackEvent.PushRoot -> transitionAnimations.replaceExitTransition.invoke(this)
             StackEvent.Push -> transitionAnimations.exitTransition.invoke(this)
             StackEvent.Pop -> transitionAnimations.popExitTransition.invoke(this)
           }
@@ -203,11 +198,9 @@ public fun NavHost(
           contentKey = { it.currentVisibleEntry.id },
         ) { targetState ->
           // while in the scope of the composable, we provide the ViewModelStoreOwner and LifecycleOwner
-          val currentEntry = targetState.currentVisibleEntry
-
           Show(
             modifier = Modifier.fillMaxSize(),
-            entry = currentEntry,
+            entry = targetState.currentVisibleEntry,
             executor = executor,
             saveableStateHolder = saveableStateHolder,
           )

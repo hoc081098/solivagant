@@ -24,11 +24,17 @@ public object NavHostDefaults {
       enterTransition,
     popExitTransition: (AnimatedContentTransitionScope<*>.() -> ExitTransition) =
       exitTransition,
+    replaceEnterTransition: (AnimatedContentTransitionScope<*>.() -> EnterTransition) =
+      enterTransition,
+    replaceExitTransition: (AnimatedContentTransitionScope<*>.() -> ExitTransition) =
+      exitTransition,
   ): NavHostTransitionAnimations = NavHostTransitionAnimations(
     enterTransition = enterTransition,
     exitTransition = exitTransition,
     popEnterTransition = popEnterTransition,
     popExitTransition = popExitTransition,
+    replaceEnterTransition = replaceEnterTransition,
+    replaceExitTransition = replaceExitTransition,
   )
 }
 
@@ -42,6 +48,8 @@ public class NavHostTransitionAnimations internal constructor(
   public val exitTransition: (AnimatedContentTransitionScope<*>.() -> ExitTransition),
   public val popEnterTransition: (AnimatedContentTransitionScope<*>.() -> EnterTransition),
   public val popExitTransition: (AnimatedContentTransitionScope<*>.() -> ExitTransition),
+  public val replaceEnterTransition: (AnimatedContentTransitionScope<*>.() -> EnterTransition),
+  public val replaceExitTransition: (AnimatedContentTransitionScope<*>.() -> ExitTransition),
 ) {
   public companion object {
     /**
@@ -53,6 +61,8 @@ public class NavHostTransitionAnimations internal constructor(
       exitTransition = { ExitTransition.None },
       popEnterTransition = { EnterTransition.None },
       popExitTransition = { ExitTransition.None },
+      replaceEnterTransition = { EnterTransition.None },
+      replaceExitTransition = { ExitTransition.None },
     )
   }
 }
