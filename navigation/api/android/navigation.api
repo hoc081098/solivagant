@@ -1,5 +1,30 @@
+public final class com/hoc081098/solivagant/navigation/NavHostDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/hoc081098/solivagant/navigation/NavHostDefaults;
+	public final fun transitionAnimations (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Lcom/hoc081098/solivagant/navigation/NavHostTransitionAnimations;
+	public static synthetic fun transitionAnimations$default (Lcom/hoc081098/solivagant/navigation/NavHostDefaults;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/hoc081098/solivagant/navigation/NavHostTransitionAnimations;
+}
+
 public final class com/hoc081098/solivagant/navigation/NavHostKt {
-	public static final fun NavHost (Lcom/hoc081098/solivagant/navigation/NavRoot;Lkotlinx/collections/immutable/ImmutableSet;Landroidx/compose/ui/Modifier;Lcom/hoc081098/solivagant/navigation/NavEventNavigator;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun NavHost (Lcom/hoc081098/solivagant/navigation/NavRoot;Lkotlinx/collections/immutable/ImmutableSet;Landroidx/compose/ui/Modifier;Lcom/hoc081098/solivagant/navigation/NavEventNavigator;Lkotlin/jvm/functions/Function1;Lcom/hoc081098/solivagant/navigation/NavHostTransitionAnimations;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/hoc081098/solivagant/navigation/NavHostTransitionAnimations {
+	public static final field $stable I
+	public static final field Companion Lcom/hoc081098/solivagant/navigation/NavHostTransitionAnimations$Companion;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEnterTransition ()Lkotlin/jvm/functions/Function1;
+	public final fun getExitTransition ()Lkotlin/jvm/functions/Function1;
+	public final fun getPopEnterTransition ()Lkotlin/jvm/functions/Function1;
+	public final fun getPopExitTransition ()Lkotlin/jvm/functions/Function1;
+	public final fun getReplaceEnterTransition ()Lkotlin/jvm/functions/Function1;
+	public final fun getReplaceExitTransition ()Lkotlin/jvm/functions/Function1;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/hoc081098/solivagant/navigation/NavHostTransitionAnimations$Companion {
+	public final fun noAnimations ()Lcom/hoc081098/solivagant/navigation/NavHostTransitionAnimations;
 }
 
 public final class com/hoc081098/solivagant/navigation/RememberCloseableOnRouteKt {

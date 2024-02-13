@@ -7,7 +7,7 @@ public abstract interface class com/hoc081098/solivagant/navigation/BaseRoute : 
 }
 
 public abstract interface class com/hoc081098/solivagant/navigation/ContentDestination : com/hoc081098/solivagant/navigation/NavDestination {
-	public abstract fun getContent ()Lkotlin/jvm/functions/Function3;
+	public abstract fun getContent ()Lkotlin/jvm/functions/Function4;
 	public abstract fun getExtra ()Ljava/io/Serializable;
 	public abstract fun getId ()Lcom/hoc081098/solivagant/navigation/internal/DestinationId;
 }
@@ -87,8 +87,8 @@ public final class com/hoc081098/solivagant/navigation/Navigator$DefaultImpls {
 
 public final class com/hoc081098/solivagant/navigation/OverlayDestination : com/hoc081098/solivagant/navigation/ContentDestination {
 	public static final field $stable I
-	public fun <init> (Lcom/hoc081098/solivagant/navigation/internal/DestinationId;Ljava/io/Serializable;Lkotlin/jvm/functions/Function3;)V
-	public fun getContent ()Lkotlin/jvm/functions/Function3;
+	public fun <init> (Lcom/hoc081098/solivagant/navigation/internal/DestinationId;Ljava/io/Serializable;Lkotlin/jvm/functions/Function4;)V
+	public fun getContent ()Lkotlin/jvm/functions/Function4;
 	public fun getExtra ()Ljava/io/Serializable;
 	public fun getId ()Lcom/hoc081098/solivagant/navigation/internal/DestinationId;
 }
@@ -110,8 +110,8 @@ public abstract class com/hoc081098/solivagant/navigation/ResultOwner {
 
 public final class com/hoc081098/solivagant/navigation/ScreenDestination : com/hoc081098/solivagant/navigation/ContentDestination {
 	public static final field $stable I
-	public fun <init> (Lcom/hoc081098/solivagant/navigation/internal/DestinationId;Ljava/io/Serializable;Lkotlin/jvm/functions/Function3;)V
-	public fun getContent ()Lkotlin/jvm/functions/Function3;
+	public fun <init> (Lcom/hoc081098/solivagant/navigation/internal/DestinationId;Ljava/io/Serializable;Lkotlin/jvm/functions/Function4;)V
+	public fun getContent ()Lkotlin/jvm/functions/Function4;
 	public fun getExtra ()Ljava/io/Serializable;
 	public fun getId ()Lcom/hoc081098/solivagant/navigation/internal/DestinationId;
 }
@@ -212,7 +212,6 @@ public final class com/hoc081098/solivagant/navigation/internal/NavEvent$UpEvent
 
 public abstract interface class com/hoc081098/solivagant/navigation/internal/NavigationExecutor : com/hoc081098/solivagant/navigation/Navigator {
 	public abstract fun extra-3IqVRSk (Ljava/lang/String;)Ljava/io/Serializable;
-	public abstract fun savedStateHandleFactoryFor-3IqVRSk (Ljava/lang/String;)Lcom/hoc081098/kmp/viewmodel/SavedStateHandleFactory;
 	public abstract fun savedStateHandleFor-3IqVRSk (Ljava/lang/String;)Lcom/hoc081098/kmp/viewmodel/SavedStateHandle;
 	public abstract fun stackEntryIdFor-l9GXND0 (Lcom/hoc081098/solivagant/navigation/BaseRoute;)Ljava/lang/String;
 	public abstract fun stackEntryIdFor-l9GXND0 (Lcom/hoc081098/solivagant/navigation/internal/DestinationId;)Ljava/lang/String;
