@@ -1,8 +1,8 @@
 package com.hoc081098.solivagant.sample.simple
 
 import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,7 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.IntOffset
 import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.NavDestination
 import com.hoc081098.solivagant.navigation.NavEventNavigator
@@ -89,11 +88,6 @@ fun SimpleSolivagantSampleApp(
     }
   }
 
-  val animationSpec = tween<IntOffset>(
-    durationMillis = 4_000,
-    easing = LinearEasing,
-  )
-
   KoinContext {
     MyApplicationTheme(useDarkTheme = false) {
       Surface(
@@ -148,27 +142,25 @@ fun SimpleSolivagantSampleApp(
               enterTransition = {
                 slideIntoContainer(
                   towards = AnimatedContentTransitionScope.SlideDirection.Left,
-                  animationSpec = animationSpec,
                 )
               },
               exitTransition = {
                 slideOutOfContainer(
                   towards = AnimatedContentTransitionScope.SlideDirection.Left,
-                  animationSpec = animationSpec,
                 )
               },
               popEnterTransition = {
                 slideIntoContainer(
                   towards = AnimatedContentTransitionScope.SlideDirection.Right,
-                  animationSpec = animationSpec,
                 )
               },
               popExitTransition = {
                 slideOutOfContainer(
                   towards = AnimatedContentTransitionScope.SlideDirection.Right,
-                  animationSpec = animationSpec,
                 )
               },
+              replaceEnterTransition = { fadeIn() },
+              replaceExitTransition = { fadeOut() },
             ),
           )
         }
