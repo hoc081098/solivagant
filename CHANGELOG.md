@@ -2,6 +2,13 @@
 
 ## [Unreleased] - TBD
 
+- **Breaking**: Add a `Modifier`parameter to `content` of `NavDestination`:
+     ```kotlin
+     public val content: @Composable (route: T, modifier: Modifier) -> Unit
+     ```
+
+- **New**: Add optional `transitionAnimations` parameter to `NavHost` Composable functions. Animations can be overriden with `NavHostDefaults.transitionAnimations` or disabled with `NavHostTransitionAnimations.noAnimations`. Default animations are the same as default animations in AndroidX's `NavHost`.
+
 ## [0.0.1] - Feb 7, 2024
 
 - Initial release of `solivagant` 🔆.
