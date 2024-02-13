@@ -33,7 +33,7 @@ internal class DetailViewModel(
   fun navigateBack() = navigator.navigateBack()
 
   fun showOverlay() = navigator.navigate {
-    repeat(10) {
+    repeat(@Suppress("MagicNumber") 10) {
       navigateTo(
         DetailScreenOverlayRoute(
           detailRoute = route,

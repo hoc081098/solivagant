@@ -392,7 +392,8 @@ internal class MultiStack private constructor(
 /**
  * Invoke [onStackEntryRemoved] on each [StackEntry] in this list.
  * If the destination of the [StackEntry] is an [OverlayDestination], [onStackEntryRemoved] will be invoked with `true`.
- * Otherwise, [onStackEntryRemoved] will be invoked with `false` for the first [ScreenDestination] and `true` for the rest.
+ * Otherwise, [onStackEntryRemoved] will be invoked with `false` for the first [ScreenDestination]
+ * and `true` for the rest.
  */
 private fun ImmutableList<StackEntry<*>>.invokeOnStackEntryRemoved(onStackEntryRemoved: OnStackEntryRemoved): Int {
   var screenDestinationCount = 0

@@ -12,8 +12,8 @@ import dev.drewhamilton.poko.Poko
 /**
  * Defaults used in [NavHost]
  */
+@Suppress("MagicNumber")
 public object NavHostDefaults {
-
   @Stable
   public fun transitionAnimations(
     enterTransition: (AnimatedContentTransitionScope<*>.() -> EnterTransition) =

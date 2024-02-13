@@ -87,6 +87,7 @@ import kotlinx.coroutines.flow.map
  * If a [NavEventNavigator] is passed it will be automatically set up and can be used to
  * navigate within the `NavHost`.
  */
+@Suppress("LongMethod", "CyclomaticComplexMethod")
 @Composable
 public fun NavHost(
   startRoute: NavRoot,
@@ -208,7 +209,8 @@ public fun NavHost(
 
         DisposableEffect(executor, transition.targetState) {
           transition.targetState.previousVisibleEntry?.run {
-            // Move the lifecycle state of the previousVisibleEntry to CREATED if the lifecycle state is STARTED or RESUMED
+            // Move the lifecycle state of the previousVisibleEntry to CREATED
+            // if the lifecycle state is STARTED or RESUMED
             if (lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
               moveToCreated()
             }
