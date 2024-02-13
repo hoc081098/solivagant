@@ -12,4 +12,4 @@ data object StartScreenRoute : NavRoute, NavRoot
 
 @JvmField
 val StartScreenDestination: NavDestination =
-  ScreenDestination<StartScreenRoute> { StartScreen() }
+  ScreenDestination<StartScreenRoute> { _, modifier -> StartScreen(modifier = modifier) }

@@ -51,6 +51,11 @@ internal class StoreViewModel(
   private var stack: MultiStack? = null
   private var executor: MultiStackNavigationExecutor? = null
 
+  /**
+   * All entries that are removed from backstack, but not yet removed from the store.
+   */
+  private val pendingRemovedEntries = LinkedHashSet<StackEntry<*>>()
+
   init {
     globalSavedStateHandle.setSavedStateProviderWithMap(SAVED_STATE_STACK) {
       checkNotNull(stack) { "Stack is null. This should never happen" }.saveState()
@@ -68,13 +73,20 @@ internal class StoreViewModel(
     }
   }
 
-  internal fun provideSavedStateHandleFactory(id: StackEntryId, route: BaseRoute): SavedStateHandleFactory {
-    return savedStateHandleFactories.getOrPut(id) {
-      SavedStateHandleFactory { provideSavedStateHandle(id, route) }
-    }
-  }
+  /**
+   * **Pre-condition**: the value of [StackEntry.isRemovedFromBackstack] must be `true`.
+   *
+   * Move the lifecycle of the entry to DESTROYED, and clear its resources.
+   */
+  private fun removeEntry(entry: StackEntry<*>) {
+    require(entry.isRemovedFromBackstack.value) { "$entry is not removed from backstack" }
 
-  private fun removeEntry(id: StackEntryId) {
+    val id = entry.id
+
+    // If the entry is no longer part of the backStack, we need to manually move
+    // it to DESTROYED, and clear its resources.
+    entry.moveToDestroyed()
+
     val store = stores.remove(id)
     store?.close()
 
@@ -82,6 +94,26 @@ internal class StoreViewModel(
     savedStateHandleFactories.remove(id)
     globalSavedStateHandle.removeSavedStateProvider(id.value)
     globalSavedStateHandle.remove<Any>(id.value)
+  }
+
+  /**
+   * Remove the entry if it is removed from backstack, otherwise move its lifecycle to CREATED.
+   */
+  internal fun removeEntryIfNeeded(entry: StackEntry<*>) {
+    if (entry.isRemovedFromBackstack.value) {
+      removeEntry(entry)
+      pendingRemovedEntries.remove(entry)
+    } else {
+      entry.moveToCreated()
+    }
+  }
+
+  /**
+   * Remove all pending removed entries.
+   */
+  internal fun removeAllPendingRemovedEntries() {
+    pendingRemovedEntries.forEach { removeEntry(it) }
+    pendingRemovedEntries.clear()
   }
 
   // @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
@@ -145,12 +177,29 @@ internal class StoreViewModel(
 
     val navState = globalSavedStateHandle.getAsMap(SAVED_STATE_STACK)
     val savedNavRoot: NavRoot? = globalSavedStateHandle[SAVED_START_ROOT_KEY]
+
+    val onStackEntryRemoved: OnStackEntryRemoved = { entry, shouldRemoveImmediately ->
+      // First, mark the entry as removed from backstack
+      entry.markRemovedFromBackstack()
+
+      // Then, remove the entry if it is removed from backstack,
+      // otherwise move its lifecycle to CREATED and add it to [pendingRemovedEntries].
+      if (shouldRemoveImmediately) {
+        removeEntry(entry)
+        pendingRemovedEntries.remove(entry)
+      } else {
+        // The entry will be removed later by [removeEntry] or [removeAllPendingRemovedEntries].
+        entry.moveToCreated()
+        pendingRemovedEntries.add(entry)
+      }
+    }
+
     return if (navState == null) {
       MultiStack.createWith(
         root = savedNavRoot!!,
         destinations = contentDestinations,
         getHostLifecycleState = getHostLifecycleState,
-        onStackEntryRemoved = ::removeEntry,
+        onStackEntryRemoved = onStackEntryRemoved,
       )
     } else {
       MultiStack.fromState(
@@ -158,7 +207,7 @@ internal class StoreViewModel(
         bundle = navState,
         destinations = contentDestinations,
         getHostLifecycleState = getHostLifecycleState,
-        onStackEntryRemoved = ::removeEntry,
+        onStackEntryRemoved = onStackEntryRemoved,
       )
     }.also { this.stack = it }
   }

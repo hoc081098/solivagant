@@ -24,6 +24,7 @@ import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
 import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 import com.hoc081098.solivagant.lifecycle.compose.collectAsStateWithLifecycle
 import com.hoc081098.solivagant.lifecycle.compose.currentStateAsState
+import com.hoc081098.solivagant.navigation.NavigationSetup
 import com.hoc081098.solivagant.sample.simple.common.debugDescription
 
 @Composable
@@ -32,6 +33,8 @@ internal fun DetailScreen(
   modifier: Modifier = Modifier,
   viewModel: DetailViewModel = koinKmpViewModel(),
 ) {
+  NavigationSetup(viewModel.navigator)
+
   var savableCount by rememberSaveable { mutableIntStateOf(0) }
   val savedStateHandleCount by viewModel.countStateFlow.collectAsStateWithLifecycle()
   val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
@@ -68,6 +71,7 @@ internal fun DetailScreen(
           onClick = {
             savableCount++
             viewModel.increment()
+            viewModel.showOverlay()
           },
         ) {
           Text(text = "Increment")

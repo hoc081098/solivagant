@@ -65,6 +65,7 @@ kotlin {
         implementation(libs.kmp.viewmodel.koin)
         implementation(libs.kmp.viewmodel.koin.compose)
 
+        api(libs.koin.core)
         api(libs.napier)
         api(libs.coroutines.core)
         api(libs.kotlinx.collections.immutable)

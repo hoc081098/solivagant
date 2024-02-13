@@ -14,4 +14,6 @@ data object NestedNotificationsScreenRoute : NavRoute
 
 @JvmField
 val NestedNotificationsScreenDestination =
-  ScreenDestination<NestedNotificationsScreenRoute> { NestedNotificationsScreen() }
+  ScreenDestination<NestedNotificationsScreenRoute> { route, modifier ->
+    NestedNotificationsScreen(modifier = modifier)
+  }

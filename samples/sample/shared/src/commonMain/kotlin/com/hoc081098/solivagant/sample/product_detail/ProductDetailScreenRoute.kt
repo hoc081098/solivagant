@@ -15,4 +15,6 @@ data class ProductDetailScreenRoute(val id: Int) : NavRoute
 
 @JvmField
 val ProductDetailScreenDestination: NavDestination =
-  ScreenDestination<ProductDetailScreenRoute> { ProductDetailScreen() }
+  ScreenDestination<ProductDetailScreenRoute> { _, modifier ->
+    ProductDetailScreen(modifier = modifier)
+  }

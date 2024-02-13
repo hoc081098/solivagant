@@ -13,4 +13,6 @@ import kotlin.jvm.JvmField
 data object NestedFeedScreenRoute : NavRoute
 
 @JvmField
-val NestedFeedScreenDestination = ScreenDestination<NestedFeedScreenRoute> { NestedFeedScreen() }
+val NestedFeedScreenDestination = ScreenDestination<NestedFeedScreenRoute> { route, modifier ->
+  NestedFeedScreen(modifier = modifier)
+}
