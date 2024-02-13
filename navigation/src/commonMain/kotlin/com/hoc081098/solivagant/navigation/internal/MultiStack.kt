@@ -300,7 +300,7 @@ internal class MultiStack private constructor(
       val stack = allStacks.last()
 
       stack.clear().onEach { onStackEntryRemoved(it, it != currentVisibleEntry) }
-      allStacks.remove(stack)
+      allStacks.removeLast()
       onStackEntryRemoved(
         stack.rootEntry,
         stack.rootEntry != currentVisibleEntry,
