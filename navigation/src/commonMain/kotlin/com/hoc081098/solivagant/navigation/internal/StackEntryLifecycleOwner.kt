@@ -210,11 +210,12 @@ internal class StackEntryLifecycleOwner(
     }
   }
 
-  override fun toString(): String = buildString {
-    append("StackEntryLifecycleOwner(")
-    append("hostLifecycleState=$hostLifecycleState, ")
-    append("maxLifecycle=$maxLifecycle, ")
-    append("lifecycle=$lifecycle")
-    append(")")
-  }
+  override fun toString(): String =
+    buildString {
+      append("StackEntryLifecycleOwner(")
+      append("hostLifecycleState=$hostLifecycleState, ")
+      append("maxLifecycle=$maxLifecycle, ")
+      append("lifecycle=$lifecycle")
+      append(")")
+    }
 }

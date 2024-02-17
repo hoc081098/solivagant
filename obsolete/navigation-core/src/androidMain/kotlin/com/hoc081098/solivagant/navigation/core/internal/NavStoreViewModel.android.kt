@@ -12,11 +12,13 @@ import com.hoc081098.solivagant.navigation.core.Route
 import com.hoc081098.solivagant.navigation.core.RouteContent
 
 @OptIn(InternalKmpViewModelApi::class)
-internal actual fun createViewModelStore(): ViewModelStore =
-  ViewModelStore(AndroidXViewModelStore())
+internal actual fun createViewModelStore(): ViewModelStore = ViewModelStore(AndroidXViewModelStore())
 
 @SuppressLint("RestrictedApi")
-internal actual fun createSavedStateHandle(id: String, globalSavedStateHandle: SavedStateHandle): SavedStateHandle {
+internal actual fun createSavedStateHandle(
+  id: String,
+  globalSavedStateHandle: SavedStateHandle,
+): SavedStateHandle {
   val restoredBundle = globalSavedStateHandle.get<Bundle>(id)
 
   return SavedStateHandle
@@ -75,7 +77,8 @@ internal actual fun createNavStack(
 internal actual fun removeSavedStateHandle(
   id: String,
   globalSavedStateHandle: SavedStateHandle,
-): Any? = globalSavedStateHandle.run {
-  clearSavedStateProvider(id)
-  remove<Bundle>(id)
-}
+): Any? =
+  globalSavedStateHandle.run {
+    clearSavedStateProvider(id)
+    remove<Bundle>(id)
+  }

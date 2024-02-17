@@ -48,27 +48,27 @@ internal actual fun SavedStateHandle.setSavedStateProviderWithMap(
 }
 
 @Suppress("NestedBlockDepth")
-private fun Map<String, Any?>.toBundle(): Bundle = Bundle().apply {
-  forEach { (k, v) ->
-    when (v) {
-      null -> putString(k, null)
-      is Parcelable -> putParcelable(k, v)
-      is ArrayList<*> -> {
-        @Suppress("UNCHECKED_CAST")
-        when (val first = v[0]) {
-          is String -> putStringArrayList(k, v as ArrayList<String>)
-          is Parcelable -> putParcelableArrayList(k, v as ArrayList<Parcelable>)
-          else -> error("Unknown type: $first")
+private fun Map<String, Any?>.toBundle(): Bundle =
+  Bundle().apply {
+    forEach { (k, v) ->
+      when (v) {
+        null -> putString(k, null)
+        is Parcelable -> putParcelable(k, v)
+        is ArrayList<*> -> {
+          @Suppress("UNCHECKED_CAST")
+          when (val first = v[0]) {
+            is String -> putStringArrayList(k, v as ArrayList<String>)
+            is Parcelable -> putParcelableArrayList(k, v as ArrayList<Parcelable>)
+            else -> error("Unknown type: $first")
+          }
         }
-      }
 
-      else -> error("Unknown type: $v")
+        else -> error("Unknown type: $v")
+      }
     }
   }
-}
 
-internal actual fun SavedStateHandle.removeSavedStateProvider(key: String) =
-  clearSavedStateProvider(key)
+internal actual fun SavedStateHandle.removeSavedStateProvider(key: String) = clearSavedStateProvider(key)
 
 internal actual fun SavedStateHandle.getAsMap(key: String): Map<String, Any?>? =
   get<Bundle?>(key)

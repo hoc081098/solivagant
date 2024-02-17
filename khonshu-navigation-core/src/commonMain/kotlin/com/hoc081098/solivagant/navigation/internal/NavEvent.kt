@@ -26,7 +26,6 @@ import dev.drewhamilton.poko.Poko
 
 @InternalNavigationApi
 public sealed interface NavEvent {
-
   @InternalNavigationApi
   @Poko
   public class NavigateToEvent(

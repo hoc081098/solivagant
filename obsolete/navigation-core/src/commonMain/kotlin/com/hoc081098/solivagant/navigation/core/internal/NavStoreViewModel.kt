@@ -67,12 +67,13 @@ internal class NavStoreViewModel(
     }
   }
 
-  internal infix fun provideViewModelStoreOwner(id: String): ViewModelStoreOwner = viewModelStoreOwners
-    .getOrPut(id) {
-      NavEntryViewModelStoreOwner(
-        viewModelStore = createViewModelStore(),
-      )
-    }
+  internal infix fun provideViewModelStoreOwner(id: String): ViewModelStoreOwner =
+    viewModelStoreOwners
+      .getOrPut(id) {
+        NavEntryViewModelStoreOwner(
+          viewModelStore = createViewModelStore(),
+        )
+      }
 
   //region provideSavedStateHandleFactory
   internal infix fun provideSavedStateHandleFactory(navEntry: NavEntry<*>): SavedStateHandleFactory =
@@ -111,11 +112,12 @@ internal class NavStoreViewModel(
     initialRoute: Route,
     contents: List<RouteContent<*>>,
     onStackEntryRemoved: (NavEntry<*>) -> Unit,
-  ): NavStack = createNavStack(
-    globalSavedStateHandle = globalSavedStateHandle,
-    initialRoute = initialRoute,
-    contents = contents,
-    onStackEntryRemoved = onStackEntryRemoved,
-  )
+  ): NavStack =
+    createNavStack(
+      globalSavedStateHandle = globalSavedStateHandle,
+      initialRoute = initialRoute,
+      contents = contents,
+      onStackEntryRemoved = onStackEntryRemoved,
+    )
   //endregion
 }

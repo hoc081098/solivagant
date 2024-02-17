@@ -35,15 +35,16 @@ object DIContainer : KoinComponent {
     type: ObjCObject,
     qualifier: Qualifier? = null,
     parameters: ParametersDefinition? = null,
-  ): Any? = getKoin().get(
-    clazz = when (type) {
-      is ObjCProtocol -> getOriginalKotlinClass(type)!!
-      is ObjCClass -> getOriginalKotlinClass(type)!!
-      else -> error("Cannot convert $type to KClass<*>")
-    },
-    qualifier = qualifier,
-    parameters = parameters,
-  )
+  ): Any? =
+    getKoin().get(
+      clazz = when (type) {
+        is ObjCProtocol -> getOriginalKotlinClass(type)!!
+        is ObjCClass -> getOriginalKotlinClass(type)!!
+        else -> error("Cannot convert $type to KClass<*>")
+      },
+      qualifier = qualifier,
+      parameters = parameters,
+    )
 
   fun parametersOf(parameters: List<Any?>): ParametersHolder = ParametersHolder(parameters.toMutableList())
 }

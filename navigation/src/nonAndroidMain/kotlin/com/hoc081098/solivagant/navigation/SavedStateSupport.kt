@@ -98,17 +98,21 @@ public class SavedStateSupport :
 
   override fun consumeRestored(key: String): Any? = registry?.consumeRestored(key)
 
-  override fun performSave(): Map<String, List<Any?>> = registry
-    ?.performSave()
-    ?.also {
-      registry = SaveableStateRegistry(
-        restoredValues = it,
-        canBeSaved = { true },
-      )
-    }
-    .orEmpty()
+  override fun performSave(): Map<String, List<Any?>> =
+    registry
+      ?.performSave()
+      ?.also {
+        registry = SaveableStateRegistry(
+          restoredValues = it,
+          canBeSaved = { true },
+        )
+      }
+      .orEmpty()
 
-  override fun registerProvider(key: String, valueProvider: () -> Any?): SaveableStateRegistry.Entry =
+  override fun registerProvider(
+    key: String,
+    valueProvider: () -> Any?,
+  ): SaveableStateRegistry.Entry =
     registry
       ?.registerProvider(key, valueProvider)
       ?: NoOpSaveableStateRegistryEntry

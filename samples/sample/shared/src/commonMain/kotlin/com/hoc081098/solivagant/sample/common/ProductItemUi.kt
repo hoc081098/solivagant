@@ -27,16 +27,17 @@ data class ProductItemUi(
   )
 }
 
-internal fun ProductItem.toProductItemUi() = ProductItemUi(
-  id = id,
-  title = title,
-  price = price,
-  description = description,
-  images = images.toImmutableList(),
-  creationAt = creationAt,
-  updatedAt = updatedAt,
-  category = category.toCategoryUi(),
-)
+internal fun ProductItem.toProductItemUi() =
+  ProductItemUi(
+    id = id,
+    title = title,
+    price = price,
+    description = description,
+    images = images.toImmutableList(),
+    creationAt = creationAt,
+    updatedAt = updatedAt,
+    category = category.toCategoryUi(),
+  )
 
 internal fun ProductItem.Category.toCategoryUi(): CategoryUi {
   return CategoryUi(

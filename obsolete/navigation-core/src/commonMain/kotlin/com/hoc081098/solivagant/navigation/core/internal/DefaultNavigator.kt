@@ -46,15 +46,16 @@ internal fun rememberDefaultNavigator(
   @Suppress("UnstableCollections") contents: List<RouteContent<*>>,
   onStackEntryRemoved: (NavEntry<*>) -> Unit,
   navStoreViewModel: NavStoreViewModel,
-): DefaultNavigator = remember(navStoreViewModel) {
-  val stack = navStoreViewModel.createNavStack(
-    initialRoute = initialRoute,
-    contents = contents,
-    onStackEntryRemoved = onStackEntryRemoved,
-  )
+): DefaultNavigator =
+  remember(navStoreViewModel) {
+    val stack = navStoreViewModel.createNavStack(
+      initialRoute = initialRoute,
+      contents = contents,
+      onStackEntryRemoved = onStackEntryRemoved,
+    )
 
-  DefaultNavigator(
-    stack = stack,
-    contents = contents,
-  ).also(navStoreViewModel::setNavStackSavedStateProvider)
-}
+    DefaultNavigator(
+      stack = stack,
+      contents = contents,
+    ).also(navStoreViewModel::setNavStackSavedStateProvider)
+  }

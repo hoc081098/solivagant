@@ -29,8 +29,7 @@ internal actual fun SavedStateHandle.removeSavedStateProvider(key: String) {
   // Do nothing
 }
 
-internal actual fun SavedStateHandle.getAsMap(key: String): Map<String, Any?>? =
-  get(key)
+internal actual fun SavedStateHandle.getAsMap(key: String): Map<String, Any?>? = get(key)
 
 internal actual fun createSavedStateHandleAndSetSavedStateProvider(
   id: String,

@@ -12,15 +12,16 @@ import kotlinx.serialization.json.Json
 class GetProductById(
   private val appDispatchers: AppDispatchers,
 ) {
-  suspend operator fun invoke(id: Int): ProductItem = withContext(appDispatchers.io) {
-    @Suppress("MagicNumber")
-    delay(2_000)
+  suspend operator fun invoke(id: Int): ProductItem =
+    withContext(appDispatchers.io) {
+      @Suppress("MagicNumber")
+      delay(2_000)
 
-    Json
-      .decodeFromString<List<ProductItem>>(FakeProductsJson)
-      .find { it.id == id }
-      ?:
-      @Suppress("TooGenericExceptionThrown")
-      throw RuntimeException("Product with id = $id not found")
-  }
+      Json
+        .decodeFromString<List<ProductItem>>(FakeProductsJson)
+        .find { it.id == id }
+        ?:
+        @Suppress("TooGenericExceptionThrown")
+        throw RuntimeException("Product with id = $id not found")
+    }
 }

@@ -58,9 +58,7 @@ public fun LifecycleRegistry(): LifecycleRegistry = LifecycleRegistry(initialSta
 /**
  * Creates a default implementation of [LifecycleRegistry] with the specified [initialState].
  */
-public fun LifecycleRegistry(
-  initialState: State,
-): LifecycleRegistry = LifecycleRegistryImpl(initialState)
+public fun LifecycleRegistry(initialState: State): LifecycleRegistry = LifecycleRegistryImpl(initialState)
 
 @Composable
 public fun rememberLifecycleOwner(lifecycleRegistry: LifecycleRegistry): LifecycleOwner =

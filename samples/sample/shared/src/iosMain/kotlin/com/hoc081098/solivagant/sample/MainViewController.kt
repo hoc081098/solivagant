@@ -16,29 +16,30 @@ import platform.UIKit.UIViewController
 internal val AppLifecycleOwner by lazy { AppLifecycleOwner() }
 
 @Suppress("FunctionName", "unused")
-fun MainViewController(savedStateSupport: SavedStateSupport?): UIViewController = ComposeUIViewController {
-  LifecycleOwnerProvider(AppLifecycleOwner) {
-    OnLifecycleEventWithBuilder {
-      onEach { Napier.d(message = "Lifecycle event: $it", tag = "[main]") }
-    }
-
-    if (savedStateSupport != null) {
-      CompositionLocalProvider(
-        LocalViewModelStoreOwner provides savedStateSupport,
-        LocalSaveableStateRegistry provides savedStateSupport,
-        LocalSavedStateHandleFactory provides savedStateSupport,
-      ) {
-        SolivagantSampleApp()
-
-        // Must be at the last,
-        // because onDispose is called in reverse order, so we want to save state first,
-        // before [SaveableStateRegistry.Entry]s are unregistered.
-        DisposableEffect(Unit) {
-          onDispose(savedStateSupport::performSave)
-        }
+fun MainViewController(savedStateSupport: SavedStateSupport?): UIViewController =
+  ComposeUIViewController {
+    LifecycleOwnerProvider(AppLifecycleOwner) {
+      OnLifecycleEventWithBuilder {
+        onEach { Napier.d(message = "Lifecycle event: $it", tag = "[main]") }
       }
-    } else {
-      SolivagantSampleApp()
+
+      if (savedStateSupport != null) {
+        CompositionLocalProvider(
+          LocalViewModelStoreOwner provides savedStateSupport,
+          LocalSaveableStateRegistry provides savedStateSupport,
+          LocalSavedStateHandleFactory provides savedStateSupport,
+        ) {
+          SolivagantSampleApp()
+
+          // Must be at the last,
+          // because onDispose is called in reverse order, so we want to save state first,
+          // before [SaveableStateRegistry.Entry]s are unregistered.
+          DisposableEffect(Unit) {
+            onDispose(savedStateSupport::performSave)
+          }
+        }
+      } else {
+        SolivagantSampleApp()
+      }
     }
   }
-}

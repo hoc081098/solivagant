@@ -49,11 +49,9 @@ class SearchProductsViewModel(
       initialValue = SearchProductsState.INITIAL,
     )
 
-  fun search(term: String) =
-    savedStateHandle.safe { it[SEARCH_TERM_KEY] = term }
+  fun search(term: String) = savedStateHandle.safe { it[SEARCH_TERM_KEY] = term }
 
-  fun navigateToProductDetail(id: Int) =
-    navigator.navigateTo(ProductDetailScreenRoute(id))
+  fun navigateToProductDetail(id: Int) = navigator.navigateTo(ProductDetailScreenRoute(id))
 
   companion object {
     private val SEARCH_TERM_KEY = NullableSavedStateHandleKey.string("com.hoc081098.kmpviewmodelsample.search_term")

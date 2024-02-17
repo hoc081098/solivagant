@@ -88,5 +88,4 @@ class SingleEventChannel<E> :
 }
 
 @Suppress("NOTHING_TO_INLINE")
-inline fun <E> SingleEventChannel<E>.addToViewModel(viewModel: ViewModel) =
-  apply { viewModel.addCloseable(this) }
+inline fun <E> SingleEventChannel<E>.addToViewModel(viewModel: ViewModel) = apply { viewModel.addCloseable(this) }

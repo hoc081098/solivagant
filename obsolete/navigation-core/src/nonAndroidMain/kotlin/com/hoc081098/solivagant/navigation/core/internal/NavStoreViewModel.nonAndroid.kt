@@ -34,13 +34,14 @@ internal actual fun createNavStack(
   initialRoute: Route,
   contents: List<RouteContent<*>>,
   onStackEntryRemoved: (NavEntry<*>) -> Unit,
-): NavStack = NavStack.create(
-  initial = NavEntry.create(
-    route = initialRoute,
-    contents = contents,
-  ),
-  onStackEntryRemoved = onStackEntryRemoved,
-)
+): NavStack =
+  NavStack.create(
+    initial = NavEntry.create(
+      route = initialRoute,
+      contents = contents,
+    ),
+    onStackEntryRemoved = onStackEntryRemoved,
+  )
 
 internal actual fun removeSavedStateHandle(
   id: String,

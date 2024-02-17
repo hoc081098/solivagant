@@ -72,12 +72,13 @@ public fun <T> StateFlow<T>.collectAsStateWithLifecycle(
   lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
   minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
   context: CoroutineContext = EmptyCoroutineContext,
-): State<T> = collectAsStateWithLifecycle(
-  initialValue = this.value,
-  lifecycle = lifecycleOwner.lifecycle,
-  minActiveState = minActiveState,
-  context = context,
-)
+): State<T> =
+  collectAsStateWithLifecycle(
+    initialValue = this.value,
+    lifecycle = lifecycleOwner.lifecycle,
+    minActiveState = minActiveState,
+    context = context,
+  )
 
 /**
  * Collects values from this [StateFlow] and represents its latest value via [State] in a
@@ -104,12 +105,13 @@ public fun <T> StateFlow<T>.collectAsStateWithLifecycle(
   lifecycle: Lifecycle,
   minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
   context: CoroutineContext = EmptyCoroutineContext,
-): State<T> = collectAsStateWithLifecycle(
-  initialValue = this.value,
-  lifecycle = lifecycle,
-  minActiveState = minActiveState,
-  context = context,
-)
+): State<T> =
+  collectAsStateWithLifecycle(
+    initialValue = this.value,
+    lifecycle = lifecycle,
+    minActiveState = minActiveState,
+    context = context,
+  )
 
 /**
  * Collects values from this [Flow] and represents its latest value via [State] in a
@@ -140,12 +142,13 @@ public fun <T> Flow<T>.collectAsStateWithLifecycle(
   lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
   minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
   context: CoroutineContext = EmptyCoroutineContext,
-): State<T> = collectAsStateWithLifecycle(
-  initialValue = initialValue,
-  lifecycle = lifecycleOwner.lifecycle,
-  minActiveState = minActiveState,
-  context = context,
-)
+): State<T> =
+  collectAsStateWithLifecycle(
+    initialValue = initialValue,
+    lifecycle = lifecycleOwner.lifecycle,
+    minActiveState = minActiveState,
+    context = context,
+  )
 
 /**
  * Collects values from this [Flow] and represents its latest value via [State] in a

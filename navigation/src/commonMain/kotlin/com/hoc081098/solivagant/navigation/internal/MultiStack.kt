@@ -136,7 +136,10 @@ internal class MultiStack private constructor(
     return newStack
   }
 
-  private fun removeBackStack(stack: Stack, shouldRemoveImmediately: Boolean) {
+  private fun removeBackStack(
+    stack: Stack,
+    shouldRemoveImmediately: Boolean,
+  ) {
     stack.clear().run {
       if (shouldRemoveImmediately) {
         onEach { onStackEntryRemoved(it, true) }
@@ -231,7 +234,10 @@ internal class MultiStack private constructor(
     )
   }
 
-  fun push(root: NavRoot, clearTargetStack: Boolean) {
+  fun push(
+    root: NavRoot,
+    clearTargetStack: Boolean,
+  ) {
     val stack = getBackStack(root)
     val lastEvent: StackEvent
 

@@ -25,5 +25,4 @@ public fun <T : BaseRoute> SavedStateHandle.requireRoute(): T {
 }
 
 @InternalNavigationApi
-public fun BaseRoute.getArguments(): SavedStateHandle =
-  SavedStateHandle().also { it[EXTRA_ROUTE] = this }
+public fun BaseRoute.getArguments(): SavedStateHandle = SavedStateHandle().also { it[EXTRA_ROUTE] = this }

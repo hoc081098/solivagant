@@ -67,11 +67,12 @@ import kotlinx.coroutines.launch
 public fun <T> Flow<T>.flowWithLifecycle(
   lifecycle: Lifecycle,
   minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
-): Flow<T> = callbackFlow {
-  lifecycle.repeatOnLifecycle(minActiveState) {
-    this@flowWithLifecycle.collect {
-      send(it)
+): Flow<T> =
+  callbackFlow {
+    lifecycle.repeatOnLifecycle(minActiveState) {
+      this@flowWithLifecycle.collect {
+        send(it)
+      }
     }
+    close()
   }
-  close()
-}

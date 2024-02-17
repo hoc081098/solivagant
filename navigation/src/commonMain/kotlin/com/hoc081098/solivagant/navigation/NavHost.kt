@@ -183,7 +183,7 @@ public fun NavHost(
                   StackEvent.Pop -> initialZIndex - 1f
                 }
               }
-              ).also { zIndices[targetId] = it }
+            ).also { zIndices[targetId] = it }
 
             ContentTransform(
               targetContentEnter = finalEnter(lastEvent),

@@ -36,9 +36,7 @@ expect fun setupNapier()
 
 expect fun isDebug(): Boolean
 
-fun startKoinCommon(
-  appDeclaration: KoinAppDeclaration = {},
-) {
+fun startKoinCommon(appDeclaration: KoinAppDeclaration = {}) {
   startKoin {
     appDeclaration()
     modules(CommonModule, PlatformModule)

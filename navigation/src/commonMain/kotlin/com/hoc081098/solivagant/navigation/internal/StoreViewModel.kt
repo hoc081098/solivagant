@@ -66,7 +66,10 @@ internal class StoreViewModel(
     return stores.getOrPut(id) { NavigationExecutorStore() }
   }
 
-  internal fun provideSavedStateHandle(id: StackEntryId, route: BaseRoute): SavedStateHandle {
+  internal fun provideSavedStateHandle(
+    id: StackEntryId,
+    route: BaseRoute,
+  ): SavedStateHandle {
     return savedStateHandles.getOrPut(id) {
       createSavedStateHandleAndSetSavedStateProvider(id.value, globalSavedStateHandle)
         .apply { this[EXTRA_ROUTE] = route }

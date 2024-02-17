@@ -23,7 +23,6 @@ import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.Navigator
 
 internal class NavEventCollector : Navigator {
-
   private val _navEvents = mutableListOf<NavEvent>()
   internal val navEvents: List<NavEvent> = _navEvents
 
@@ -32,7 +31,10 @@ internal class NavEventCollector : Navigator {
     _navEvents.add(event)
   }
 
-  override fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {
+  override fun navigateToRoot(
+    root: NavRoot,
+    restoreRootState: Boolean,
+  ) {
     val event = NavEvent.NavigateToRootEvent(root, restoreRootState)
     _navEvents.add(event)
   }
@@ -48,7 +50,10 @@ internal class NavEventCollector : Navigator {
   }
 
   @InternalNavigationApi
-  override fun <T : BaseRoute> navigateBackToInternal(popUpTo: DestinationId<T>, inclusive: Boolean) {
+  override fun <T : BaseRoute> navigateBackToInternal(
+    popUpTo: DestinationId<T>,
+    inclusive: Boolean,
+  ) {
     val event = NavEvent.BackToEvent(popUpTo, inclusive)
     _navEvents.add(event)
   }

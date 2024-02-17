@@ -136,6 +136,4 @@ private fun <T : Route> NavEntryContent(
 }
 
 @Composable
-public expect fun BackHandler(
-  navigator: Navigator = LocalNavigator.current,
-)
+public expect fun BackHandler(navigator: Navigator = LocalNavigator.current)

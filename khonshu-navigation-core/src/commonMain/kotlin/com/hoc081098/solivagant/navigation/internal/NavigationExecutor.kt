@@ -90,6 +90,9 @@ public interface NavigationExecutor : Navigator {
 
   @InternalNavigationApi
   public interface Store {
-    public fun <T : Any> getOrCreate(key: KClass<T>, factory: () -> T): T
+    public fun <T : Any> getOrCreate(
+      key: KClass<T>,
+      factory: () -> T,
+    ): T
   }
 }

@@ -16,16 +16,17 @@ class SearchProducts(
 ) {
   private val mutex = Mutex()
 
-  suspend operator fun invoke(term: String): List<ProductItem> = mutex.withLock {
-    withContext(appDispatchers.io) {
-      @Suppress("MagicNumber")
-      (delay(2_000))
+  suspend operator fun invoke(term: String): List<ProductItem> =
+    mutex.withLock {
+      withContext(appDispatchers.io) {
+        @Suppress("MagicNumber")
+        (delay(2_000))
 
-      Json.decodeFromString<List<ProductItem>>(FakeProductsJson)
-        .filter {
-          it.title.contains(term, ignoreCase = true) ||
-            it.description.contains(term, ignoreCase = true)
-        }
+        Json.decodeFromString<List<ProductItem>>(FakeProductsJson)
+          .filter {
+            it.title.contains(term, ignoreCase = true) ||
+              it.description.contains(term, ignoreCase = true)
+          }
+      }
     }
-  }
 }

@@ -102,7 +102,10 @@ internal class AppLifecycleOwnerImpl : LifecycleOwner {
   }
 }
 
-private fun addObserver(name: NSNotificationName, block: (NSNotification?) -> Unit): NSObjectProtocol =
+private fun addObserver(
+  name: NSNotificationName,
+  block: (NSNotification?) -> Unit,
+): NSObjectProtocol =
   NSNotificationCenter.defaultCenter.addObserverForName(
     name = name,
     `object` = null,
@@ -110,8 +113,7 @@ private fun addObserver(name: NSNotificationName, block: (NSNotification?) -> Un
     usingBlock = block,
   )
 
-private fun removeObserver(observer: NSObjectProtocol) =
-  NSNotificationCenter.defaultCenter.removeObserver(observer)
+private fun removeObserver(observer: NSObjectProtocol) = NSNotificationCenter.defaultCenter.removeObserver(observer)
 
 private fun moveToStarted(lifecycleRegistry: LifecycleRegistry) {
   when (lifecycleRegistry.currentState) {

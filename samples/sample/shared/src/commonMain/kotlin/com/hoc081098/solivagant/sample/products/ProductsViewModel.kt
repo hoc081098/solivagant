@@ -29,13 +29,16 @@ import kotlinx.coroutines.flow.stateIn
 sealed interface ProductSingleEvent {
   sealed interface Refresh : ProductSingleEvent {
     data object Success : Refresh
+
     data class Failure(val error: Throwable) : Refresh
   }
 }
 
 sealed interface ProductsAction {
   data object Load : ProductsAction
+
   data object Refresh : ProductsAction
+
   data class NavigateToProductDetail(val id: Int) : ProductsAction
 }
 
@@ -49,10 +52,10 @@ class ProductsViewModel(
   private val singleEventChannel: SingleEventChannel<ProductSingleEvent>,
   private val navigator: NavEventNavigator,
 ) : ViewModel(
-  Closeable { Napier.d("[DEMO] Closable 1 ...") },
-  Closeable { Napier.d("[DEMO] Closable 2 ...") },
-  singleEventChannel,
-) {
+    Closeable { Napier.d("[DEMO] Closable 1 ...") },
+    Closeable { Napier.d("[DEMO] Closable 2 ...") },
+    singleEventChannel,
+  ) {
   private val _actionFlow = MutableSharedFlow<ProductsAction>(Int.MAX_VALUE)
 
   val stateFlow: StateFlow<ProductsState>

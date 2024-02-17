@@ -66,7 +66,10 @@ public interface Navigator {
    * `true` [T] itself will also be removed.
    */
   @InternalNavigationApi
-  public fun <T : BaseRoute> navigateBackToInternal(popUpTo: DestinationId<T>, inclusive: Boolean = false)
+  public fun <T : BaseRoute> navigateBackToInternal(
+    popUpTo: DestinationId<T>,
+    inclusive: Boolean = false,
+  )
 
   /**
    * Reset the back stack to the given [root]. The current back stack will cleared and if
@@ -99,7 +102,10 @@ public interface ResultNavigator {
   /**
    * Delivers the [result] to the destination that created [key].
    */
-  public fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O)
+  public fun <O : Parcelable> deliverNavigationResult(
+    key: NavigationResultRequest.Key<O>,
+    result: O,
+  )
 }
 
 public interface BackInterceptor {
@@ -129,7 +135,6 @@ public interface BackInterceptor {
 @MainThread
 @Suppress("TooManyFunctions")
 public open class NavEventNavigator : Navigator, ResultNavigator, BackInterceptor {
-
   private val _navEvents = Channel<NavEvent>(Channel.UNLIMITED)
 
   @InternalNavigationApi
@@ -150,7 +155,7 @@ public open class NavEventNavigator : Navigator, ResultNavigator, BackIntercepto
   protected inline fun <
     reified T : BaseRoute,
     reified O : Parcelable,
-    > registerForNavigationResult(): NavigationResultRequest<O> {
+  > registerForNavigationResult(): NavigationResultRequest<O> {
     // TODO(js): cannot use qualifiedName
     return registerForNavigationResult(DestinationId(T::class), O::class.simpleName!!)
   }
@@ -219,7 +224,10 @@ public open class NavEventNavigator : Navigator, ResultNavigator, BackIntercepto
   }
 
   @InternalNavigationApi
-  override fun <T : BaseRoute> navigateBackToInternal(popUpTo: DestinationId<T>, inclusive: Boolean) {
+  override fun <T : BaseRoute> navigateBackToInternal(
+    popUpTo: DestinationId<T>,
+    inclusive: Boolean,
+  ) {
     val event = BackToEvent(popUpTo, inclusive)
     sendNavEvent(event)
   }
@@ -241,7 +249,10 @@ public open class NavEventNavigator : Navigator, ResultNavigator, BackIntercepto
   /**
    * Delivers the [result] to the destination that created [key].
    */
-  override fun <O : Parcelable> deliverNavigationResult(key: NavigationResultRequest.Key<O>, result: O) {
+  override fun <O : Parcelable> deliverNavigationResult(
+    key: NavigationResultRequest.Key<O>,
+    result: O,
+  ) {
     val event = NavEvent.DestinationResultEvent(key, result)
     sendNavEvent(event)
   }

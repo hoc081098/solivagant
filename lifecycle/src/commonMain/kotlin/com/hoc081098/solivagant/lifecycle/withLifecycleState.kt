@@ -71,12 +71,11 @@ public suspend inline fun <R> Lifecycle.withStateAtLeast(
  * if the lifecycle has reached [Lifecycle.State.DESTROYED] by the time of the call or before
  * [block] is able to run.
  */
-public suspend inline fun <R> Lifecycle.withCreated(
-  crossinline block: () -> R,
-): R = withStateAtLeastUnchecked(
-  state = Lifecycle.State.CREATED,
-  block = block,
-)
+public suspend inline fun <R> Lifecycle.withCreated(crossinline block: () -> R): R =
+  withStateAtLeastUnchecked(
+    state = Lifecycle.State.CREATED,
+    block = block,
+  )
 
 /**
  * Run [block] with this [Lifecycle] in a [Lifecycle.State] of at least [Lifecycle.State.STARTED]
@@ -84,12 +83,11 @@ public suspend inline fun <R> Lifecycle.withCreated(
  * if the lifecycle has reached [Lifecycle.State.DESTROYED] by the time of the call or before
  * [block] is able to run.
  */
-public suspend inline fun <R> Lifecycle.withStarted(
-  crossinline block: () -> R,
-): R = withStateAtLeastUnchecked(
-  state = Lifecycle.State.STARTED,
-  block = block,
-)
+public suspend inline fun <R> Lifecycle.withStarted(crossinline block: () -> R): R =
+  withStateAtLeastUnchecked(
+    state = Lifecycle.State.STARTED,
+    block = block,
+  )
 
 /**
  * Run [block] with this [Lifecycle] in a [Lifecycle.State] of at least [Lifecycle.State.RESUMED]
@@ -97,12 +95,11 @@ public suspend inline fun <R> Lifecycle.withStarted(
  * if the lifecycle has reached [Lifecycle.State.DESTROYED] by the time of the call or before
  * [block] is able to run.
  */
-public suspend inline fun <R> Lifecycle.withResumed(
-  crossinline block: () -> R,
-): R = withStateAtLeastUnchecked(
-  state = Lifecycle.State.RESUMED,
-  block = block,
-)
+public suspend inline fun <R> Lifecycle.withResumed(crossinline block: () -> R): R =
+  withStateAtLeastUnchecked(
+    state = Lifecycle.State.RESUMED,
+    block = block,
+  )
 
 /**
  * Run [block] with this [LifecycleOwner]'s [Lifecycle] in a [Lifecycle.State] of at least [state]
@@ -113,10 +110,11 @@ public suspend inline fun <R> Lifecycle.withResumed(
 public suspend inline fun <R> LifecycleOwner.withStateAtLeast(
   state: Lifecycle.State,
   crossinline block: () -> R,
-): R = lifecycle.withStateAtLeast(
-  state = state,
-  block = block,
-)
+): R =
+  lifecycle.withStateAtLeast(
+    state = state,
+    block = block,
+  )
 
 /**
  * Run [block] with this [LifecycleOwner]'s [Lifecycle] in a [Lifecycle.State] of at least
@@ -124,12 +122,11 @@ public suspend inline fun <R> LifecycleOwner.withStateAtLeast(
  * Throws the [CancellationException] [LifecycleDestroyedException] if the lifecycle has reached
  * [Lifecycle.State.DESTROYED] by the time of the call or before [block] is able to run.
  */
-public suspend inline fun <R> LifecycleOwner.withCreated(
-  crossinline block: () -> R,
-): R = lifecycle.withStateAtLeastUnchecked(
-  state = Lifecycle.State.CREATED,
-  block = block,
-)
+public suspend inline fun <R> LifecycleOwner.withCreated(crossinline block: () -> R): R =
+  lifecycle.withStateAtLeastUnchecked(
+    state = Lifecycle.State.CREATED,
+    block = block,
+  )
 
 /**
  * Run [block] with this [LifecycleOwner]'s [Lifecycle] in a [Lifecycle.State] of at least
@@ -137,12 +134,11 @@ public suspend inline fun <R> LifecycleOwner.withCreated(
  * Throws the [CancellationException] [LifecycleDestroyedException] if the lifecycle has reached
  * [Lifecycle.State.DESTROYED] by the time of the call or before [block] is able to run.
  */
-public suspend inline fun <R> LifecycleOwner.withStarted(
-  crossinline block: () -> R,
-): R = lifecycle.withStateAtLeastUnchecked(
-  state = Lifecycle.State.STARTED,
-  block = block,
-)
+public suspend inline fun <R> LifecycleOwner.withStarted(crossinline block: () -> R): R =
+  lifecycle.withStateAtLeastUnchecked(
+    state = Lifecycle.State.STARTED,
+    block = block,
+  )
 
 /**
  * Run [block] with this [LifecycleOwner]'s [Lifecycle] in a [Lifecycle.State] of at least
@@ -150,12 +146,11 @@ public suspend inline fun <R> LifecycleOwner.withStarted(
  * Throws the [CancellationException] [LifecycleDestroyedException] if the lifecycle has reached
  * [Lifecycle.State.DESTROYED] by the time of the call or before [block] is able to run.
  */
-public suspend inline fun <R> LifecycleOwner.withResumed(
-  crossinline block: () -> R,
-): R = lifecycle.withStateAtLeastUnchecked(
-  state = Lifecycle.State.RESUMED,
-  block = block,
-)
+public suspend inline fun <R> LifecycleOwner.withResumed(crossinline block: () -> R): R =
+  lifecycle.withStateAtLeastUnchecked(
+    state = Lifecycle.State.RESUMED,
+    block = block,
+  )
 
 /**
  * The inlined check for whether dispatch is necessary to perform [Lifecycle.withStateAtLeast]
@@ -192,36 +187,37 @@ internal suspend fun <R> Lifecycle.suspendWithStateAtLeastUnchecked(
   dispatchNeeded: Boolean,
   lifecycleDispatcher: CoroutineDispatcher,
   block: () -> R,
-): R = suspendCancellableCoroutine { co ->
-  val removeObserver = AtomicReference<Lifecycle.Cancellable?>(null)
+): R =
+  suspendCancellableCoroutine { co ->
+    val removeObserver = AtomicReference<Lifecycle.Cancellable?>(null)
 
-  val observer = Lifecycle.Observer { event ->
-    if (event == Lifecycle.Event.upTo(state)) {
-      removeObserver.getAndSet(null)?.cancel()
-      co.resumeWith(runCatching(block))
-    } else if (event == Lifecycle.Event.ON_DESTROY) {
-      removeObserver.getAndSet(null)?.cancel()
-      co.resumeWithException(LifecycleDestroyedException())
+    val observer = Lifecycle.Observer { event ->
+      if (event == Lifecycle.Event.upTo(state)) {
+        removeObserver.getAndSet(null)?.cancel()
+        co.resumeWith(runCatching(block))
+      } else if (event == Lifecycle.Event.ON_DESTROY) {
+        removeObserver.getAndSet(null)?.cancel()
+        co.resumeWithException(LifecycleDestroyedException())
+      }
     }
-  }
 
-  if (dispatchNeeded) {
-    lifecycleDispatcher.dispatch(
-      EmptyCoroutineContext,
-      Runnable { removeObserver.set(subscribe(observer)) },
-    )
-  } else {
-    subscribe(observer).also(removeObserver::set)
-  }
-
-  co.invokeOnCancellation {
-    if (lifecycleDispatcher.isDispatchNeeded(EmptyCoroutineContext)) {
+    if (dispatchNeeded) {
       lifecycleDispatcher.dispatch(
         EmptyCoroutineContext,
-        Runnable { removeObserver.getAndSet(null)?.cancel() },
+        Runnable { removeObserver.set(subscribe(observer)) },
       )
     } else {
-      removeObserver.getAndSet(null)?.cancel()
+      subscribe(observer).also(removeObserver::set)
+    }
+
+    co.invokeOnCancellation {
+      if (lifecycleDispatcher.isDispatchNeeded(EmptyCoroutineContext)) {
+        lifecycleDispatcher.dispatch(
+          EmptyCoroutineContext,
+          Runnable { removeObserver.getAndSet(null)?.cancel() },
+        )
+      } else {
+        removeObserver.getAndSet(null)?.cancel()
+      }
     }
   }
-}

@@ -111,6 +111,7 @@ kotlin {
 
       dependencies {
         implementation(libs.androidx.activity.compose)
+        implementation(libs.androidx.annotation)
       }
     }
     val androidUnitTest by getting {

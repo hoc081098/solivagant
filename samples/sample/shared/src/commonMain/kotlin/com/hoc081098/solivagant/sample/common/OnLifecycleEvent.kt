@@ -83,18 +83,19 @@ class LifecycleEventBuilder {
     onEach = block
   }
 
-  internal fun buildLifecycleEventObserver() = Lifecycle.Observer { event ->
-    when (event) {
-      Lifecycle.Event.ON_CREATE -> onCreate
-      Lifecycle.Event.ON_START -> onStart
-      Lifecycle.Event.ON_RESUME -> onResume
-      Lifecycle.Event.ON_PAUSE -> onPause
-      Lifecycle.Event.ON_STOP -> onStop
-      Lifecycle.Event.ON_DESTROY -> onDestroy
-    }?.invoke()
+  internal fun buildLifecycleEventObserver() =
+    Lifecycle.Observer { event ->
+      when (event) {
+        Lifecycle.Event.ON_CREATE -> onCreate
+        Lifecycle.Event.ON_START -> onStart
+        Lifecycle.Event.ON_RESUME -> onResume
+        Lifecycle.Event.ON_PAUSE -> onPause
+        Lifecycle.Event.ON_STOP -> onStop
+        Lifecycle.Event.ON_DESTROY -> onDestroy
+      }?.invoke()
 
-    onEach?.invoke(event)
-  }
+      onEach?.invoke(event)
+    }
 }
 
 @Composable

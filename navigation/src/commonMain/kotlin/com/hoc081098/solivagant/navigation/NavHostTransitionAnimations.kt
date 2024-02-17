@@ -28,14 +28,15 @@ public object NavHostDefaults {
       enterTransition,
     replaceExitTransition: (AnimatedContentTransitionScope<*>.() -> ExitTransition) =
       exitTransition,
-  ): NavHostTransitionAnimations = NavHostTransitionAnimations(
-    enterTransition = enterTransition,
-    exitTransition = exitTransition,
-    popEnterTransition = popEnterTransition,
-    popExitTransition = popExitTransition,
-    replaceEnterTransition = replaceEnterTransition,
-    replaceExitTransition = replaceExitTransition,
-  )
+  ): NavHostTransitionAnimations =
+    NavHostTransitionAnimations(
+      enterTransition = enterTransition,
+      exitTransition = exitTransition,
+      popEnterTransition = popEnterTransition,
+      popExitTransition = popExitTransition,
+      replaceEnterTransition = replaceEnterTransition,
+      replaceExitTransition = replaceExitTransition,
+    )
 }
 
 /**
@@ -56,13 +57,14 @@ public class NavHostTransitionAnimations internal constructor(
      * Disables all transition animations
      */
     @Stable
-    public fun noAnimations(): NavHostTransitionAnimations = NavHostTransitionAnimations(
-      enterTransition = { EnterTransition.None },
-      exitTransition = { ExitTransition.None },
-      popEnterTransition = { EnterTransition.None },
-      popExitTransition = { ExitTransition.None },
-      replaceEnterTransition = { EnterTransition.None },
-      replaceExitTransition = { ExitTransition.None },
-    )
+    public fun noAnimations(): NavHostTransitionAnimations =
+      NavHostTransitionAnimations(
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None },
+        popEnterTransition = { EnterTransition.None },
+        popExitTransition = { ExitTransition.None },
+        replaceEnterTransition = { EnterTransition.None },
+        replaceExitTransition = { ExitTransition.None },
+      )
   }
 }

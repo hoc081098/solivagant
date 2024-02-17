@@ -30,7 +30,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
  * to one collector at a time.
  */
 public sealed class ResultOwner<R> {
-
   /**
    * Emits any result passed to [onResult]. Results will only be delivered
    * to one collector at a time.
@@ -59,14 +58,15 @@ public sealed class ResultOwner<R> {
 public class NavigationResultRequest<R : Parcelable> internal constructor(
   public val key: Key<R>,
 ) : ResultOwner<R>() {
-
   /**
    * Use to identify where the result should be delivered to.
    */
   @Poko
   @Parcelize
-  public class Key<R : Parcelable> @InternalNavigationApi constructor(
-    internal val destinationId: DestinationId<*>,
-    internal val requestKey: String,
-  ) : Parcelable
+  public class Key<R : Parcelable>
+    @InternalNavigationApi
+    constructor(
+      internal val destinationId: DestinationId<*>,
+      internal val requestKey: String,
+    ) : Parcelable
 }

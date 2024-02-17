@@ -176,9 +176,10 @@ internal class NavStack private constructor(
     fun create(
       initial: NavEntry<*>,
       onStackEntryRemoved: (NavEntry<*>) -> Unit,
-    ): NavStack = NavStack(
-      initialEntries = listOf(initial),
-      onStackEntryRemoved = onStackEntryRemoved,
-    )
+    ): NavStack =
+      NavStack(
+        initialEntries = listOf(initial),
+        onStackEntryRemoved = onStackEntryRemoved,
+      )
   }
 }

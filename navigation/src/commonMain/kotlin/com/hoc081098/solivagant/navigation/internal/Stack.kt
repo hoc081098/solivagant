@@ -121,7 +121,10 @@ internal class Stack private constructor(
   private fun popInternal(): StackEntry<*> = stack.removeLast()
 
   @CheckResult
-  fun popUpTo(destinationId: DestinationId<*>, isInclusive: Boolean): ImmutableList<StackEntry<*>> =
+  fun popUpTo(
+    destinationId: DestinationId<*>,
+    isInclusive: Boolean,
+  ): ImmutableList<StackEntry<*>> =
     persistentListOf<StackEntry<*>>().mutate { builder ->
       while (stack.last().destinationId != destinationId) {
         check(stack.last().removable) { "Route ${destinationId.route} not found on back stack" }
@@ -135,12 +138,13 @@ internal class Stack private constructor(
     }
 
   @CheckResult
-  fun clear(): ImmutableList<StackEntry<*>> = persistentListOf<StackEntry<*>>().mutate { builder ->
-    while (stack.last().removable) {
-      popInternal()
-        .also(builder::add)
+  fun clear(): ImmutableList<StackEntry<*>> =
+    persistentListOf<StackEntry<*>>().mutate { builder ->
+      while (stack.last().removable) {
+        popInternal()
+          .also(builder::add)
+      }
     }
-  }
   //endregion
 
   @CheckResult

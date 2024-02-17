@@ -27,7 +27,10 @@ class MainActivity : ComponentActivity() {
       addedObserver = true
 
       lifecycle.addObserver(object : LifecycleEventObserver {
-        override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        override fun onStateChanged(
+          source: LifecycleOwner,
+          event: Lifecycle.Event,
+        ) {
           Napier.d(message = "🚀🚀🚀 onStateChanged $event {${lifecycle.currentState}}")
         }
       })

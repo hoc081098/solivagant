@@ -20,6 +20,7 @@ public interface Route : Parcelable
 
 public interface Navigator {
   public fun navigateTo(screen: Route)
+
   public fun navigateBack()
 }
 
@@ -48,9 +49,7 @@ public interface RouteContent<T : Route> {
 
 @OptIn(ExperimentalObjCRefinement::class)
 @HiddenFromObjC
-public inline fun <reified T : Route> routeContent(
-  noinline content: @Composable (route: T) -> Unit,
-): RouteContent<T> {
+public inline fun <reified T : Route> routeContent(noinline content: @Composable (route: T) -> Unit): RouteContent<T> {
   val kClass = kClassOf<T>()
 
   return object : RouteContent<T> {
@@ -65,12 +64,13 @@ public inline fun <reified T : Route> routeContent(
 public fun <T : Route> routeContent(
   clazz: KClass<T>,
   content: @Composable (route: T) -> Unit,
-): RouteContent<T> = object : RouteContent<T> {
-  override val id: RouteContent.Id<T> = RouteContent.Id(clazz)
+): RouteContent<T> =
+  object : RouteContent<T> {
+    override val id: RouteContent.Id<T> = RouteContent.Id(clazz)
 
-  @Composable
-  override fun Content(route: T) = content(route)
-}
+    @Composable
+    override fun Content(route: T) = content(route)
+  }
 
 @PublishedApi
 internal inline fun <reified T : Any> kClassOf(): KClass<T> = T::class

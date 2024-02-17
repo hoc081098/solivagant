@@ -28,29 +28,29 @@ import com.hoc081098.solivagant.lifecycle.internal.mapState
 import kotlin.LazyThreadSafetyMode.NONE
 import kotlinx.coroutines.flow.StateFlow
 
-public fun AndroidXLifecycle.asSolivagantLifecycle(): Lifecycle =
-  SolivagantLifecycleInterop(this)
+public fun AndroidXLifecycle.asSolivagantLifecycle(): Lifecycle = SolivagantLifecycleInterop(this)
 
-public fun AndroidXLifecycleOwner.asSolivagantLifecycleOwner(): LifecycleOwner =
-  SolivagantLifecycleOwnerInterop(this)
+public fun AndroidXLifecycleOwner.asSolivagantLifecycleOwner(): LifecycleOwner = SolivagantLifecycleOwnerInterop(this)
 
-public fun AndroidXLifecycleState.asSolivagantState(): State = when (this) {
-  AndroidXLifecycleState.DESTROYED -> State.DESTROYED
-  AndroidXLifecycleState.INITIALIZED -> State.INITIALIZED
-  AndroidXLifecycleState.CREATED -> State.CREATED
-  AndroidXLifecycleState.STARTED -> State.STARTED
-  AndroidXLifecycleState.RESUMED -> State.RESUMED
-}
+public fun AndroidXLifecycleState.asSolivagantState(): State =
+  when (this) {
+    AndroidXLifecycleState.DESTROYED -> State.DESTROYED
+    AndroidXLifecycleState.INITIALIZED -> State.INITIALIZED
+    AndroidXLifecycleState.CREATED -> State.CREATED
+    AndroidXLifecycleState.STARTED -> State.STARTED
+    AndroidXLifecycleState.RESUMED -> State.RESUMED
+  }
 
-public fun AndroidXLifecycleEvent.asSolivagantEventOrNull(): Event? = when (this) {
-  AndroidXLifecycleEvent.ON_CREATE -> Event.ON_CREATE
-  AndroidXLifecycleEvent.ON_START -> Event.ON_START
-  AndroidXLifecycleEvent.ON_RESUME -> Event.ON_RESUME
-  AndroidXLifecycleEvent.ON_PAUSE -> Event.ON_PAUSE
-  AndroidXLifecycleEvent.ON_STOP -> Event.ON_STOP
-  AndroidXLifecycleEvent.ON_DESTROY -> Event.ON_DESTROY
-  AndroidXLifecycleEvent.ON_ANY -> null
-}
+public fun AndroidXLifecycleEvent.asSolivagantEventOrNull(): Event? =
+  when (this) {
+    AndroidXLifecycleEvent.ON_CREATE -> Event.ON_CREATE
+    AndroidXLifecycleEvent.ON_START -> Event.ON_START
+    AndroidXLifecycleEvent.ON_RESUME -> Event.ON_RESUME
+    AndroidXLifecycleEvent.ON_PAUSE -> Event.ON_PAUSE
+    AndroidXLifecycleEvent.ON_STOP -> Event.ON_STOP
+    AndroidXLifecycleEvent.ON_DESTROY -> Event.ON_DESTROY
+    AndroidXLifecycleEvent.ON_ANY -> null
+  }
 
 private class SolivagantLifecycleInterop(
   private val delegate: AndroidXLifecycle,
@@ -67,7 +67,10 @@ private class SolivagantLifecycleInterop(
     var removedObserver = false
 
     val lifecycleEventObserver = object : LifecycleEventObserver {
-      override fun onStateChanged(source: AndroidXLifecycleOwner, event: AndroidXLifecycleEvent) {
+      override fun onStateChanged(
+        source: AndroidXLifecycleOwner,
+        event: AndroidXLifecycleEvent,
+      ) {
         event
           .asSolivagantEventOrNull()
           ?.let(observer::onStateChanged)

@@ -15,17 +15,18 @@ class GetProducts(
   private val mutex = Mutex()
   private var i = 0
 
-  suspend operator fun invoke(): List<ProductItem> = mutex.withLock {
-    withContext(appDispatchers.io) {
-      @Suppress("MagicNumber")
-      delay(2_000)
+  suspend operator fun invoke(): List<ProductItem> =
+    mutex.withLock {
+      withContext(appDispatchers.io) {
+        @Suppress("MagicNumber")
+        delay(2_000)
 
-      if (i++ % 2 == 0) {
-        @Suppress("TooGenericExceptionThrown")
-        throw RuntimeException("Fake error")
+        if (i++ % 2 == 0) {
+          @Suppress("TooGenericExceptionThrown")
+          throw RuntimeException("Fake error")
+        }
+
+        Json.decodeFromString<List<ProductItem>>(FakeProductsJson).shuffled()
       }
-
-      Json.decodeFromString<List<ProductItem>>(FakeProductsJson).shuffled()
     }
-  }
 }

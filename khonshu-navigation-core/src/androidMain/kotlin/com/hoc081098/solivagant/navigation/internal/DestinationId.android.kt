@@ -26,5 +26,8 @@ internal actual object KClassParceler : Parceler<KClass<*>> {
     return (parcel.readSerializable() as Class<*>).kotlin
   }
 
-  override fun KClass<*>.write(parcel: Parcel, flags: Int) = parcel.writeSerializable(this.java)
+  override fun KClass<*>.write(
+    parcel: Parcel,
+    flags: Int,
+  ) = parcel.writeSerializable(this.java)
 }

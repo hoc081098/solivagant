@@ -74,7 +74,10 @@ internal class MultiStackNavigationExecutor(
     stack.push(route)
   }
 
-  override fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {
+  override fun navigateToRoot(
+    root: NavRoot,
+    restoreRootState: Boolean,
+  ) {
     stack.push(root, clearTargetStack = !restoreRootState)
   }
 

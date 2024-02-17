@@ -89,9 +89,7 @@ internal suspend fun NavEventNavigator.collectAndHandleNavEvents(
 }
 
 @OptIn(DelicateNavigationApi::class)
-private fun NavigationExecutor.navigateTo(
-  event: NavEvent,
-) {
+private fun NavigationExecutor.navigateTo(event: NavEvent) {
   when (event) {
     is NavEvent.NavigateToEvent -> {
       navigateTo(event.route)

@@ -389,11 +389,12 @@ public class LifecycleStartStopEffectScope(override val lifecycle: Lifecycle) : 
    */
   public inline fun onStopOrDispose(
     crossinline onStopOrDisposeEffect: LifecycleOwner.() -> Unit,
-  ): LifecycleStopOrDisposeEffectResult = object : LifecycleStopOrDisposeEffectResult {
-    override fun runStopOrDisposeEffect() {
-      onStopOrDisposeEffect()
+  ): LifecycleStopOrDisposeEffectResult =
+    object : LifecycleStopOrDisposeEffectResult {
+      override fun runStopOrDisposeEffect() {
+        onStopOrDisposeEffect()
+      }
     }
-  }
 }
 
 /**
@@ -693,9 +694,10 @@ public class LifecycleResumePauseEffectScope(override val lifecycle: Lifecycle) 
    */
   public inline fun onPauseOrDispose(
     crossinline onPauseOrDisposeEffect: LifecycleOwner.() -> Unit,
-  ): LifecyclePauseOrDisposeEffectResult = object : LifecyclePauseOrDisposeEffectResult {
-    override fun runPauseOrOnDisposeEffect() {
-      onPauseOrDisposeEffect()
+  ): LifecyclePauseOrDisposeEffectResult =
+    object : LifecyclePauseOrDisposeEffectResult {
+      override fun runPauseOrOnDisposeEffect() {
+        onPauseOrDisposeEffect()
+      }
     }
-  }
 }
