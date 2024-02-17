@@ -405,15 +405,47 @@
 <h3 id="update-dependencies">Update dependencies<a class="headerlink" href="#update-dependencies" title="Permanent link">&para;</a></h3>
 <ul>
 <li><a href="https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.8.0">KotlinX Coroutines <code>1.8.0</code></a>.</li>
+<li><a href="https://github.com/hoc081098/kmp-viewmodel/releases/tag/0.7.0">KMP ViewModel <code>0.7.0</code></a>.</li>
 </ul>
 <h3 id="changed">Changed<a class="headerlink" href="#changed" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>Breaking</strong>: Add a <code>Modifier</code>parameter to <code>content</code> of <code>NavDestination</code>:
-     <div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">content</span><span class="p">:</span><span class="w"> </span><span class="nd">@Composable</span><span class="w"> </span><span class="p">(</span><span class="n">route</span><span class="p">:</span><span class="w"> </span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">modifier</span><span class="p">:</span><span class="w"> </span><span class="n">Modifier</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Unit</span>
-</code></pre></div></li>
+<li>
+<p><strong>Breaking</strong>: Add a <code>Modifier</code> parameter to <code>content</code> of <code>NavDestination</code>:
+  <div class="highlight"><pre><span></span><code><span class="nd">@InternalNavigationApi</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">sealed</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nc">ContentDestination</span><span class="o">&lt;</span><span class="n">T</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">BaseRoute</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">NavDestination</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// other members...</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">content</span><span class="p">:</span><span class="w"> </span><span class="nd">@Composable</span><span class="w"> </span><span class="p">(</span><span class="n">route</span><span class="p">:</span><span class="w"> </span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">modifier</span><span class="p">:</span><span class="w"> </span><span class="n">Modifier</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Unit</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p>This change effects <code>ScreenDestination</code> and <code>OverlayDestination</code> as well.
+The <code>modifier</code> parameter should be passed to the <code>content</code> of <code>NavDestination</code>
+(a.k.a the root <code>@Composable</code> of the destination), for example:
+<div class="highlight"><pre><span></span><code><span class="nd">@Immutable</span>
+<span class="nd">@Parcelize</span>
+<span class="kd">data</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nc">DetailScreenRoute</span><span class="p">(</span><span class="kd">val</span><span class="w"> </span><span class="nv">id</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">NavRoute</span>
+
+<span class="nd">@JvmField</span>
+<span class="kd">val</span><span class="w"> </span><span class="nv">DetailScreenDestination</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ScreenDestination</span><span class="o">&lt;</span><span class="n">DetailScreenRoute</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">route</span><span class="p">,</span><span class="w"> </span><span class="n">modifier</span><span class="w"> </span><span class="o">-&gt;</span>
+<span class="w">  </span><span class="n">DetailScreen</span><span class="p">(</span><span class="n">modifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">modifier</span><span class="p">,</span><span class="w"> </span><span class="n">route</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">route</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nd">@Composable</span>
+<span class="kd">internal</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">DetailScreen</span><span class="p">(</span><span class="n">modifier</span><span class="p">:</span><span class="w"> </span><span class="n">Modifier</span><span class="p">,</span><span class="w"> </span><span class="n">route</span><span class="p">:</span><span class="w"> </span><span class="n">DetailScreenRoute</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">Scaffold</span><span class="p">(</span>
+<span class="w">    </span><span class="n">modifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">modifier</span><span class="p">,</span><span class="w"> </span><span class="c1">// &lt;--- Pass the modifier to the root @Composable</span>
+<span class="w">    </span><span class="n">topBar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* ... */</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">//* ... */</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
+</li>
 </ul>
 <ul>
-<li><strong>New</strong>: Add optional <code>transitionAnimations</code> parameter to <code>NavHost</code> Composable functions. Animations can be overriden with <code>NavHostDefaults.transitionAnimations</code> or disabled with <code>NavHostTransitionAnimations.noAnimations</code>. Default animations are the same as default animations in AndroidX&rsquo;s <code>NavHost</code>.</li>
+<li><strong>New</strong>: Add optional <code>transitionAnimations</code> parameter to <code>NavHost</code> @Composable functions.
+  Animations can be overridden with <code>NavHostDefaults.transitionAnimations</code>
+  or disabled with <code>NavHostTransitionAnimations.noAnimations</code>.
+  Default animations are the same as default animations in AndroidX&rsquo;s <code>NavHost</code>.</li>
 </ul>
 <h2 id="001-feb-7-2024"><a href="https://github.com/hoc081098/solivagant/releases/tag/0.0.1">0.0.1</a> - Feb 7, 2024<a class="headerlink" href="#001-feb-7-2024" title="Permanent link">&para;</a></h2>
 <ul>
