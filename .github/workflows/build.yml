@@ -26,16 +26,16 @@ jobs:
     timeout-minutes: 45
     if: ${{ github.repository == 'hoc081098/solivagant' }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
 
       - name: Cache gradle, wrapper and buildSrc
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -44,7 +44,7 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-gradle-
       - name: Cache konan
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.konan/cache
@@ -70,11 +70,11 @@ jobs:
         run: ./gradlew :koverXmlReport
 
       - name: Upload Test Report
-        uses: codecov/codecov-action@v3.1.6
+        uses: codecov/codecov-action@v4.0.1
 
       - name: Upload test report artifact
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-report
           path: build/reports/tests/allTests/
@@ -88,16 +88,16 @@ jobs:
     timeout-minutes: 45
     if: ${{ github.repository == 'hoc081098/solivagant' }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
 
       - name: Cache gradle, wrapper and buildSrc
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -106,7 +106,7 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-gradle-
       - name: Cache konan
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.konan/cache
@@ -138,16 +138,16 @@ jobs:
     timeout-minutes: 45
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
 
       - name: Cache gradle, wrapper and buildSrc
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -156,7 +156,7 @@ jobs:
           restore-keys: |
             ${{ matrix.os }}-gradle-
       - name: Cache konan
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.konan/cache
@@ -190,7 +190,7 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.MAVEN_SIGNING_PASSWORD }}
 
       - name: Install Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: 3.x
 
