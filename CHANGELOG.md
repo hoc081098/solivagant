@@ -2,6 +2,11 @@
 
 ## [Unreleased] - TBD
 
+### Update dependencies
+- [KotlinX Coroutines `1.8.0`](https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.8.0).
+
+### Changed
+
 - **Breaking**: Add a `Modifier`parameter to `content` of `NavDestination`:
      ```kotlin
      public val content: @Composable (route: T, modifier: Modifier) -> Unit
