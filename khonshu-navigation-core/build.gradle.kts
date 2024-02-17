@@ -197,6 +197,7 @@ android {
 
   defaultConfig {
     minSdk = libs.versions.android.min.get().toInt()
+    consumerProguardFiles("consumer-rules.pro")
   }
 
   // still needed for Android projects despite toolchain
