@@ -8,12 +8,43 @@
 
 ### Changed
 
-- **Breaking**: Add a `Modifier`parameter to `content` of `NavDestination`:
-     ```kotlin
-     public val content: @Composable (route: T, modifier: Modifier) -> Unit
-     ```
+- **Breaking**: Add a `Modifier` parameter to `content` of `NavDestination`:
+  ```kotlin
+  @InternalNavigationApi
+  public sealed interface ContentDestination<T : BaseRoute> : NavDestination {
+    // other members...
+    public val content: @Composable (route: T, modifier: Modifier) -> Unit
+  }
+  ```
 
-- **New**: Add optional `transitionAnimations` parameter to `NavHost` Composable functions. Animations can be overriden with `NavHostDefaults.transitionAnimations` or disabled with `NavHostTransitionAnimations.noAnimations`. Default animations are the same as default animations in AndroidX's `NavHost`.
+  This change effects `ScreenDestination` and `OverlayDestination` as well.
+  The `modifier` parameter should be passed to the `content` of `NavDestination`
+  (a.k.a the root `@Composable` of the destination), for example:
+  ```kotlin
+  @Immutable
+  @Parcelize
+  data class DetailScreenRoute(val id: String) : NavRoute
+
+  @JvmField
+  val DetailScreenDestination = ScreenDestination<DetailScreenRoute> { route, modifier ->
+    DetailScreen(modifier = modifier, route = route)
+  }
+
+  @Composable
+  internal fun DetailScreen(modifier: Modifier, route: DetailScreenRoute) {
+    Scaffold(
+      modifier = modifier, // <--- Pass the modifier to the root @Composable
+      topBar = { /* ... */ },
+    ) {
+      //* ... */
+    }
+  }
+  ```
+
+- **New**: Add optional `transitionAnimations` parameter to `NavHost` @Composable functions.
+  Animations can be overridden with `NavHostDefaults.transitionAnimations`
+  or disabled with `NavHostTransitionAnimations.noAnimations`.
+  Default animations are the same as default animations in AndroidX's `NavHost`.
 
 ## [0.0.1] - Feb 7, 2024
 
