@@ -21,7 +21,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ macos-11 ]
+        os: [ macos-14 ]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
     if: ${{ github.repository == 'hoc081098/solivagant' }}
@@ -85,7 +85,7 @@ jobs:
     name: Checks (spotless, detekt and binary-compatibility-validator)
     strategy:
       matrix:
-        os: [ macos-11 ]
+        os: [ macos-14 ]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
     if: ${{ github.repository == 'hoc081098/solivagant' }}
@@ -135,7 +135,7 @@ jobs:
     if: ${{ github.ref == 'refs/heads/master' && github.repository == 'hoc081098/solivagant' }}
     strategy:
       matrix:
-        os: [ macos-11 ]
+        os: [ macos-14 ]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
     steps:
