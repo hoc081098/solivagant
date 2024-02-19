@@ -2,6 +2,8 @@
 
 ## [Unreleased] - TBD
 
+## [0.1.0] - Feb 19, 2024
+
 ### Update dependencies
 - [KotlinX Coroutines `1.8.0`](https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.8.0).
 - [KMP ViewModel `0.7.0`](https://github.com/hoc081098/kmp-viewmodel/releases/tag/0.7.0).
@@ -62,6 +64,8 @@
   - [KotlinX Coroutines `1.7.3`](https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.7.3).
   - [KotlinX Collections Immutable `0.3.7`](https://github.com/Kotlin/kotlinx.collections.immutable/releases/tag/v0.3.7).
 
-[Unreleased]: https://github.com/hoc081098/solivagant/compare/0.0.1...HEAD
+[Unreleased]: https://github.com/hoc081098/solivagant/compare/0.1.0...HEAD
+
+[0.1.0]: https://github.com/hoc081098/solivagant/releases/tag/0.1.0
 
 [0.0.1]: https://github.com/hoc081098/solivagant/releases/tag/0.0.1
