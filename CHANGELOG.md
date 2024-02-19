@@ -6,6 +6,13 @@
 - [KotlinX Coroutines `1.8.0`](https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.8.0).
 - [KMP ViewModel `0.7.0`](https://github.com/hoc081098/kmp-viewmodel/releases/tag/0.7.0).
 
+### Added
+
+- **New**: Add optional `transitionAnimations` parameter to `NavHost` @Composable functions.
+  Animations can be overridden with `NavHostDefaults.transitionAnimations`
+  or disabled with `NavHostTransitionAnimations.noAnimations`.
+  Default animations are the same as default animations in AndroidX's `NavHost`.
+
 ### Changed
 
 - **Breaking**: Add a `Modifier` parameter to `content` of `NavDestination`:
@@ -40,11 +47,6 @@
     }
   }
   ```
-
-- **New**: Add optional `transitionAnimations` parameter to `NavHost` @Composable functions.
-  Animations can be overridden with `NavHostDefaults.transitionAnimations`
-  or disabled with `NavHostTransitionAnimations.noAnimations`.
-  Default animations are the same as default animations in AndroidX's `NavHost`.
 
 ## [0.0.1] - Feb 7, 2024
 
