@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../images/logo.jpeg">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.6">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.10">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e359304.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -322,6 +322,48 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#010-feb-19-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.1.0 - Feb 19, 2024
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="0.1.0 - Feb 19, 2024">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#update-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update dependencies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#added" class="md-nav__link">
+    <span class="md-ellipsis">
+      Added
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Changed
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#001-feb-7-2024" class="md-nav__link">
     <span class="md-ellipsis">
       0.0.1 - Feb 7, 2024
@@ -377,11 +419,58 @@
 
 
 <h1 id="change-log">Change Log<a class="headerlink" href="#change-log" title="Permanent link">&para;</a></h1>
-<h2 id="unreleased-tbd"><a href="https://github.com/hoc081098/solivagant/compare/0.0.1...HEAD">Unreleased</a> - TBD<a class="headerlink" href="#unreleased-tbd" title="Permanent link">&para;</a></h2>
+<h2 id="unreleased-tbd"><a href="https://github.com/hoc081098/solivagant/compare/0.1.0...HEAD">Unreleased</a> - TBD<a class="headerlink" href="#unreleased-tbd" title="Permanent link">&para;</a></h2>
+<h2 id="010-feb-19-2024"><a href="https://github.com/hoc081098/solivagant/releases/tag/0.1.0">0.1.0</a> - Feb 19, 2024<a class="headerlink" href="#010-feb-19-2024" title="Permanent link">&para;</a></h2>
+<h3 id="update-dependencies">Update dependencies<a class="headerlink" href="#update-dependencies" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.8.0">KotlinX Coroutines <code>1.8.0</code></a>.</li>
+<li><a href="https://github.com/hoc081098/kmp-viewmodel/releases/tag/0.7.0">KMP ViewModel <code>0.7.0</code></a>.</li>
+</ul>
+<h3 id="added">Added<a class="headerlink" href="#added" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>New</strong>: Add optional <code>transitionAnimations</code> parameter to <code>NavHost</code> @Composable functions.
+  Animations can be overridden with <code>NavHostDefaults.transitionAnimations</code>
+  or disabled with <code>NavHostTransitionAnimations.noAnimations</code>.
+  Default animations are the same as default animations in AndroidX&rsquo;s <code>NavHost</code>.</li>
+</ul>
+<h3 id="changed">Changed<a class="headerlink" href="#changed" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Breaking</strong>: Add a <code>Modifier</code> parameter to <code>content</code> of <code>NavDestination</code>:
+  <div class="highlight"><pre><span></span><code><span class="nd">@InternalNavigationApi</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">sealed</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nc">ContentDestination</span><span class="o">&lt;</span><span class="n">T</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">BaseRoute</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">NavDestination</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// other members...</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">content</span><span class="p">:</span><span class="w"> </span><span class="nd">@Composable</span><span class="w"> </span><span class="p">(</span><span class="n">route</span><span class="p">:</span><span class="w"> </span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">modifier</span><span class="p">:</span><span class="w"> </span><span class="n">Modifier</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Unit</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p>This change effects <code>ScreenDestination</code> and <code>OverlayDestination</code> as well.
+The <code>modifier</code> parameter should be passed to the <code>content</code> of <code>NavDestination</code>
+(a.k.a the root <code>@Composable</code> of the destination), for example:
+<div class="highlight"><pre><span></span><code><span class="nd">@Immutable</span>
+<span class="nd">@Parcelize</span>
+<span class="kd">data</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nc">DetailScreenRoute</span><span class="p">(</span><span class="kd">val</span><span class="w"> </span><span class="nv">id</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">NavRoute</span>
+
+<span class="nd">@JvmField</span>
+<span class="kd">val</span><span class="w"> </span><span class="nv">DetailScreenDestination</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ScreenDestination</span><span class="o">&lt;</span><span class="n">DetailScreenRoute</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">route</span><span class="p">,</span><span class="w"> </span><span class="n">modifier</span><span class="w"> </span><span class="o">-&gt;</span>
+<span class="w">  </span><span class="n">DetailScreen</span><span class="p">(</span><span class="n">modifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">modifier</span><span class="p">,</span><span class="w"> </span><span class="n">route</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">route</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nd">@Composable</span>
+<span class="kd">internal</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">DetailScreen</span><span class="p">(</span><span class="n">modifier</span><span class="p">:</span><span class="w"> </span><span class="n">Modifier</span><span class="p">,</span><span class="w"> </span><span class="n">route</span><span class="p">:</span><span class="w"> </span><span class="n">DetailScreenRoute</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">Scaffold</span><span class="p">(</span>
+<span class="w">    </span><span class="n">modifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">modifier</span><span class="p">,</span><span class="w"> </span><span class="c1">// &lt;--- Pass the modifier to the root @Composable</span>
+<span class="w">    </span><span class="n">topBar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* ... */</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">//* ... */</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
+</li>
+</ul>
 <h2 id="001-feb-7-2024"><a href="https://github.com/hoc081098/solivagant/releases/tag/0.0.1">0.0.1</a> - Feb 7, 2024<a class="headerlink" href="#001-feb-7-2024" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Initial release of <code>solivagant</code> 🔆.
-  A Compose Multiplatform Navigation - 🌸 Pragmatic, type safety navigation for Compose Multiplatform.
+  Compose Multiplatform Navigation - 🌸 Pragmatic, type safety navigation for Compose Multiplatform.
   Based on <a href="https://freeletics.github.io/khonshu/navigation/get-started/">Freeletics Khonshu Navigation</a>.
   ♥️ ViewModel, SavedStateHandle, Lifecycle, Multi-Backstacks, and more&hellip;</li>
 </ul>
@@ -448,7 +537,7 @@
     <script id="__config" type="application/json">{"base": "..", "features": ["toc.integrate"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.e1c3ead8.min.js"></script>
+      <script src="../assets/javascripts/bundle.8fd75fb4.min.js"></script>
       
     
   </body>
