@@ -264,7 +264,7 @@ navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 
 - [Compose Multiplatform KmpViewModel KMM Unsplash Sample](https://github.com/hoc081098/Compose-Multiplatform-KmpViewModel-KMM-Unsplash-Sample): A KMP template of the Unsplash App using Compose multiplatform for Android, Desktop, iOS. Share everything including data, domain, presentation, and UI.
 
-- [Compose Multiplatform Todo solivagant Sample](https://github.com/hoc081098/Compose-Multiplatform-Todo-solivagant-Sample): : A KMP template of the Todo App using Compose multiplatform for Android, Desktop, iOS and Web. Share everything including data, domain, presentation, and UI.
+- [Compose Multiplatform Todo solivagant Sample](https://github.com/hoc081098/Compose-Multiplatform-Todo-solivagant-Sample): A KMP template of the Todo App using Compose multiplatform for Android, Desktop, iOS and Web. Share everything including data, domain, presentation, and UI.
 
 ## Roadmap
 
