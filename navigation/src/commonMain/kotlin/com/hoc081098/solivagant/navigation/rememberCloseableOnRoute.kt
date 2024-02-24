@@ -21,6 +21,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import com.hoc081098.kmp.viewmodel.Closeable
+import com.hoc081098.kmp.viewmodel.InternalKmpViewModelApi
+import com.hoc081098.kmp.viewmodel.compose.internal.kClassOf
 import com.hoc081098.solivagant.navigation.internal.DelicateNavigationApi
 import kotlin.reflect.KClass
 
@@ -62,8 +64,9 @@ public fun <T : Closeable> rememberCloseableOnRoute(
  * @param route The route to remember the [Closeable] on.
  * @param factory The factory to create the [Closeable].
  */
+@OptIn(InternalKmpViewModelApi::class)
 @Composable
 public inline fun <reified T : Closeable> rememberCloseableOnRoute(
   route: BaseRoute,
   noinline factory: () -> T,
-): T = rememberCloseableOnRoute(route, T::class, factory)
+): T = rememberCloseableOnRoute(route, kClassOf<T>(), factory)

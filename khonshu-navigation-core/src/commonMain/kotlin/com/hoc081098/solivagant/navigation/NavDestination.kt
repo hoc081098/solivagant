@@ -18,6 +18,8 @@ package com.hoc081098.solivagant.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.hoc081098.kmp.viewmodel.InternalKmpViewModelApi
+import com.hoc081098.kmp.viewmodel.compose.internal.kClassOf
 import com.hoc081098.solivagant.navigation.internal.DestinationId
 
 /**
@@ -42,17 +44,19 @@ public sealed interface ContentDestination<T : BaseRoute> : NavDestination {
  * as a unique identifier. The given [content] will be shown when the screen is being
  * navigated to using an instance of [T].
  */
+@OptIn(InternalKmpViewModelApi::class)
 @Suppress("FunctionName")
 public inline fun <reified T : BaseRoute> ScreenDestination(
   noinline content: @Composable (route: T, modifier: Modifier) -> Unit,
-): NavDestination = ScreenDestination(DestinationId(T::class), null, content)
+): NavDestination = ScreenDestination(DestinationId(kClassOf<T>()), null, content)
 
+@OptIn(InternalKmpViewModelApi::class)
 @InternalNavigationApi
 @Suppress("FunctionName")
 public inline fun <reified T : BaseRoute> ScreenDestination(
   extra: Serializable,
   noinline content: @Composable (route: T, modifier: Modifier) -> Unit,
-): NavDestination = ScreenDestination(DestinationId(T::class), extra, content)
+): NavDestination = ScreenDestination(DestinationId(kClassOf<T>()), extra, content)
 
 @InternalNavigationApi
 public class ScreenDestination<T : BaseRoute>(
@@ -66,17 +70,19 @@ public class ScreenDestination<T : BaseRoute>(
  * class of [T] will be used as a unique identifier. The given [content] will be shown inside the dialog window when
  * navigating to it by using an instance of [T].
  */
+@OptIn(InternalKmpViewModelApi::class)
 @Suppress("FunctionName")
 public inline fun <reified T : NavRoute> OverlayDestination(
   noinline content: @Composable (route: T, modifier: Modifier) -> Unit,
-): NavDestination = OverlayDestination(DestinationId(T::class), null, content)
+): NavDestination = OverlayDestination(DestinationId(kClassOf<T>()), null, content)
 
+@OptIn(InternalKmpViewModelApi::class)
 @InternalNavigationApi
 @Suppress("FunctionName")
 public inline fun <reified T : NavRoute> OverlayDestination(
   extra: Serializable,
   noinline content: @Composable (route: T, modifier: Modifier) -> Unit,
-): NavDestination = OverlayDestination(DestinationId(T::class), extra, content)
+): NavDestination = OverlayDestination(DestinationId(kClassOf<T>()), extra, content)
 
 @InternalNavigationApi
 public class OverlayDestination<T : NavRoute>(
