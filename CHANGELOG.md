@@ -77,7 +77,9 @@
   - [KotlinX Coroutines `1.7.3`](https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.7.3).
   - [KotlinX Collections Immutable `0.3.7`](https://github.com/Kotlin/kotlinx.collections.immutable/releases/tag/v0.3.7).
 
-[Unreleased]: https://github.com/hoc081098/solivagant/compare/0.1.0...HEAD
+[Unreleased]: https://github.com/hoc081098/solivagant/compare/0.1.1...HEAD
+
+[0.1.1]: https://github.com/hoc081098/solivagant/releases/tag/0.1.1
 
 [0.1.0]: https://github.com/hoc081098/solivagant/releases/tag/0.1.0
 
