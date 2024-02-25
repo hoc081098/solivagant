@@ -2,6 +2,19 @@
 
 ## [Unreleased] - TBD
 
+## [0.1.1] - Feb 25, 2024
+
+### Fixed
+
+- Add workaround for issue
+  [JetBrains/compose-multiplatform #3147 - Kotlin/Native can't use T::class in inline function of @Composable for iOS](https://github.com/JetBrains/compose-multiplatform/issues/3147).
+
+### Example, docs and tests
+
+- Add [Compose Multiplatform Todo solivagant Sample](https://github.com/hoc081098/Compose-Multiplatform-Todo-solivagant-Sample):
+  A KMP template of the Todo App using Compose multiplatform for Android, Desktop, iOS and Web.
+  Share everything including data, domain, presentation, and UI.
+
 ## [0.1.0] - Feb 19, 2024
 
 ### Update dependencies
