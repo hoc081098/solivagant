@@ -13,7 +13,7 @@ import com.hoc081098.kmp.viewmodel.compose.LocalSavedStateHandleFactory
 import com.hoc081098.kmp.viewmodel.compose.LocalViewModelStoreOwner
 import com.hoc081098.solivagant.lifecycle.LifecycleOwnerProvider
 import com.hoc081098.solivagant.lifecycle.LifecycleRegistry
-import com.hoc081098.solivagant.lifecycle.rememberLifecycleOwner
+import com.hoc081098.solivagant.lifecycle.compose.rememberLifecycleOwner
 import com.hoc081098.solivagant.navigation.LifecycleControllerEffect
 import com.hoc081098.solivagant.navigation.SavedStateSupport
 import com.hoc081098.solivagant.sample.common.OnLifecycleEventWithBuilder

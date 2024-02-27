@@ -158,3 +158,7 @@ public abstract interface class com/hoc081098/solivagant/lifecycle/compose/Lifec
 	public abstract fun runStopOrDisposeEffect ()V
 }
 
+public final class com/hoc081098/solivagant/lifecycle/compose/RememberLifecycleOwnerKt {
+	public static final fun rememberLifecycleOwner (Lcom/hoc081098/solivagant/lifecycle/LifecycleRegistry;Landroidx/compose/runtime/Composer;I)Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;
+}
+
