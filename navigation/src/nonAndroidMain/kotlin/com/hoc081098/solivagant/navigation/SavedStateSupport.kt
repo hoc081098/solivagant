@@ -16,6 +16,9 @@
 
 package com.hoc081098.solivagant.navigation
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.saveable.LocalSaveableStateRegistry
 import androidx.compose.runtime.saveable.SaveableStateRegistry
 import com.hoc081098.kmp.viewmodel.Closeable
 import com.hoc081098.kmp.viewmodel.MainThread
@@ -23,6 +26,8 @@ import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.SavedStateHandleFactory
 import com.hoc081098.kmp.viewmodel.ViewModelStore
 import com.hoc081098.kmp.viewmodel.ViewModelStoreOwner
+import com.hoc081098.kmp.viewmodel.compose.LocalSavedStateHandleFactory
+import com.hoc081098.kmp.viewmodel.compose.LocalViewModelStoreOwner
 import kotlin.LazyThreadSafetyMode.NONE
 
 /**
@@ -165,3 +170,18 @@ private val NoOpSaveableStateRegistryEntry = object : SaveableStateRegistry.Entr
     // No-op
   }
 }
+
+/**
+ * Provides [this] [SavedStateSupport] as [LocalViewModelStoreOwner], [LocalSaveableStateRegistry] and
+ * [LocalSavedStateHandleFactory] to the [content].
+ *
+ * @param content The content [Composable]
+ */
+@Composable
+public fun SavedStateSupport.LocalProvider(content: @Composable () -> Unit): Unit =
+  CompositionLocalProvider(
+    LocalViewModelStoreOwner provides this,
+    LocalSaveableStateRegistry provides this,
+    LocalSavedStateHandleFactory provides this,
+    content = content,
+  )
