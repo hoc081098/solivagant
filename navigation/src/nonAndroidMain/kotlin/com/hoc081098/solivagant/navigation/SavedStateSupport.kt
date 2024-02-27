@@ -18,6 +18,7 @@ package com.hoc081098.solivagant.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ProvidedValue
 import androidx.compose.runtime.saveable.LocalSaveableStateRegistry
 import androidx.compose.runtime.saveable.SaveableStateRegistry
 import com.hoc081098.kmp.viewmodel.Closeable
@@ -56,11 +57,7 @@ import kotlin.LazyThreadSafetyMode.NONE
  * }
  *
  * // Provide SavedStateSupport as ViewModelStoreOwner, SaveableStateRegistry and SavedStateHandleFactory.
- * CompositionLocalProvider(
- *   LocalViewModelStoreOwner provides savedStateSupport,
- *   LocalSaveableStateRegistry provides savedStateSupport,
- *   LocalSavedStateHandleFactory provides savedStateSupport,
- * ) {
+ * savedStateSupport.LocalProvider {
  *   MyApp()
  *
  *   // Must be at the last,
@@ -173,13 +170,19 @@ private val NoOpSaveableStateRegistryEntry = object : SaveableStateRegistry.Entr
 
 /**
  * Provides [this] [SavedStateSupport] as [LocalViewModelStoreOwner], [LocalSaveableStateRegistry] and
- * [LocalSavedStateHandleFactory] to the [content].
+ * [LocalSavedStateHandleFactory] to the [content],
+ * along with other [ProvidedValue]s.
  *
+ * @param values Other [ProvidedValue]s.
  * @param content The content [Composable]
  */
 @Composable
-public fun SavedStateSupport.LocalProvider(content: @Composable () -> Unit): Unit =
+public fun SavedStateSupport.LocalProvider(
+  vararg values: ProvidedValue<*>,
+  content: @Composable () -> Unit,
+): Unit =
   CompositionLocalProvider(
+    *values,
     LocalViewModelStoreOwner provides this,
     LocalSaveableStateRegistry provides this,
     LocalSavedStateHandleFactory provides this,
