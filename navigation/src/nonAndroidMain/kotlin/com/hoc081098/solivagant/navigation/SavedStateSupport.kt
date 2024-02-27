@@ -54,9 +54,7 @@ import kotlin.LazyThreadSafetyMode.NONE
  * val savedStateSupport = remember { SavedStateSupport() }
  *
  * // Clear the SavedStateSupport when the root @Composable exits the composition.
- * DisposableEffect(Unit) {
- *   onDispose(savedStateSupport::clear)
- * }
+ * savedStateSupport.ClearOnDispose()
  *
  * // Provide SavedStateSupport as ViewModelStoreOwner, SaveableStateRegistry and SavedStateHandleFactory.
  * savedStateSupport.LocalProvider {
@@ -163,6 +161,9 @@ private val NoOpSaveableStateRegistryEntry = object : SaveableStateRegistry.Entr
   }
 }
 
+/**
+ * Clear this [SavedStateSupport] when the @Composable exits the composition.
+ */
 @Composable
 @NonRestartableComposable
 public fun SavedStateSupport.ClearOnDispose(): Unit =
