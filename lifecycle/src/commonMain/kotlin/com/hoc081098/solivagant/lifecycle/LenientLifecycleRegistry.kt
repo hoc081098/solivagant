@@ -6,19 +6,26 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+/**
+ * A [LifecycleRegistry] without the state checking, and has [moveTo] method to move to a specific state.
+ * This is a flexible version of [LifecycleRegistry].
+ */
 public sealed interface LenientLifecycleRegistry : LifecycleRegistry {
+  /**
+   * Move to the specified [state].
+   */
   public fun moveTo(state: State)
 }
 
 /**
- * Creates a default implementation of [LifecycleRegistry].
+ * Creates a default implementation of [LenientLifecycleRegistry].
  */
 @JsName("lenientLifecycleRegistry")
 public fun LenientLifecycleRegistry(): LenientLifecycleRegistry =
   LenientLifecycleRegistry(initialState = State.INITIALIZED)
 
 /**
- * Creates a default implementation of [LifecycleRegistry] with the specified [initialState].
+ * Creates a default implementation of [LenientLifecycleRegistry] with the specified [initialState].
  */
 public fun LenientLifecycleRegistry(initialState: State): LenientLifecycleRegistry =
   LenientLifecycleRegistryImpl(initialState)
