@@ -11,7 +11,9 @@ public sealed interface LifecycleOwnerComposeUIViewControllerDelegate :
   LifecycleOwner
 
 @Suppress("FunctionName") // Factory function
-public fun LifecycleOwnerComposeUIViewControllerDelegate(hostLifecycleOwner: LifecycleOwner): LifecycleOwnerComposeUIViewControllerDelegate =
+public fun LifecycleOwnerComposeUIViewControllerDelegate(
+  hostLifecycleOwner: LifecycleOwner,
+): LifecycleOwnerComposeUIViewControllerDelegate =
   LifecycleOwnerComposeUIViewControllerDelegateImpl(hostLifecycleOwner)
 
 @Suppress("FunctionName") // Factory function

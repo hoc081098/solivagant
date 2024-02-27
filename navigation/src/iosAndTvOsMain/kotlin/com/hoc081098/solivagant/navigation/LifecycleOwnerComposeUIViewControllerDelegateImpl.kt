@@ -7,7 +7,6 @@ import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 internal class LifecycleOwnerComposeUIViewControllerDelegateImpl(
   hostLifecycleOwner: LifecycleOwner?,
 ) : LifecycleOwnerComposeUIViewControllerDelegate {
-
   private var maxLifecycle: Lifecycle.State = Lifecycle.State.INITIALIZED
     set(value) {
       field = value
