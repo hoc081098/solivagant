@@ -55,20 +55,17 @@ fun MainViewController(savedStateSupport: SavedStateSupport): UIViewController {
  */
 @Composable
 private inline fun DebugLog() {
-  SideEffect { Napier.d(message = "MainViewController recomposition", tag = "[main]") }
-
   remember {
     Napier.d(message = "MainViewController enter composition", tag = "[main]")
-    object : RememberObserver {
-      override fun onAbandoned() {
-        Napier.d(message = "MainViewController abandoned", tag = "[main]")
-      }
 
-      override fun onForgotten() {
-        Napier.d(message = "MainViewController forgotten", tag = "[main]")
-      }
+    object : RememberObserver {
+      override fun onAbandoned() = Napier.d(message = "MainViewController abandoned", tag = "[main]")
+
+      override fun onForgotten() = Napier.d(message = "MainViewController forgotten", tag = "[main]")
 
       override fun onRemembered() = Unit
     }
   }
+
+  SideEffect { Napier.d(message = "MainViewController recomposition", tag = "[main]") }
 }
