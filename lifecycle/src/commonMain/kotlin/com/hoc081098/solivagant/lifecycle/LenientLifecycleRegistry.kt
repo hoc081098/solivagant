@@ -30,6 +30,7 @@ public fun LenientLifecycleRegistry(): LenientLifecycleRegistry =
 public fun LenientLifecycleRegistry(initialState: State): LenientLifecycleRegistry =
   LenientLifecycleRegistryImpl(initialState)
 
+@Suppress("TooManyFunctions")
 private class LenientLifecycleRegistryImpl(initialState: State) : LenientLifecycleRegistry {
   private val _currentStateFlow = MutableStateFlow(initialState)
   private var _state: State = _currentStateFlow.value
