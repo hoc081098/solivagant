@@ -1,7 +1,6 @@
 package com.hoc081098.solivagant.sample
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.RememberObserver
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
@@ -46,13 +45,6 @@ fun MainViewController(savedStateSupport: SavedStateSupport): UIViewController {
 
       savedStateSupport.LocalProvider {
         SolivagantSampleApp()
-
-        // Must be at the last,
-        // because onDispose is called in reverse order, so we want to save state first,
-        // before [SaveableStateRegistry.Entry]s are unregistered.
-        DisposableEffect(Unit) {
-          onDispose(savedStateSupport::performSave)
-        }
       }
     }
   }

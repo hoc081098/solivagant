@@ -2,7 +2,6 @@ package com.hoc081098.solivagant.sample
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
@@ -10,6 +9,7 @@ import androidx.compose.ui.window.rememberWindowState
 import com.hoc081098.solivagant.lifecycle.LifecycleOwnerProvider
 import com.hoc081098.solivagant.lifecycle.LifecycleRegistry
 import com.hoc081098.solivagant.lifecycle.compose.rememberLifecycleOwner
+import com.hoc081098.solivagant.navigation.ClearOnDispose
 import com.hoc081098.solivagant.navigation.LifecycleControllerEffect
 import com.hoc081098.solivagant.navigation.LocalProvider
 import com.hoc081098.solivagant.navigation.SavedStateSupport
@@ -31,9 +31,7 @@ fun main() {
     )
 
     val savedStateSupport = remember { SavedStateSupport() }
-    DisposableEffect(Unit) {
-      onDispose(savedStateSupport::clear)
-    }
+    savedStateSupport.ClearOnDispose()
 
     Window(
       onCloseRequest = ::exitApplication,
@@ -47,13 +45,6 @@ fun main() {
 
         savedStateSupport.LocalProvider {
           SolivagantSampleApp()
-
-          // Must be at the last,
-          // because onDispose is called in reverse order, so we want to save state first,
-          // before [SaveableStateRegistry.Entry]s are unregistered.
-          DisposableEffect(Unit) {
-            onDispose(savedStateSupport::performSave)
-          }
         }
       }
     }

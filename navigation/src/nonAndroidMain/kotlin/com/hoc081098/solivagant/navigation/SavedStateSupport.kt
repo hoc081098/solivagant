@@ -18,6 +18,8 @@ package com.hoc081098.solivagant.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.ProvidedValue
 import androidx.compose.runtime.saveable.LocalSaveableStateRegistry
 import androidx.compose.runtime.saveable.SaveableStateRegistry
@@ -59,13 +61,6 @@ import kotlin.LazyThreadSafetyMode.NONE
  * // Provide SavedStateSupport as ViewModelStoreOwner, SaveableStateRegistry and SavedStateHandleFactory.
  * savedStateSupport.LocalProvider {
  *   MyApp()
- *
- *   // Must be at the last,
- *   // because onDispose is called in reverse order, so we want to save state first,
- *   // before [SaveableStateRegistry.Entry]s are unregistered.
- *   DisposableEffect(Unit) {
- *     onDispose(savedStateSupport::performSave)
- *   }
  * }
  * ```
  */
@@ -168,6 +163,13 @@ private val NoOpSaveableStateRegistryEntry = object : SaveableStateRegistry.Entr
   }
 }
 
+@Composable
+@NonRestartableComposable
+public fun SavedStateSupport.ClearOnDispose(): Unit =
+  DisposableEffect(Unit) {
+    onDispose(::clear)
+  }
+
 /**
  * Provides [this] [SavedStateSupport] as [LocalViewModelStoreOwner], [LocalSaveableStateRegistry] and
  * [LocalSavedStateHandleFactory] to the [content],
@@ -186,5 +188,13 @@ public fun SavedStateSupport.LocalProvider(
     LocalViewModelStoreOwner provides this,
     LocalSaveableStateRegistry provides this,
     LocalSavedStateHandleFactory provides this,
-    content = content,
-  )
+  ) {
+    content()
+
+    // Must be at the last,
+    // because onDispose is called in reverse order, so we want to save state first,
+    // before [SaveableStateRegistry.Entry]s are unregistered.
+    DisposableEffect(Unit) {
+      onDispose(::performSave)
+    }
+  }
