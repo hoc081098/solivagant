@@ -83,7 +83,7 @@ private inline fun DebugLog() {
         Napier.d(message = "MainViewController forgotten", tag = "[main]")
       }
 
-      override fun onRemembered() {}
+      override fun onRemembered() = Unit
     }
   }
 }
