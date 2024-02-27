@@ -1,6 +1,7 @@
 package com.hoc081098.solivagant.navigation
 
 import androidx.compose.ui.uikit.ComposeUIViewControllerDelegate
+import com.hoc081098.solivagant.lifecycle.Lifecycle
 import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 
 /**
@@ -8,7 +9,12 @@ import com.hoc081098.solivagant.lifecycle.LifecycleOwner
  */
 public sealed interface LifecycleOwnerComposeUIViewControllerDelegate :
   ComposeUIViewControllerDelegate,
-  LifecycleOwner
+  LifecycleOwner {
+  /**
+   * Move to [Lifecycle.State.DESTROYED].
+   */
+  public fun onDestroy()
+}
 
 @Suppress("FunctionName") // Factory function
 public fun LifecycleOwnerComposeUIViewControllerDelegate(

@@ -1,5 +1,6 @@
 package com.hoc081098.solivagant.sample
 
+import com.hoc081098.solivagant.navigation.AppLifecycleOwner
 import com.hoc081098.solivagant.sample.common.AppDispatchers
 import com.hoc081098.solivagant.sample.common.IosAppDispatchers
 import io.github.aakira.napier.DebugAntilog
@@ -15,6 +16,7 @@ actual fun isDebug(): Boolean = Platform.isDebugBinary
 
 internal actual val PlatformModule: Module = module {
   singleOf(::IosAppDispatchers) { bind<AppDispatchers>() }
+  single { AppLifecycleOwner() }
 }
 
 actual fun setupNapier() {

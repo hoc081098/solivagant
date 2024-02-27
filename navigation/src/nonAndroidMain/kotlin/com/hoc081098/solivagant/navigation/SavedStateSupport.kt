@@ -17,6 +17,7 @@
 package com.hoc081098.solivagant.navigation
 
 import androidx.compose.runtime.saveable.SaveableStateRegistry
+import com.hoc081098.kmp.viewmodel.Closeable
 import com.hoc081098.kmp.viewmodel.MainThread
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.SavedStateHandleFactory
@@ -80,6 +81,45 @@ public class SavedStateSupport :
   private val viewModelStoreLazy = lazy(NONE) { ViewModelStore() }
   override val viewModelStore: ViewModelStore by viewModelStoreLazy
 
+  private val closeables = linkedMapOf<Any, Closeable>()
+
+  /**
+   * Add a [Closeable] that will be closed when [clear] is called.
+   *
+   * @param key The key to identify the [Closeable].
+   * @param closeOldCloseable If `true`, the old [Closeable] with the same key will be closed.
+   * @param closeable The [Closeable] to add.
+   */
+  public fun addCloseable(
+    key: Any,
+    closeOldCloseable: Boolean,
+    closeable: Closeable,
+  ) {
+    if (registry == null) {
+      return closeable.close()
+    }
+    if (closeOldCloseable) {
+      closeables[key]?.close()
+    }
+    closeables[key] = closeable
+  }
+
+  /**
+   * Get a [Closeable] by key.
+   */
+  public fun getCloseable(key: Any): Closeable? = closeables[key]
+
+  /**
+   * Remove a [Closeable] by key and close it if [close] is `true`.
+   */
+  public fun removeCloseable(
+    key: Any,
+    close: Boolean,
+  ): Closeable? =
+    closeables
+      .remove(key)
+      ?.apply { if (close) close() }
+
   public fun clear() {
     if (registry == null) {
       // Already cleared
@@ -90,6 +130,8 @@ public class SavedStateSupport :
     if (viewModelStoreLazy.isInitialized()) {
       viewModelStore.clear()
     }
+    closeables.values.forEach { it.close() }
+    closeables.clear()
   }
 
   override fun create(): SavedStateHandle = savedStateHandle

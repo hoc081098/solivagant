@@ -25,10 +25,16 @@ internal class LifecycleOwnerComposeUIViewControllerDelegateImpl(
    */
   private fun updateState() = lifecycleRegistry.moveTo(minOf(hostLifecycleState, maxLifecycle))
 
-  init {
+  private val cancellable =
     hostLifecycleOwner
       ?.lifecycle
       ?.subscribe { hostLifecycleState = it.targetState }
+
+  override val lifecycle: Lifecycle get() = lifecycleRegistry
+
+  override fun onDestroy() {
+    maxLifecycle = Lifecycle.State.DESTROYED
+    cancellable?.cancel()
   }
 
   override fun viewDidLoad() {
@@ -51,5 +57,13 @@ internal class LifecycleOwnerComposeUIViewControllerDelegateImpl(
     maxLifecycle = Lifecycle.Event.ON_STOP.targetState
   }
 
-  override val lifecycle: Lifecycle get() = lifecycleRegistry
+  override fun toString(): String =
+    super.toString() +
+      buildString {
+        append("(")
+        append("(hostLifecycleState=$hostLifecycleState, ")
+        append("maxLifecycle=$maxLifecycle, ")
+        append("lifecycle=$lifecycle")
+        append(")")
+      }
 }
