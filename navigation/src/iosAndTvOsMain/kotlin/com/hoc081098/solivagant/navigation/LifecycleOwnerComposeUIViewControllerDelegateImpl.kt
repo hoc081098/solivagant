@@ -1,9 +1,8 @@
-package com.hoc081098.solivagant.navigation.internal
+package com.hoc081098.solivagant.navigation
 
 import com.hoc081098.solivagant.lifecycle.LenientLifecycleRegistry
 import com.hoc081098.solivagant.lifecycle.Lifecycle
 import com.hoc081098.solivagant.lifecycle.LifecycleOwner
-import com.hoc081098.solivagant.navigation.LifecycleOwnerComposeUIViewControllerDelegate
 
 internal class LifecycleOwnerComposeUIViewControllerDelegateImpl(
   hostLifecycleOwner: LifecycleOwner?,

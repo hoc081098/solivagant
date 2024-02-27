@@ -18,10 +18,12 @@ internal val AppLifecycleOwner by lazy { AppLifecycleOwner() }
 
 @Suppress("FunctionName", "unused")
 fun MainViewController(savedStateSupport: SavedStateSupport?): UIViewController {
-  val lifecycleOwner = LifecycleOwnerComposeUIViewControllerDelegate(AppLifecycleOwner)
+  val lifecycleOwnerUIVcDelegate = LifecycleOwnerComposeUIViewControllerDelegate(AppLifecycleOwner)
 
-  return ComposeUIViewController(configure = { delegate = lifecycleOwner }) {
-    LifecycleOwnerProvider(lifecycleOwner) {
+  return ComposeUIViewController(
+    configure = { delegate = lifecycleOwnerUIVcDelegate },
+  ) {
+    LifecycleOwnerProvider(lifecycleOwnerUIVcDelegate) {
       OnLifecycleEventWithBuilder {
         onEach { Napier.d(message = "Lifecycle event: $it", tag = "[main]") }
       }
