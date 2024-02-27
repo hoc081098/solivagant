@@ -3,6 +3,15 @@ public final class com/hoc081098/solivagant/lifecycle/FlowWithLifecycleKt {
 	public static synthetic fun flowWithLifecycle$default (Lkotlinx/coroutines/flow/Flow;Lcom/hoc081098/solivagant/lifecycle/Lifecycle;Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
 }
 
+public abstract interface class com/hoc081098/solivagant/lifecycle/LenientLifecycleRegistry : com/hoc081098/solivagant/lifecycle/LifecycleRegistry {
+	public abstract fun moveTo (Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;)V
+}
+
+public final class com/hoc081098/solivagant/lifecycle/LenientLifecycleRegistryKt {
+	public static final fun LenientLifecycleRegistry ()Lcom/hoc081098/solivagant/lifecycle/LenientLifecycleRegistry;
+	public static final fun LenientLifecycleRegistry (Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;)Lcom/hoc081098/solivagant/lifecycle/LenientLifecycleRegistry;
+}
+
 public abstract interface class com/hoc081098/solivagant/lifecycle/Lifecycle {
 	public abstract fun getCurrentState ()Lcom/hoc081098/solivagant/lifecycle/Lifecycle$State;
 	public abstract fun getCurrentStateFlow ()Lkotlinx/coroutines/flow/StateFlow;
