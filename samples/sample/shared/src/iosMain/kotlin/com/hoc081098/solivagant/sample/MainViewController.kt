@@ -5,21 +5,19 @@ import androidx.compose.runtime.RememberObserver
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.ComposeUIViewController
-import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.lifecycle.LifecycleOwnerProvider
 import com.hoc081098.solivagant.navigation.LifecycleOwnerComposeUIViewControllerDelegate
 import com.hoc081098.solivagant.navigation.LocalProvider
 import com.hoc081098.solivagant.navigation.SavedStateSupport
 import com.hoc081098.solivagant.sample.common.OnLifecycleEventWithBuilder
 import io.github.aakira.napier.Napier
+import org.koin.core.component.get
 import platform.UIKit.UIViewController
 
 @Suppress("FunctionName", "unused") // Called from platform code
 fun MainViewController(savedStateSupport: SavedStateSupport): UIViewController {
   val lifecycleOwnerUIVcDelegate = LifecycleOwnerComposeUIViewControllerDelegate(
-    hostLifecycleOwner = DIContainer
-      .getKoin()
-      .get<LifecycleOwner>(),
+    hostLifecycleOwner = DIContainer.get(),
   )
 
   // When [SavedStateSupport.clear] is called,
