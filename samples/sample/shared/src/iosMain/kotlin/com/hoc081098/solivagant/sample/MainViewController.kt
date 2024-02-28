@@ -39,7 +39,7 @@ fun MainViewController(savedStateSupport: SavedStateSupport): UIViewController {
 
     LifecycleOwnerProvider(lifecycleOwnerUIVcDelegate) {
       OnLifecycleEventWithBuilder {
-        onEach { Napier.d(message = "[MainViewController] Lifecycle event: $it", tag = "[main]") }
+        onEach { Napier.d(message = "[MainViewController] [inner] Lifecycle event: $it", tag = "[main]") }
       }
 
       savedStateSupport.LocalProvider { SolivagantSampleApp() }
@@ -56,11 +56,11 @@ private inline fun DebugLog() {
     Napier.d(message = "[MainViewController] enter composition", tag = "[main]")
 
     object : RememberObserver {
-      override fun onAbandoned() = Napier.d(message = "MainViewController abandoned", tag = "[main]")
-
       override fun onForgotten() = Napier.d(message = "MainViewController forgotten", tag = "[main]")
 
       override fun onRemembered() = Unit
+
+      override fun onAbandoned() = Unit
     }
   }
 
