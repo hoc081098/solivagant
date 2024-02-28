@@ -2,7 +2,7 @@
 <html class="no-js">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
-    <title>LifecycleRegistry</title>
+    <title>LenientLifecycleRegistry</title>
 <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
     <script>document.documentElement.classList.replace("no-js","js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
@@ -58,11 +58,11 @@
                 <div class="sidebar--inner" id="sideMenu"></div>
             </div>
             <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="lifecycle::com.hoc081098.solivagant.lifecycle/LifecycleRegistry///PointingToDeclaration//1553588475">
-  <div class="breadcrumbs"><a href="../../index.html">lifecycle</a><span class="delimiter">/</span><a href="../index.html">com.hoc081098.solivagant.lifecycle</a><span class="delimiter">/</span><span class="current">LifecycleRegistry</span></div>
+<div class="main-content" data-page-type="classlike" id="content" pageids="lifecycle::com.hoc081098.solivagant.lifecycle/LenientLifecycleRegistry///PointingToDeclaration//1553588475">
+  <div class="breadcrumbs"><a href="../../index.html">lifecycle</a><span class="delimiter">/</span><a href="../index.html">com.hoc081098.solivagant.lifecycle</a><span class="delimiter">/</span><span class="current">LenientLifecycleRegistry</span></div>
   <div class="cover ">
-    <h1 class="cover"><span>Lifecycle</span><wbr><span><span>Registry</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":lifecycle:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="index.html">LifecycleRegistry</a> : <a href="../-lifecycle/index.html">Lifecycle</a>, <a href="../-lifecycle/-observer/index.html">Lifecycle.Observer</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/hoc081098/solivagant/tree/master/lifecycle/src/commonMain/kotlin/com/hoc081098/solivagant/lifecycle/LifecycleOwnerRegistry.kt#L49">source</a>)</span></span></div><p class="paragraph">Represents <a href="../-lifecycle/index.html">Lifecycle</a> and <a href="../-lifecycle/-observer/index.html">Lifecycle.Observer</a> at the same time. Can be used to manually control the <a href="../-lifecycle/index.html">Lifecycle</a>.</p><h4 class="">Inheritors</h4><div class="table"><div class="table-row" data-filterable-current=":lifecycle:dokkaHtmlPartial/commonMain" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-lenient-lifecycle-registry/index.html">LenientLifecycleRegistry</a></div></span></div><div></div></div></div></div></div></div>
+    <h1 class="cover"><span>Lenient</span><wbr><span>Lifecycle</span><wbr><span><span>Registry</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":lifecycle:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="index.html">LenientLifecycleRegistry</a> : <a href="../-lifecycle-registry/index.html">LifecycleRegistry</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/hoc081098/solivagant/tree/master/lifecycle/src/commonMain/kotlin/com/hoc081098/solivagant/lifecycle/LenientLifecycleRegistry.kt#L14">source</a>)</span></span></div><p class="paragraph">A <a href="../-lifecycle-registry/index.html">LifecycleRegistry</a> without the state checking, and has <a href="move-to.html">moveTo</a> method to move to a specific state. This is a flexible version of <a href="../-lifecycle-registry/index.html">LifecycleRegistry</a>.</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button><button class="section-tab" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION,EXTENSION_PROPERTY,EXTENSION_FUNCTION">Members &amp; Extensions</button></div>
@@ -129,6 +129,21 @@
               <div>
                 <div class="title">
                   <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":lifecycle:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="../-lifecycle/index.html">Lifecycle</a><span class="token punctuation">.</span><a href="../../com.hoc081098.solivagant.lifecycle.compose/current-state-as-state.html"><span class="token function">currentStateAsState</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/State.html">State</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../-lifecycle/-state/index.html">Lifecycle.State</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Collects values from the <a href="../-lifecycle/current-state-flow.html">Lifecycle.currentStateFlow</a> and represents its latest value via <a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/State.html">State</a>. The <a href="https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-state-flow/value.html">StateFlow.value</a> is used as an initial value. Every time there would be new value posted into the <a href="https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-state-flow/index.html">StateFlow</a> the returned <a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/State.html">State</a> will be updated causing recomposition of every <a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/State.html#value">State.value</a> usage.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2017625008%2FFunctions%2F1553588475" anchor-label="moveTo" id="2017625008%2FFunctions%2F1553588475" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":lifecycle:dokkaHtmlPartial/commonMain" data-filterable-set=":lifecycle:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="move-to.html"><span>move</span><wbr><span><span>To</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2017625008%2FFunctions%2F1553588475"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":lifecycle:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="move-to.html"><span class="token function">moveTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">state<span class="token operator">: </span><a href="../-lifecycle/-state/index.html">Lifecycle.State</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Move to the specified <a href="move-to.html">state</a>.</p></div></div></div>
                 </div>
               </div>
             </div>
