@@ -196,7 +196,7 @@ public class SavedStateSupport :
     /**
      * Do nothing.
      */
-    DoNothing
+    DoNothing,
   }
 }
 
