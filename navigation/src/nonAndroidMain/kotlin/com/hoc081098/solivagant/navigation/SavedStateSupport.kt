@@ -221,6 +221,11 @@ public fun SavedStateSupport.ClearOnDispose(): Unit =
  * [LocalSavedStateHandleFactory] to the [content],
  * along with other [ProvidedValue]s.
  *
+ * The [SavedStateSupport.performSave] method will be called in a [DisposableEffect]
+ * placed after the [content]. This makes sure that the state is saved before [SaveableStateRegistry.Entry]s are
+ * unregistered.
+ * Therefore, all [androidx.compose.runtime.saveable.rememberSaveable]s used in the [content] will be saved.
+ *
  * @param values Other [ProvidedValue]s.
  * @param content The content [Composable]
  */
