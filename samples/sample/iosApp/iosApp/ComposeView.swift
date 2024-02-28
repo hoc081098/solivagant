@@ -1,43 +1,42 @@
+//
+//  ThirdView.swift
+//  iosApp
+//
+//  Created by Petrus Nguyen Thai Hoc on 28/02/2024.
+//  Copyright © 2024 orgName. All rights reserved.
+//
+
 import UIKit
 import SwiftUI
 import Combine
 import SolivagantSampleAppShared
 
-struct ContentView: View {
-
-  var body: some View {
-    ZStack(alignment: .center) {
-      NavigationLink("To Compose View") { SecondView() }
-        .buttonStyle(.plain)
-        .padding()
-    }
-  }
-}
-
-// MARK: - ComposeView
-
-struct ComposeView: UIViewControllerRepresentable {
+private struct ComposeView: UIViewControllerRepresentable {
   let savedStateSupport: NavigationSavedStateSupport
 
   func makeUIViewController(context: Context) -> UIViewController {
-    MainViewControllerKt.MainViewController(savedStateSupport: savedStateSupport)
+    print("[SecondView] makeUIViewController \(savedStateSupport)")
+    return MainViewControllerKt.MainViewController(savedStateSupport: savedStateSupport)
   }
 
   func updateUIViewController(_ uiViewController: UIViewController, context: Context) { }
+  
+  static func dismantleUIViewController(_ uiViewController: UIViewController, coordinator: Void) {
+    print("[SecondView] dismantleUIViewController")
+  }
 }
 
 
-@MainActor
-class SecondViewModel: ObservableObject {
+private class SecondViewModel: ObservableObject {
   let savedStateSupport = NavigationSavedStateSupport()
 
   init() {
-    print("Init \(savedStateSupport)")
+    print("[SecondView] \(self)::init \(savedStateSupport)")
   }
 
   deinit {
     self.savedStateSupport.clear()
-    print("Cleared \(savedStateSupport)")
+    print("[SecondView] \(self)::deinit \(savedStateSupport)")
   }
 }
 
@@ -53,17 +52,8 @@ struct SecondView: View {
           .padding(),
         alignment: .bottomTrailing
       )
-      .onAppear { print("onAppear") }
-      .onDisappear { print("onDisappear") }
+      .onAppear { print("[SecondView] onAppear") }
+      .onDisappear { print("[SecondView] onDisappear") }
       .navigationBarTitle("", displayMode: .inline)
-  }
-}
-
-// MARK: - ThirdView
-
-struct ThirdView: View {
-  var body: some View {
-    Text("It is good!")
-      .navigationTitle("Third view")
   }
 }

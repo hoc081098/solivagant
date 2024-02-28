@@ -16,12 +16,21 @@
 
 package com.hoc081098.solivagant.navigation
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.NonRestartableComposable
+import androidx.compose.runtime.ProvidedValue
+import androidx.compose.runtime.saveable.LocalSaveableStateRegistry
 import androidx.compose.runtime.saveable.SaveableStateRegistry
+import com.hoc081098.kmp.viewmodel.Closeable
 import com.hoc081098.kmp.viewmodel.MainThread
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.SavedStateHandleFactory
 import com.hoc081098.kmp.viewmodel.ViewModelStore
 import com.hoc081098.kmp.viewmodel.ViewModelStoreOwner
+import com.hoc081098.kmp.viewmodel.compose.LocalSavedStateHandleFactory
+import com.hoc081098.kmp.viewmodel.compose.LocalViewModelStoreOwner
 import kotlin.LazyThreadSafetyMode.NONE
 
 /**
@@ -45,24 +54,11 @@ import kotlin.LazyThreadSafetyMode.NONE
  * val savedStateSupport = remember { SavedStateSupport() }
  *
  * // Clear the SavedStateSupport when the root @Composable exits the composition.
- * DisposableEffect(Unit) {
- *   onDispose(savedStateSupport::clear)
- * }
+ * savedStateSupport.ClearOnDispose()
  *
  * // Provide SavedStateSupport as ViewModelStoreOwner, SaveableStateRegistry and SavedStateHandleFactory.
- * CompositionLocalProvider(
- *   LocalViewModelStoreOwner provides savedStateSupport,
- *   LocalSaveableStateRegistry provides savedStateSupport,
- *   LocalSavedStateHandleFactory provides savedStateSupport,
- * ) {
+ * savedStateSupport.LocalProvider {
  *   MyApp()
- *
- *   // Must be at the last,
- *   // because onDispose is called in reverse order, so we want to save state first,
- *   // before [SaveableStateRegistry.Entry]s are unregistered.
- *   DisposableEffect(Unit) {
- *     onDispose(savedStateSupport::performSave)
- *   }
  * }
  * ```
  */
@@ -76,9 +72,73 @@ public class SavedStateSupport :
     canBeSaved = { true },
   )
 
-  private val savedStateHandle by lazy(NONE) { SavedStateHandle() }
   private val viewModelStoreLazy = lazy(NONE) { ViewModelStore() }
   override val viewModelStore: ViewModelStore by viewModelStoreLazy
+
+  private val closeables: LinkedHashMap<Any, Closeable> = linkedMapOf<Any, Closeable>() // preserve order
+
+  /**
+   * Add a [Closeable] that will be closed when [clear] is called.
+   *
+   * @param key The key to identify the [Closeable].
+   * @param strategy Determine when to close the [Closeable].
+   * @param closeable The [Closeable] to add.
+   */
+  public fun addCloseable(
+    key: Any,
+    strategy: CloseableStrategy = CloseableStrategy.CloseIfChanged,
+    closeable: Closeable,
+  ) {
+    if (registry == null) {
+      return closeable.close()
+    }
+
+    val oldClosable = closeables[key]
+    when (strategy) {
+      CloseableStrategy.CloseIfChanged -> {
+        when {
+          oldClosable == null -> {
+            closeables[key] = closeable
+          }
+
+          oldClosable != closeable -> {
+            oldClosable.close()
+            closeables[key] = closeable
+          }
+
+          else -> Unit
+        }
+      }
+
+      CloseableStrategy.AlwaysClose -> {
+        oldClosable?.close()
+
+        if (oldClosable != closeable) {
+          closeables[key] = closeable
+        }
+      }
+
+      CloseableStrategy.DoNothing -> {
+        closeables[key] = closeable
+      }
+    }
+  }
+
+  /**
+   * Get a [Closeable] by key.
+   */
+  public fun getCloseable(key: Any): Closeable? = closeables[key]
+
+  /**
+   * Remove a [Closeable] by key and close it if [close] is `true`.
+   */
+  public fun removeCloseable(
+    key: Any,
+    close: Boolean = true,
+  ): Closeable? =
+    closeables
+      .remove(key)
+      ?.apply { if (close) close() }
 
   public fun clear() {
     if (registry == null) {
@@ -90,9 +150,11 @@ public class SavedStateSupport :
     if (viewModelStoreLazy.isInitialized()) {
       viewModelStore.clear()
     }
+    closeables.values.forEach { it.close() }
+    closeables.clear()
   }
 
-  override fun create(): SavedStateHandle = savedStateHandle
+  override fun create(): SavedStateHandle = SavedStateHandle()
 
   override fun canBeSaved(value: Any): Boolean = registry?.canBeSaved(value) == true
 
@@ -116,6 +178,26 @@ public class SavedStateSupport :
     registry
       ?.registerProvider(key, valueProvider)
       ?: NoOpSaveableStateRegistryEntry
+
+  /**
+   * Determine when to close a [Closeable].
+   */
+  public enum class CloseableStrategy {
+    /**
+     * Close the [Closeable] if it's changed.
+     */
+    CloseIfChanged,
+
+    /**
+     * Always close the [Closeable].
+     */
+    AlwaysClose,
+
+    /**
+     * Do nothing.
+     */
+    DoNothing,
+  }
 }
 
 private val NoOpSaveableStateRegistryEntry = object : SaveableStateRegistry.Entry {
@@ -123,3 +205,47 @@ private val NoOpSaveableStateRegistryEntry = object : SaveableStateRegistry.Entr
     // No-op
   }
 }
+
+/**
+ * Clear this [SavedStateSupport] when the @Composable exits the composition.
+ */
+@Composable
+@NonRestartableComposable
+public fun SavedStateSupport.ClearOnDispose(): Unit =
+  DisposableEffect(Unit) {
+    onDispose(::clear)
+  }
+
+/**
+ * Provides [this] [SavedStateSupport] as [LocalViewModelStoreOwner], [LocalSaveableStateRegistry] and
+ * [LocalSavedStateHandleFactory] to the [content],
+ * along with other [ProvidedValue]s.
+ *
+ * The [SavedStateSupport.performSave] method will be called in a [DisposableEffect]
+ * placed after the [content]. This makes sure that the state is saved before [SaveableStateRegistry.Entry]s are
+ * unregistered.
+ * Therefore, all [androidx.compose.runtime.saveable.rememberSaveable]s used in the [content] will be saved.
+ *
+ * @param values Other [ProvidedValue]s.
+ * @param content The content [Composable]
+ */
+@Composable
+public fun SavedStateSupport.LocalProvider(
+  vararg values: ProvidedValue<*>,
+  content: @Composable () -> Unit,
+): Unit =
+  CompositionLocalProvider(
+    *values,
+    LocalViewModelStoreOwner provides this,
+    LocalSaveableStateRegistry provides this,
+    LocalSavedStateHandleFactory provides this,
+  ) {
+    content()
+
+    // Must be at the last,
+    // because onDispose is called in reverse order, so we want to save state first,
+    // before [SaveableStateRegistry.Entry]s are unregistered.
+    DisposableEffect(Unit) {
+      onDispose(::performSave)
+    }
+  }

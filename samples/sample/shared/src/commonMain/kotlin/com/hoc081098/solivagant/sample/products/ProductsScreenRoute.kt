@@ -13,6 +13,6 @@ data object ProductsScreenRoute : NavRoute
 
 @JvmField
 val ProductsScreenDestination: NavDestination =
-  ScreenDestination<ProductsScreenRoute> { route, modifier ->
+  ScreenDestination<ProductsScreenRoute> { _, modifier ->
     ProductsScreen(modifier = modifier)
   }

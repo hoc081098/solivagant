@@ -1,3 +1,11 @@
+//
+//  ThirdView.swift
+//  iosApp
+//
+//  Created by Petrus Nguyen Thai Hoc on 28/02/2024.
+//  Copyright © 2024 orgName. All rights reserved.
+//
+
 import SwiftUI
 import SolivagantSampleAppShared
 
@@ -10,7 +18,7 @@ struct iOSApp: App {
   var body: some Scene {
     WindowGroup {
       NavigationView {
-        ContentView()
+        FirstView()
       }.navigationViewStyle(.stack)
     }
   }

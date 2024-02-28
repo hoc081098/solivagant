@@ -18,9 +18,9 @@ package com.hoc081098.solivagant.navigation.internal
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import com.hoc081098.solivagant.lifecycle.LenientLifecycleRegistry
 import com.hoc081098.solivagant.lifecycle.Lifecycle
 import com.hoc081098.solivagant.lifecycle.LifecycleOwner
-import com.hoc081098.solivagant.lifecycle.LifecycleRegistry
 import platform.AppKit.NSApplication
 import platform.AppKit.NSApplicationDidBecomeActiveNotification
 import platform.AppKit.NSApplicationDidHideNotification
@@ -34,7 +34,7 @@ import platform.Foundation.NSOperationQueue
 import platform.darwin.NSObjectProtocol
 
 private class AppLifecycleOwner : LifecycleOwner {
-  private val lifecycleRegistry = LifecycleRegistry()
+  private val lifecycleRegistry = LenientLifecycleRegistry()
   override val lifecycle: Lifecycle get() = lifecycleRegistry
 
   private val willUnHideObserver = addObserver(NSApplicationWillUnhideNotification) {

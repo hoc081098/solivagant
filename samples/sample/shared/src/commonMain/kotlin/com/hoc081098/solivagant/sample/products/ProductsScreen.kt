@@ -97,7 +97,7 @@ private fun ListContent(
       state.error != null -> {
         ErrorMessageAndRetryButton(
           onRetry = onRetry,
-          errorMessage = state.error?.message ?: "Unknown error",
+          errorMessage = state.error.message ?: "Unknown error",
         )
       }
 

@@ -33,7 +33,6 @@
 package com.hoc081098.solivagant.lifecycle
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import com.hoc081098.solivagant.lifecycle.Lifecycle.Cancellable
 import com.hoc081098.solivagant.lifecycle.Lifecycle.Event
 import com.hoc081098.solivagant.lifecycle.Lifecycle.Observer
@@ -60,9 +59,13 @@ public fun LifecycleRegistry(): LifecycleRegistry = LifecycleRegistry(initialSta
  */
 public fun LifecycleRegistry(initialState: State): LifecycleRegistry = LifecycleRegistryImpl(initialState)
 
+@Deprecated(
+  message = "Use com.hoc081098.solivagant.lifecycle.compose.rememberLifecycleOwner instead",
+  replaceWith = ReplaceWith("com.hoc081098.solivagant.lifecycle.compose.rememberLifecycleOwner(lifecycleRegistry)"),
+)
 @Composable
 public fun rememberLifecycleOwner(lifecycleRegistry: LifecycleRegistry): LifecycleOwner =
-  remember(lifecycleRegistry) { LifecycleRegistryOwner(lifecycleRegistry) }
+  com.hoc081098.solivagant.lifecycle.compose.rememberLifecycleOwner(lifecycleRegistry)
 
 /**
  * Possible transitions:
@@ -93,7 +96,7 @@ private class LifecycleRegistryImpl(initialState: State) : LifecycleRegistry {
       _currentStateFlow.value = value
     }
 
-  private var observers: List<Observer> = emptyList()
+  private var observers: LinkedHashSet<Observer> = linkedSetOf() // Preserve order
 
   override val currentStateFlow: StateFlow<State>
     get() = _currentStateFlow.asStateFlow()
@@ -113,6 +116,10 @@ private class LifecycleRegistryImpl(initialState: State) : LifecycleRegistry {
   }
 
   override fun subscribe(observer: Observer): Cancellable {
+    if (observer in observers) {
+      return Cancellable { observers -= observer }
+    }
+
     observers += observer
 
     val state = _state
@@ -156,14 +163,14 @@ private class LifecycleRegistryImpl(initialState: State) : LifecycleRegistry {
   private fun onStop() {
     checkState(State.STARTED)
     _state = State.CREATED
-    observers.asReversed().forEach { it.onStateChanged(Event.ON_STOP) }
+    observers.reversed().forEach { it.onStateChanged(Event.ON_STOP) }
   }
 
   private fun onDestroy() {
     checkState(State.CREATED)
     _state = State.DESTROYED
-    observers.asReversed().forEach { it.onStateChanged(Event.ON_DESTROY) }
-    observers = emptyList()
+    observers.reversed().forEach { it.onStateChanged(Event.ON_DESTROY) }
+    observers = linkedSetOf()
   }
 
   private fun checkState(required: State) {
@@ -171,10 +178,4 @@ private class LifecycleRegistryImpl(initialState: State) : LifecycleRegistry {
   }
 
   override fun toString(): String = "LifecycleRegistryImpl(_state=$_state)"
-}
-
-private class LifecycleRegistryOwner(
-  private val lifecycleRegistry: LifecycleRegistry,
-) : LifecycleOwner {
-  override val lifecycle get() = lifecycleRegistry
 }
