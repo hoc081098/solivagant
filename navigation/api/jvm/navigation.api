@@ -38,8 +38,8 @@ public final class com/hoc081098/solivagant/navigation/RememberCloseableOnRouteK
 public final class com/hoc081098/solivagant/navigation/SavedStateSupport : androidx/compose/runtime/saveable/SaveableStateRegistry, com/hoc081098/kmp/viewmodel/SavedStateHandleFactory, com/hoc081098/kmp/viewmodel/ViewModelStoreOwner {
 	public static final field $stable I
 	public fun <init> ()V
-	public final fun addCloseable (Ljava/lang/Object;ZLjava/io/Closeable;)V
-	public static synthetic fun addCloseable$default (Lcom/hoc081098/solivagant/navigation/SavedStateSupport;Ljava/lang/Object;ZLjava/io/Closeable;ILjava/lang/Object;)V
+	public final fun addCloseable (Ljava/lang/Object;Lcom/hoc081098/solivagant/navigation/SavedStateSupport$CloseableStrategy;Ljava/io/Closeable;)V
+	public static synthetic fun addCloseable$default (Lcom/hoc081098/solivagant/navigation/SavedStateSupport;Ljava/lang/Object;Lcom/hoc081098/solivagant/navigation/SavedStateSupport$CloseableStrategy;Ljava/io/Closeable;ILjava/lang/Object;)V
 	public fun canBeSaved (Ljava/lang/Object;)Z
 	public final fun clear ()V
 	public fun consumeRestored (Ljava/lang/String;)Ljava/lang/Object;
@@ -50,6 +50,15 @@ public final class com/hoc081098/solivagant/navigation/SavedStateSupport : andro
 	public fun registerProvider (Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Landroidx/compose/runtime/saveable/SaveableStateRegistry$Entry;
 	public final fun removeCloseable (Ljava/lang/Object;Z)Ljava/io/Closeable;
 	public static synthetic fun removeCloseable$default (Lcom/hoc081098/solivagant/navigation/SavedStateSupport;Ljava/lang/Object;ZILjava/lang/Object;)Ljava/io/Closeable;
+}
+
+public final class com/hoc081098/solivagant/navigation/SavedStateSupport$CloseableStrategy : java/lang/Enum {
+	public static final field AlwaysClose Lcom/hoc081098/solivagant/navigation/SavedStateSupport$CloseableStrategy;
+	public static final field CloseIfChanged Lcom/hoc081098/solivagant/navigation/SavedStateSupport$CloseableStrategy;
+	public static final field DoNothing Lcom/hoc081098/solivagant/navigation/SavedStateSupport$CloseableStrategy;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/hoc081098/solivagant/navigation/SavedStateSupport$CloseableStrategy;
+	public static fun values ()[Lcom/hoc081098/solivagant/navigation/SavedStateSupport$CloseableStrategy;
 }
 
 public final class com/hoc081098/solivagant/navigation/SavedStateSupportKt {

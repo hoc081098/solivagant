@@ -81,21 +81,47 @@ public class SavedStateSupport :
    * Add a [Closeable] that will be closed when [clear] is called.
    *
    * @param key The key to identify the [Closeable].
-   * @param closeOldCloseable If `true`, the old [Closeable] with the same key will be closed.
+   * @param strategy Determine when to close the [Closeable].
    * @param closeable The [Closeable] to add.
    */
   public fun addCloseable(
     key: Any,
-    closeOldCloseable: Boolean = true,
+    strategy: CloseableStrategy = CloseableStrategy.CloseIfChanged,
     closeable: Closeable,
   ) {
     if (registry == null) {
       return closeable.close()
     }
-    if (closeOldCloseable) {
-      closeables[key]?.close()
+
+    val oldClosable = closeables[key]
+    when (strategy) {
+      CloseableStrategy.CloseIfChanged -> {
+        when {
+          oldClosable == null -> {
+            closeables[key] = closeable
+          }
+
+          oldClosable != closeable -> {
+            oldClosable.close()
+            closeables[key] = closeable
+          }
+
+          else -> Unit
+        }
+      }
+
+      CloseableStrategy.AlwaysClose -> {
+        oldClosable?.close()
+
+        if (oldClosable != closeable) {
+          closeables[key] = closeable
+        }
+      }
+
+      CloseableStrategy.DoNothing -> {
+        closeables[key] = closeable
+      }
     }
-    closeables[key] = closeable
   }
 
   /**
@@ -152,6 +178,26 @@ public class SavedStateSupport :
     registry
       ?.registerProvider(key, valueProvider)
       ?: NoOpSaveableStateRegistryEntry
+
+  /**
+   * Determine when to close a [Closeable].
+   */
+  public enum class CloseableStrategy {
+    /**
+     * Close the [Closeable] if it's changed.
+     */
+    CloseIfChanged,
+
+    /**
+     * Always close the [Closeable].
+     */
+    AlwaysClose,
+
+    /**
+     * Do nothing.
+     */
+    DoNothing
+  }
 }
 
 private val NoOpSaveableStateRegistryEntry = object : SaveableStateRegistry.Entry {
