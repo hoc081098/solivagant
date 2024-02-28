@@ -15,6 +15,6 @@ data object SearchProductScreenRoute : NavRoute
 
 @JvmField
 val SearchProductScreenDestination: NavDestination =
-  ScreenDestination<SearchProductScreenRoute> { route, modifier ->
+  ScreenDestination<SearchProductScreenRoute> { _, modifier ->
     SearchProductsScreen(modifier = modifier)
   }
