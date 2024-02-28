@@ -3,27 +3,32 @@ import SwiftUI
 import Combine
 import SolivagantSampleAppShared
 
-struct ComposeView: UIViewControllerRepresentable {
+private struct ComposeView: UIViewControllerRepresentable {
   let savedStateSupport: NavigationSavedStateSupport
 
   func makeUIViewController(context: Context) -> UIViewController {
-    MainViewControllerKt.MainViewController(savedStateSupport: savedStateSupport)
+    print("[SecondView] makeUIViewController \(savedStateSupport)")
+    return MainViewControllerKt.MainViewController(savedStateSupport: savedStateSupport)
   }
 
   func updateUIViewController(_ uiViewController: UIViewController, context: Context) { }
+  
+  static func dismantleUIViewController(_ uiViewController: UIViewController, coordinator: Void) {
+    print("[SecondView] dismantleUIViewController")
+  }
 }
 
 
-class SecondViewModel: ObservableObject {
+private class SecondViewModel: ObservableObject {
   let savedStateSupport = NavigationSavedStateSupport()
 
   init() {
-    print("Init \(savedStateSupport)")
+    print("[SecondView] \(self)::init \(savedStateSupport)")
   }
 
   deinit {
     self.savedStateSupport.clear()
-    print("Cleared \(savedStateSupport)")
+    print("[SecondView] \(self)::deinit \(savedStateSupport)")
   }
 }
 
@@ -39,8 +44,8 @@ struct SecondView: View {
           .padding(),
         alignment: .bottomTrailing
       )
-      .onAppear { print("onAppear") }
-      .onDisappear { print("onDisappear") }
+      .onAppear { print("[SecondView] onAppear") }
+      .onDisappear { print("[SecondView] onDisappear") }
       .navigationBarTitle("", displayMode: .inline)
   }
 }
