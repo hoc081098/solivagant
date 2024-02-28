@@ -75,7 +75,7 @@ public class SavedStateSupport :
   private val viewModelStoreLazy = lazy(NONE) { ViewModelStore() }
   override val viewModelStore: ViewModelStore by viewModelStoreLazy
 
-  private val closeables = linkedMapOf<Any, Closeable>()
+  private val closeables: LinkedHashMap<Any, Closeable> = linkedMapOf<Any, Closeable>() // preserve order
 
   /**
    * Add a [Closeable] that will be closed when [clear] is called.
