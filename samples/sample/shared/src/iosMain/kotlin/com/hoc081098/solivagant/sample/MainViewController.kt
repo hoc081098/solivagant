@@ -23,8 +23,8 @@ fun MainViewController(savedStateSupport: SavedStateSupport): UIViewController {
   // When [SavedStateSupport.clear] is called,
   // we move the lifecycle to [Lifecycle.State.DESTROYED].
   savedStateSupport.addCloseable(key = lifecycleOwnerUIVcDelegate, closeOldCloseable = false) {
-    Napier.d(message = "destroy $lifecycleOwnerUIVcDelegate", tag = "[main]")
     lifecycleOwnerUIVcDelegate.onDestroy()
+    Napier.d(message = "destroy $lifecycleOwnerUIVcDelegate", tag = "[main]")
   }
 
   Napier.d(
