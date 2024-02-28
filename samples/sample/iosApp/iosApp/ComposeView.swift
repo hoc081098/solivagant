@@ -3,19 +3,6 @@ import SwiftUI
 import Combine
 import SolivagantSampleAppShared
 
-struct ContentView: View {
-
-  var body: some View {
-    ZStack(alignment: .center) {
-      NavigationLink("To Compose View") { SecondView() }
-        .buttonStyle(.plain)
-        .padding()
-    }
-  }
-}
-
-// MARK: - ComposeView
-
 struct ComposeView: UIViewControllerRepresentable {
   let savedStateSupport: NavigationSavedStateSupport
 
@@ -27,7 +14,6 @@ struct ComposeView: UIViewControllerRepresentable {
 }
 
 
-@MainActor
 class SecondViewModel: ObservableObject {
   let savedStateSupport = NavigationSavedStateSupport()
 
@@ -56,14 +42,5 @@ struct SecondView: View {
       .onAppear { print("onAppear") }
       .onDisappear { print("onDisappear") }
       .navigationBarTitle("", displayMode: .inline)
-  }
-}
-
-// MARK: - ThirdView
-
-struct ThirdView: View {
-  var body: some View {
-    Text("It is good!")
-      .navigationTitle("Third view")
   }
 }
