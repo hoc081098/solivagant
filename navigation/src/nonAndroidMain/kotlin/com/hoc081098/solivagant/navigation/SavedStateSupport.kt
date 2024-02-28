@@ -72,7 +72,6 @@ public class SavedStateSupport :
     canBeSaved = { true },
   )
 
-  private val savedStateHandle by lazy(NONE) { SavedStateHandle() }
   private val viewModelStoreLazy = lazy(NONE) { ViewModelStore() }
   override val viewModelStore: ViewModelStore by viewModelStoreLazy
 
@@ -129,7 +128,7 @@ public class SavedStateSupport :
     closeables.clear()
   }
 
-  override fun create(): SavedStateHandle = savedStateHandle
+  override fun create(): SavedStateHandle = SavedStateHandle()
 
   override fun canBeSaved(value: Any): Boolean = registry?.canBeSaved(value) == true
 
