@@ -16,6 +16,13 @@ public sealed interface LifecycleOwnerComposeUIViewControllerDelegate :
   public fun onDestroy()
 }
 
+/**
+ * Bind [LifecycleOwnerComposeUIViewControllerDelegate] to [SavedStateSupport].
+ * When [SavedStateSupport.clear] is called, we move the lifecycle to [Lifecycle.State.DESTROYED].
+ */
+public fun LifecycleOwnerComposeUIViewControllerDelegate.bindTo(savedStateSupport: SavedStateSupport): Unit =
+  savedStateSupport.addCloseable(key = this) { onDestroy() }
+
 @Suppress("FunctionName") // Factory function
 public fun LifecycleOwnerComposeUIViewControllerDelegate(
   hostLifecycleOwner: LifecycleOwner,

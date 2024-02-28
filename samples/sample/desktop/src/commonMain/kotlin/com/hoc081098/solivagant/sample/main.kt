@@ -43,9 +43,7 @@ fun main() {
           onEach { Napier.d(message = "Lifecycle event: $it", tag = "[main]") }
         }
 
-        savedStateSupport.LocalProvider {
-          SolivagantSampleApp()
-        }
+        savedStateSupport.LocalProvider { SolivagantSampleApp() }
       }
     }
   }

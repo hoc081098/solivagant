@@ -1,5 +1,6 @@
 package com.hoc081098.solivagant.lifecycle
 
+import com.hoc081098.solivagant.lifecycle.Lifecycle.Cancellable
 import com.hoc081098.solivagant.lifecycle.Lifecycle.State
 import kotlin.js.JsName
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,7 +39,8 @@ private class LenientLifecycleRegistryImpl(initialState: State) : LenientLifecyc
       field = value
       _currentStateFlow.value = value
     }
-  private var observers: List<Lifecycle.Observer> = emptyList()
+
+  private var observers: LinkedHashSet<Lifecycle.Observer> = linkedSetOf() // Preserve order
 
   override val currentStateFlow: StateFlow<State>
     get() = _currentStateFlow.asStateFlow()
@@ -46,7 +48,11 @@ private class LenientLifecycleRegistryImpl(initialState: State) : LenientLifecyc
   override val currentState: State
     get() = _state
 
-  override fun subscribe(observer: Lifecycle.Observer): Lifecycle.Cancellable {
+  override fun subscribe(observer: Lifecycle.Observer): Cancellable {
+    if (observer in observers) {
+      return Cancellable { observers -= observer }
+    }
+
     observers += observer
 
     val state = _state
@@ -60,7 +66,7 @@ private class LenientLifecycleRegistryImpl(initialState: State) : LenientLifecyc
       observer.onStateChanged(Lifecycle.Event.ON_RESUME)
     }
 
-    return Lifecycle.Cancellable { observers -= observer }
+    return Cancellable { observers -= observer }
   }
 
   override fun onStateChanged(event: Lifecycle.Event) = moveTo(event.targetState)
@@ -174,14 +180,14 @@ private class LenientLifecycleRegistryImpl(initialState: State) : LenientLifecyc
   private fun onStop() {
     checkState(State.STARTED)
     _state = State.CREATED
-    observers.asReversed().forEach { it.onStateChanged(Lifecycle.Event.ON_STOP) }
+    observers.reversed().forEach { it.onStateChanged(Lifecycle.Event.ON_STOP) }
   }
 
   private fun onDestroy() {
     checkState(State.CREATED)
     _state = State.DESTROYED
-    observers.asReversed().forEach { it.onStateChanged(Lifecycle.Event.ON_DESTROY) }
-    observers = emptyList()
+    observers.reversed().forEach { it.onStateChanged(Lifecycle.Event.ON_DESTROY) }
+    observers = linkedSetOf()
   }
 
   private fun checkState(required: State) {

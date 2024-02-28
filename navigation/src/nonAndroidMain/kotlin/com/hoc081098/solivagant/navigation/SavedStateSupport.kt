@@ -87,7 +87,7 @@ public class SavedStateSupport :
    */
   public fun addCloseable(
     key: Any,
-    closeOldCloseable: Boolean,
+    closeOldCloseable: Boolean = true,
     closeable: Closeable,
   ) {
     if (registry == null) {
@@ -109,7 +109,7 @@ public class SavedStateSupport :
    */
   public fun removeCloseable(
     key: Any,
-    close: Boolean,
+    close: Boolean = true,
   ): Closeable? =
     closeables
       .remove(key)

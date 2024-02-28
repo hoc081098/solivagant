@@ -96,7 +96,7 @@ private class LifecycleRegistryImpl(initialState: State) : LifecycleRegistry {
       _currentStateFlow.value = value
     }
 
-  private var observers: List<Observer> = emptyList()
+  private var observers: LinkedHashSet<Observer> = linkedSetOf() // Preserve order
 
   override val currentStateFlow: StateFlow<State>
     get() = _currentStateFlow.asStateFlow()
@@ -116,6 +116,10 @@ private class LifecycleRegistryImpl(initialState: State) : LifecycleRegistry {
   }
 
   override fun subscribe(observer: Observer): Cancellable {
+    if (observer in observers) {
+      return Cancellable { observers -= observer }
+    }
+
     observers += observer
 
     val state = _state
@@ -159,14 +163,14 @@ private class LifecycleRegistryImpl(initialState: State) : LifecycleRegistry {
   private fun onStop() {
     checkState(State.STARTED)
     _state = State.CREATED
-    observers.asReversed().forEach { it.onStateChanged(Event.ON_STOP) }
+    observers.reversed().forEach { it.onStateChanged(Event.ON_STOP) }
   }
 
   private fun onDestroy() {
     checkState(State.CREATED)
     _state = State.DESTROYED
-    observers.asReversed().forEach { it.onStateChanged(Event.ON_DESTROY) }
-    observers = emptyList()
+    observers.reversed().forEach { it.onStateChanged(Event.ON_DESTROY) }
+    observers = linkedSetOf()
   }
 
   private fun checkState(required: State) {
