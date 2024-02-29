@@ -1,8 +1,8 @@
-site_name: Solivagant
+site_name: Solivagant - Compose Multiplatform Navigation library
 site_url: https://hoc081098.github.io/solivagant/docs/0.x
 repo_name: solivagant
 repo_url: https://github.com/hoc081098/solivagant
-site_description: "🔆 Compose Multiplatform Navigation - 🌸 Pragmatic, type safety navigation for Compose Multiplatform. Based on Freeletics Khonshu Navigation. ♥️ ViewModel, SavedStateHandle, Lifecycle, Multi-Backstacks, and more..."
+site_description: "🔆 Compose Multiplatform Navigation library - 🌸 Pragmatic, type safety navigation for Compose Multiplatform. Based on Freeletics Khonshu Navigation. ♥️ ViewModel, SavedStateHandle, Lifecycle, Multi-Backstacks, and more..."
 site_author: Petrus Nguyễn Thái Học
 remote_branch: gh-pages
 edit_uri: edit/master/docs/
@@ -40,6 +40,9 @@ markdown_extensions:
   - pymdownx.tilde
   - tables
   - mdx_truly_sane_lists
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
 
 nav:
   - 'Overview': index.md
