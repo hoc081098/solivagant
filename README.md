@@ -231,7 +231,39 @@ class MainActivity : ComponentActivity() {
 }
 ```
 
-- To display `MyAwesomeApp` on `Desktop`, ... TBD ... please check out [samples/sample/desktop/src/commonMain/kotlin/com/hoc081098/solivagant/sample/main.kt](https://github.com/hoc081098/solivagant/blob/e47468b13fbd98c619cd973cd470036090ceed43/samples/sample/desktop/src/commonMain/kotlin/com/hoc081098/solivagant/sample/main.kt#L22-L68)
+- To display `MyAwesomeApp` on `Desktop`, please check out [Desktop Sample main.kt](https://github.com/hoc081098/solivagant/blob/2eb1ef4beee875d63aaa882f7198cc738638ad75/samples/sample/desktop/src/commonMain/kotlin/com/hoc081098/solivagant/sample/main.kt#L18-L49)
+
+```kotlin
+fun main() {
+  startKoinCommon()
+  setupNapier()
+
+  val lifecycleRegistry = LifecycleRegistry()
+  val savedStateSupport = SavedStateSupport()
+
+  application {
+    val windowState = rememberWindowState()
+    val lifecycleOwner = rememberLifecycleOwner(lifecycleRegistry)
+    LifecycleControllerEffect(
+      lifecycleRegistry = lifecycleRegistry,
+      windowState = windowState,
+    )
+
+    savedStateSupport.ClearOnDispose()
+
+    Window(
+      onCloseRequest = ::exitApplication,
+      title = "Solivagant sample",
+      state = windowState,
+    ) {
+      LifecycleOwnerProvider(lifecycleOwner) {
+        // navigator can be retrieved from the DI container, such as Koin, Koject, etc...
+        savedStateSupport.LocalProvider { MyAwesomeApp() }
+      }
+    }
+  }
+}
+```
 
 - To display `MyAwesomeApp` on `iOS/tvOS/watchOS`, ... TBD ... please check out [samples/sample/iosApp/iosApp/ContentView.swift](https://github.com/hoc081098/solivagant/blob/e47468b13fbd98c619cd973cd470036090ceed43/samples/sample/iosApp/iosApp/ContentView.swift#L19-L60)
 
