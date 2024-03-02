@@ -214,6 +214,7 @@ fun MyAwesomeApp(
     startRoute = StartScreenRoute,
     // should contain all destinations that can be navigated to
     destinations = AllDestinations,
+    // when passing a NavEventNavigator to NavHost, NavHost will take care of setting up the navigator by calling `NavigationSetup(navigator)`
     navEventNavigator = navigator,
     destinationChangedCallback = { currentRoute = it },
   )
@@ -349,6 +350,8 @@ navigator.navigateBack()
 // in between from the back stack, depending on inclusive the destination
 navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 ```
+
+
 
 ## Samples
 
