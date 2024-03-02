@@ -197,7 +197,7 @@ private val AllDestinations: ImmutableSet<NavDestination> = persistentSetOf(
 fun MyAwesomeApp(
   // used to trigger navigation actions from outside the view layer (e.g. from a ViewModel).
   // Usually, it is singleton object, or the host Activity retained scope.
-  navigator: NavEventNavigator,
+  navigator: NavEventNavigator = koinInject(),
   modifier: Modifier = Modifier,
 ) {
   // BaseRoute is the parent interface of NavRoute and NavRoot.
@@ -225,12 +225,9 @@ class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle) {
     super.onCreate()
 
-    // navigator can be retrieved from the DI container, such as Koin, Dagger Hilt, etc.
-
+    // navigator can be retrieved from the DI container, such as Koin, Dagger Hilt, etc...
     setContent {
-      MyAwesomeApp(
-        navigator = navigator
-      )
+      MyAwesomeApp()
     }
   }
 }
@@ -271,7 +268,7 @@ fun main() {
 
 #### 3.4. iOs / tvOS / watchOS
 
-To display `MyAwesomeApp` on `iOS/tvOS/watchOS`, ... TBD ... please check out [samples/sample/iosApp/iosApp/ContentView.swift](https://github.com/hoc081098/solivagant/blob/e47468b13fbd98c619cd973cd470036090ceed43/samples/sample/iosApp/iosApp/ContentView.swift#L19-L60)
+To display `MyAwesomeApp` on `iOS/tvOS/watchOS`, please check out [samples/sample/iosApp/iosApp/ContentView.swift](https://github.com/hoc081098/solivagant/blob/e47468b13fbd98c619cd973cd470036090ceed43/samples/sample/iosApp/iosApp/ContentView.swift#L19-L60)
 
 ### 4. Use `NavEventNavigator` in `ViewModel` s / `@Composable` s to trigger navigation actions
 
