@@ -241,7 +241,7 @@ class MainActivity : ComponentActivity() {
 
 #### 3.3. Desktop
 
-To display `MyAwesomeApp` on `Desktop`, please check out [Desktop Sample main.kt](https://github.com/hoc081098/solivagant/blob/2eb1ef4beee875d63aaa882f7198cc738638ad75/samples/sample/desktop/src/commonMain/kotlin/com/hoc081098/solivagant/sample/main.kt#L18-L49)
+To display `MyAwesomeApp` on `Desktop`, use `androidx.compose.ui.window.application` and `Window` composable:
 
 ###### main.kt
 
@@ -274,10 +274,12 @@ fun main() {
 }
 ```
 
+> [!TIP]
+> For more information please check out [Desktop Sample main.kt](https://github.com/hoc081098/solivagant/blob/2eb1ef4beee875d63aaa882f7198cc738638ad75/samples/sample/desktop/src/commonMain/kotlin/com/hoc081098/solivagant/sample/main.kt#L18-L49)
+
 #### 3.4. iOs / tvOS / watchOS
 
-To display `MyAwesomeApp` on `iOS/tvOS/watchOS`, please check out [MainViewController.kt](https://github.com/hoc081098/solivagant/blob/master/samples/sample/shared/src/iosMain/kotlin/com/hoc081098/solivagant/sample/MainViewController.kt) and
-[iosApp ComposeView.swift](https://github.com/hoc081098/solivagant/blob/master/samples/sample/iosApp/iosApp/ComposeView.swift)
+To display `MyAwesomeApp` on `iOS/tvOS/watchOS`, use `ComposeUIViewController` (Kotlin - iosMain SourceSet) and `UIViewControllerRepresentable` (Swift - native code):
 
 ###### MainViewController.kt
 
@@ -294,7 +296,7 @@ fun MainViewController(savedStateSupport: SavedStateSupport): UIViewController {
     configure = { delegate = lifecycleOwnerUIVcDelegate },
   ) {
     LifecycleOwnerProvider(lifecycleOwnerUIVcDelegate) {
-      savedStateSupport.LocalProvider { SolivagantSampleApp() }
+      savedStateSupport.LocalProvider { MyAwesomeApp() }
     }
   }
 }
@@ -329,6 +331,10 @@ struct ComposeViewContainer: View {
   }
 }
 ```
+
+> [!TIP]
+> For more information please check out [MainViewController.kt](https://github.com/hoc081098/solivagant/blob/master/samples/sample/shared/src/iosMain/kotlin/com/hoc081098/solivagant/sample/MainViewController.kt)
+> and [iosApp ComposeView.swift](https://github.com/hoc081098/solivagant/blob/master/samples/sample/iosApp/iosApp/ComposeView.swift)
 
 ### 4. Use `NavEventNavigator` in `ViewModel` s / `@Composable` s to trigger navigation actions
 
