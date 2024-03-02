@@ -214,11 +214,34 @@ fun MyAwesomeApp(
     startRoute = StartScreenRoute,
     // should contain all destinations that can be navigated to
     destinations = AllDestinations,
+    // when passing a NavEventNavigator to NavHost, NavHost will take care of setting up the navigator by calling `NavigationSetup(navigator)`
     navEventNavigator = navigator,
     destinationChangedCallback = { currentRoute = it },
   )
 }
 ```
+
+> [!IMPORTANT]
+> When passing a `NavEventNavigator` to `NavHost` composable, the NavHost will take care of setting up the navigator by calling `NavigationSetup(navigator)`.
+> 
+> If you don't pass a "global" `NavEventNavigator` to `NavHost` composable, make sure there are property calls to `NavigationSetup(navigator)`.
+> For example, we can call `NavigationSetup(navigator)` in each destination composable.
+> 
+> ```kotlin
+> @JvmField
+> val StartScreenDestination: NavDestination = ScreenDestination<StartScreenRoute> {
+>   NavigationSetup(navigator = koinInject())
+>   StartScreen()
+> }
+>
+> @JvmField
+> val SearchProductScreenDestination: NavDestination = ScreenDestination<SearchProductScreenRoute> {
+>   NavigationSetup(navigator = koinInject())
+>   SearchProductsScreen()
+> }
+> ```
+>
+> 👉 Check out [scoped navigator sample](https://github.com/hoc081098/solivagant/blob/88e75468659fa3185edc47ef6b043ca86aaeee16/samples/simple/shared/src/commonMain/kotlin/com/hoc081098/solivagant/sample/simple/ui/detail/DetailNavigator.kt#L17C7-L17C22) for more information.
 
 #### 3.2. Android
 
