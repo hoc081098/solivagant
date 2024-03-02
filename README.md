@@ -298,7 +298,7 @@ fun main() {
 ```
 
 > [!TIP]
-> For more information please check out [Desktop Sample main.kt](https://github.com/hoc081098/solivagant/blob/2eb1ef4beee875d63aaa882f7198cc738638ad75/samples/sample/desktop/src/commonMain/kotlin/com/hoc081098/solivagant/sample/main.kt#L18-L49)
+> For more information please check out [Desktop sample main.kt](https://github.com/hoc081098/solivagant/blob/2eb1ef4beee875d63aaa882f7198cc738638ad75/samples/sample/desktop/src/commonMain/kotlin/com/hoc081098/solivagant/sample/main.kt#L18-L49)
 
 #### 3.4. iOs / tvOS / watchOS
 
@@ -356,8 +356,8 @@ struct ComposeViewContainer: View {
 ```
 
 > [!TIP]
-> For more information please check out [MainViewController.kt](https://github.com/hoc081098/solivagant/blob/master/samples/sample/shared/src/iosMain/kotlin/com/hoc081098/solivagant/sample/MainViewController.kt)
-> and [iosApp ComposeView.swift](https://github.com/hoc081098/solivagant/blob/master/samples/sample/iosApp/iosApp/ComposeView.swift)
+> For more information please check out [iOS sample MainViewController.kt](https://github.com/hoc081098/solivagant/blob/master/samples/sample/shared/src/iosMain/kotlin/com/hoc081098/solivagant/sample/MainViewController.kt)
+> and [iosApp sample ComposeView.swift](https://github.com/hoc081098/solivagant/blob/master/samples/sample/iosApp/iosApp/ComposeView.swift)
 
 ### 4. Use `NavEventNavigator` in `ViewModel` s / `@Composable` s to trigger navigation actions
 
