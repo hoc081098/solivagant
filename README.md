@@ -221,6 +221,28 @@ fun MyAwesomeApp(
 }
 ```
 
+> [!IMPORTANT]
+> When passing a `NavEventNavigator` to `NavHost` composable, the NavHost will take care of setting up the navigator by calling `NavigationSetup(navigator)`.
+> 
+> If you don't pass a "global" `NavEventNavigator` to `NavHost` composable, make sure there are property calls to `NavigationSetup(navigator)`.
+> For example, we can call `NavigationSetup(navigator)` in each destination composable.
+> 
+> ```kotlin
+> @JvmField
+> val StartScreenDestination: NavDestination = ScreenDestination<StartScreenRoute> {
+>   NavigationSetup(navigator = koinInject())
+>   StartScreen()
+> }
+>
+> @JvmField
+> val SearchProductScreenDestination: NavDestination = ScreenDestination<SearchProductScreenRoute> {
+>   NavigationSetup(navigator = koinInject())
+>   SearchProductsScreen()
+> }
+> ```
+>
+> 👉 Check out [scoped navigator sample](https://github.com/hoc081098/solivagant/blob/88e75468659fa3185edc47ef6b043ca86aaeee16/samples/simple/shared/src/commonMain/kotlin/com/hoc081098/solivagant/sample/simple/ui/detail/DetailNavigator.kt#L17C7-L17C22) for more information.
+
 #### 3.2. Android
 
 To display `MyAwesomeApp` on `Android`, use `setContent` in `Activity` / `Fragment`.
@@ -350,8 +372,6 @@ navigator.navigateBack()
 // in between from the back stack, depending on inclusive the destination
 navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 ```
-
-
 
 ## Samples
 
