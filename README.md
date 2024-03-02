@@ -105,7 +105,7 @@ You can read the [Freeletics Khonshu Navigation](https://freeletics.github.io/kh
 understand
 the concepts.
 
-Full samples are available [here](#Samples)
+👉 Full samples are available [here](#Samples).
 
 ### 1. Create `NavRoot`s, `NavRoute`s
 
