@@ -123,7 +123,7 @@ data object SearchProductScreenRoute : NavRoute
 
 ### 2. Create `NavDestination`s along with `Composable`s and `ViewModel`s
 
-- `StartScreen`: `StartScreenDestination`, `@Composable fun StartScreen()` and `StartViewModel`
+- Start screen:
 
 ```kotlin
 
@@ -134,6 +134,7 @@ val StartScreenDestination: NavDestination =
 @Composable
 internal fun StartScreen(
   modifier: Modifier = Modifier,
+  // kmpViewModel or kojectKmpViewModel can be used instead.
   viewModel: StartViewModel = koinKmpViewModel(),
 ) {
   // UI Composable
@@ -149,8 +150,7 @@ internal class StartViewModel(
 }
 ```
 
-- `SearchProductScreen`: `SearchProductScreenDestination`, `@Composable fun SearchProductsScreen()`
-  and `SearchProductsViewModel`
+- Search prodduct screen:
 
 ```kotlin
 @JvmField
@@ -160,6 +160,7 @@ val SearchProductScreenDestination: NavDestination =
 @Composable
 internal fun SearchProductsScreen(
   modifier: Modifier = Modifier,
+  // kmpViewModel or kojectKmpViewModel can be used instead.
   viewModel: SearchProductsViewModel = koinKmpViewModel<SearchProductsViewModel>(),
 ) {
   // UI Composable
@@ -180,7 +181,9 @@ internal class SearchProductsViewModel(
 
 ### 3. Setup
 
-- Gather all `NavDestination`s in a set and use `NavEventNavigator` to trigger navigation actions.
+#### 3.1. NavHost
+
+Gather all `NavDestination`s in a set and use `NavEventNavigator` to trigger navigation actions.
 
 ```kotlin
 @Stable
@@ -198,7 +201,7 @@ fun MyAwesomeApp(
   modifier: Modifier = Modifier,
 ) {
   // BaseRoute is the parent interface of NavRoute and NavRoot.
-  // It implements Parcelable, so it can be used with rememberSavable.
+  // It implements Parcelable so that it can be used with rememberSavable.
   var currentRoute: BaseRoute? by rememberSavable { mutableStateOf(null) }
 
   NavHost(
@@ -213,7 +216,9 @@ fun MyAwesomeApp(
 }
 ```
 
-- To display `MyAwesomeApp` on `Android`, use `setContent` in `Activity` or `Fragment`.
+#### 3.2. Android
+
+To display `MyAwesomeApp` on `Android`, use `setContent` in `Activity` / `Fragment`.
 
 ```kotlin
 class MainActivity : ComponentActivity() {
@@ -231,13 +236,12 @@ class MainActivity : ComponentActivity() {
 }
 ```
 
-- To display `MyAwesomeApp` on `Desktop`, please check out [Desktop Sample main.kt](https://github.com/hoc081098/solivagant/blob/2eb1ef4beee875d63aaa882f7198cc738638ad75/samples/sample/desktop/src/commonMain/kotlin/com/hoc081098/solivagant/sample/main.kt#L18-L49)
+#### 3.3. Desktop
+
+To display `MyAwesomeApp` on `Desktop`, please check out [Desktop Sample main.kt](https://github.com/hoc081098/solivagant/blob/2eb1ef4beee875d63aaa882f7198cc738638ad75/samples/sample/desktop/src/commonMain/kotlin/com/hoc081098/solivagant/sample/main.kt#L18-L49)
 
 ```kotlin
 fun main() {
-  startKoinCommon()
-  setupNapier()
-
   val lifecycleRegistry = LifecycleRegistry()
   val savedStateSupport = SavedStateSupport()
 
@@ -265,9 +269,11 @@ fun main() {
 }
 ```
 
-- To display `MyAwesomeApp` on `iOS/tvOS/watchOS`, ... TBD ... please check out [samples/sample/iosApp/iosApp/ContentView.swift](https://github.com/hoc081098/solivagant/blob/e47468b13fbd98c619cd973cd470036090ceed43/samples/sample/iosApp/iosApp/ContentView.swift#L19-L60)
+#### 3.4. iOs / tvOS / watchOS
 
-### 4.Use `NavEventNavigator` in `ViewModel` s or in `@Composable` s to trigger navigation actions
+To display `MyAwesomeApp` on `iOS/tvOS/watchOS`, ... TBD ... please check out [samples/sample/iosApp/iosApp/ContentView.swift](https://github.com/hoc081098/solivagant/blob/e47468b13fbd98c619cd973cd470036090ceed43/samples/sample/iosApp/iosApp/ContentView.swift#L19-L60)
+
+### 4. Use `NavEventNavigator` in `ViewModel` s / `@Composable` s to trigger navigation actions
 
 ```kotlin
 // navigate to the destination that the given route leads to
