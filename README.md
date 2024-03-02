@@ -105,6 +105,8 @@ You can read the [Freeletics Khonshu Navigation](https://freeletics.github.io/kh
 understand
 the concepts.
 
+Full samples are available [here](#Samples)
+
 ### 1. Create `NavRoot`s, `NavRoute`s
 
 ```kotlin
@@ -123,7 +125,7 @@ data object SearchProductScreenRoute : NavRoute
 
 ### 2. Create `NavDestination`s along with `Composable`s and `ViewModel`s
 
-- Start screen:
+###### StartScreen.kt
 
 ```kotlin
 
@@ -150,7 +152,7 @@ internal class StartViewModel(
 }
 ```
 
-- Search prodduct screen:
+###### SearchProductScreen.kt
 
 ```kotlin
 @JvmField
@@ -184,6 +186,8 @@ internal class SearchProductsViewModel(
 #### 3.1. NavHost
 
 Gather all `NavDestination`s in a set and use `NavEventNavigator` to trigger navigation actions.
+
+###### MyAwesomeApp.kt
 
 ```kotlin
 @Stable
@@ -220,6 +224,8 @@ fun MyAwesomeApp(
 
 To display `MyAwesomeApp` on `Android`, use `setContent` in `Activity` / `Fragment`.
 
+###### MainActivity.kt
+
 ```kotlin
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle) {
@@ -236,6 +242,8 @@ class MainActivity : ComponentActivity() {
 #### 3.3. Desktop
 
 To display `MyAwesomeApp` on `Desktop`, please check out [Desktop Sample main.kt](https://github.com/hoc081098/solivagant/blob/2eb1ef4beee875d63aaa882f7198cc738638ad75/samples/sample/desktop/src/commonMain/kotlin/com/hoc081098/solivagant/sample/main.kt#L18-L49)
+
+###### main.kt
 
 ```kotlin
 fun main() {
@@ -268,7 +276,57 @@ fun main() {
 
 #### 3.4. iOs / tvOS / watchOS
 
-To display `MyAwesomeApp` on `iOS/tvOS/watchOS`, please check out [samples/sample/iosApp/iosApp/ContentView.swift](https://github.com/hoc081098/solivagant/blob/e47468b13fbd98c619cd973cd470036090ceed43/samples/sample/iosApp/iosApp/ContentView.swift#L19-L60)
+To display `MyAwesomeApp` on `iOS/tvOS/watchOS`, please check out [MainViewController.kt](https://github.com/hoc081098/solivagant/blob/master/samples/sample/shared/src/iosMain/kotlin/com/hoc081098/solivagant/sample/MainViewController.kt) and
+[iosApp ComposeView.swift](https://github.com/hoc081098/solivagant/blob/master/samples/sample/iosApp/iosApp/ComposeView.swift)
+
+###### MainViewController.kt
+
+```kotlin
+fun MainViewController(savedStateSupport: SavedStateSupport): UIViewController {
+  val lifecycleOwnerUIVcDelegate =
+    LifecycleOwnerComposeUIViewControllerDelegate(hostLifecycleOwner = DIContainer.get())
+      .apply { bindTo(savedStateSupport) }
+      .apply { lifecycle.subscribe(LifecycleObserver) }
+
+  return ComposeUIViewController(
+    configure = { delegate = lifecycleOwnerUIVcDelegate },
+  ) {
+    LifecycleOwnerProvider(lifecycleOwnerUIVcDelegate) {
+      savedStateSupport.LocalProvider { SolivagantSampleApp() }
+    }
+  }
+}
+```
+
+###### ComposeView.swift
+
+```swift
+private struct ComposeView: UIViewControllerRepresentable {
+  let savedStateSupport: NavigationSavedStateSupport
+
+  func makeUIViewController(context: Context) -> UIViewController {
+    MainViewControllerKt.MainViewController(savedStateSupport: savedStateSupport)
+  }
+
+  func updateUIViewController(_ uiViewController: UIViewController, context: Context) { }
+}
+
+private class ComposeViewViewModel: ObservableObject {
+  let savedStateSupport = NavigationSavedStateSupport()
+  deinit {
+    self.savedStateSupport.clear()
+  }
+}
+
+struct ComposeViewContainer: View {
+  @StateObject private var viewModel = ComposeViewViewModel()
+
+  var body: some View {
+    ComposeView(savedStateSupport: viewModel.savedStateSupport)
+      .ignoresSafeArea(.keyboard) // Compose has own keyboard handler
+  }
+}
+```
 
 ### 4. Use `NavEventNavigator` in `ViewModel` s / `@Composable` s to trigger navigation actions
 
@@ -304,7 +362,7 @@ navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 ## Roadmap
 
 - [ ] Add more tests
-- [ ] Add more samples
+- [x] Add more samples
 - [ ] Add docs
 - [ ] Review supported targets
 - [ ] Polish and improve the implementation and the public API
