@@ -282,9 +282,11 @@ To display `MyAwesomeApp` on `iOS/tvOS/watchOS`, please check out [MainViewContr
 ###### MainViewController.kt
 
 ```kotlin
+val AppLifecycleOwner by lazy { AppLifecycleOwner() }
+
 fun MainViewController(savedStateSupport: SavedStateSupport): UIViewController {
   val lifecycleOwnerUIVcDelegate =
-    LifecycleOwnerComposeUIViewControllerDelegate(hostLifecycleOwner = DIContainer.get())
+    LifecycleOwnerComposeUIViewControllerDelegate(hostLifecycleOwner = AppLifecycleOwner)
       .apply { bindTo(savedStateSupport) }
       .apply { lifecycle.subscribe(LifecycleObserver) }
 
