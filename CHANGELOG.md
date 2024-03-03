@@ -2,6 +2,12 @@
 
 ## [Unreleased] - TBD
 
+- [JetBrains Compose Multiplatform `1.6.0`](https://github.com/JetBrains/compose-multiplatform/releases/tag/v1.6.0).
+- [KMP ViewModel `0.7.1`](https://github.com/hoc081098/kmp-viewmodel/releases/tag/0.7.1).
+- **New**: Add support for Kotlin/Wasm (`wasmJs` target) 🎉.
+- **New**: Add `LenientLifecycleRegistry`, a `LifecycleRegistry` without the state checking,
+  and has `moveTo` method to move to a specific state. This is a flexible version of `LifecycleRegistry`.
+
 ## [0.1.1] - Feb 25, 2024
 
 ### Fixed
