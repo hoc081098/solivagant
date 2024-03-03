@@ -1,6 +1,7 @@
 @file:Suppress("ClassName")
 
 import java.net.URL
+import org.jetbrains.kotlin.gradle.dsl.JsModuleKind
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 @Suppress("DSL_SCOPE_VIOLATION")
@@ -54,14 +55,21 @@ kotlin {
   }
 
   js(IR) {
-    compilations.all {
-      kotlinOptions {
-        sourceMap = true
-        moduleKind = "commonjs"
+    moduleName = property("POM_ARTIFACT_ID")!!.toString()
+    compilations.configureEach {
+      compilerOptions.configure {
+        sourceMap.set(true)
+        moduleKind.set(JsModuleKind.MODULE_COMMONJS)
       }
     }
     browser()
-    nodejs()
+  }
+  @OptIn(org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl::class)
+  wasmJs {
+    // Module name should be different from the one from JS
+    // otherwise IC tasks that start clashing different modules with the same module name
+    moduleName = property("POM_ARTIFACT_ID")!!.toString() + "Wasm"
+    browser()
   }
 
   iosArm64()
@@ -148,7 +156,11 @@ kotlin {
       }
     }
 
+    // We use a common folder instead of a common source set because there is no commonizer
+    // which exposes the browser APIs across these two targets.
     jsMain {
+      kotlin.srcDir("src/browserMain/kotlin")
+
       dependsOn(nonAndroidMain)
       dependsOn(nonJvmMain)
     }
@@ -158,6 +170,20 @@ kotlin {
 
       dependencies {
         implementation(kotlin("test-js"))
+      }
+    }
+    val wasmJsMain by getting {
+      kotlin.srcDir("src/browserMain/kotlin")
+
+      dependsOn(nonAndroidMain)
+      dependsOn(nonJvmMain)
+    }
+    val wasmJsTest by getting {
+      dependsOn(nonAndroidTest)
+      dependsOn(nonJvmTest)
+
+      dependencies {
+        implementation(kotlin("test-wasm-js"))
       }
     }
 
