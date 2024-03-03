@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
@@ -45,6 +46,13 @@ internal fun SecondScreen(
         .wrapContentHeight(),
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+      Text(
+        text = "Second screen",
+        style = MaterialTheme.typography.headlineMedium,
+      )
+
+      Spacer(modifier = Modifier.height(16.dp))
+
       Image(
         modifier = Modifier.size(200.dp),
         painter = painterResource(Res.drawable.compose_multiplatform),
