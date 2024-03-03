@@ -34,6 +34,16 @@ kotlin {
       implementation(compose.ui)
       implementation(compose.components.resources)
       implementation(compose.components.uiToolingPreview)
+
+      api(projects.navigation)
+
+      api(libs.kmp.viewmodel.core)
+      api(libs.kmp.viewmodel.savedstate)
+      implementation(libs.kmp.viewmodel.compose)
+
+      api(libs.coroutines.core)
+      api(libs.kotlinx.collections.immutable)
+      implementation(libs.flowExt)
     }
   }
 }
