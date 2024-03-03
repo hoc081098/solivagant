@@ -1,4 +1,4 @@
-package com.hoc081098.solivagant.sample.wasm.start
+package com.hoc081098.solivagant.sample.wasm.second
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -19,7 +19,6 @@ import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
 import com.hoc081098.kmp.viewmodel.createSavedStateHandle
 import com.hoc081098.solivagant.navigation.NavEventNavigator
 import com.hoc081098.solivagant.sample.wasm.LocalNavigator
-import com.hoc081098.solivagant.sample.wasm.second.SecondScreenRoute
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import solivagant.samples.`solivagant-wasm-sample`.generated.resources.Res
@@ -27,21 +26,23 @@ import solivagant.samples.`solivagant-wasm-sample`.generated.resources.compose_m
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-internal fun StartScreen(
+internal fun SecondScreen(
   modifier: Modifier = Modifier,
   navigator: NavEventNavigator = LocalNavigator.current,
-  viewModel: StartViewModel = kmpViewModel {
-    StartViewModel(savedStateHandle = createSavedStateHandle())
+  viewModel: SecondViewModel = kmpViewModel {
+    SecondViewModel(savedStateHandle = createSavedStateHandle())
   },
 ) {
-  SideEffect { println(">>> StartScreen recomposition ${viewModel.route}") }
+  SideEffect { println(">>> SecondScreen recomposition ${viewModel.route}") }
 
   Box(
     modifier = modifier,
     contentAlignment = Alignment.Center,
   ) {
     Column(
-      modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+      modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight(),
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
       Image(
@@ -53,9 +54,9 @@ internal fun StartScreen(
       Spacer(modifier = Modifier.height(16.dp))
 
       ElevatedButton(
-        onClick = { navigator.navigateTo(SecondScreenRoute) },
+        onClick = { navigator.navigateBack() },
       ) {
-        Text("Go to second screen")
+        Text("Back to start screen")
       }
     }
   }
