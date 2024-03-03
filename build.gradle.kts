@@ -8,6 +8,8 @@ import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
+import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
+import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -147,5 +149,13 @@ plugins.withType<NodeJsRootPlugin> {
   //   error karma@6.4.2: The engine "node" is incompatible with this module.
   tasks.withType<KotlinNpmInstallTask>().all {
     args += "--ignore-engines"
+  }
+}
+
+rootProject.plugins.withType<org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin> {
+  rootProject.the<YarnRootExtension>().run {
+    yarnLockMismatchReport = YarnLockMismatchReport.WARNING
+    reportNewYarnLock = true
+    yarnLockAutoReplace = false
   }
 }
