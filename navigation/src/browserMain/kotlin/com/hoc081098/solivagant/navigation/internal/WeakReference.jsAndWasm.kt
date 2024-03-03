@@ -18,7 +18,7 @@ package com.hoc081098.solivagant.navigation.internal
 
 // TODO: https://youtrack.jetbrains.com/issue/KT-66230/Support-Weak-References-to-Kotlin-objects-in-WASM-JS-targets
 // Original JS reference
-public external class WeakRef<T : JsAny>(target: T) {
+public external class WeakRef<T : JsAny>(@Suppress("UnusedPrivateProperty") target: T) {
   /**
    * Returns the WeakRef instance's target object, or undefined if the target object has been
    * reclaimed.
@@ -31,5 +31,7 @@ internal actual class WeakReference<T : Any> actual constructor(referred: T) {
 
   actual fun get(): T? = ref.deref()?.unsafeCast<JsReference<T>>()?.get()
 
-  actual fun clear() {}
+  actual fun clear() {
+    // Nothing to do
+  }
 }
