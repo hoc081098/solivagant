@@ -1,8 +1,5 @@
 package com.hoc081098.solivagant.sample.wasm
 
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -30,7 +27,6 @@ import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.NavDestination
 import com.hoc081098.solivagant.navigation.NavEventNavigator
 import com.hoc081098.solivagant.navigation.NavHost
-import com.hoc081098.solivagant.navigation.NavHostDefaults
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.sample.wasm.second.SecondScreenDestination
 import com.hoc081098.solivagant.sample.wasm.start.StartScreenDestination
@@ -84,30 +80,6 @@ fun App(modifier: Modifier = Modifier) {
             destinations = AllDestinations,
             navEventNavigator = Navigator,
             destinationChangedCallback = { currentRoute = it },
-            transitionAnimations = NavHostDefaults.transitionAnimations(
-              enterTransition = {
-                slideIntoContainer(
-                  towards = AnimatedContentTransitionScope.SlideDirection.Left,
-                )
-              },
-              exitTransition = {
-                slideOutOfContainer(
-                  towards = AnimatedContentTransitionScope.SlideDirection.Left,
-                )
-              },
-              popEnterTransition = {
-                slideIntoContainer(
-                  towards = AnimatedContentTransitionScope.SlideDirection.Right,
-                )
-              },
-              popExitTransition = {
-                slideOutOfContainer(
-                  towards = AnimatedContentTransitionScope.SlideDirection.Right,
-                )
-              },
-              replaceEnterTransition = { fadeIn() },
-              replaceExitTransition = { fadeOut() },
-            ),
           )
         }
       }
