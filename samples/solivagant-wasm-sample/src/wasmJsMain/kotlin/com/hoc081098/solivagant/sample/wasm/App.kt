@@ -103,7 +103,7 @@ fun App(modifier: Modifier = Modifier) {
                 .align(Alignment.CenterHorizontally)
                 .background(lifecycleState.color)
                 .padding(16.dp),
-              text = "Lifecycle state: $lifecycleState",
+              text = "App lifecycle state: $lifecycleState",
               textAlign = TextAlign.Center,
               style = MaterialTheme.typography.titleMedium,
             )
