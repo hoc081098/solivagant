@@ -48,7 +48,7 @@ fun main() {
 private fun rememberWindowVisibilityState(): State<Boolean> =
   produceState(true) {
     while (true) {
-      delay(7000)
+      delay(@Suppress("MagicNumber") 7000)
       value = !value
     }
   }

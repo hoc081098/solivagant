@@ -18,7 +18,7 @@ internal class SecondViewModel(
   internal val timerFlow: StateFlow<Long?> = interval(Duration.ZERO, 1.seconds)
     .stateIn(
       scope = viewModelScope,
-      started = SharingStarted.WhileSubscribed(5_000),
+      started = SharingStarted.WhileSubscribed(@Suppress("MagicNumber") 5_000),
       initialValue = null,
     )
 

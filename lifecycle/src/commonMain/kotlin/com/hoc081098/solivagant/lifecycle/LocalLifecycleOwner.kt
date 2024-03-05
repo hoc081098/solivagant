@@ -46,7 +46,9 @@ public object LocalLifecycleOwner {
     currentComposer.run {
       try {
         consume(LocalLifecycleOwner)
-      } catch (e: MissingLifecycleOwnerException) {
+      } catch (
+        @Suppress("SwallowedException") e: MissingLifecycleOwnerException,
+      ) {
         null
       }
     }
