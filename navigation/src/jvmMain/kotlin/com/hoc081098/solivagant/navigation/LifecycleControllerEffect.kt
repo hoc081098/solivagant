@@ -22,15 +22,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.window.WindowState
-import com.hoc081098.solivagant.lifecycle.LenientLifecycleRegistry
 import com.hoc081098.solivagant.lifecycle.Lifecycle
 import com.hoc081098.solivagant.lifecycle.LifecycleDestroyedException
-import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.lifecycle.LifecycleRegistry
-import com.hoc081098.solivagant.lifecycle.compose.rememberLifecycleOwner
-import java.awt.event.WindowEvent
-import java.awt.event.WindowFocusListener
-import java.awt.event.WindowListener
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -165,65 +159,4 @@ private fun moveToStopped(lifecycleRegistry: LifecycleRegistry) {
     Lifecycle.State.DESTROYED ->
       throw LifecycleDestroyedException()
   }
-}
-
-@Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-@Composable
-public fun rememberWindowLifecycleOwner(): LifecycleOwner? {
-  val window = androidx.compose.ui.window.LocalWindow.current
-    ?: return null
-
-  val lifecycleRegistry = remember(window) { LenientLifecycleRegistry() }
-
-  DisposableEffect(window) {
-    lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_CREATE)
-
-    val listener = object : WindowListener, WindowFocusListener {
-      override fun windowOpened(event: WindowEvent?) {
-        TODO("Not yet implemented")
-      }
-
-      override fun windowClosing(event: WindowEvent?) {
-        TODO("Not yet implemented")
-      }
-
-      override fun windowClosed(event: WindowEvent?) {
-        TODO("Not yet implemented")
-      }
-
-      override fun windowIconified(event: WindowEvent?) {
-        TODO("Not yet implemented")
-      }
-
-      override fun windowDeiconified(event: WindowEvent?) {
-        TODO("Not yet implemented")
-      }
-
-      override fun windowActivated(event: WindowEvent?) {
-        TODO("Not yet implemented")
-      }
-
-      override fun windowDeactivated(event: WindowEvent?) {
-        TODO("Not yet implemented")
-      }
-
-      //region WindowFocusListener
-      override fun windowGainedFocus(event: WindowEvent?) {
-        TODO("Not yet implemented")
-      }
-
-      override fun windowLostFocus(event: WindowEvent?) {
-        TODO("Not yet implemented")
-      }
-      //endregion
-    }
-
-    window.addWindowListener(listener)
-    window.addWindowFocusListener(listener)
-    onDispose {
-      lifecycleRegistry.onStateChanged(Lifecycle.Event.ON_DESTROY)
-    }
-  }
-
-  return rememberLifecycleOwner(lifecycleRegistry)
 }
