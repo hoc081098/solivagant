@@ -1,11 +1,10 @@
 package com.hoc081098.solivagant.sample.wasm
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -28,8 +27,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.hoc081098.solivagant.lifecycle.Lifecycle
 import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 import com.hoc081098.solivagant.lifecycle.compose.currentStateAsState
 import com.hoc081098.solivagant.navigation.BaseRoute
@@ -97,10 +98,11 @@ fun App(modifier: Modifier = Modifier) {
               destinationChangedCallback = { currentRoute = it },
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
-
             Text(
-              modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),
+              modifier = Modifier.fillMaxWidth()
+                .align(Alignment.CenterHorizontally)
+                .background(lifecycleState.color)
+                .padding(16.dp),
               text = "Lifecycle state: $lifecycleState",
               textAlign = TextAlign.Center,
               style = MaterialTheme.typography.titleMedium,
@@ -111,3 +113,12 @@ fun App(modifier: Modifier = Modifier) {
     }
   }
 }
+
+private val Lifecycle.State.color: Color
+  get() = when (this) {
+    Lifecycle.State.DESTROYED -> Color.Red
+    Lifecycle.State.INITIALIZED -> Color.DarkGray
+    Lifecycle.State.CREATED -> Color.Blue
+    Lifecycle.State.STARTED -> Color.Magenta
+    Lifecycle.State.RESUMED -> Color.Green
+  }
