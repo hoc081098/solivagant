@@ -1,7 +1,11 @@
 package com.hoc081098.solivagant.sample.wasm
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -22,7 +26,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
+import com.hoc081098.solivagant.lifecycle.compose.currentStateAsState
 import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.NavDestination
 import com.hoc081098.solivagant.navigation.NavEventNavigator
@@ -47,6 +56,7 @@ private val AllDestinations: ImmutableSet<NavDestination> = persistentSetOf(
 @Composable
 fun App(modifier: Modifier = Modifier) {
   var currentRoute by rememberSaveable { mutableStateOf<BaseRoute?>(null) }
+  val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
 
   CompositionLocalProvider(LocalNavigator provides Navigator) {
     MaterialTheme {
@@ -72,15 +82,30 @@ fun App(modifier: Modifier = Modifier) {
             )
           },
         ) { innerPadding ->
-          NavHost(
+          Column(
             modifier = Modifier.fillMaxSize()
               .padding(innerPadding)
               .consumeWindowInsets(innerPadding),
-            startRoute = StartScreenRoute,
-            destinations = AllDestinations,
-            navEventNavigator = Navigator,
-            destinationChangedCallback = { currentRoute = it },
-          )
+          ) {
+            NavHost(
+              modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+              startRoute = StartScreenRoute,
+              destinations = AllDestinations,
+              navEventNavigator = Navigator,
+              destinationChangedCallback = { currentRoute = it },
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+              modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),
+              text = "Lifecycle state: $lifecycleState",
+              textAlign = TextAlign.Center,
+              style = MaterialTheme.typography.titleMedium,
+            )
+          }
         }
       }
     }

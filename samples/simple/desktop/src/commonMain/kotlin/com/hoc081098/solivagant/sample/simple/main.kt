@@ -12,7 +12,7 @@ import com.hoc081098.solivagant.lifecycle.compose.currentStateAsState
 import com.hoc081098.solivagant.lifecycle.compose.rememberLifecycleOwner
 import com.hoc081098.solivagant.navigation.ClearOnDispose
 import com.hoc081098.solivagant.navigation.LifecycleControllerEffect
-import com.hoc081098.solivagant.navigation.LocalProvider
+import com.hoc081098.solivagant.navigation.ProvideCompositionLocals
 import com.hoc081098.solivagant.navigation.SavedStateSupport
 import org.koin.core.logger.Level
 
@@ -43,7 +43,7 @@ fun main() {
       title = "Simple Solivagant sample $lifecycleState",
       state = windowState,
     ) {
-      savedStateSupport.LocalProvider(LocalLifecycleOwner provides lifecycleOwner) {
+      savedStateSupport.ProvideCompositionLocals(LocalLifecycleOwner provides lifecycleOwner) {
         SimpleSolivagantSampleApp()
       }
     }

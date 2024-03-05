@@ -45,6 +45,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.InternalComposeApi
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -97,11 +98,7 @@ public fun NavHost(
   destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
   transitionAnimations: NavHostTransitionAnimations = NavHostDefaults.transitionAnimations(),
 ) {
-  val lifecycleOwner = rememberPlatformLifecycleOwner()
-
-  CompositionLocalProvider(
-    LocalLifecycleOwner providesDefault lifecycleOwner,
-  ) {
+  ProvideLifecycleOwner {
     val executor = rememberNavigationExecutor(
       startRoot = startRoute,
       destinations = destinations,
@@ -363,6 +360,19 @@ private fun SystemBackHandling(executor: MultiStackNavigationExecutor) {
     onDispose {
       callback.remove()
     }
+  }
+}
+
+@Composable
+private fun ProvideLifecycleOwner(content: @Composable () -> Unit) {
+  @OptIn(InternalComposeApi::class)
+  if (LocalLifecycleOwner.currentOrNull() != null) {
+    content()
+  } else {
+    CompositionLocalProvider(
+      LocalLifecycleOwner provides rememberPlatformLifecycleOwner(),
+      content = content,
+    )
   }
 }
 

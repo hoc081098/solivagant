@@ -18,6 +18,11 @@ package com.hoc081098.solivagant.navigation.internal
 
 import androidx.compose.runtime.Composable
 import com.hoc081098.solivagant.lifecycle.LifecycleOwner
+import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 
+/**
+ * Returns a fallback (default) [LifecycleOwner] for the current platform.
+ * It is used in case that there is no [LifecycleOwner] provided by [LocalLifecycleOwner].
+ */
 @Composable
 internal expect fun rememberPlatformLifecycleOwner(): LifecycleOwner
