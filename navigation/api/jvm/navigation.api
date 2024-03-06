@@ -1,3 +1,6 @@
+public abstract interface annotation class com/hoc081098/solivagant/navigation/ExperimentalSolivagantApi : java/lang/annotation/Annotation {
+}
+
 public final class com/hoc081098/solivagant/navigation/LifecycleControllerEffectKt {
 	public static final fun LifecycleControllerEffect (Lcom/hoc081098/solivagant/lifecycle/LifecycleRegistry;Landroidx/compose/ui/window/WindowState;Landroidx/compose/runtime/Composer;I)V
 }
@@ -35,6 +38,10 @@ public final class com/hoc081098/solivagant/navigation/RememberCloseableOnRouteK
 	public static final fun rememberCloseableOnRoute (Lcom/hoc081098/solivagant/navigation/BaseRoute;Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)Ljava/io/Closeable;
 }
 
+public final class com/hoc081098/solivagant/navigation/RememberWindowLifecycleOwnerKt {
+	public static final fun rememberWindowLifecycleOwner (Landroidx/compose/runtime/Composer;I)Lcom/hoc081098/solivagant/lifecycle/LifecycleOwner;
+}
+
 public final class com/hoc081098/solivagant/navigation/SavedStateSupport : androidx/compose/runtime/saveable/SaveableStateRegistry, com/hoc081098/kmp/viewmodel/SavedStateHandleFactory, com/hoc081098/kmp/viewmodel/ViewModelStoreOwner {
 	public static final field $stable I
 	public fun <init> ()V
@@ -63,6 +70,6 @@ public final class com/hoc081098/solivagant/navigation/SavedStateSupport$Closeab
 
 public final class com/hoc081098/solivagant/navigation/SavedStateSupportKt {
 	public static final fun ClearOnDispose (Lcom/hoc081098/solivagant/navigation/SavedStateSupport;Landroidx/compose/runtime/Composer;I)V
-	public static final fun LocalProvider (Lcom/hoc081098/solivagant/navigation/SavedStateSupport;[Landroidx/compose/runtime/ProvidedValue;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public static final fun ProvideCompositionLocals (Lcom/hoc081098/solivagant/navigation/SavedStateSupport;[Landroidx/compose/runtime/ProvidedValue;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
 }
 
