@@ -15,7 +15,7 @@
 - **New**: Add `LenientLifecycleRegistry`, a `LifecycleRegistry` without the state checking,
   and has `moveTo` method to move to a specific state. This is a flexible version of `LifecycleRegistry`.
 - **New**: Add `rememberWindowLifecycleOwner()` for Desktop (JVM) platform.
-- **New**: Add `SavedStateSupport.ProvideCompositionLocals` and `SavedStateSupport.ClearOnDispose`.
+- **New**: Add `SavedStateSupport.ProvideCompositionLocals` and `SavedStateSupport.ClearOnDispose` for non-Android platforms.
 
 ### Fixed
 
