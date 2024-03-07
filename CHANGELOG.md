@@ -6,7 +6,7 @@
 
 ### Update dependencies
 
-- [JetBrains Compose Multiplatform `1.6.0`](https://github.com/JetBrains/compose-multiplatform/releases/tag/v1.6.0).
+- [JetBrains Compose Multiplatform `1.6.0` 🎉](https://github.com/JetBrains/compose-multiplatform/releases/tag/v1.6.0).
 - [KMP ViewModel `0.7.1`](https://github.com/hoc081098/kmp-viewmodel/releases/tag/0.7.1).
 
 ### Added
