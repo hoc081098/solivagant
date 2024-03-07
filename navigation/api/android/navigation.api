@@ -1,3 +1,6 @@
+public abstract interface annotation class com/hoc081098/solivagant/navigation/ExperimentalSolivagantApi : java/lang/annotation/Annotation {
+}
+
 public final class com/hoc081098/solivagant/navigation/NavHostDefaults {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/hoc081098/solivagant/navigation/NavHostDefaults;

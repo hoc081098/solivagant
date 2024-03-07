@@ -223,10 +223,10 @@ fun MyAwesomeApp(
 
 > [!IMPORTANT]
 > When passing a `NavEventNavigator` to `NavHost` composable, the NavHost will take care of setting up the navigator by calling `NavigationSetup(navigator)`.
-> 
+>
 > If you don't pass a "global" `NavEventNavigator` to `NavHost` composable, make sure there are property calls to `NavigationSetup(navigator)`.
 > For example, we can call `NavigationSetup(navigator)` in each destination composable.
-> 
+>
 > ```kotlin
 > @JvmField
 > val StartScreenDestination: NavDestination = ScreenDestination<StartScreenRoute> {
@@ -290,7 +290,7 @@ fun main() {
     ) {
       LifecycleOwnerProvider(lifecycleOwner) {
         // navigator can be retrieved from the DI container, such as Koin, Koject, etc...
-        savedStateSupport.LocalProvider { MyAwesomeApp() }
+        savedStateSupport.ProvideCompositionLocals { MyAwesomeApp() }
       }
     }
   }
@@ -319,7 +319,7 @@ fun MainViewController(savedStateSupport: SavedStateSupport): UIViewController {
     configure = { delegate = lifecycleOwnerUIVcDelegate },
   ) {
     LifecycleOwnerProvider(lifecycleOwnerUIVcDelegate) {
-      savedStateSupport.LocalProvider { MyAwesomeApp() }
+      savedStateSupport.ProvideCompositionLocals { MyAwesomeApp() }
     }
   }
 }

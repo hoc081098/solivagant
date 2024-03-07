@@ -17,10 +17,14 @@ package com.hoc081098.solivagant.lifecycle
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.InternalComposeApi
 import androidx.compose.runtime.ProvidedValue
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.currentComposer
 import androidx.compose.runtime.staticCompositionLocalOf
+
+internal class MissingLifecycleOwnerException : IllegalStateException("No LifecycleOwner was provided")
 
 /**
  * The CompositionLocal containing the current [LifecycleOwner].
@@ -32,8 +36,22 @@ public object LocalLifecycleOwner {
    */
   @Suppress("MemberNameEqualsClassName")
   private val LocalLifecycleOwner = staticCompositionLocalOf<LifecycleOwner> {
-    error("No LifecycleOwner was provided")
+    throw MissingLifecycleOwnerException()
   }
+
+  @InternalComposeApi
+  @Composable
+  @ReadOnlyComposable
+  public fun currentOrNull(): LifecycleOwner? =
+    currentComposer.run {
+      try {
+        consume(LocalLifecycleOwner)
+      } catch (
+        @Suppress("SwallowedException") e: MissingLifecycleOwnerException,
+      ) {
+        null
+      }
+    }
 
   /**
    * Returns current composition local value for the owner.
@@ -50,9 +68,6 @@ public object LocalLifecycleOwner {
    */
   public infix fun provides(lifecycleOwner: LifecycleOwner): ProvidedValue<LifecycleOwner> =
     LocalLifecycleOwner.provides(lifecycleOwner)
-
-  public infix fun providesDefault(lifecycleOwner: LifecycleOwner): ProvidedValue<LifecycleOwner> =
-    LocalLifecycleOwner.providesDefault(lifecycleOwner)
 }
 
 /**

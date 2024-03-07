@@ -2,53 +2,56 @@ package com.hoc081098.solivagant.sample.simple
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.State
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import androidx.compose.ui.window.rememberWindowState
-import com.hoc081098.solivagant.lifecycle.LifecycleRegistry
 import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
-import com.hoc081098.solivagant.lifecycle.compose.currentStateAsState
-import com.hoc081098.solivagant.lifecycle.compose.rememberLifecycleOwner
 import com.hoc081098.solivagant.navigation.ClearOnDispose
-import com.hoc081098.solivagant.navigation.LifecycleControllerEffect
-import com.hoc081098.solivagant.navigation.LocalProvider
+import com.hoc081098.solivagant.navigation.ExperimentalSolivagantApi
+import com.hoc081098.solivagant.navigation.ProvideCompositionLocals
 import com.hoc081098.solivagant.navigation.SavedStateSupport
+import com.hoc081098.solivagant.navigation.rememberWindowLifecycleOwner
+import kotlinx.coroutines.delay
 import org.koin.core.logger.Level
 
+@OptIn(ExperimentalSolivagantApi::class)
 fun main() {
   startKoinCommon {
     printLogger(level = Level.DEBUG)
   }
   setupNapier()
 
-  val lifecycleRegistry = LifecycleRegistry()
   val savedStateSupport = SavedStateSupport()
 
   application {
-    val windowState = rememberWindowState()
-    val lifecycleOwner = rememberLifecycleOwner(lifecycleRegistry)
-
-    LifecycleControllerEffect(
-      lifecycleRegistry = lifecycleRegistry,
-      windowState = windowState,
-    )
-    val lifecycleState by lifecycleRegistry.currentStateAsState()
-
     savedStateSupport.ClearOnDispose()
 
-    // if (produceState<Boolean>(true) { while (true) { delay(7000); value=!value }  }.value)
+    // if (rememberWindowVisibilityState().value)
     Window(
       onCloseRequest = ::exitApplication,
-      title = "Simple Solivagant sample $lifecycleState",
-      state = windowState,
+      title = "Simple Solivagant sample",
     ) {
-      savedStateSupport.LocalProvider(LocalLifecycleOwner provides lifecycleOwner) {
+      val lifecycleOwner = checkNotNull(rememberWindowLifecycleOwner()) {
+        "rememberWindowLifecycleOwner returns null"
+      }
+
+      savedStateSupport.ProvideCompositionLocals(LocalLifecycleOwner provides lifecycleOwner) {
         SimpleSolivagantSampleApp()
       }
     }
   }
 }
+
+@Suppress("UnusedPrivateMember", "unused") // To demo
+@Composable
+private fun rememberWindowVisibilityState(): State<Boolean> =
+  produceState(true) {
+    while (true) {
+      delay(@Suppress("MagicNumber") 7000)
+      value = !value
+    }
+  }
 
 @Preview
 @Composable
