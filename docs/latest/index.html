@@ -836,11 +836,31 @@ See <a href="https://github.com/hoc081098/kmp-viewmodel?tab=readme-ov-file#2-kmp
 <span class="w">    </span><span class="n">startRoute</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">StartScreenRoute</span><span class="p">,</span>
 <span class="w">    </span><span class="c1">// should contain all destinations that can be navigated to</span>
 <span class="w">    </span><span class="n">destinations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AllDestinations</span><span class="p">,</span>
+<span class="w">    </span><span class="c1">// when passing a NavEventNavigator to NavHost, NavHost will take care of setting up the navigator by calling `NavigationSetup(navigator)`</span>
 <span class="w">    </span><span class="n">navEventNavigator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">navigator</span><span class="p">,</span>
 <span class="w">    </span><span class="n">destinationChangedCallback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">currentRoute</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">it</span><span class="w"> </span><span class="p">},</span>
 <span class="w">  </span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div>
+<blockquote>
+<p>[!IMPORTANT]
+When passing a <code>NavEventNavigator</code> to <code>NavHost</code> composable, the NavHost will take care of setting up the navigator by calling <code>NavigationSetup(navigator)</code>.</p>
+<p>If you don&rsquo;t pass a &ldquo;global&rdquo; <code>NavEventNavigator</code> to <code>NavHost</code> composable, make sure there are property calls to <code>NavigationSetup(navigator)</code>.
+For example, we can call <code>NavigationSetup(navigator)</code> in each destination composable.</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@JvmField</span>
+<span class="kd">val</span><span class="w"> </span><span class="nv">StartScreenDestination</span><span class="p">:</span><span class="w"> </span><span class="n">NavDestination</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ScreenDestination</span><span class="o">&lt;</span><span class="n">StartScreenRoute</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">NavigationSetup</span><span class="p">(</span><span class="n">navigator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">koinInject</span><span class="p">())</span>
+<span class="w">  </span><span class="n">StartScreen</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="nd">@JvmField</span>
+<span class="kd">val</span><span class="w"> </span><span class="nv">SearchProductScreenDestination</span><span class="p">:</span><span class="w"> </span><span class="n">NavDestination</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ScreenDestination</span><span class="o">&lt;</span><span class="n">SearchProductScreenRoute</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">NavigationSetup</span><span class="p">(</span><span class="n">navigator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">koinInject</span><span class="p">())</span>
+<span class="w">  </span><span class="n">SearchProductsScreen</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>👉 Check out <a href="https://github.com/hoc081098/solivagant/blob/88e75468659fa3185edc47ef6b043ca86aaeee16/samples/simple/shared/src/commonMain/kotlin/com/hoc081098/solivagant/sample/simple/ui/detail/DetailNavigator.kt#L17C7-L17C22">scoped navigator sample</a> for more information.</p>
+</blockquote>
 <h4 id="32-android">3.2. Android<a class="headerlink" href="#32-android" title="Permanent link">&para;</a></h4>
 <p>To display <code>MyAwesomeApp</code> on <code>Android</code>, use <code>setContent</code> in <code>Activity</code> / <code>Fragment</code>.</p>
 <h6 id="mainactivitykt">MainActivity.kt<a class="headerlink" href="#mainactivitykt" title="Permanent link">&para;</a></h6>
@@ -856,7 +876,7 @@ See <a href="https://github.com/hoc081098/kmp-viewmodel?tab=readme-ov-file#2-kmp
 <span class="p">}</span>
 </code></pre></div>
 <h4 id="33-desktop">3.3. Desktop<a class="headerlink" href="#33-desktop" title="Permanent link">&para;</a></h4>
-<p>To display <code>MyAwesomeApp</code> on <code>Desktop</code>, please check out <a href="https://github.com/hoc081098/solivagant/blob/2eb1ef4beee875d63aaa882f7198cc738638ad75/samples/sample/desktop/src/commonMain/kotlin/com/hoc081098/solivagant/sample/main.kt#L18-L49">Desktop Sample main.kt</a></p>
+<p>To display <code>MyAwesomeApp</code> on <code>Desktop</code>, use <code>androidx.compose.ui.window.application</code> and <code>Window</code> composable:</p>
 <h6 id="mainkt">main.kt<a class="headerlink" href="#mainkt" title="Permanent link">&para;</a></h6>
 <div class="highlight"><pre><span></span><code><span class="kd">fun</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="kd">val</span><span class="w"> </span><span class="nv">lifecycleRegistry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LifecycleRegistry</span><span class="p">()</span>
@@ -879,19 +899,24 @@ See <a href="https://github.com/hoc081098/kmp-viewmodel?tab=readme-ov-file#2-kmp
 <span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="n">LifecycleOwnerProvider</span><span class="p">(</span><span class="n">lifecycleOwner</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// navigator can be retrieved from the DI container, such as Koin, Koject, etc...</span>
-<span class="w">        </span><span class="n">savedStateSupport</span><span class="p">.</span><span class="na">LocalProvider</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">MyAwesomeApp</span><span class="p">()</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="n">savedStateSupport</span><span class="p">.</span><span class="na">ProvideCompositionLocals</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">MyAwesomeApp</span><span class="p">()</span><span class="w"> </span><span class="p">}</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
+<blockquote>
+<p>[!TIP]
+For more information please check out <a href="https://github.com/hoc081098/solivagant/blob/2eb1ef4beee875d63aaa882f7198cc738638ad75/samples/sample/desktop/src/commonMain/kotlin/com/hoc081098/solivagant/sample/main.kt#L18-L49">Desktop sample main.kt</a></p>
+</blockquote>
 <h4 id="34-ios-tvos-watchos">3.4. iOs / tvOS / watchOS<a class="headerlink" href="#34-ios-tvos-watchos" title="Permanent link">&para;</a></h4>
-<p>To display <code>MyAwesomeApp</code> on <code>iOS/tvOS/watchOS</code>, please check out <a href="https://github.com/hoc081098/solivagant/blob/master/samples/sample/shared/src/iosMain/kotlin/com/hoc081098/solivagant/sample/MainViewController.kt">MainViewController.kt</a> and
-<a href="https://github.com/hoc081098/solivagant/blob/master/samples/sample/iosApp/iosApp/ComposeView.swift">iosApp ComposeView.swift</a></p>
+<p>To display <code>MyAwesomeApp</code> on <code>iOS/tvOS/watchOS</code>, use <code>ComposeUIViewController</code> (Kotlin - iosMain SourceSet) and <code>UIViewControllerRepresentable</code> (Swift - native code):</p>
 <h6 id="mainviewcontrollerkt">MainViewController.kt<a class="headerlink" href="#mainviewcontrollerkt" title="Permanent link">&para;</a></h6>
-<div class="highlight"><pre><span></span><code><span class="kd">fun</span><span class="w"> </span><span class="nf">MainViewController</span><span class="p">(</span><span class="n">savedStateSupport</span><span class="p">:</span><span class="w"> </span><span class="n">SavedStateSupport</span><span class="p">):</span><span class="w"> </span><span class="n">UIViewController</span><span class="w"> </span><span class="p">{</span>
+<div class="highlight"><pre><span></span><code><span class="kd">val</span><span class="w"> </span><span class="nv">AppLifecycleOwner</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">lazy</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">AppLifecycleOwner</span><span class="p">()</span><span class="w"> </span><span class="p">}</span>
+
+<span class="kd">fun</span><span class="w"> </span><span class="nf">MainViewController</span><span class="p">(</span><span class="n">savedStateSupport</span><span class="p">:</span><span class="w"> </span><span class="n">SavedStateSupport</span><span class="p">):</span><span class="w"> </span><span class="n">UIViewController</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="kd">val</span><span class="w"> </span><span class="nv">lifecycleOwnerUIVcDelegate</span><span class="w"> </span><span class="o">=</span>
-<span class="w">    </span><span class="n">LifecycleOwnerComposeUIViewControllerDelegate</span><span class="p">(</span><span class="n">hostLifecycleOwner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DIContainer</span><span class="p">.</span><span class="na">get</span><span class="p">())</span>
+<span class="w">    </span><span class="n">LifecycleOwnerComposeUIViewControllerDelegate</span><span class="p">(</span><span class="n">hostLifecycleOwner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AppLifecycleOwner</span><span class="p">)</span>
 <span class="w">      </span><span class="p">.</span><span class="na">apply</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">bindTo</span><span class="p">(</span><span class="n">savedStateSupport</span><span class="p">)</span><span class="w"> </span><span class="p">}</span>
 <span class="w">      </span><span class="p">.</span><span class="na">apply</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">lifecycle</span><span class="p">.</span><span class="na">subscribe</span><span class="p">(</span><span class="n">LifecycleObserver</span><span class="p">)</span><span class="w"> </span><span class="p">}</span>
 
@@ -899,7 +924,7 @@ See <a href="https://github.com/hoc081098/kmp-viewmodel?tab=readme-ov-file#2-kmp
 <span class="w">    </span><span class="n">configure</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">delegate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lifecycleOwnerUIVcDelegate</span><span class="w"> </span><span class="p">},</span>
 <span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">LifecycleOwnerProvider</span><span class="p">(</span><span class="n">lifecycleOwnerUIVcDelegate</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="n">savedStateSupport</span><span class="p">.</span><span class="na">LocalProvider</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">SolivagantSampleApp</span><span class="p">()</span><span class="w"> </span><span class="p">}</span>
+<span class="w">      </span><span class="n">savedStateSupport</span><span class="p">.</span><span class="na">ProvideCompositionLocals</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">MyAwesomeApp</span><span class="p">()</span><span class="w"> </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
@@ -931,6 +956,11 @@ See <a href="https://github.com/hoc081098/kmp-viewmodel?tab=readme-ov-file#2-kmp
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
+<blockquote>
+<p>[!TIP]
+For more information please check out <a href="https://github.com/hoc081098/solivagant/blob/master/samples/sample/shared/src/iosMain/kotlin/com/hoc081098/solivagant/sample/MainViewController.kt">iOS sample MainViewController.kt</a>
+and <a href="https://github.com/hoc081098/solivagant/blob/master/samples/sample/iosApp/iosApp/ComposeView.swift">iosApp sample ComposeView.swift</a></p>
+</blockquote>
 <h3 id="4-use-naveventnavigator-in-viewmodel-s-composable-s-to-trigger-navigation-actions">4. Use <code>NavEventNavigator</code> in <code>ViewModel</code> s / <code>@Composable</code> s to trigger navigation actions<a class="headerlink" href="#4-use-naveventnavigator-in-viewmodel-s-composable-s-to-trigger-navigation-actions" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="c1">// navigate to the destination that the given route leads to</span>
 <span class="n">navigator</span><span class="p">.</span><span class="na">navigateTo</span><span class="p">(</span><span class="n">DetailScreenRoute</span><span class="p">(</span><span class="s">&quot;some-id&quot;</span><span class="p">))</span>
