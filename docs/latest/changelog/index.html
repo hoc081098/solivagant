@@ -319,8 +319,26 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Unreleased - TBD">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#020-mar-7-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.2.0 - Mar 7, 2024
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="0.2.0 - Mar 7, 2024">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#update-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update dependencies
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#added" class="md-nav__link">
@@ -335,6 +353,15 @@
   <a href="#fixed" class="md-nav__link">
     <span class="md-ellipsis">
       Fixed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sample" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sample
     </span>
   </a>
   
@@ -389,7 +416,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#update-dependencies" class="md-nav__link">
+  <a href="#update-dependencies_1" class="md-nav__link">
     <span class="md-ellipsis">
       Update dependencies
     </span>
@@ -476,9 +503,11 @@
 
 
 <h1 id="change-log">Change Log<a class="headerlink" href="#change-log" title="Permanent link">&para;</a></h1>
-<h2 id="unreleased-tbd"><a href="https://github.com/hoc081098/solivagant/compare/0.1.1...HEAD">Unreleased</a> - TBD<a class="headerlink" href="#unreleased-tbd" title="Permanent link">&para;</a></h2>
+<h2 id="unreleased-tbd"><a href="https://github.com/hoc081098/solivagant/compare/0.2.0...HEAD">Unreleased</a> - TBD<a class="headerlink" href="#unreleased-tbd" title="Permanent link">&para;</a></h2>
+<h2 id="020-mar-7-2024"><a href="https://github.com/hoc081098/solivagant/releases/tag/0.2.0">0.2.0</a> - Mar 7, 2024<a class="headerlink" href="#020-mar-7-2024" title="Permanent link">&para;</a></h2>
+<h3 id="update-dependencies">Update dependencies<a class="headerlink" href="#update-dependencies" title="Permanent link">&para;</a></h3>
 <ul>
-<li><a href="https://github.com/JetBrains/compose-multiplatform/releases/tag/v1.6.0">JetBrains Compose Multiplatform <code>1.6.0</code></a>.</li>
+<li><a href="https://github.com/JetBrains/compose-multiplatform/releases/tag/v1.6.0">JetBrains Compose Multiplatform <code>1.6.0</code> 🎉</a>.</li>
 <li><a href="https://github.com/hoc081098/kmp-viewmodel/releases/tag/0.7.1">KMP ViewModel <code>0.7.1</code></a>.</li>
 </ul>
 <h3 id="added">Added<a class="headerlink" href="#added" title="Permanent link">&para;</a></h3>
@@ -487,11 +516,16 @@
 <li><strong>New</strong>: Add <code>LenientLifecycleRegistry</code>, a <code>LifecycleRegistry</code> without the state checking,
   and has <code>moveTo</code> method to move to a specific state. This is a flexible version of <code>LifecycleRegistry</code>.</li>
 <li><strong>New</strong>: Add <code>rememberWindowLifecycleOwner()</code> for Desktop (JVM) platform.</li>
-<li><strong>New</strong>: Add <code>SavedStateSupport.ProvideCompositionLocals</code> and <code>SavedStateSupport.ClearOnDispose</code>.</li>
+<li><strong>New</strong>: Add <code>SavedStateSupport.ProvideCompositionLocals</code> and <code>SavedStateSupport.ClearOnDispose</code> for non-Android platforms.</li>
 </ul>
 <h3 id="fixed">Fixed<a class="headerlink" href="#fixed" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Fixed</strong>: an issue where <code>LocalLifecycleOwner</code> provided the wrong <code>LifecycleOwner</code> to the content of <code>NavHost</code> composable.</li>
+</ul>
+<h3 id="sample">Sample<a class="headerlink" href="#sample" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>New</strong>: Add <a href="https://github.com/hoc081098/solivagant/tree/master/samples/solivagant-wasm-sample">Solivagant Wasm Sample</a>.
+  You can open the web application by running the <code>./gradlew :samples:solivagant-wasm-sample:wasmJsBrowserDevelopmentRun</code> Gradle task.</li>
 </ul>
 <h2 id="011-feb-25-2024"><a href="https://github.com/hoc081098/solivagant/releases/tag/0.1.1">0.1.1</a> - Feb 25, 2024<a class="headerlink" href="#011-feb-25-2024" title="Permanent link">&para;</a></h2>
 <h3 id="fixed_1">Fixed<a class="headerlink" href="#fixed_1" title="Permanent link">&para;</a></h3>
@@ -506,7 +540,7 @@
   Share everything including data, domain, presentation, and UI.</li>
 </ul>
 <h2 id="010-feb-19-2024"><a href="https://github.com/hoc081098/solivagant/releases/tag/0.1.0">0.1.0</a> - Feb 19, 2024<a class="headerlink" href="#010-feb-19-2024" title="Permanent link">&para;</a></h2>
-<h3 id="update-dependencies">Update dependencies<a class="headerlink" href="#update-dependencies" title="Permanent link">&para;</a></h3>
+<h3 id="update-dependencies_1">Update dependencies<a class="headerlink" href="#update-dependencies_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li><a href="https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.8.0">KotlinX Coroutines <code>1.8.0</code></a>.</li>
 <li><a href="https://github.com/hoc081098/kmp-viewmodel/releases/tag/0.7.0">KMP ViewModel <code>0.7.0</code></a>.</li>
