@@ -398,7 +398,7 @@ navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 - [ ] Add more tests
 - [x] Add more samples
 - [ ] Add docs
-- [ ] Review supported targets
+- [x] Review supported targets
 - [ ] Polish and improve the implementation and the public API
 - [x] Support transition when navigating (since [0.1.0](https://github.com/hoc081098/solivagant/releases/tag/0.1.0)).
 - [x] Support more targets such as wasm, watchOS, tvOS, etc... (since [0.2.0](https://github.com/hoc081098/solivagant/releases/tag/0.2.0)).
