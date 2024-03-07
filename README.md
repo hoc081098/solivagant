@@ -390,6 +390,8 @@ navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 
 - [Compose Multiplatform Todo solivagant Sample](https://github.com/hoc081098/Compose-Multiplatform-Todo-solivagant-Sample): A KMP template of the Todo App using Compose multiplatform for Android, Desktop, iOS and Web. Share everything including data, domain, presentation, and UI.
 
+- [Solivagant Wasm Sample](https://github.com/hoc081098/solivagant/tree/master/samples/solivagant-wasm-sample).
+
 ## Roadmap
 
 - [ ] Add more tests
@@ -398,7 +400,7 @@ navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 - [ ] Review supported targets
 - [ ] Polish and improve the implementation and the public API
 - [x] Support transition when navigating (since [0.1.0](https://github.com/hoc081098/solivagant/releases/tag/0.1.0)).
-- [ ] Support more targets such as wasm, watchOS, tvOS, etc...
+- [x] Support more targets such as wasm, watchOS, tvOS, etc... (since [0.2.0](https://github.com/hoc081098/solivagant/releases/tag/0.2.0)).
 
 ## License
 

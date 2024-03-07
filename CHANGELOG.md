@@ -2,6 +2,10 @@
 
 ## [Unreleased] - TBD
 
+## [0.2.0] - Mar 7, 2024
+
+### Update dependencies
+
 - [JetBrains Compose Multiplatform `1.6.0`](https://github.com/JetBrains/compose-multiplatform/releases/tag/v1.6.0).
 - [KMP ViewModel `0.7.1`](https://github.com/hoc081098/kmp-viewmodel/releases/tag/0.7.1).
 
@@ -14,7 +18,13 @@
 - **New**: Add `SavedStateSupport.ProvideCompositionLocals` and `SavedStateSupport.ClearOnDispose`.
 
 ### Fixed
+
 - **Fixed**: an issue where `LocalLifecycleOwner` provided the wrong `LifecycleOwner` to the content of `NavHost` composable.
+
+### Sample
+
+- **New**: Add [Solivagant Wasm Sample](https://github.com/hoc081098/solivagant/tree/master/samples/solivagant-wasm-sample).
+  You can open the web application by running the `./gradlew :samples:solivagant-wasm-sample:wasmJsBrowserDevelopmentRun` Gradle task.
 
 ## [0.1.1] - Feb 25, 2024
 
@@ -91,7 +101,9 @@
   - [KotlinX Coroutines `1.7.3`](https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.7.3).
   - [KotlinX Collections Immutable `0.3.7`](https://github.com/Kotlin/kotlinx.collections.immutable/releases/tag/v0.3.7).
 
-[Unreleased]: https://github.com/hoc081098/solivagant/compare/0.1.1...HEAD
+[Unreleased]: https://github.com/hoc081098/solivagant/compare/0.2.0...HEAD
+
+[0.2.0]: https://github.com/hoc081098/solivagant/releases/tag/0.2.0
 
 [0.1.1]: https://github.com/hoc081098/solivagant/releases/tag/0.1.1
 
