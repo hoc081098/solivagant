@@ -317,7 +317,6 @@ private fun <T : BaseRoute> Show(
 
 internal class SaveableCloseable(
   private val id: String,
-  
 ) : Closeable {
   private val _viewModelStoreOwnerState: MutableState<StackEntryViewModelStoreOwner?> =
     mutableStateOf(StackEntryViewModelStoreOwner())
