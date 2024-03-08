@@ -270,12 +270,10 @@ private fun <T : BaseRoute> Show(
     executor
       .storeFor(entry.id)
       .getOrCreate(SaveableCloseable::class) {
-        SaveableCloseable(
-          entry.id.value,
-          WeakReference(saveableStateHolder),
-        )
+        SaveableCloseable(entry.id.value)
       }
   }
+  saveableCloseable.saveableStateHolderRef = WeakReference(saveableStateHolder)
 
   val savedStateHandleFactory = remember(executor, entry.id) {
     SavedStateHandleFactory { executor.savedStateHandleFor(entry.id) }
@@ -319,12 +317,13 @@ private fun <T : BaseRoute> Show(
 
 internal class SaveableCloseable(
   private val id: String,
-  private val saveableStateHolderRef: WeakReference<SaveableStateHolder>,
+  
 ) : Closeable {
   private val _viewModelStoreOwnerState: MutableState<StackEntryViewModelStoreOwner?> =
     mutableStateOf(StackEntryViewModelStoreOwner())
 
-  inline val viewModelStoreOwnerState: State<StackEntryViewModelStoreOwner?> get() = _viewModelStoreOwnerState
+  internal inline val viewModelStoreOwnerState: State<StackEntryViewModelStoreOwner?> get() = _viewModelStoreOwnerState
+  internal lateinit var saveableStateHolderRef: WeakReference<SaveableStateHolder>
 
   override fun close() {
     Snapshot.withMutableSnapshot {
