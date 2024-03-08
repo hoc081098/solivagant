@@ -2,6 +2,13 @@
 
 ## [Unreleased] - TBD
 
+## [0.2.1] - Mar 8, 2024
+
+### Fixed
+
+- Fix an issue where `SaveableStateHolder` would not be properly cleared when the destination
+  is removed from the back stack after configuration changes on Android (#59).
+
 ## [0.2.0] - Mar 7, 2024
 
 ### Update dependencies
@@ -101,7 +108,9 @@
   - [KotlinX Coroutines `1.7.3`](https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.7.3).
   - [KotlinX Collections Immutable `0.3.7`](https://github.com/Kotlin/kotlinx.collections.immutable/releases/tag/v0.3.7).
 
-[Unreleased]: https://github.com/hoc081098/solivagant/compare/0.2.0...HEAD
+[Unreleased]: https://github.com/hoc081098/solivagant/compare/0.2.1...HEAD
+
+[0.2.1]: https://github.com/hoc081098/solivagant/releases/tag/0.2.1
 
 [0.2.0]: https://github.com/hoc081098/solivagant/releases/tag/0.2.0
 
