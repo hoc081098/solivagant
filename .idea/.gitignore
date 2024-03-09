@@ -2,3 +2,5 @@
 /shelf/
 /workspace.xml
 /artifacts
+# GitHub Copilot persisted chat sessions
+/copilot/chatSessions
