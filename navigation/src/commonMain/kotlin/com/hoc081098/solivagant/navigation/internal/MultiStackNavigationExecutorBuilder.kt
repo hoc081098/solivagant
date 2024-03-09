@@ -64,7 +64,6 @@ internal fun rememberNavigationExecutor(
   viewModel.setInputStartRoot(startRoot)
 
   val lifecycleOwner = LocalLifecycleOwner.current
-
   val lifecycleOwnerRef = remember { LifecycleOwnerRef(WeakReference(lifecycleOwner)) }
     .apply { ref = WeakReference(lifecycleOwner) }
 
