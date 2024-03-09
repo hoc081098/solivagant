@@ -34,15 +34,17 @@ package com.hoc081098.solivagant.navigation.internal
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.remember
+import com.hoc081098.kmp.viewmodel.MainThread
 import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
 import com.hoc081098.kmp.viewmodel.createSavedStateHandle
 import com.hoc081098.kmp.viewmodel.viewModelFactory
+import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavDestination
 import com.hoc081098.solivagant.navigation.NavRoot
+import kotlin.jvm.JvmField
 import kotlinx.collections.immutable.ImmutableSet
 
 @Composable
@@ -61,14 +63,21 @@ internal fun rememberNavigationExecutor(
   viewModel.setInputStartRoot(startRoot)
 
   val lifecycleOwner = LocalLifecycleOwner.current
-  val currentLifecycleOwner by rememberUpdatedState(lifecycleOwner)
+
+  val lifecycleOwnerWrapper = remember { LifecycleOwnerWeakRefWrapper(WeakReference(lifecycleOwner)) }
+    .apply { ref = WeakReference(lifecycleOwner) }
 
   val executor = viewModel.getMultiStackNavigationExecutor(
     contentDestinations = destinations.filterIsInstance<ContentDestination<*>>(),
-    getHostLifecycleState = { currentLifecycleOwner.lifecycle.currentState },
+    getHostLifecycleState = {
+      checkNotNull(lifecycleOwnerWrapper.ref.get()) { "" }
+        .lifecycle
+        .currentState
+    },
   )
 
-  DisposableEffect(executor) {
+  DisposableEffect(executor, lifecycleOwner) {
+    // Setup the executor with proper LifecycleOwner
     executor.setLifecycleOwner(lifecycleOwner)
 
     onDispose { executor.setLifecycleOwner(null) }
@@ -76,3 +85,6 @@ internal fun rememberNavigationExecutor(
 
   return executor
 }
+
+@MainThread
+private class LifecycleOwnerWeakRefWrapper(@JvmField var ref: WeakReference<LifecycleOwner>)
