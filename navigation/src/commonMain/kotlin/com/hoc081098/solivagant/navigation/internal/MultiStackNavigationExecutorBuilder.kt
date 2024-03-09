@@ -68,9 +68,9 @@ internal fun rememberNavigationExecutor(
     getHostLifecycleState = { currentLifecycleOwner.lifecycle.currentState },
   )
 
-  executor.setLifecycleOwner(lifecycleOwner)
-
   DisposableEffect(executor) {
+    executor.setLifecycleOwner(lifecycleOwner)
+
     onDispose { executor.setLifecycleOwner(null) }
   }
 
