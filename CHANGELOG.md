@@ -2,6 +2,12 @@
 
 ## [Unreleased] - TBD
 
+## [0.2.2] - Mar 9, 2024
+
+### Fixed
+
+- `NavHost`: handle the host `LifecycleOwner` properly to avoid memory leaks (#61).
+
 ## [0.2.1] - Mar 8, 2024
 
 ### Fixed
@@ -108,7 +114,9 @@
   - [KotlinX Coroutines `1.7.3`](https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.7.3).
   - [KotlinX Collections Immutable `0.3.7`](https://github.com/Kotlin/kotlinx.collections.immutable/releases/tag/v0.3.7).
 
-[Unreleased]: https://github.com/hoc081098/solivagant/compare/0.2.1...HEAD
+[Unreleased]: https://github.com/hoc081098/solivagant/compare/0.2.2...HEAD
+
+[0.2.2]: https://github.com/hoc081098/solivagant/releases/tag/0.2.2
 
 [0.2.1]: https://github.com/hoc081098/solivagant/releases/tag/0.2.1
 
