@@ -34,15 +34,18 @@ package com.hoc081098.solivagant.navigation.internal
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.remember
+import com.hoc081098.kmp.viewmodel.MainThread
 import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
 import com.hoc081098.kmp.viewmodel.createSavedStateHandle
 import com.hoc081098.kmp.viewmodel.viewModelFactory
+import com.hoc081098.solivagant.lifecycle.Lifecycle
+import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavDestination
 import com.hoc081098.solivagant.navigation.NavRoot
+import kotlin.jvm.JvmField
 import kotlinx.collections.immutable.ImmutableSet
 
 @Composable
@@ -61,18 +64,33 @@ internal fun rememberNavigationExecutor(
   viewModel.setInputStartRoot(startRoot)
 
   val lifecycleOwner = LocalLifecycleOwner.current
-  val currentLifecycleOwner by rememberUpdatedState(lifecycleOwner)
+  val lifecycleOwnerRef = remember { LifecycleOwnerRef(WeakReference(lifecycleOwner)) }
+    .apply { ref = WeakReference(lifecycleOwner) }
 
   val executor = viewModel.getMultiStackNavigationExecutor(
-    contentDestinations = destinations.filterIsInstance<ContentDestination<*>>(),
-    getHostLifecycleState = { currentLifecycleOwner.lifecycle.currentState },
+    contentDestinations = remember(destinations) { destinations.filterIsInstance<ContentDestination<*>>() },
+    getHostLifecycleState = remember {
+      {
+        lifecycleOwnerRef.ref.get()
+          ?.lifecycle
+          ?.currentState
+          ?: // A LifecycleOwner is not required.
+          // In the cases where one is not provided, always keep the host lifecycle at CREATED
+          Lifecycle.State.CREATED
+      }
+    },
   )
 
-  executor.setLifecycleOwner(lifecycleOwner)
-
-  DisposableEffect(executor) {
+  DisposableEffect(executor, lifecycleOwner) {
+    // Setup the executor with proper LifecycleOwner
+    executor.setLifecycleOwner(lifecycleOwner)
     onDispose { executor.setLifecycleOwner(null) }
   }
 
   return executor
 }
+
+@MainThread
+private class LifecycleOwnerRef(
+  @JvmField var ref: WeakReference<LifecycleOwner>,
+)
