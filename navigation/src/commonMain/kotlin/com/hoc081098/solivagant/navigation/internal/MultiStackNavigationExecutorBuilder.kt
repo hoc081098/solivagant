@@ -85,7 +85,6 @@ internal fun rememberNavigationExecutor(
   DisposableEffect(executor, lifecycleOwner) {
     // Setup the executor with proper LifecycleOwner
     executor.setLifecycleOwner(lifecycleOwner)
-
     onDispose { executor.setLifecycleOwner(null) }
   }
 
