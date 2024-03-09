@@ -39,6 +39,7 @@ import com.hoc081098.kmp.viewmodel.MainThread
 import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
 import com.hoc081098.kmp.viewmodel.createSavedStateHandle
 import com.hoc081098.kmp.viewmodel.viewModelFactory
+import com.hoc081098.solivagant.lifecycle.Lifecycle
 import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 import com.hoc081098.solivagant.navigation.ContentDestination
@@ -64,15 +65,20 @@ internal fun rememberNavigationExecutor(
 
   val lifecycleOwner = LocalLifecycleOwner.current
 
-  val lifecycleOwnerWrapper = remember { LifecycleOwnerWeakRefWrapper(WeakReference(lifecycleOwner)) }
+  val lifecycleOwnerRef = remember { LifecycleOwnerRef(WeakReference(lifecycleOwner)) }
     .apply { ref = WeakReference(lifecycleOwner) }
 
   val executor = viewModel.getMultiStackNavigationExecutor(
-    contentDestinations = destinations.filterIsInstance<ContentDestination<*>>(),
-    getHostLifecycleState = {
-      checkNotNull(lifecycleOwnerWrapper.ref.get()) { "" }
-        .lifecycle
-        .currentState
+    contentDestinations = remember(destinations) { destinations.filterIsInstance<ContentDestination<*>>() },
+    getHostLifecycleState = remember {
+      {
+        lifecycleOwnerRef.ref.get()
+          ?.lifecycle
+          ?.currentState
+          ?: // A LifecycleOwner is not required.
+          // In the cases where one is not provided, always keep the host lifecycle at CREATED
+          Lifecycle.State.CREATED
+      }
     },
   )
 
@@ -87,4 +93,6 @@ internal fun rememberNavigationExecutor(
 }
 
 @MainThread
-private class LifecycleOwnerWeakRefWrapper(@JvmField var ref: WeakReference<LifecycleOwner>)
+private class LifecycleOwnerRef(
+  @JvmField var ref: WeakReference<LifecycleOwner>,
+)

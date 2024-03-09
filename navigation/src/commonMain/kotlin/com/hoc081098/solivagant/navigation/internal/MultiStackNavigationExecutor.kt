@@ -43,8 +43,9 @@ import com.hoc081098.solivagant.navigation.Serializable
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -65,7 +66,14 @@ internal class MultiStackNavigationExecutor(
   init {
     viewModel.viewModelScope.launch(start = CoroutineStart.UNDISPATCHED) {
       _lifecycleOwner
-        .flatMapLatest { it?.lifecycle?.eventFlow ?: emptyFlow() }
+        .flatMapLatest { owner ->
+          owner ?: return@flatMapLatest flowOf(null)
+
+          owner
+            .lifecycle
+            .eventFlow
+            .map { it to owner }
+        }
         .collect(stack::handleLifecycleEvent)
     }
   }

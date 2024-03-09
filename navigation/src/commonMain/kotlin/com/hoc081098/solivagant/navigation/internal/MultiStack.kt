@@ -40,6 +40,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.Snapshot
 import com.benasher44.uuid.uuid4
 import com.hoc081098.solivagant.lifecycle.Lifecycle
+import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavRoot
@@ -104,7 +105,19 @@ internal class MultiStack private constructor(
 
   val startRoot = startStack.rootEntry.route as NavRoot
 
+  //region Host lifecycle state
+  private var hasHostLifecycleOwner = false
   private var hostLifecycleState: Lifecycle.State = Lifecycle.State.INITIALIZED
+    get() {
+      // A LifecycleOwner is not required.
+      // In the cases where one is not provided, always keep the host lifecycle at CREATED
+      return if (hasHostLifecycleOwner) {
+        field
+      } else {
+        Lifecycle.State.CREATED
+      }
+    }
+  //endregion
 
   @Suppress("ReturnCount")
   fun <T : BaseRoute> entryFor(route: T): StackEntry<T>? {
@@ -329,9 +342,12 @@ internal class MultiStack private constructor(
     )
   }
 
-  fun handleLifecycleEvent(event: Lifecycle.Event) {
-    hostLifecycleState = event.targetState
-    allStacks.forEach { it.handleLifecycleEvent(event) }
+  fun handleLifecycleEvent(pair: Pair<Lifecycle.Event, LifecycleOwner>?) {
+    pair ?: return run { hasHostLifecycleOwner = false }
+
+    hasHostLifecycleOwner = true
+    hostLifecycleState = pair.first.targetState
+    allStacks.forEach { it.handleLifecycleEvent(pair.first) }
   }
 
   companion object {
