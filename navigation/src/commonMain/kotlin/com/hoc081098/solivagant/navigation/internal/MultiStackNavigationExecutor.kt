@@ -43,6 +43,7 @@ import com.hoc081098.solivagant.navigation.EXTRA_ROUTE
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.Serializable
+import com.hoc081098.solivagant.navigation.internal.MultiStackNavigationExecutor.Companion.SAVED_STATE_STACK
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -56,13 +57,32 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalCoroutinesApi::class)
 @Suppress("TooManyFunctions", "LongParameterList")
 internal class MultiStackNavigationExecutor(
+  /**
+   * The list of content destinations.
+   */
   contentDestinations: List<ContentDestination<*>>,
-  private val onRootChanged: (NavRoot) -> Unit,
+  /**
+   * The lifecycle owner reference.
+   */
   private val lifecycleOwnerRef: LifecycleOwnerRef,
+  /**
+   * The global saved state handle.
+   */
   private val globalSavedStateHandle: SavedStateHandle,
+  /**
+   * This is used to create the stack when [restoreState] is `false`
+   * or there is no saved state for the stack (associated with [SAVED_STATE_STACK] key).
+   */
   private val startRoot: NavRoot,
-  scope: CoroutineScope,
+  /**
+   * Should restore the state of the stack from the saved state instead of creating a new one.
+   */
   private val restoreState: Boolean,
+  /**
+   * The scope to launch the [lifecycleJob].
+   * Do not cancel this scope, it is managed by the outside.
+   */
+  scope: CoroutineScope,
 ) : NavigationExecutor {
   private val stores = mutableMapOf<StackEntryId, NavigationExecutorStore>()
   private val savedStateHandles = mutableMapOf<StackEntryId, SavedStateHandle>()
@@ -133,7 +153,6 @@ internal class MultiStackNavigationExecutor(
 
   override fun replaceAll(root: NavRoot) {
     stack.replaceAll(root)
-    onRootChanged(root)
   }
 
   @DelicateNavigationApi

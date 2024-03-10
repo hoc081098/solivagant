@@ -79,35 +79,25 @@ internal class StoreViewModel(
       val currentExecutor = executor.value
 
       val shouldClear = globalSavedStateHandle.safe { safeSavedStateHandle ->
-        safeSavedStateHandle[SAVED_INPUT_START_ROOT_KEY].let { currentSavedInputStartRoot ->
-          when {
-            currentSavedInputStartRoot == null -> {
-              safeSavedStateHandle[SAVED_INPUT_START_ROOT_KEY] = startRoot
-              safeSavedStateHandle[SAVED_START_ROOT_KEY] = startRoot
+        // Get saved input root
+        val savedInputRoot = safeSavedStateHandle[SAVED_INPUT_ROOT_KEY]
 
-              false
-            }
+        // Save new input root
+        safeSavedStateHandle[SAVED_INPUT_ROOT_KEY] = startRoot
 
-            currentSavedInputStartRoot != startRoot -> {
-              safeSavedStateHandle[SAVED_INPUT_START_ROOT_KEY] = startRoot
-              safeSavedStateHandle[SAVED_START_ROOT_KEY] = startRoot
-
-              // Clear all state and recreate executor
-              true
-            }
-
-            else -> {
-              // Do nothing
-              false
-            }
-          }
+        when {
+          // First time
+          savedInputRoot == null -> false
+          // Input root changed -> clear all state and recreate executor
+          savedInputRoot != startRoot -> true
+          // Do nothing
+          else -> false
         }
       }
 
       if (shouldClear) {
         val newExecutor = MultiStackNavigationExecutor(
           contentDestinations = contentDestinations,
-          onRootChanged = { globalSavedStateHandle.safe[SAVED_START_ROOT_KEY] = it },
           lifecycleOwnerRef = lifecycleOwnerRef,
           globalSavedStateHandle = globalSavedStateHandle,
           scope = viewModelScope,
@@ -124,7 +114,6 @@ internal class StoreViewModel(
         currentExecutor
           ?: MultiStackNavigationExecutor(
             contentDestinations = contentDestinations,
-            onRootChanged = { globalSavedStateHandle.safe[SAVED_START_ROOT_KEY] = it },
             lifecycleOwnerRef = lifecycleOwnerRef,
             globalSavedStateHandle = globalSavedStateHandle,
             scope = viewModelScope,
@@ -136,12 +125,8 @@ internal class StoreViewModel(
   }
 
   internal companion object {
-    private val SAVED_START_ROOT_KEY = NullableSavedStateHandleKey.parcelable<NavRoot>(
-      "com.hoc081098.solivagant.navigation.store.start_root",
-    )
-
-    private val SAVED_INPUT_START_ROOT_KEY = NullableSavedStateHandleKey.parcelable<NavRoot>(
-      "com.hoc081098.solivagant.navigation.store.input_start_root",
+    private val SAVED_INPUT_ROOT_KEY = NullableSavedStateHandleKey.parcelable<NavRoot>(
+      "com.hoc081098.solivagant.navigation.store.input_root",
     )
   }
 }
