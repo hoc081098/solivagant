@@ -99,6 +99,7 @@ internal class MultiStackNavigationExecutor(
     globalSavedStateHandle.setSavedStateProviderWithMap(SAVED_STATE_STACK) { stack.saveState() }
   }
 
+  //region NavigationExecutor
   override fun navigateTo(route: NavRoute) {
     stack.push(route)
   }
@@ -157,6 +158,7 @@ internal class MultiStackNavigationExecutor(
     val entry = entryFor<BaseRoute>(id)
     return entry.destination.extra!!
   }
+  //endregion
 
   //region Find StackEntry by id or route or destinationId
   private fun <T : BaseRoute> entryFor(id: StackEntryId): StackEntry<T> {
@@ -268,8 +270,7 @@ internal class MultiStackNavigationExecutor(
 
     val getHostLifecycleState: () -> Lifecycle.State = fun(): Lifecycle.State {
       val owner = lifecycleOwnerRef.ref?.get()
-        ?:
-        // A LifecycleOwner is not required.
+        ?: // A LifecycleOwner is not required.
         // In the cases where one is not provided, always keep the host lifecycle at CREATED
         return Lifecycle.State.CREATED
 
