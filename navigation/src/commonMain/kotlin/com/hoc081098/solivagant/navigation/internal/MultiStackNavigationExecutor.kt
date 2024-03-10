@@ -54,7 +54,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "LongParameterList")
 internal class MultiStackNavigationExecutor(
   contentDestinations: List<ContentDestination<*>>,
   private val onRootChanged: (NavRoot) -> Unit,
