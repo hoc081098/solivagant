@@ -39,6 +39,9 @@ import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.ScreenDestination
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.mutate
 import kotlinx.collections.immutable.persistentListOf
@@ -164,12 +167,18 @@ internal class Stack private constructor(
   internal fun handleLifecycleEvent(event: Lifecycle.Event) = stack.forEach { it.handleLifecycleEvent(event) }
 
   companion object {
+    @OptIn(ExperimentalContracts::class)
     fun createWith(
       root: NavRoot,
       destinations: List<ContentDestination<*>>,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
+      contract {
+        callsInPlace(idGenerator, InvocationKind.AT_LEAST_ONCE)
+        callsInPlace(getHostLifecycleState, InvocationKind.AT_LEAST_ONCE)
+      }
+
       val rootEntry = entry(
         route = root,
         destinations = destinations,
@@ -184,12 +193,18 @@ internal class Stack private constructor(
       )
     }
 
+    @OptIn(ExperimentalContracts::class)
     fun fromState(
       bundle: Map<String, ArrayList<out Any>>,
       destinations: List<ContentDestination<*>>,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
+      contract {
+        callsInPlace(idGenerator, InvocationKind.AT_LEAST_ONCE)
+        callsInPlace(getHostLifecycleState, InvocationKind.AT_LEAST_ONCE)
+      }
+
       @Suppress("UNCHECKED_CAST")
       val ids = bundle[SAVED_STATE_IDS]!! as ArrayList<String>
 
@@ -210,18 +225,24 @@ internal class Stack private constructor(
       )
     }
 
+    @OptIn(ExperimentalContracts::class)
     private inline fun <T : BaseRoute> entry(
       route: T,
       destinations: List<ContentDestination<*>>,
       hostLifecycleState: Lifecycle.State,
       idGenerator: () -> String,
-    ): StackEntry<T> =
-      StackEntry.create(
+    ): StackEntry<T> {
+      contract {
+        callsInPlace(idGenerator, InvocationKind.EXACTLY_ONCE)
+      }
+
+      return StackEntry.create(
         route = route,
         destinations = destinations,
         idGenerator = idGenerator,
         hostLifecycleState = hostLifecycleState,
       )
+    }
 
     private const val SAVED_STATE_IDS = "com.hoc081098.solivagant.navigation.stack.ids"
     private const val SAVED_STATE_ROUTES = "com.hoc081098.solivagant.navigation.stack.routes"

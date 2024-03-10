@@ -48,6 +48,9 @@ import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.OverlayDestination
 import com.hoc081098.solivagant.navigation.ScreenDestination
 import dev.drewhamilton.poko.Poko
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import kotlinx.collections.immutable.ImmutableList
 
 @Stable
@@ -351,6 +354,7 @@ internal class MultiStack private constructor(
   }
 
   companion object {
+    @OptIn(ExperimentalContracts::class)
     fun createWith(
       root: NavRoot,
       destinations: List<ContentDestination<*>>,
@@ -358,6 +362,11 @@ internal class MultiStack private constructor(
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): MultiStack {
+      contract {
+        callsInPlace(idGenerator, InvocationKind.AT_LEAST_ONCE)
+        callsInPlace(getHostLifecycleState, InvocationKind.AT_LEAST_ONCE)
+      }
+
       val startStack = Stack.createWith(
         root = root,
         destinations = destinations,
@@ -374,6 +383,7 @@ internal class MultiStack private constructor(
       )
     }
 
+    @OptIn(ExperimentalContracts::class)
     @Suppress("LongParameterList")
     fun fromState(
       root: NavRoot,
@@ -383,6 +393,11 @@ internal class MultiStack private constructor(
       onStackEntryRemoved: OnStackEntryRemoved,
       idGenerator: () -> String = { uuid4().toString() },
     ): MultiStack {
+      contract {
+        callsInPlace(idGenerator, InvocationKind.AT_LEAST_ONCE)
+        callsInPlace(getHostLifecycleState, InvocationKind.AT_LEAST_ONCE)
+      }
+
       @Suppress("UNCHECKED_CAST")
       val allStackBundles = bundle[SAVED_STATE_ALL_STACKS]!! as ArrayList<Map<String, ArrayList<out Any>>>
       val currentStackId = bundle[SAVED_STATE_CURRENT_STACK] as DestinationId<*>

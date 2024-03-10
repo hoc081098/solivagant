@@ -58,14 +58,10 @@ internal fun rememberNavigationExecutor(
 ): MultiStackNavigationExecutor {
   val lifecycleOwner = LocalLifecycleOwner.current
 
-  // setInputStartRoot and setLifecycleOwner must be called before getMultiStackNavigationExecutor
-  viewModel.setInputStartRoot(startRoot)
-  viewModel.setLifecycleOwner(lifecycleOwner)
-
   val executor = viewModel.getMultiStackNavigationExecutor(
-    contentDestinations = remember(destinations) {
-      destinations.filterIsInstance<ContentDestination<*>>()
-    },
+    startRoot = startRoot,
+    contentDestinations = remember(destinations) { destinations.filterIsInstance<ContentDestination<*>>() },
+    lifecycleOwner = lifecycleOwner,
   )
 
   DisposableEffect(executor, lifecycleOwner) {
