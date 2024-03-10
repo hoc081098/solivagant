@@ -15,6 +15,7 @@ internal value class NonEmptyImmutableList<E>(
     require(list.isNotEmpty()) { "List must not be empty" }
   }
 
+  @Suppress("NOTHING_TO_INLINE")
   inline fun first(): E = list[0]
 
   companion object {

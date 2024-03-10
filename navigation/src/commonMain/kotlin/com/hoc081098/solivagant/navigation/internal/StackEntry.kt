@@ -42,6 +42,9 @@ import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
 import dev.drewhamilton.poko.Poko
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 @Poko
 @Immutable
@@ -96,12 +99,17 @@ internal class StackEntry<T : BaseRoute> private constructor(
   //endregion
 
   companion object {
+    @OptIn(ExperimentalContracts::class)
     inline fun <T : BaseRoute> create(
       route: T,
       destinations: List<ContentDestination<*>>,
       hostLifecycleState: Lifecycle.State,
       idGenerator: () -> String,
     ): StackEntry<T> {
+      contract {
+        callsInPlace(idGenerator, InvocationKind.EXACTLY_ONCE)
+      }
+
       @Suppress("UNCHECKED_CAST")
       val destination = destinations.find { it.id == route.destinationId } as? ContentDestination<T>
         ?: error(
