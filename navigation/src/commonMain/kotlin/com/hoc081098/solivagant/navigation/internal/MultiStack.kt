@@ -160,7 +160,7 @@ internal class MultiStack private constructor(
   ) {
     stack.clear().run {
       if (shouldRemoveImmediately) {
-        onEach { onStackEntryRemoved(it, true) }
+        forEach { onStackEntryRemoved(it, true) }
       } else {
         invokeOnStackEntryRemoved(onStackEntryRemoved)
       }
@@ -219,7 +219,7 @@ internal class MultiStack private constructor(
 
       // remove anything that the start stack could have shown before
       // can't use resetToRoot because that will also recreate the root
-      currentStack.clear().onEach { onStackEntryRemoved(it, true) }
+      currentStack.clear().forEach { onStackEntryRemoved(it, true) }
       updateVisibleDestinations(lastEvent = StackEvent.Pop)
     } else {
       currentStack.pop().also {
@@ -323,7 +323,7 @@ internal class MultiStack private constructor(
     while (allStacks.isNotEmpty()) {
       val stack = allStacks.last()
 
-      stack.clear().onEach { onStackEntryRemoved(it, it != currentVisibleEntry) }
+      stack.clear().forEach { onStackEntryRemoved(it, it != currentVisibleEntry) }
       allStacks.removeLast()
       onStackEntryRemoved(
         stack.rootEntry,
@@ -356,12 +356,12 @@ internal class MultiStack private constructor(
     allStacks.forEach { it.handleLifecycleEvent(pair.first) }
   }
 
-  internal fun clearAll() {
+  internal fun clear() {
     // remove all stacks
     while (allStacks.isNotEmpty()) {
       val stack = allStacks.last()
 
-      stack.clear().onEach { onStackEntryRemoved(it, true) }
+      stack.clear().forEach { onStackEntryRemoved(it, true) }
       allStacks.removeLast()
       onStackEntryRemoved(
         stack.rootEntry,
