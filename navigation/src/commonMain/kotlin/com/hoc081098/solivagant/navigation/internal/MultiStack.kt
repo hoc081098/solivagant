@@ -434,10 +434,6 @@ internal class MultiStack private constructor(
         idGenerator = idGenerator,
       )
     }
-
-    private const val SAVED_STATE_ALL_STACKS = "com.hoc081098.solivagant.navigation.stack.all_stacks"
-    private const val SAVED_STATE_CURRENT_STACK = "com.hoc081098.solivagant.navigation.stack.current_stack"
-    private const val SAVED_STATE_START_STACK = "com.hoc081098.solivagant.navigation.stack.start_stack"
   }
 }
 
