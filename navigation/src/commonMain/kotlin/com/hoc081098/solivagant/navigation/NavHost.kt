@@ -195,13 +195,22 @@ public fun NavHost(
           contentAlignment = Alignment.Center,
           contentKey = { it.currentVisibleEntry.id },
         ) { targetState ->
-          // while in the scope of the composable, we provide the ViewModelStoreOwner and LifecycleOwner
-          Show(
-            modifier = Modifier.fillMaxSize(),
-            entry = targetState.currentVisibleEntry,
-            executor = executor,
-            saveableStateHolder = saveableStateHolder,
-          )
+          // In some specific cases, such as clearing your back stack by changing your
+          // start destination, AnimatedContent can contain an entry that is no longer
+          // part of visible entries since it was cleared from the back stack and is not
+          // animating. In these cases the currentEntry will be null, and in those cases,
+          // AnimatedContent will just skip attempting to transition the old entry.
+          // See https://issuetracker.google.com/238686802
+          val currentEntry = executor.visibleEntries.value.currentVisibleEntry
+
+          if (currentEntry == targetState.currentVisibleEntry) {
+            // while in the scope of the composable, we provide the ViewModelStoreOwner and LifecycleOwner
+            Show(
+              entry = targetState.currentVisibleEntry,
+              executor = executor,
+              saveableStateHolder = saveableStateHolder,
+            )
+          }
         }
 
         DisposableEffect(executor, transition.targetState) {

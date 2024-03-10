@@ -32,6 +32,9 @@
 
 package com.hoc081098.solivagant.navigation.internal
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshots.Snapshot
 import com.hoc081098.kmp.viewmodel.MainThread
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.ViewModel
@@ -51,15 +54,17 @@ internal class LifecycleOwnerRef(
 internal class StoreViewModel(
   internal val globalSavedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-  private var executor: MultiStackNavigationExecutor? = null
+  private val executor: MutableState<MultiStackNavigationExecutor?> = mutableStateOf(null)
   private val lifecycleOwnerRef = LifecycleOwnerRef(null)
 
   init {
     addCloseable {
-      executor?.clear()
-      executor = null
-
       lifecycleOwnerRef.ref?.clear()
+
+      Snapshot.withMutableSnapshot {
+        executor.value?.clear()
+        executor.value = null
+      }
     }
   }
 
@@ -70,38 +75,59 @@ internal class StoreViewModel(
   ): MultiStackNavigationExecutor {
     lifecycleOwnerRef.ref = WeakReference(lifecycleOwner)
 
-    globalSavedStateHandle.safe { safeSavedStateHandle ->
-      safeSavedStateHandle[SAVED_INPUT_START_ROOT_KEY].let { currentSavedInputStartRoot ->
-        when {
-          currentSavedInputStartRoot == null -> {
-            safeSavedStateHandle[SAVED_INPUT_START_ROOT_KEY] = startRoot
-            safeSavedStateHandle[SAVED_START_ROOT_KEY] = startRoot
-          }
+    return Snapshot.withMutableSnapshot {
+      val currentExecutor = executor.value
 
-          currentSavedInputStartRoot != startRoot -> {
-            // Clear all state and recreate executor
-            executor?.clear()
-            executor = null
+      val shouldClear = globalSavedStateHandle.safe { safeSavedStateHandle ->
+        safeSavedStateHandle[SAVED_INPUT_START_ROOT_KEY].let { currentSavedInputStartRoot ->
+          when {
+            currentSavedInputStartRoot == null -> {
+              safeSavedStateHandle[SAVED_INPUT_START_ROOT_KEY] = startRoot
+              safeSavedStateHandle[SAVED_START_ROOT_KEY] = startRoot
+              false
+            }
 
-            safeSavedStateHandle[SAVED_INPUT_START_ROOT_KEY] = startRoot
-            safeSavedStateHandle[SAVED_START_ROOT_KEY] = startRoot
-          }
+            currentSavedInputStartRoot != startRoot -> {
+              safeSavedStateHandle[SAVED_INPUT_START_ROOT_KEY] = startRoot
+              safeSavedStateHandle[SAVED_START_ROOT_KEY] = startRoot
 
-          else -> {
-            // Do nothing
+              // Clear all state and recreate executor
+              true
+            }
+
+            else -> {
+              // Do nothing
+              false
+            }
           }
         }
       }
-    }
 
-    return executor
-      ?: MultiStackNavigationExecutor(
-        contentDestinations = contentDestinations,
-        onRootChanged = { globalSavedStateHandle.safe[SAVED_START_ROOT_KEY] = it },
-        lifecycleOwnerRef = lifecycleOwnerRef,
-        globalSavedStateHandle = globalSavedStateHandle,
-        scope = viewModelScope,
-      ).also { this.executor = it }
+      if (shouldClear) {
+        val newExecutor = MultiStackNavigationExecutor(
+          contentDestinations = contentDestinations,
+          onRootChanged = { globalSavedStateHandle.safe[SAVED_START_ROOT_KEY] = it },
+          lifecycleOwnerRef = lifecycleOwnerRef,
+          globalSavedStateHandle = globalSavedStateHandle,
+          scope = viewModelScope,
+        )
+
+        // Update state before clearing
+        executor.value = newExecutor
+        currentExecutor?.clear()
+
+        newExecutor
+      } else {
+        currentExecutor
+          ?: MultiStackNavigationExecutor(
+            contentDestinations = contentDestinations,
+            onRootChanged = { globalSavedStateHandle.safe[SAVED_START_ROOT_KEY] = it },
+            lifecycleOwnerRef = lifecycleOwnerRef,
+            globalSavedStateHandle = globalSavedStateHandle,
+            scope = viewModelScope,
+          ).also { this.executor.value = it }
+      }
+    }
   }
 
   internal companion object {

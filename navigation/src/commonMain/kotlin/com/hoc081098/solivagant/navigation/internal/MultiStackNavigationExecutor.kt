@@ -203,6 +203,9 @@ internal class MultiStackNavigationExecutor(
    * This method should be called by the [StoreViewModel].
    */
   internal fun clear() {
+    stack.clearAll()
+    removeAllPendingRemovedEntries()
+
     // Clear LifecycleOwner and cancel lifecycleJob
     setLifecycleOwner(null)
     lifecycleJob.cancel()

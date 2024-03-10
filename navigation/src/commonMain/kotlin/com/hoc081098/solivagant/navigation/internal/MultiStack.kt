@@ -353,6 +353,20 @@ internal class MultiStack private constructor(
     allStacks.forEach { it.handleLifecycleEvent(pair.first) }
   }
 
+  internal fun clearAll() {
+    // remove all stacks
+    while (allStacks.isNotEmpty()) {
+      val stack = allStacks.last()
+
+      stack.clear().onEach { onStackEntryRemoved(it, true) }
+      allStacks.removeLast()
+      onStackEntryRemoved(
+        stack.rootEntry,
+        true,
+      )
+    }
+  }
+
   companion object {
     @OptIn(ExperimentalContracts::class)
     fun createWith(

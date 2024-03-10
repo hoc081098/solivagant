@@ -74,8 +74,7 @@ fun SimpleSolivagantSampleApp(
   var currentRoute by rememberSaveable { mutableStateOf<BaseRoute?>(null) }
 
   val onClickNavigationBarItem: (Boolean, BottomNavigationInfo) -> Unit = remember(navigator) {
-    {
-        isSelected: Boolean, item: BottomNavigationInfo ->
+    { isSelected: Boolean, item: BottomNavigationInfo ->
       if (isSelected) {
         // TODO: Handle re-selection of the same tab
       } else {
