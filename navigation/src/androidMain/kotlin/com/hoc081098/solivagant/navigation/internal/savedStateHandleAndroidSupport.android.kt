@@ -26,13 +26,13 @@ internal actual fun SavedStateHandle.setSavedStateProviderWithParcelable(
   savedStateFactory: () -> Parcelable,
 ) = setSavedStateProvider(key) {
   Bundle().apply {
-    putParcelable("${key}.bundle", savedStateFactory())
+    putParcelable("$key.bundle", savedStateFactory())
   }
 }
 
 @Suppress("DEPRECATION")
 internal actual fun SavedStateHandle.getParcelableFromSavedStateProvider(key: String): Parcelable? =
-  get<Bundle?>(key)?.getParcelable("${key}.bundle")
+  get<Bundle?>(key)?.getParcelable("$key.bundle")
 
 internal actual fun SavedStateHandle.removeSavedStateProvider(key: String) = clearSavedStateProvider(key)
 
