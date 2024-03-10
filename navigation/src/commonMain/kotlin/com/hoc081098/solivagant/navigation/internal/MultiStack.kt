@@ -340,14 +340,15 @@ internal class MultiStack private constructor(
   }
   //endregion
 
-  fun saveState(): MultiStackSavedState =
+  @CheckResult
+  internal fun saveState(): MultiStackSavedState =
     MultiStackSavedState(
       allStackSavedStates = allStacks.mapTo(ArrayList(allStacks.size)) { it.saveState() },
       currentStackId = currentStack.destinationId,
       startDestinationId = startStack.destinationId,
     )
 
-  fun handleLifecycleEvent(pair: Pair<Lifecycle.Event, LifecycleOwner>?) {
+  internal fun handleLifecycleEvent(pair: Pair<Lifecycle.Event, LifecycleOwner>?) {
     pair ?: return run { hasHostLifecycleOwner = false }
 
     hasHostLifecycleOwner = true

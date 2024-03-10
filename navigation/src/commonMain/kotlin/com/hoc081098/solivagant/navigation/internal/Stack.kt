@@ -84,7 +84,7 @@ internal class Stack private constructor(
 
   @CheckResult
   @Suppress("NestedBlockDepth")
-  fun computeVisibleEntries(): NonEmptyImmutableList<StackEntry<*>> {
+  internal fun computeVisibleEntries(): NonEmptyImmutableList<StackEntry<*>> {
     if (stack.size == 1) {
       return NonEmptyImmutableList.adapt(listOf(stack.single()))
     }
@@ -154,7 +154,7 @@ internal class Stack private constructor(
   //endregion
 
   @CheckResult
-  fun saveState(): StackSavedState =
+  internal fun saveState(): StackSavedState =
     StackSavedState(
       entries = stack.mapTo(ArrayList(stack.size)) {
         StackSavedState.Entry(
