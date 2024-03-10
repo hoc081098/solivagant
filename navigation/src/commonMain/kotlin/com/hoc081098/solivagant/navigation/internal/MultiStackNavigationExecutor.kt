@@ -34,7 +34,6 @@ package com.hoc081098.solivagant.navigation.internal
 
 import androidx.compose.runtime.State
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
-import com.hoc081098.kmp.viewmodel.safe.safe
 import com.hoc081098.solivagant.lifecycle.Lifecycle
 import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.lifecycle.eventFlow
@@ -61,6 +60,7 @@ internal class MultiStackNavigationExecutor(
   private val onRootChanged: (NavRoot) -> Unit,
   private val lifecycleOwnerRef: LifecycleOwnerRef,
   private val globalSavedStateHandle: SavedStateHandle,
+  private val startRoot: NavRoot,
   scope: CoroutineScope,
 ) : NavigationExecutor {
   private val stores = mutableMapOf<StackEntryId, NavigationExecutorStore>()
@@ -253,7 +253,6 @@ internal class MultiStackNavigationExecutor(
 
   private fun createMultiStack(contentDestinations: List<ContentDestination<*>>): MultiStack {
     val navState = globalSavedStateHandle.getAsMap(SAVED_STATE_STACK)
-    val savedNavRoot = globalSavedStateHandle.safe[StoreViewModel.SAVED_START_ROOT_KEY]!!
 
     val onStackEntryRemoved: OnStackEntryRemoved = { entry, shouldRemoveImmediately ->
       // First, mark the entry as removed from backstack
@@ -282,14 +281,14 @@ internal class MultiStackNavigationExecutor(
 
     return if (navState == null) {
       MultiStack.createWith(
-        root = savedNavRoot,
+        root = startRoot,
         destinations = contentDestinations,
         getHostLifecycleState = getHostLifecycleState,
         onStackEntryRemoved = onStackEntryRemoved,
       )
     } else {
       MultiStack.fromState(
-        root = savedNavRoot,
+        root = startRoot,
         bundle = navState,
         destinations = contentDestinations,
         getHostLifecycleState = getHostLifecycleState,

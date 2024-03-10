@@ -84,6 +84,7 @@ internal class StoreViewModel(
             currentSavedInputStartRoot == null -> {
               safeSavedStateHandle[SAVED_INPUT_START_ROOT_KEY] = startRoot
               safeSavedStateHandle[SAVED_START_ROOT_KEY] = startRoot
+
               false
             }
 
@@ -110,6 +111,7 @@ internal class StoreViewModel(
           lifecycleOwnerRef = lifecycleOwnerRef,
           globalSavedStateHandle = globalSavedStateHandle,
           scope = viewModelScope,
+          startRoot = startRoot,
         )
 
         // Update state before clearing
@@ -125,13 +127,14 @@ internal class StoreViewModel(
             lifecycleOwnerRef = lifecycleOwnerRef,
             globalSavedStateHandle = globalSavedStateHandle,
             scope = viewModelScope,
+            startRoot = startRoot,
           ).also { this.executor.value = it }
       }
     }
   }
 
   internal companion object {
-    internal val SAVED_START_ROOT_KEY = NullableSavedStateHandleKey.parcelable<NavRoot>(
+    private val SAVED_START_ROOT_KEY = NullableSavedStateHandleKey.parcelable<NavRoot>(
       "com.hoc081098.solivagant.navigation.store.start_root",
     )
 
