@@ -45,4 +45,5 @@ dependencies {
   implementation(project(":samples:simple:shared"))
   implementation(libs.androidx.activity.compose)
   implementation(libs.koin.android)
+  debugImplementation("com.squareup.leakcanary:leakcanary-android:2.13")
 }

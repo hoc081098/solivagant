@@ -17,15 +17,16 @@
 package com.hoc081098.solivagant.navigation.internal
 
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
+import com.hoc081098.kmp.viewmodel.parcelable.Parcelable
 
-internal expect fun SavedStateHandle.setSavedStateProviderWithMap(
+internal expect fun SavedStateHandle.setSavedStateProviderWithParcelable(
   key: String,
-  savedStateFactory: () -> Map<String, Any?>,
+  savedStateFactory: () -> Parcelable,
 )
 
 internal expect fun SavedStateHandle.removeSavedStateProvider(key: String)
 
-internal expect fun SavedStateHandle.getAsMap(key: String): Map<String, Any?>?
+internal expect fun SavedStateHandle.getParcelableFromSavedStateProvider(key: String): Parcelable?
 
 internal expect fun createSavedStateHandleAndSetSavedStateProvider(
   id: String,

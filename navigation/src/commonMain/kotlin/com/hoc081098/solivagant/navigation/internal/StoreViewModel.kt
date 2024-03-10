@@ -112,6 +112,7 @@ internal class StoreViewModel(
           globalSavedStateHandle = globalSavedStateHandle,
           scope = viewModelScope,
           startRoot = startRoot,
+          restoreState = false,
         )
 
         // Update state before clearing
@@ -128,6 +129,7 @@ internal class StoreViewModel(
             globalSavedStateHandle = globalSavedStateHandle,
             scope = viewModelScope,
             startRoot = startRoot,
+            restoreState = true,
           ).also { this.executor.value = it }
       }
     }

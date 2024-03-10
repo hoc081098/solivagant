@@ -62,6 +62,7 @@ internal class MultiStackNavigationExecutor(
   private val globalSavedStateHandle: SavedStateHandle,
   private val startRoot: NavRoot,
   scope: CoroutineScope,
+  private val restoreState: Boolean,
 ) : NavigationExecutor {
   private val stores = mutableMapOf<StackEntryId, NavigationExecutorStore>()
   private val savedStateHandles = mutableMapOf<StackEntryId, SavedStateHandle>()
@@ -96,7 +97,7 @@ internal class MultiStackNavigationExecutor(
         .collect(stack::handleLifecycleEvent)
     }
 
-    globalSavedStateHandle.setSavedStateProviderWithMap(SAVED_STATE_STACK) { stack.saveState() }
+    globalSavedStateHandle.setSavedStateProviderWithParcelable(SAVED_STATE_STACK) { stack.saveState() }
   }
 
   //region NavigationExecutor
@@ -252,7 +253,13 @@ internal class MultiStackNavigationExecutor(
   }
 
   private fun createMultiStack(contentDestinations: List<ContentDestination<*>>): MultiStack {
-    val navState = globalSavedStateHandle.getAsMap(SAVED_STATE_STACK)
+    val savedState =
+      if (restoreState) {
+        globalSavedStateHandle
+          .getParcelableFromSavedStateProvider(SAVED_STATE_STACK) as? MultiStackSavedState
+      } else {
+        null
+      }
 
     val onStackEntryRemoved: OnStackEntryRemoved = { entry, shouldRemoveImmediately ->
       // First, mark the entry as removed from backstack
@@ -279,7 +286,7 @@ internal class MultiStackNavigationExecutor(
       return owner.lifecycle.currentState
     }
 
-    return if (navState == null) {
+    return if (savedState == null) {
       MultiStack.createWith(
         root = startRoot,
         destinations = contentDestinations,
@@ -288,8 +295,7 @@ internal class MultiStackNavigationExecutor(
       )
     } else {
       MultiStack.fromState(
-        root = startRoot,
-        bundle = navState,
+        savedState = savedState,
         destinations = contentDestinations,
         getHostLifecycleState = getHostLifecycleState,
         onStackEntryRemoved = onStackEntryRemoved,
