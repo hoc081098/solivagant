@@ -66,7 +66,7 @@ internal class StackEntry<T : BaseRoute> private constructor(
   val destination: ContentDestination<T>,
   val lifecycleOwner: StackEntryLifecycleOwner,
 ) {
-  //region Removed from backstack state
+  //region StackEntryState
   private val _state: MutableState<StackEntryState> = mutableStateOf(ACTIVE)
 
   internal fun transitionTo(state: StackEntryState) {
