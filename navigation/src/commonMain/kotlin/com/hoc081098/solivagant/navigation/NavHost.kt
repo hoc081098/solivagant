@@ -69,6 +69,7 @@ import com.hoc081098.solivagant.navigation.internal.MultiStackNavigationExecutor
 import com.hoc081098.solivagant.navigation.internal.OnBackPressedCallback
 import com.hoc081098.solivagant.navigation.internal.StackEntry
 import com.hoc081098.solivagant.navigation.internal.StackEntryId
+import com.hoc081098.solivagant.navigation.internal.StackEntryState
 import com.hoc081098.solivagant.navigation.internal.StackEntryViewModelStoreOwner
 import com.hoc081098.solivagant.navigation.internal.StackEvent
 import com.hoc081098.solivagant.navigation.internal.VisibleEntryState
@@ -195,16 +196,26 @@ public fun NavHost(
           contentAlignment = Alignment.Center,
           contentKey = { it.currentVisibleEntry.id },
         ) { targetState ->
+          // From AndroidX Navigation:
           // In some specific cases, such as clearing your back stack by changing your
           // start destination, AnimatedContent can contain an entry that is no longer
           // part of visible entries since it was cleared from the back stack and is not
           // animating. In these cases the currentEntry will be null, and in those cases,
           // AnimatedContent will just skip attempting to transition the old entry.
           // See https://issuetracker.google.com/238686802
-          val currentEntry = executor.visibleEntries.value.currentVisibleEntry
 
-          if (currentEntry == targetState.currentVisibleEntry) {
-            // while in the scope of the composable, we provide the ViewModelStoreOwner and LifecycleOwner
+          // This will cause the recomposition when the entry's state changed.
+          val isRemoved = when (targetState.currentVisibleEntry.state.value) {
+            StackEntryState.ACTIVE,
+            StackEntryState.REMOVING,
+            -> false
+
+            StackEntryState.REMOVED ->
+              true
+          }
+
+          // while in the scope of the composable, we provide the ViewModelStoreOwner and LifecycleOwner
+          if (!isRemoved) {
             Show(
               entry = targetState.currentVisibleEntry,
               executor = executor,

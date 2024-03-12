@@ -160,10 +160,13 @@ internal class MultiStackNavigationExecutor(
 
   @DelicateNavigationApi
   @Deprecated("Should not use destinationId directly, use route instead.")
-  override fun stackEntryIdFor(destinationId: DestinationId<*>): StackEntryId = entryFor(destinationId).id
+  override fun stackEntryIdFor(destinationId: DestinationId<*>): StackEntryId =
+    @Suppress("DEPRECATION")
+    entryFor(destinationId).id
 
   override fun savedStateHandleFor(id: StackEntryId): SavedStateHandle {
     val entry = entryFor<BaseRoute>(id)
+
     return savedStateHandles.getOrPut(id) {
       createSavedStateHandleAndSetSavedStateProvider(id.value, globalSavedStateHandle)
         .apply { this[EXTRA_ROUTE] = entry.route }
@@ -171,6 +174,7 @@ internal class MultiStackNavigationExecutor(
   }
 
   override fun storeFor(id: StackEntryId): NavigationExecutor.Store {
+    entryFor<BaseRoute>(id) // Ensure the entry exists
     return stores.getOrPut(id) { NavigationExecutorStore() }
   }
 
@@ -186,11 +190,14 @@ internal class MultiStackNavigationExecutor(
       ?: error("Route with id=$id not found on back stack")
   }
 
+  @DelicateNavigationApi
   private fun <T : BaseRoute> entryFor(route: T): StackEntry<T> {
     return stack.entryFor(route)
       ?: error("Route $route not found on back stack")
   }
 
+  @DelicateNavigationApi
+  @Deprecated("Should not use destinationId directly, use route instead.")
   private fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T> {
     return stack.entryFor(destinationId)
       ?: error("Route with destinationId=$destinationId not found on back stack")
@@ -198,18 +205,19 @@ internal class MultiStackNavigationExecutor(
   //endregion
 
   /**
-   * **Pre-condition**: the value of [StackEntry.isRemovedFromBackstack] must be `true`.
+   * **Pre-condition**: the value of [StackEntry.state] must be [StackEntryState.REMOVING].
    *
    * Move the lifecycle of the entry to DESTROYED, and clear its resources.
    */
   private fun removeEntry(entry: StackEntry<*>) {
-    require(entry.isRemovedFromBackstack.value) { "$entry is not removed from backstack" }
+    require(entry.state.value == StackEntryState.REMOVING) { "The state of $entry must be StackEntryState.REMOVING" }
 
     val id = entry.id
 
     // If the entry is no longer part of the backStack, we need to manually move
     // it to DESTROYED, and clear its resources.
     entry.moveToDestroyed()
+    entry.transitionTo(StackEntryState.REMOVED)
 
     val store = stores.remove(id)
     store?.close()
@@ -263,7 +271,7 @@ internal class MultiStackNavigationExecutor(
    * Remove the entry if it is removed from backstack, otherwise move its lifecycle to CREATED.
    */
   internal fun removeEntryIfNeeded(entry: StackEntry<*>) {
-    if (entry.isRemovedFromBackstack.value) {
+    if (entry.state.value == StackEntryState.REMOVING) {
       removeEntry(entry)
       pendingRemovedEntries.remove(entry)
     } else {
@@ -281,8 +289,8 @@ internal class MultiStackNavigationExecutor(
       }
 
     val onStackEntryRemoved: OnStackEntryRemoved = { entry, shouldRemoveImmediately ->
-      // First, mark the entry as removed from backstack
-      entry.markRemovedFromBackstack()
+      // First, change the entry's state to StackEntryState.REMOVING
+      entry.transitionTo(StackEntryState.REMOVING)
 
       // Then, remove the entry if it is removed from backstack,
       // otherwise move its lifecycle to CREATED and add it to [pendingRemovedEntries].
