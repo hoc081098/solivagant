@@ -33,12 +33,18 @@
 package com.hoc081098.solivagant.navigation.internal
 
 import com.benasher44.uuid.uuid4
+import com.hoc081098.kmp.viewmodel.parcelable.Parcelable
+import com.hoc081098.kmp.viewmodel.parcelable.Parcelize
 import com.hoc081098.solivagant.lifecycle.Lifecycle
 import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.ScreenDestination
+import dev.drewhamilton.poko.Poko
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.mutate
 import kotlinx.collections.immutable.persistentListOf
@@ -78,7 +84,7 @@ internal class Stack private constructor(
 
   @CheckResult
   @Suppress("NestedBlockDepth")
-  fun computeVisibleEntries(): NonEmptyImmutableList<StackEntry<*>> {
+  internal fun computeVisibleEntries(): NonEmptyImmutableList<StackEntry<*>> {
     if (stack.size == 1) {
       return NonEmptyImmutableList.adapt(listOf(stack.single()))
     }
@@ -148,28 +154,31 @@ internal class Stack private constructor(
   //endregion
 
   @CheckResult
-  fun saveState(): Map<String, ArrayList<out Any>> {
-    val ids = ArrayList<String>(stack.size)
-    val routes = ArrayList<BaseRoute>(stack.size)
-    stack.forEach {
-      ids.add(it.id.value)
-      routes.add(it.route)
-    }
-    return mapOf(
-      SAVED_STATE_IDS to ids,
-      SAVED_STATE_ROUTES to routes,
+  internal fun saveState(): StackSavedState =
+    StackSavedState(
+      entries = stack.mapTo(ArrayList(stack.size)) {
+        StackSavedState.Entry(
+          id = it.id.value,
+          route = it.route,
+        )
+      },
     )
-  }
 
   internal fun handleLifecycleEvent(event: Lifecycle.Event) = stack.forEach { it.handleLifecycleEvent(event) }
 
   companion object {
+    @OptIn(ExperimentalContracts::class)
     fun createWith(
       root: NavRoot,
       destinations: List<ContentDestination<*>>,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
+      contract {
+        callsInPlace(idGenerator, InvocationKind.AT_LEAST_ONCE)
+        callsInPlace(getHostLifecycleState, InvocationKind.AT_LEAST_ONCE)
+      }
+
       val rootEntry = entry(
         route = root,
         destinations = destinations,
@@ -184,23 +193,24 @@ internal class Stack private constructor(
       )
     }
 
+    @OptIn(ExperimentalContracts::class)
     fun fromState(
-      bundle: Map<String, ArrayList<out Any>>,
+      savedState: StackSavedState,
       destinations: List<ContentDestination<*>>,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
-      @Suppress("UNCHECKED_CAST")
-      val ids = bundle[SAVED_STATE_IDS]!! as ArrayList<String>
+      contract {
+        callsInPlace(idGenerator, InvocationKind.AT_LEAST_ONCE)
+        callsInPlace(getHostLifecycleState, InvocationKind.AT_LEAST_ONCE)
+      }
 
-      @Suppress("UNCHECKED_CAST")
-      val routes = bundle[SAVED_STATE_ROUTES]!! as ArrayList<BaseRoute>
-      val entries = ids.mapIndexed { index, id ->
+      val entries = savedState.entries.map { entry ->
         entry(
-          route = routes[index],
+          route = entry.route,
           destinations = destinations,
           hostLifecycleState = getHostLifecycleState(),
-        ) { id }
+        ) { entry.id }
       }
       return Stack(
         initialStack = entries,
@@ -210,20 +220,34 @@ internal class Stack private constructor(
       )
     }
 
+    @OptIn(ExperimentalContracts::class)
     private inline fun <T : BaseRoute> entry(
       route: T,
       destinations: List<ContentDestination<*>>,
       hostLifecycleState: Lifecycle.State,
       idGenerator: () -> String,
-    ): StackEntry<T> =
-      StackEntry.create(
+    ): StackEntry<T> {
+      contract {
+        callsInPlace(idGenerator, InvocationKind.EXACTLY_ONCE)
+      }
+
+      return StackEntry.create(
         route = route,
         destinations = destinations,
         idGenerator = idGenerator,
         hostLifecycleState = hostLifecycleState,
       )
-
-    private const val SAVED_STATE_IDS = "com.hoc081098.solivagant.navigation.stack.ids"
-    private const val SAVED_STATE_ROUTES = "com.hoc081098.solivagant.navigation.stack.routes"
+    }
   }
+}
+
+@Poko
+@Parcelize
+internal class StackSavedState(val entries: ArrayList<Entry>) : Parcelable {
+  @Poko
+  @Parcelize
+  internal class Entry(
+    val id: String,
+    val route: BaseRoute,
+  ) : Parcelable
 }

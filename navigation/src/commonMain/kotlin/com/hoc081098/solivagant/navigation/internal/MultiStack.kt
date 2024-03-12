@@ -39,6 +39,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.Snapshot
 import com.benasher44.uuid.uuid4
+import com.hoc081098.kmp.viewmodel.parcelable.Parcelable
+import com.hoc081098.kmp.viewmodel.parcelable.Parcelize
 import com.hoc081098.solivagant.lifecycle.Lifecycle
 import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.navigation.BaseRoute
@@ -48,6 +50,9 @@ import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.OverlayDestination
 import com.hoc081098.solivagant.navigation.ScreenDestination
 import dev.drewhamilton.poko.Poko
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import kotlinx.collections.immutable.ImmutableList
 
 @Stable
@@ -155,7 +160,7 @@ internal class MultiStack private constructor(
   ) {
     stack.clear().run {
       if (shouldRemoveImmediately) {
-        onEach { onStackEntryRemoved(it, true) }
+        forEach { onStackEntryRemoved(it, true) }
       } else {
         invokeOnStackEntryRemoved(onStackEntryRemoved)
       }
@@ -214,7 +219,7 @@ internal class MultiStack private constructor(
 
       // remove anything that the start stack could have shown before
       // can't use resetToRoot because that will also recreate the root
-      currentStack.clear().onEach { onStackEntryRemoved(it, true) }
+      currentStack.clear().forEach { onStackEntryRemoved(it, true) }
       updateVisibleDestinations(lastEvent = StackEvent.Pop)
     } else {
       currentStack.pop().also {
@@ -318,7 +323,7 @@ internal class MultiStack private constructor(
     while (allStacks.isNotEmpty()) {
       val stack = allStacks.last()
 
-      stack.clear().onEach { onStackEntryRemoved(it, it != currentVisibleEntry) }
+      stack.clear().forEach { onStackEntryRemoved(it, it != currentVisibleEntry) }
       allStacks.removeLast()
       onStackEntryRemoved(
         stack.rootEntry,
@@ -335,14 +340,15 @@ internal class MultiStack private constructor(
   }
   //endregion
 
-  fun saveState(): Map<String, Any> {
-    return mapOf(
-      SAVED_STATE_ALL_STACKS to ArrayList(allStacks.map { it.saveState() }),
-      SAVED_STATE_CURRENT_STACK to currentStack.destinationId,
+  @CheckResult
+  internal fun saveState(): MultiStackSavedState =
+    MultiStackSavedState(
+      allStackSavedStates = allStacks.mapTo(ArrayList(allStacks.size)) { it.saveState() },
+      currentStackId = currentStack.destinationId,
+      startDestinationId = startStack.destinationId,
     )
-  }
 
-  fun handleLifecycleEvent(pair: Pair<Lifecycle.Event, LifecycleOwner>?) {
+  internal fun handleLifecycleEvent(pair: Pair<Lifecycle.Event, LifecycleOwner>?) {
     pair ?: return run { hasHostLifecycleOwner = false }
 
     hasHostLifecycleOwner = true
@@ -350,7 +356,22 @@ internal class MultiStack private constructor(
     allStacks.forEach { it.handleLifecycleEvent(pair.first) }
   }
 
+  internal fun clear() {
+    // remove all stacks
+    while (allStacks.isNotEmpty()) {
+      val stack = allStacks.last()
+
+      stack.clear().forEach { onStackEntryRemoved(it, true) }
+      allStacks.removeLast()
+      onStackEntryRemoved(
+        stack.rootEntry,
+        true,
+      )
+    }
+  }
+
   companion object {
+    @OptIn(ExperimentalContracts::class)
     fun createWith(
       root: NavRoot,
       destinations: List<ContentDestination<*>>,
@@ -358,6 +379,11 @@ internal class MultiStack private constructor(
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): MultiStack {
+      contract {
+        callsInPlace(idGenerator, InvocationKind.AT_LEAST_ONCE)
+        callsInPlace(getHostLifecycleState, InvocationKind.AT_LEAST_ONCE)
+      }
+
       val startStack = Stack.createWith(
         root = root,
         destinations = destinations,
@@ -374,28 +400,32 @@ internal class MultiStack private constructor(
       )
     }
 
+    @OptIn(ExperimentalContracts::class)
     @Suppress("LongParameterList")
     fun fromState(
-      root: NavRoot,
-      bundle: Map<String, Any?>,
+      savedState: MultiStackSavedState,
       destinations: List<ContentDestination<*>>,
       getHostLifecycleState: () -> Lifecycle.State,
       onStackEntryRemoved: OnStackEntryRemoved,
       idGenerator: () -> String = { uuid4().toString() },
     ): MultiStack {
-      @Suppress("UNCHECKED_CAST")
-      val allStackBundles = bundle[SAVED_STATE_ALL_STACKS]!! as ArrayList<Map<String, ArrayList<out Any>>>
-      val currentStackId = bundle[SAVED_STATE_CURRENT_STACK] as DestinationId<*>
+      contract {
+        callsInPlace(idGenerator, InvocationKind.AT_LEAST_ONCE)
+        callsInPlace(getHostLifecycleState, InvocationKind.AT_LEAST_ONCE)
+      }
+
+      val allStackBundles = savedState.allStackSavedStates
       val allStacks = allStackBundles.mapTo(ArrayList(allStackBundles.size)) {
         Stack.fromState(
-          bundle = it,
+          savedState = it,
           destinations = destinations,
           getHostLifecycleState = getHostLifecycleState,
           idGenerator = idGenerator,
         )
       }
-      val startStack = allStacks.first { it.destinationId == root.destinationId }
-      val currentStack = allStacks.first { it.destinationId.route == currentStackId.route }
+      val startStack = allStacks.first { it.destinationId.route == savedState.startDestinationId.route }
+      val currentStack = allStacks.first { it.destinationId.route == savedState.currentStackId.route }
+
       return MultiStack(
         allStacks = allStacks,
         startStack = startStack,
@@ -405,9 +435,6 @@ internal class MultiStack private constructor(
         idGenerator = idGenerator,
       )
     }
-
-    private const val SAVED_STATE_ALL_STACKS = "com.hoc081098.solivagant.navigation.stack.all_stacks"
-    private const val SAVED_STATE_CURRENT_STACK = "com.hoc081098.solivagant.navigation.stack.current_stack"
   }
 }
 
@@ -442,3 +469,11 @@ private fun ImmutableList<StackEntry<*>>.invokeOnStackEntryRemoved(onStackEntryR
 
   return screenDestinationCount
 }
+
+@Parcelize
+@Poko
+internal class MultiStackSavedState(
+  val allStackSavedStates: ArrayList<StackSavedState>,
+  val currentStackId: DestinationId<*>,
+  val startDestinationId: DestinationId<*>,
+) : Parcelable
