@@ -2,6 +2,12 @@
 
 ## [Unreleased] - TBD
 
+## [0.3.0] - Mar 13, 2024
+
+- Fix an issue where a wrong host `LifecycleOwner` can be used (#62).
+- Rework internal implementation and refactor code (#62).
+- Handle `startRoute` changes properly (#62).
+
 ## [0.2.2] - Mar 9, 2024
 
 ### Fixed
@@ -114,7 +120,9 @@
   - [KotlinX Coroutines `1.7.3`](https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.7.3).
   - [KotlinX Collections Immutable `0.3.7`](https://github.com/Kotlin/kotlinx.collections.immutable/releases/tag/v0.3.7).
 
-[Unreleased]: https://github.com/hoc081098/solivagant/compare/0.2.2...HEAD
+[Unreleased]: https://github.com/hoc081098/solivagant/compare/0.3.0...HEAD
+
+[0.3.0]: https://github.com/hoc081098/solivagant/releases/tag/0.3.0
 
 [0.2.2]: https://github.com/hoc081098/solivagant/releases/tag/0.2.2
 
