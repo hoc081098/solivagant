@@ -96,7 +96,7 @@ allprojects {
 ```
 
 ```kotlin
-implementation("io.github.hoc081098:solivagant-navigation:0.2.2")
+implementation("io.github.hoc081098:solivagant-navigation:0.3.0")
 ```
 
 ## Getting started
