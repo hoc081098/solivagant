@@ -2,7 +2,6 @@
 
 package com.hoc081098.solivagant.navigation.internal
 
-import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.ScreenDestination
 import com.hoc081098.solivagant.navigation.test.SimpleRoot
 import com.hoc081098.solivagant.navigation.test.SimpleRoute
@@ -79,7 +78,7 @@ class StackEntryTest {
     val other = StackEntry(
       id = StackEntryId(value = "a"),
       route = SimpleRoute(0),
-      destination = ScreenDestination<SimpleRoute> { _, _ -> } as ContentDestination<SimpleRoute>,
+      destination = ScreenDestination(DestinationId(SimpleRoute::class), null) { _, _ -> },
       lifecycleOwner = lifecycleOwner,
     )
     first shouldNotBeEqual other
