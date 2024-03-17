@@ -41,7 +41,7 @@ coil = "3.0.0-alpha06"
 ktor = "2.3.9"
 
 kmp-viewmodel = "0.7.1"
-uuid = "0.8.2"
+uuid = "0.8.3"
 
 spotless = "6.25.0"
 detekt = "1.23.5"
