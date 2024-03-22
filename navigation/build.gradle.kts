@@ -69,10 +69,12 @@ kotlin {
     // Module name should be different from the one from JS
     // otherwise IC tasks that start clashing different modules with the same module name
     moduleName = property("POM_ARTIFACT_ID")!!.toString() + "Wasm"
-    browser()
-    testTask {
-      // Tests are broken now: Module not found: Error: Can't resolve './skiko.mjs'
-      enabled = false
+    browser {
+      testTask {
+        // TODO: Fix wasm tests.
+        // Tests are broken now: Module not found: Error: Can't resolve './skiko.mjs'
+        enabled = false
+      }
     }
   }
 
