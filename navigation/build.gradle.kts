@@ -292,3 +292,10 @@ tasks.withType<org.jetbrains.dokka.gradle.DokkaTaskPartial>().configureEach {
     }
   }
 }
+
+tasks.named("jsBrowserTest") {
+  dependsOn("wasmJsTestTestDevelopmentExecutableCompileSync")
+}
+tasks.named("wasmJsBrowserTest") {
+  dependsOn("jsTestTestDevelopmentExecutableCompileSync")
+}
