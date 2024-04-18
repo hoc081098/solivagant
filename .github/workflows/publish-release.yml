@@ -24,7 +24,7 @@ jobs:
         uses: ffurrer2/extract-release-notes@v2
 
       - name: Create release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           body: ${{ steps.release_notes.outputs.release_notes }}
         env:
@@ -107,7 +107,7 @@ jobs:
 
       - name: Deploy docs 🚀 to website
         if: ${{ contains(matrix.os, 'macos') }}
-        uses: JamesIves/github-pages-deploy-action@v4.5.0
+        uses: JamesIves/github-pages-deploy-action@v4.6.0
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: site # The folder the action should deploy.

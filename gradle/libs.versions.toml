@@ -27,29 +27,29 @@ jetbrains-compose-compiler = "1.5.10.1"
 
 napier = "2.7.1"
 flowExt = "0.8.0"
-koin = "3.5.3"
-koin-compose = "1.1.2"
-koin-androidx-compose = "3.5.3"
-compose-rules-detekt = "0.3.11"
+koin = "3.5.6"
+koin-compose = "1.1.5"
+koin-androidx-compose = "3.5.6"
+compose-rules-detekt = "0.3.15"
 
 androidx-lifecycle = "2.7.0"
 androidx-annotation = "1.7.1"
-androidx-activity = "1.8.2"
-android-gradle = "8.3.0"
+androidx-activity = "1.9.0"
+android-gradle = "8.3.2"
 
 coil = "3.0.0-alpha06"
-ktor = "2.3.8"
+ktor = "2.3.10"
 
 kmp-viewmodel = "0.7.1"
-uuid = "0.8.2"
+uuid = "0.8.4"
 
 spotless = "6.25.0"
-detekt = "1.23.5"
+detekt = "1.23.6"
 kotlinx-kover = "0.7.6"
-dokka = "1.9.10"
+dokka = "1.9.20"
 kotlinx-binary-compatibility-validator = "0.14.0"
 poko = "0.15.2"
-vanniktech-maven-publish = "0.27.0"
+vanniktech-maven-publish = "0.28.0"
 ktlint = "1.1.1"
 
 [libraries]
@@ -88,6 +88,7 @@ kmp-viewmodel-savedstate = { module = "io.github.hoc081098:kmp-viewmodel-savedst
 kmp-viewmodel-compose = { module = "io.github.hoc081098:kmp-viewmodel-compose", version.ref = "kmp-viewmodel" }
 kmp-viewmodel-koin = { module = "io.github.hoc081098:kmp-viewmodel-koin", version.ref = "kmp-viewmodel" }
 kmp-viewmodel-koin-compose = { module = "io.github.hoc081098:kmp-viewmodel-koin-compose", version.ref = "kmp-viewmodel" }
+solivagant-navigation = { module = "io.github.hoc081098:solivagant-navigation", version = "0.3.0" }
 
 uuid = { module = "com.benasher44:uuid", version.ref = "uuid" }
 

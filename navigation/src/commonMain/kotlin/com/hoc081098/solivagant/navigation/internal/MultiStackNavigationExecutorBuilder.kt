@@ -34,8 +34,7 @@ package com.hoc081098.solivagant.navigation.internal
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.remember
 import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
 import com.hoc081098.kmp.viewmodel.createSavedStateHandle
 import com.hoc081098.kmp.viewmodel.viewModelFactory
@@ -57,20 +56,17 @@ internal fun rememberNavigationExecutor(
     },
   ),
 ): MultiStackNavigationExecutor {
-  // setInputStartRoot must be called before getMultiStackNavigationExecutor
-  viewModel.setInputStartRoot(startRoot)
-
   val lifecycleOwner = LocalLifecycleOwner.current
-  val currentLifecycleOwner by rememberUpdatedState(lifecycleOwner)
 
   val executor = viewModel.getMultiStackNavigationExecutor(
-    contentDestinations = destinations.filterIsInstance<ContentDestination<*>>(),
-    getHostLifecycleState = { currentLifecycleOwner.lifecycle.currentState },
+    startRoot = startRoot,
+    contentDestinations = remember(destinations) { destinations.filterIsInstance<ContentDestination<*>>() },
+    lifecycleOwner = lifecycleOwner,
   )
 
-  executor.setLifecycleOwner(lifecycleOwner)
-
-  DisposableEffect(executor) {
+  DisposableEffect(executor, lifecycleOwner) {
+    // Setup the executor with proper LifecycleOwner
+    executor.setLifecycleOwner(lifecycleOwner)
     onDispose { executor.setLifecycleOwner(null) }
   }
 

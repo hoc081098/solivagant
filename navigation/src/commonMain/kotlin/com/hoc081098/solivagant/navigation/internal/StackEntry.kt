@@ -34,92 +34,127 @@ package com.hoc081098.solivagant.navigation.internal
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshots.Snapshot
 import com.hoc081098.solivagant.lifecycle.Lifecycle
-import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.ContentDestination
+import com.hoc081098.solivagant.navigation.InternalNavigationApi
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
+import com.hoc081098.solivagant.navigation.internal.StackEntryState.ACTIVE
+import com.hoc081098.solivagant.navigation.internal.StackEntryState.REMOVED
+import com.hoc081098.solivagant.navigation.internal.StackEntryState.REMOVING
 import dev.drewhamilton.poko.Poko
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
+
+@Immutable
+internal enum class StackEntryState {
+  ACTIVE,
+  REMOVING,
+  REMOVED,
+}
 
 @Poko
-@Immutable
-internal class StackEntry<T : BaseRoute> private constructor(
-  val id: StackEntryId,
-  val route: T,
-  val destination: ContentDestination<T>,
-  private val entryLifecycleOwner: StackEntryLifecycleOwner,
-) {
-  //region Removed from backstack state
-  private val isRemovedFromBackstackState: MutableState<Boolean> = mutableStateOf(false)
+@Stable
+internal class StackEntry<T : BaseRoute>
+  @InternalNavigationApi
+  internal constructor(
+    val id: StackEntryId,
+    val route: T,
+    val destination: ContentDestination<T>,
+    val lifecycleOwner: StackEntryLifecycleOwner,
+  ) {
+    //region StackEntryState
+    private val _state: MutableState<StackEntryState> = mutableStateOf(ACTIVE)
 
-  internal fun markRemovedFromBackstack() {
-    check(!isRemovedFromBackstackState.value) { "Can not mark twice" }
-    isRemovedFromBackstackState.value = true
-  }
+    internal fun transitionTo(state: StackEntryState) {
+      Snapshot.withMutableSnapshot {
+        _state.value = when (_state.value) {
+          ACTIVE -> when (state) {
+            ACTIVE -> error("The entry's state is already ACTIVE")
+            REMOVING -> state
+            REMOVED -> error("Cannot transition from ACTIVE to REMOVED")
+          }
 
-  val isRemovedFromBackstack: State<Boolean> get() = isRemovedFromBackstackState
-  //endregion
+          REMOVING -> when (state) {
+            ACTIVE -> error("Cannot transition from REMOVING to ACTIVE")
+            REMOVING -> error("The entry's state is already REMOVING")
+            REMOVED -> state
+          }
 
-  val destinationId
-    get() = route.destinationId
-
-  val removable
-    // cast is needed for the compiler to recognize that the when is exhaustive
-    @Suppress("USELESS_CAST")
-    get() = when (route as BaseRoute) {
-      is NavRoute -> true
-      is NavRoot -> false
+          REMOVED -> error("REMOVED is the final state")
+        }
+      }
     }
 
-  //region Lifecycle
-  internal fun moveToCreated() {
-    entryLifecycleOwner.maxLifecycle = Lifecycle.State.CREATED
-  }
+    val state: State<StackEntryState> get() = _state
+    //endregion
 
-  internal fun moveToStarted() {
-    check(!isRemovedFromBackstack.value) { "Can not move to STARTED state if removed from backstack" }
-    entryLifecycleOwner.maxLifecycle = Lifecycle.State.STARTED
-  }
+    val destinationId
+      get() = route.destinationId
 
-  internal fun moveToResumed() {
-    check(!isRemovedFromBackstack.value) { "Can not move to RESUMED state if removed from backstack" }
-    entryLifecycleOwner.maxLifecycle = Lifecycle.State.RESUMED
-  }
+    val removable
+      // cast is needed for the compiler to recognize that the when is exhaustive
+      @Suppress("USELESS_CAST")
+      get() = when (route as BaseRoute) {
+        is NavRoute -> true
+        is NavRoot -> false
+      }
 
-  internal fun moveToDestroyed() {
-    entryLifecycleOwner.maxLifecycle = Lifecycle.State.DESTROYED
-  }
+    //region Lifecycle
+    internal fun moveToCreated() {
+      lifecycleOwner.maxLifecycle = Lifecycle.State.CREATED
+    }
 
-  internal val lifecycleOwner: LifecycleOwner get() = entryLifecycleOwner
+    internal fun moveToStarted() {
+      check(state.value == ACTIVE) { "Can not move to STARTED state when entry's state is not StackEntryState.ACTIVE" }
+      lifecycleOwner.maxLifecycle = Lifecycle.State.STARTED
+    }
 
-  internal fun handleLifecycleEvent(event: Lifecycle.Event) = entryLifecycleOwner.handleLifecycleEvent(event)
-  //endregion
+    internal fun moveToResumed() {
+      check(state.value == ACTIVE) { "Can not move to STARTED state when entry's state is not StackEntryState.ACTIVE" }
+      lifecycleOwner.maxLifecycle = Lifecycle.State.RESUMED
+    }
 
-  companion object {
-    inline fun <T : BaseRoute> create(
-      route: T,
-      destinations: List<ContentDestination<*>>,
-      hostLifecycleState: Lifecycle.State,
-      idGenerator: () -> String,
-    ): StackEntry<T> {
-      @Suppress("UNCHECKED_CAST")
-      val destination = destinations.find { it.id == route.destinationId } as? ContentDestination<T>
-        ?: error(
-          "Can not find ContentDestination for route $route." +
-            "You must add a ContentDestination to the NavHost(destinations = ...).",
+    internal fun moveToDestroyed() {
+      lifecycleOwner.maxLifecycle = Lifecycle.State.DESTROYED
+    }
+
+    internal fun handleLifecycleEvent(event: Lifecycle.Event) = lifecycleOwner.handleLifecycleEvent(event)
+    //endregion
+
+    companion object {
+      @OptIn(ExperimentalContracts::class)
+      inline fun <T : BaseRoute> create(
+        route: T,
+        destinations: List<ContentDestination<*>>,
+        hostLifecycleState: Lifecycle.State,
+        idGenerator: () -> String,
+      ): StackEntry<T> {
+        contract {
+          callsInPlace(idGenerator, InvocationKind.EXACTLY_ONCE)
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        val destination = destinations.find { it.id == route.destinationId } as? ContentDestination<T>
+          ?: error(
+            "Can not find ContentDestination for route $route." +
+              "You must add a ContentDestination to the NavHost(destinations = ...).",
+          )
+
+        return StackEntry(
+          id = StackEntryId(idGenerator()),
+          route = route,
+          destination = destination,
+          lifecycleOwner = StackEntryLifecycleOwner(
+            hostLifecycleState = hostLifecycleState,
+          ),
         )
-
-      return StackEntry(
-        id = StackEntryId(idGenerator()),
-        route = route,
-        destination = destination,
-        entryLifecycleOwner = StackEntryLifecycleOwner(
-          hostLifecycleState = hostLifecycleState,
-        ),
-      )
+      }
     }
   }
-}

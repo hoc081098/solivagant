@@ -10,7 +10,7 @@ import com.hoc081098.solivagant.lifecycle.LifecycleRegistry
 import com.hoc081098.solivagant.lifecycle.compose.rememberLifecycleOwner
 import com.hoc081098.solivagant.navigation.ClearOnDispose
 import com.hoc081098.solivagant.navigation.LifecycleControllerEffect
-import com.hoc081098.solivagant.navigation.LocalProvider
+import com.hoc081098.solivagant.navigation.ProvideCompositionLocals
 import com.hoc081098.solivagant.navigation.SavedStateSupport
 import com.hoc081098.solivagant.sample.common.OnLifecycleEventWithBuilder
 import io.github.aakira.napier.Napier
@@ -42,7 +42,7 @@ fun main() {
           onEach { Napier.d(message = "Lifecycle event: $it", tag = "[main]") }
         }
 
-        savedStateSupport.LocalProvider { SolivagantSampleApp() }
+        savedStateSupport.ProvideCompositionLocals { SolivagantSampleApp() }
       }
     }
   }

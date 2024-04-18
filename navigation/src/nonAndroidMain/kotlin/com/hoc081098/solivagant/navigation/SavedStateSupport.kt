@@ -57,7 +57,7 @@ import kotlin.LazyThreadSafetyMode.NONE
  * savedStateSupport.ClearOnDispose()
  *
  * // Provide SavedStateSupport as ViewModelStoreOwner, SaveableStateRegistry and SavedStateHandleFactory.
- * savedStateSupport.LocalProvider {
+ * savedStateSupport.ProvideCompositionLocals {
  *   MyApp()
  * }
  * ```
@@ -226,16 +226,16 @@ public fun SavedStateSupport.ClearOnDispose(): Unit =
  * unregistered.
  * Therefore, all [androidx.compose.runtime.saveable.rememberSaveable]s used in the [content] will be saved.
  *
- * @param values Other [ProvidedValue]s.
+ * @param others Other [ProvidedValue]s.
  * @param content The content [Composable]
  */
 @Composable
-public fun SavedStateSupport.LocalProvider(
-  vararg values: ProvidedValue<*>,
+public fun SavedStateSupport.ProvideCompositionLocals(
+  vararg others: ProvidedValue<*>,
   content: @Composable () -> Unit,
 ): Unit =
   CompositionLocalProvider(
-    *values,
+    *others,
     LocalViewModelStoreOwner provides this,
     LocalSaveableStateRegistry provides this,
     LocalSavedStateHandleFactory provides this,

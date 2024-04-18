@@ -32,192 +32,101 @@
 
 package com.hoc081098.solivagant.navigation.internal
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshots.Snapshot
+import com.hoc081098.kmp.viewmodel.MainThread
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
-import com.hoc081098.kmp.viewmodel.SavedStateHandleFactory
 import com.hoc081098.kmp.viewmodel.ViewModel
-import com.hoc081098.solivagant.lifecycle.Lifecycle
-import com.hoc081098.solivagant.navigation.BaseRoute
+import com.hoc081098.kmp.viewmodel.safe.NullableSavedStateHandleKey
+import com.hoc081098.kmp.viewmodel.safe.parcelable
+import com.hoc081098.kmp.viewmodel.safe.safe
+import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.navigation.ContentDestination
-import com.hoc081098.solivagant.navigation.EXTRA_ROUTE
 import com.hoc081098.solivagant.navigation.NavRoot
+import kotlin.jvm.JvmField
+
+@MainThread
+internal class LifecycleOwnerRef(
+  @JvmField var ref: WeakReference<LifecycleOwner>?,
+)
 
 internal class StoreViewModel(
   internal val globalSavedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-  private val stores = mutableMapOf<StackEntryId, NavigationExecutorStore>()
-  private val savedStateHandles = mutableMapOf<StackEntryId, SavedStateHandle>()
-  private val savedStateHandleFactories = mutableMapOf<StackEntryId, SavedStateHandleFactory>()
-
-  private var stack: MultiStack? = null
-  private var executor: MultiStackNavigationExecutor? = null
-
-  /**
-   * All entries that are removed from backstack, but not yet removed from the store.
-   */
-  private val pendingRemovedEntries = LinkedHashSet<StackEntry<*>>()
+  private val executor: MutableState<MultiStackNavigationExecutor?> = mutableStateOf(null)
+  private val lifecycleOwnerRef = LifecycleOwnerRef(null)
 
   init {
-    globalSavedStateHandle.setSavedStateProviderWithMap(SAVED_STATE_STACK) {
-      checkNotNull(stack) { "Stack is null. This should never happen" }.saveState()
+    addCloseable {
+      lifecycleOwnerRef.ref?.clear()
+
+      Snapshot.withMutableSnapshot {
+        executor.value?.clear()
+        executor.value = null
+      }
     }
   }
 
-  internal fun provideStore(id: StackEntryId): NavigationExecutor.Store {
-    return stores.getOrPut(id) { NavigationExecutorStore() }
-  }
+  internal fun getMultiStackNavigationExecutor(
+    startRoot: NavRoot,
+    contentDestinations: List<ContentDestination<*>>,
+    lifecycleOwner: LifecycleOwner,
+  ): MultiStackNavigationExecutor {
+    lifecycleOwnerRef.ref = WeakReference(lifecycleOwner)
 
-  internal fun provideSavedStateHandle(
-    id: StackEntryId,
-    route: BaseRoute,
-  ): SavedStateHandle {
-    return savedStateHandles.getOrPut(id) {
-      createSavedStateHandleAndSetSavedStateProvider(id.value, globalSavedStateHandle)
-        .apply { this[EXTRA_ROUTE] = route }
-    }
-  }
+    return Snapshot.withMutableSnapshot {
+      val currentExecutor = executor.value
 
-  /**
-   * **Pre-condition**: the value of [StackEntry.isRemovedFromBackstack] must be `true`.
-   *
-   * Move the lifecycle of the entry to DESTROYED, and clear its resources.
-   */
-  private fun removeEntry(entry: StackEntry<*>) {
-    require(entry.isRemovedFromBackstack.value) { "$entry is not removed from backstack" }
+      val shouldClear = globalSavedStateHandle.safe { safeSavedStateHandle ->
+        // Get saved input root
+        val savedInputRoot = safeSavedStateHandle[SAVED_INPUT_ROOT_KEY]
 
-    val id = entry.id
+        // Save new input root
+        safeSavedStateHandle[SAVED_INPUT_ROOT_KEY] = startRoot
 
-    // If the entry is no longer part of the backStack, we need to manually move
-    // it to DESTROYED, and clear its resources.
-    entry.moveToDestroyed()
-
-    val store = stores.remove(id)
-    store?.close()
-
-    savedStateHandles.remove(id)
-    savedStateHandleFactories.remove(id)
-    globalSavedStateHandle.removeSavedStateProvider(id.value)
-    globalSavedStateHandle.remove<Any>(id.value)
-  }
-
-  /**
-   * Remove the entry if it is removed from backstack, otherwise move its lifecycle to CREATED.
-   */
-  internal fun removeEntryIfNeeded(entry: StackEntry<*>) {
-    if (entry.isRemovedFromBackstack.value) {
-      removeEntry(entry)
-      pendingRemovedEntries.remove(entry)
-    } else {
-      entry.moveToCreated()
-    }
-  }
-
-  /**
-   * Remove all pending removed entries.
-   */
-  internal fun removeAllPendingRemovedEntries() {
-    pendingRemovedEntries.forEach { removeEntry(it) }
-    pendingRemovedEntries.clear()
-  }
-
-  // @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
-  public override fun onCleared() {
-    for (store in stores.values) {
-      store.close()
-    }
-    stores.clear()
-
-    for (key in savedStateHandles.keys) {
-      globalSavedStateHandle.removeSavedStateProvider(key.value)
-      globalSavedStateHandle.remove<Any>(key.value)
-    }
-    savedStateHandles.clear()
-    savedStateHandleFactories.clear()
-  }
-
-  internal fun setInputStartRoot(root: NavRoot) {
-    globalSavedStateHandle.get<NavRoot?>(SAVED_INPUT_START_ROOT_KEY).let { currentSavedInputStartRoot ->
-      when {
-        currentSavedInputStartRoot == null -> {
-          globalSavedStateHandle[SAVED_INPUT_START_ROOT_KEY] = root
-          globalSavedStateHandle[SAVED_START_ROOT_KEY] = root
-        }
-
-        currentSavedInputStartRoot != root -> {
-          // Clear all saved state
-          onCleared()
-
-          globalSavedStateHandle[SAVED_INPUT_START_ROOT_KEY] = root
-          globalSavedStateHandle[SAVED_START_ROOT_KEY] = root
-        }
-
-        else -> {
+        when {
+          // First time
+          savedInputRoot == null -> false
+          // Input root changed -> clear all state and recreate executor
+          savedInputRoot != startRoot -> true
           // Do nothing
+          else -> false
         }
       }
-    }
-  }
 
-  private fun setStartRoot(root: NavRoot) {
-    globalSavedStateHandle[SAVED_START_ROOT_KEY] = root
-  }
+      if (shouldClear) {
+        val newExecutor = MultiStackNavigationExecutor(
+          contentDestinations = contentDestinations,
+          lifecycleOwnerRef = lifecycleOwnerRef,
+          globalSavedStateHandle = globalSavedStateHandle,
+          scope = viewModelScope,
+          startRoot = startRoot,
+          restoreState = false,
+        )
 
-  fun getMultiStackNavigationExecutor(
-    contentDestinations: List<ContentDestination<*>>,
-    getHostLifecycleState: () -> Lifecycle.State,
-  ): MultiStackNavigationExecutor =
-    executor
-      ?: MultiStackNavigationExecutor(
-        stack = getMultiStack(contentDestinations, getHostLifecycleState),
-        viewModel = this,
-        onRootChanged = ::setStartRoot,
-      ).also { this.executor = it }
+        // Update state before clearing
+        executor.value = newExecutor
+        currentExecutor?.clear()
 
-  private fun getMultiStack(
-    contentDestinations: List<ContentDestination<*>>,
-    getHostLifecycleState: () -> Lifecycle.State,
-  ): MultiStack {
-    this.stack?.let { return it }
-
-    val navState = globalSavedStateHandle.getAsMap(SAVED_STATE_STACK)
-    val savedNavRoot: NavRoot? = globalSavedStateHandle[SAVED_START_ROOT_KEY]
-
-    val onStackEntryRemoved: OnStackEntryRemoved = { entry, shouldRemoveImmediately ->
-      // First, mark the entry as removed from backstack
-      entry.markRemovedFromBackstack()
-
-      // Then, remove the entry if it is removed from backstack,
-      // otherwise move its lifecycle to CREATED and add it to [pendingRemovedEntries].
-      if (shouldRemoveImmediately) {
-        removeEntry(entry)
-        pendingRemovedEntries.remove(entry)
+        newExecutor
       } else {
-        // The entry will be removed later by [removeEntry] or [removeAllPendingRemovedEntries].
-        entry.moveToCreated()
-        pendingRemovedEntries.add(entry)
+        currentExecutor
+          ?: MultiStackNavigationExecutor(
+            contentDestinations = contentDestinations,
+            lifecycleOwnerRef = lifecycleOwnerRef,
+            globalSavedStateHandle = globalSavedStateHandle,
+            scope = viewModelScope,
+            startRoot = startRoot,
+            restoreState = true,
+          ).also { this.executor.value = it }
       }
     }
-
-    return if (navState == null) {
-      MultiStack.createWith(
-        root = savedNavRoot!!,
-        destinations = contentDestinations,
-        getHostLifecycleState = getHostLifecycleState,
-        onStackEntryRemoved = onStackEntryRemoved,
-      )
-    } else {
-      MultiStack.fromState(
-        root = savedNavRoot!!,
-        bundle = navState,
-        destinations = contentDestinations,
-        getHostLifecycleState = getHostLifecycleState,
-        onStackEntryRemoved = onStackEntryRemoved,
-      )
-    }.also { this.stack = it }
   }
 
-  private companion object {
-    private const val SAVED_STATE_STACK = "com.hoc081098.solivagant.navigation.stack"
-    private const val SAVED_START_ROOT_KEY = "com.hoc081098.solivagant.navigation.store.start_root"
-    private const val SAVED_INPUT_START_ROOT_KEY = "com.hoc081098.solivagant.navigation.store.input_start_root"
+  internal companion object {
+    private val SAVED_INPUT_ROOT_KEY = NullableSavedStateHandleKey.parcelable<NavRoot>(
+      "com.hoc081098.solivagant.navigation.store.input_root",
+    )
   }
 }

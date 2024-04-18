@@ -45,6 +45,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.InternalComposeApi
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -68,6 +69,7 @@ import com.hoc081098.solivagant.navigation.internal.MultiStackNavigationExecutor
 import com.hoc081098.solivagant.navigation.internal.OnBackPressedCallback
 import com.hoc081098.solivagant.navigation.internal.StackEntry
 import com.hoc081098.solivagant.navigation.internal.StackEntryId
+import com.hoc081098.solivagant.navigation.internal.StackEntryState
 import com.hoc081098.solivagant.navigation.internal.StackEntryViewModelStoreOwner
 import com.hoc081098.solivagant.navigation.internal.StackEvent
 import com.hoc081098.solivagant.navigation.internal.VisibleEntryState
@@ -97,11 +99,7 @@ public fun NavHost(
   destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
   transitionAnimations: NavHostTransitionAnimations = NavHostDefaults.transitionAnimations(),
 ) {
-  val lifecycleOwner = rememberPlatformLifecycleOwner()
-
-  CompositionLocalProvider(
-    LocalLifecycleOwner providesDefault lifecycleOwner,
-  ) {
+  ProvideLifecycleOwner {
     val executor = rememberNavigationExecutor(
       startRoot = startRoute,
       destinations = destinations,
@@ -198,13 +196,32 @@ public fun NavHost(
           contentAlignment = Alignment.Center,
           contentKey = { it.currentVisibleEntry.id },
         ) { targetState ->
+          // From AndroidX Navigation:
+          // In some specific cases, such as clearing your back stack by changing your
+          // start destination, AnimatedContent can contain an entry that is no longer
+          // part of visible entries since it was cleared from the back stack and is not
+          // animating. In these cases the currentEntry will be null, and in those cases,
+          // AnimatedContent will just skip attempting to transition the old entry.
+          // See https://issuetracker.google.com/238686802
+
+          // This will cause the recomposition when the entry's state changed.
+          val isRemoved = when (targetState.currentVisibleEntry.state.value) {
+            StackEntryState.ACTIVE,
+            StackEntryState.REMOVING,
+            -> false
+
+            StackEntryState.REMOVED ->
+              true
+          }
+
           // while in the scope of the composable, we provide the ViewModelStoreOwner and LifecycleOwner
-          Show(
-            modifier = Modifier.fillMaxSize(),
-            entry = targetState.currentVisibleEntry,
-            executor = executor,
-            saveableStateHolder = saveableStateHolder,
-          )
+          if (!isRemoved) {
+            Show(
+              entry = targetState.currentVisibleEntry,
+              executor = executor,
+              saveableStateHolder = saveableStateHolder,
+            )
+          }
         }
 
         DisposableEffect(executor, transition.targetState) {
@@ -273,12 +290,10 @@ private fun <T : BaseRoute> Show(
     executor
       .storeFor(entry.id)
       .getOrCreate(SaveableCloseable::class) {
-        SaveableCloseable(
-          entry.id.value,
-          WeakReference(saveableStateHolder),
-        )
+        SaveableCloseable(entry.id.value)
       }
   }
+  saveableCloseable.saveableStateHolderRef = WeakReference(saveableStateHolder)
 
   val savedStateHandleFactory = remember(executor, entry.id) {
     SavedStateHandleFactory { executor.savedStateHandleFor(entry.id) }
@@ -322,12 +337,12 @@ private fun <T : BaseRoute> Show(
 
 internal class SaveableCloseable(
   private val id: String,
-  private val saveableStateHolderRef: WeakReference<SaveableStateHolder>,
 ) : Closeable {
   private val _viewModelStoreOwnerState: MutableState<StackEntryViewModelStoreOwner?> =
     mutableStateOf(StackEntryViewModelStoreOwner())
 
-  inline val viewModelStoreOwnerState: State<StackEntryViewModelStoreOwner?> get() = _viewModelStoreOwnerState
+  internal inline val viewModelStoreOwnerState: State<StackEntryViewModelStoreOwner?> get() = _viewModelStoreOwnerState
+  internal lateinit var saveableStateHolderRef: WeakReference<SaveableStateHolder>
 
   override fun close() {
     Snapshot.withMutableSnapshot {
@@ -363,6 +378,19 @@ private fun SystemBackHandling(executor: MultiStackNavigationExecutor) {
     onDispose {
       callback.remove()
     }
+  }
+}
+
+@Composable
+private fun ProvideLifecycleOwner(content: @Composable () -> Unit) {
+  @OptIn(InternalComposeApi::class)
+  if (LocalLifecycleOwner.currentOrNull() != null) {
+    content()
+  } else {
+    CompositionLocalProvider(
+      LocalLifecycleOwner provides rememberPlatformLifecycleOwner(),
+      content = content,
+    )
   }
 }
 

@@ -3,6 +3,7 @@
 ## 🔆 Compose Multiplatform Navigation library - 🌸 Pragmatic, type safety navigation for Compose Multiplatform. Based on [Freeletics Khonshu Navigation](https://freeletics.github.io/khonshu/navigation/get-started/). ♥️ ViewModel, SavedStateHandle, Lifecycle, Multi-Backstacks, Transitions, Back-press handling, and more...
 
 [![maven-central](https://img.shields.io/maven-central/v/io.github.hoc081098/solivagant-navigation)](https://search.maven.org/search?q=g:io.github.hoc081098%20solivagant-navigation)
+[<img src="https://img.shields.io/nexus/snapshots/https/s01.oss.sonatype.org/io.github.hoc081098/solivagant-navigation.svg?label=latest%20snapshot"/>](https://s01.oss.sonatype.org/content/repositories/snapshots/io/github/hoc081098/solivagant-navigation)
 [![codecov](https://codecov.io/gh/hoc081098/solivagant/branch/master/graph/badge.svg?token=jBFg12osvP)](https://codecov.io/gh/hoc081098/solivagant)
 [![Build and publish snapshot](https://github.com/hoc081098/solivagant/actions/workflows/build.yml/badge.svg)](https://github.com/hoc081098/solivagant/actions/workflows/build.yml)
 [![Build sample](https://github.com/hoc081098/solivagant/actions/workflows/sample.yml/badge.svg)](https://github.com/hoc081098/solivagant/actions/workflows/sample.yml)
@@ -10,13 +11,14 @@
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Kotlin version](https://img.shields.io/badge/Kotlin-1.9.22-blueviolet?logo=kotlin&logoColor=white)](https://github.com/JetBrains/kotlin/releases/tag/v1.9.22)
 [![KotlinX Coroutines version](https://img.shields.io/badge/Kotlinx_Coroutines-1.8.0-blueviolet?logo=kotlin&logoColor=white)](https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.8.0)
-[![Compose Multiplatform version](https://img.shields.io/badge/Compose_Multiplatform-1.5.12-blueviolet?logo=kotlin&logoColor=white)](https://github.com/JetBrains/compose-multiplatform/releases/tag/v1.5.12)
+[![Compose Multiplatform version](https://img.shields.io/badge/Compose_Multiplatform-1.6.0-blueviolet?logo=kotlin&logoColor=white)](https://github.com/JetBrains/compose-multiplatform/releases/tag/v1.6.0)
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fhoc081098%2Fsolivagant&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 
 ![badge][badge-android]
 ![badge][badge-jvm]
 ![badge][badge-js]
 ![badge][badge-js-ir]
+![badge][badge-wasm]
 ![badge][badge-nodejs]
 ![badge][badge-linux]
 ![badge][badge-windows]
@@ -95,7 +97,7 @@ allprojects {
 ```
 
 ```kotlin
-implementation("io.github.hoc081098:solivagant-navigation:0.1.1")
+implementation("io.github.hoc081098:solivagant-navigation:0.3.0")
 ```
 
 ## Getting started
@@ -223,10 +225,10 @@ fun MyAwesomeApp(
 
 > [!IMPORTANT]
 > When passing a `NavEventNavigator` to `NavHost` composable, the NavHost will take care of setting up the navigator by calling `NavigationSetup(navigator)`.
-> 
+>
 > If you don't pass a "global" `NavEventNavigator` to `NavHost` composable, make sure there are property calls to `NavigationSetup(navigator)`.
 > For example, we can call `NavigationSetup(navigator)` in each destination composable.
-> 
+>
 > ```kotlin
 > @JvmField
 > val StartScreenDestination: NavDestination = ScreenDestination<StartScreenRoute> {
@@ -290,7 +292,7 @@ fun main() {
     ) {
       LifecycleOwnerProvider(lifecycleOwner) {
         // navigator can be retrieved from the DI container, such as Koin, Koject, etc...
-        savedStateSupport.LocalProvider { MyAwesomeApp() }
+        savedStateSupport.ProvideCompositionLocals { MyAwesomeApp() }
       }
     }
   }
@@ -319,7 +321,7 @@ fun MainViewController(savedStateSupport: SavedStateSupport): UIViewController {
     configure = { delegate = lifecycleOwnerUIVcDelegate },
   ) {
     LifecycleOwnerProvider(lifecycleOwnerUIVcDelegate) {
-      savedStateSupport.LocalProvider { MyAwesomeApp() }
+      savedStateSupport.ProvideCompositionLocals { MyAwesomeApp() }
     }
   }
 }
@@ -390,15 +392,17 @@ navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 
 - [Compose Multiplatform Todo solivagant Sample](https://github.com/hoc081098/Compose-Multiplatform-Todo-solivagant-Sample): A KMP template of the Todo App using Compose multiplatform for Android, Desktop, iOS and Web. Share everything including data, domain, presentation, and UI.
 
+- [Solivagant Wasm Sample](https://github.com/hoc081098/solivagant/tree/master/samples/solivagant-wasm-sample).
+
 ## Roadmap
 
 - [ ] Add more tests
 - [x] Add more samples
 - [ ] Add docs
-- [ ] Review supported targets
+- [x] Review supported targets
 - [ ] Polish and improve the implementation and the public API
 - [x] Support transition when navigating (since [0.1.0](https://github.com/hoc081098/solivagant/releases/tag/0.1.0)).
-- [ ] Support more targets such as wasm, watchOS, tvOS, etc...
+- [x] Support more targets such as wasm, watchOS, tvOS, etc... (since [0.2.0](https://github.com/hoc081098/solivagant/releases/tag/0.2.0)).
 
 ## License
 

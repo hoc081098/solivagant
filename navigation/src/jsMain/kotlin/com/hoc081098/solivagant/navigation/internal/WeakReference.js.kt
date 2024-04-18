@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2024 Petrus Nguyễn Thái Học
  *
@@ -17,12 +16,23 @@
 
 package com.hoc081098.solivagant.navigation.internal
 
-internal actual class WeakReference<T : Any> actual constructor(referred: T) {
-  private var ref: T? = referred
+// Original JS reference
+public external class WeakRef<T : Any>(
+  @Suppress("UnusedPrivateProperty") target: T,
+) {
+  /**
+   * Returns the WeakRef instance's target object, or undefined if the target object has been
+   * reclaimed.
+   */
+  public fun deref(): T?
+}
 
-  actual fun get(): T? = ref
+internal actual class WeakReference<T : Any> actual constructor(referred: T) {
+  private val ref = WeakRef(referred)
+
+  actual fun get(): T? = ref.deref()
 
   actual fun clear() {
-    ref = null
+    // Nothing to do
   }
 }

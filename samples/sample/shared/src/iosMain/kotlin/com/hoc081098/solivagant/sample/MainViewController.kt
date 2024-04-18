@@ -8,7 +8,7 @@ import androidx.compose.ui.window.ComposeUIViewController
 import com.hoc081098.solivagant.lifecycle.Lifecycle
 import com.hoc081098.solivagant.lifecycle.LifecycleOwnerProvider
 import com.hoc081098.solivagant.navigation.LifecycleOwnerComposeUIViewControllerDelegate
-import com.hoc081098.solivagant.navigation.LocalProvider
+import com.hoc081098.solivagant.navigation.ProvideCompositionLocals
 import com.hoc081098.solivagant.navigation.SavedStateSupport
 import com.hoc081098.solivagant.navigation.bindTo
 import com.hoc081098.solivagant.sample.common.OnLifecycleEventWithBuilder
@@ -42,7 +42,7 @@ fun MainViewController(savedStateSupport: SavedStateSupport): UIViewController {
         onEach { Napier.d(message = "[MainViewController] [inner] Lifecycle event: $it", tag = "[main]") }
       }
 
-      savedStateSupport.LocalProvider { SolivagantSampleApp() }
+      savedStateSupport.ProvideCompositionLocals { SolivagantSampleApp() }
     }
   }
 }

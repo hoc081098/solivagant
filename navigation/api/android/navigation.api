@@ -1,3 +1,6 @@
+public abstract interface annotation class com/hoc081098/solivagant/navigation/ExperimentalSolivagantApi : java/lang/annotation/Annotation {
+}
+
 public final class com/hoc081098/solivagant/navigation/NavHostDefaults {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/hoc081098/solivagant/navigation/NavHostDefaults;
@@ -29,5 +32,29 @@ public final class com/hoc081098/solivagant/navigation/NavHostTransitionAnimatio
 
 public final class com/hoc081098/solivagant/navigation/RememberCloseableOnRouteKt {
 	public static final fun rememberCloseableOnRoute (Lcom/hoc081098/solivagant/navigation/BaseRoute;Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)Ljava/io/Closeable;
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/MultiStackSavedState$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/hoc081098/solivagant/navigation/internal/MultiStackSavedState;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/hoc081098/solivagant/navigation/internal/MultiStackSavedState;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/StackSavedState$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/hoc081098/solivagant/navigation/internal/StackSavedState;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/hoc081098/solivagant/navigation/internal/StackSavedState;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public final class com/hoc081098/solivagant/navigation/internal/StackSavedState$Entry$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/hoc081098/solivagant/navigation/internal/StackSavedState$Entry;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/hoc081098/solivagant/navigation/internal/StackSavedState$Entry;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
 }
 
