@@ -191,7 +191,6 @@ kotlin {
 
       dependencies {
         implementation(kotlin("test-wasm-js"))
-        implementation("org.jetbrains.skiko:skiko:0.7.99")
       }
     }
 
