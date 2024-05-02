@@ -394,6 +394,8 @@ navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 
 - [Solivagant Wasm Sample](https://github.com/hoc081098/solivagant/tree/master/samples/solivagant-wasm-sample).
 
+- [Kotlin Multiplatform app template with shared UI, using solivagant-navigation](https://github.com/hoc081098/KMP-App-Template-solivagant).
+
 ## Roadmap
 
 - [ ] Add more tests
