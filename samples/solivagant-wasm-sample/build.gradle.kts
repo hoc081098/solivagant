@@ -6,6 +6,10 @@ plugins {
   alias(libs.plugins.jetbrains.compose)
 }
 
+compose {
+  kotlinCompilerPlugin.set(libs.versions.jetbrains.compose.compiler)
+}
+
 kotlin {
   @OptIn(ExperimentalWasmDsl::class)
   wasmJs {
