@@ -1,8 +1,8 @@
 [versions]
 junit = "4.13.2"
-kotlin = "1.9.24"
-coroutines = "1.8.1"
-kotlinx-serialization-json = "1.6.3"
+kotlin = "2.0.0"
+coroutines = "1.9.0-RC"
+kotlinx-serialization-json = "1.7.1"
 kotlinx-collections-immutable = "0.3.7"
 
 # the Java version that the Java and Kotlin compilers will target
@@ -26,7 +26,7 @@ jetbrains-compose = "1.6.11"
 jetbrains-compose-compiler = "1.5.13.1"
 
 napier = "2.7.1"
-flowExt = "0.8.1"
+flowExt = "1.0.0-RC"
 koin = "3.5.6"
 koin-compose = "1.1.5"
 koin-androidx-compose = "3.5.6"
@@ -40,7 +40,7 @@ android-gradle = "8.5.1"
 coil = "3.0.0-alpha06"
 ktor = "2.3.12"
 
-kmp-viewmodel = "0.7.1"
+kmp-viewmodel = "0.8.0"
 uuid = "0.8.4"
 
 spotless = "6.25.0"
