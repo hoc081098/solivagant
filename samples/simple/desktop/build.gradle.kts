@@ -30,7 +30,7 @@ kotlin {
   }
 }
 
-composeCompiler{}
+composeCompiler {}
 
 compose.desktop {
   application {

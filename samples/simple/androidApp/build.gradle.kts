@@ -6,7 +6,7 @@ plugins {
   alias(libs.plugins.kotlin.compose)
 }
 
-composeCompiler{}
+composeCompiler {}
 
 android {
   namespace = "com.hoc081098.solivagant.sample.simple.android"

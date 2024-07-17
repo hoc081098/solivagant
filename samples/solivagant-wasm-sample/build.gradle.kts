@@ -7,7 +7,7 @@ plugins {
   alias(libs.plugins.kotlin.compose)
 }
 
-composeCompiler{}
+composeCompiler {}
 
 kotlin {
   @OptIn(ExperimentalWasmDsl::class)

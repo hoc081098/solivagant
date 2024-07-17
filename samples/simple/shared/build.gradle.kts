@@ -9,7 +9,7 @@ plugins {
   alias(libs.plugins.kotlin.parcelize)
 }
 
-composeCompiler{}
+composeCompiler {}
 
 kotlin {
   jvmToolchain {
