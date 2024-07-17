@@ -223,6 +223,22 @@ kotlin {
     }
   }
 
+  targets.configureEach {
+    val isAndroidTarget = platformType == org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType.androidJvm
+    compilations.configureEach {
+      compileTaskProvider.configure {
+        compilerOptions {
+          if (isAndroidTarget) {
+            freeCompilerArgs.addAll(
+              "-P",
+              "plugin:org.jetbrains.kotlin.parcelize:additionalAnnotation=com.hoc081098.kmp.viewmodel.parcelable.Parcelize",
+            )
+          }
+        }
+      }
+    }
+  }
+
   sourceSets.matching { it.name.contains("Test") }.all {
     languageSettings {
       optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
