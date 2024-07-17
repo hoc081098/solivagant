@@ -10,7 +10,7 @@ plugins {
 
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.parcelize)
-
+  alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.jetbrains.compose)
   alias(libs.plugins.poko)
 
@@ -20,9 +20,7 @@ plugins {
   alias(libs.plugins.kotlinx.kover)
 }
 
-compose {
-  kotlinCompilerPlugin.set(libs.versions.jetbrains.compose.compiler)
-}
+composeCompiler {}
 
 kotlin {
   explicitApi()

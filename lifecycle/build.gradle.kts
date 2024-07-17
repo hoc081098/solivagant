@@ -7,6 +7,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   alias(libs.plugins.kotlin.multiplatform)
+  alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.jetbrains.compose)
   alias(libs.plugins.android.library)
   alias(libs.plugins.poko)
@@ -17,9 +18,7 @@ plugins {
   alias(libs.plugins.kotlinx.kover)
 }
 
-compose {
-  kotlinCompilerPlugin.set(libs.versions.jetbrains.compose.compiler)
-}
+composeCompiler {}
 
 kotlin {
   explicitApi()
