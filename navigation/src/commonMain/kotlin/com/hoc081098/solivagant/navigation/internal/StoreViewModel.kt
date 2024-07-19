@@ -105,9 +105,8 @@ internal class StoreViewModel(
           restoreState = false,
         )
 
-        // Update state before clearing
-        executor.value = newExecutor
         currentExecutor?.clear()
+        executor.value = newExecutor
 
         newExecutor
       } else {
