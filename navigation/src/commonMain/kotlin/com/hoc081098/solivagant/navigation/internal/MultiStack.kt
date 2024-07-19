@@ -340,7 +340,7 @@ internal class MultiStack private constructor(
   }
   //endregion
 
-  @CheckResult
+  @CheckResult(suggest = "")
   internal fun saveState(): MultiStackSavedState =
     MultiStackSavedState(
       allStackSavedStates = allStacks.mapTo(ArrayList(allStacks.size)) { it.saveState() },
