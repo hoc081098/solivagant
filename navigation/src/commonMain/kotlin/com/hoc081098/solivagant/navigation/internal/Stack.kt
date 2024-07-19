@@ -167,18 +167,12 @@ internal class Stack private constructor(
   internal fun handleLifecycleEvent(event: Lifecycle.Event) = stack.forEach { it.handleLifecycleEvent(event) }
 
   companion object {
-    @OptIn(ExperimentalContracts::class)
     fun createWith(
       root: NavRoot,
       destinations: List<ContentDestination<*>>,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
-      contract {
-        callsInPlace(idGenerator, InvocationKind.AT_LEAST_ONCE)
-        callsInPlace(getHostLifecycleState, InvocationKind.AT_LEAST_ONCE)
-      }
-
       val rootEntry = entry(
         route = root,
         destinations = destinations,
@@ -193,18 +187,12 @@ internal class Stack private constructor(
       )
     }
 
-    @OptIn(ExperimentalContracts::class)
     fun fromState(
       savedState: StackSavedState,
       destinations: List<ContentDestination<*>>,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
-      contract {
-        callsInPlace(idGenerator, InvocationKind.AT_LEAST_ONCE)
-        callsInPlace(getHostLifecycleState, InvocationKind.AT_LEAST_ONCE)
-      }
-
       val entries = savedState.entries.map { entry ->
         entry(
           route = entry.route,

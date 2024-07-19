@@ -51,8 +51,6 @@ import com.hoc081098.solivagant.navigation.OverlayDestination
 import com.hoc081098.solivagant.navigation.ScreenDestination
 import dev.drewhamilton.poko.Poko
 import kotlin.contracts.ExperimentalContracts
-import kotlin.contracts.InvocationKind
-import kotlin.contracts.contract
 import kotlinx.collections.immutable.ImmutableList
 
 @Stable
@@ -379,11 +377,6 @@ internal class MultiStack private constructor(
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): MultiStack {
-      contract {
-        callsInPlace(idGenerator, InvocationKind.AT_LEAST_ONCE)
-        callsInPlace(getHostLifecycleState, InvocationKind.AT_LEAST_ONCE)
-      }
-
       val startStack = Stack.createWith(
         root = root,
         destinations = destinations,
@@ -400,7 +393,6 @@ internal class MultiStack private constructor(
       )
     }
 
-    @OptIn(ExperimentalContracts::class)
     @Suppress("LongParameterList")
     fun fromState(
       savedState: MultiStackSavedState,
@@ -409,11 +401,6 @@ internal class MultiStack private constructor(
       onStackEntryRemoved: OnStackEntryRemoved,
       idGenerator: () -> String = { uuid4().toString() },
     ): MultiStack {
-      contract {
-        callsInPlace(idGenerator, InvocationKind.AT_LEAST_ONCE)
-        callsInPlace(getHostLifecycleState, InvocationKind.AT_LEAST_ONCE)
-      }
-
       val allStackBundles = savedState.allStackSavedStates
       val allStacks = allStackBundles.mapTo(ArrayList(allStackBundles.size)) {
         Stack.fromState(
