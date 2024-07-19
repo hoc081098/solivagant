@@ -1,3 +1,4 @@
+
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.diffplug.gradle.spotless.SpotlessPlugin
 import io.gitlab.arturbosch.detekt.DetektPlugin
@@ -40,6 +41,15 @@ subprojects {
   afterEvaluate {
     dependencies {
       "detektPlugins"(libs.compose.rules.detekt)
+    }
+  }
+
+  pluginManager.withPlugin(rootProject.libs.plugins.kotlinx.binary.compatibility.validator.get().pluginId) {
+    extensions.getByType<kotlinx.validation.ApiValidationExtension>().run {
+      @OptIn(kotlinx.validation.ExperimentalBCVApi::class)
+      klib {
+        enabled = true
+      }
     }
   }
 }
