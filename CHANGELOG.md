@@ -2,6 +2,15 @@
 
 ## [Unreleased] - TBD
 
+## [0.4.0] - Jul 20, 2024
+
+### Update dependencies
+
+- [Kotlin `2.0.0` 🎉](https://github.com/JetBrains/kotlin/releases/tag/v2.0.0).
+- [JetBrains Compose Multiplatform `1.6.11` 🎉](https://github.com/JetBrains/compose-multiplatform/releases/tag/v1.6.11).
+- [KMP ViewModel `0.8.0`](https://github.com/hoc081098/kmp-viewmodel/releases/tag/0.8.0).
+- [KotlinX Coroutines `1.9.0-RC`](https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.9.0-RC).
+
 ## [0.3.0] - Mar 13, 2024
 
 - Fix an issue where a wrong host `LifecycleOwner` can be used (#62).
@@ -32,18 +41,23 @@
 
 - **New**: Add support for Kotlin/Wasm (`wasmJs` target) 🎉.
 - **New**: Add `LenientLifecycleRegistry`, a `LifecycleRegistry` without the state checking,
-  and has `moveTo` method to move to a specific state. This is a flexible version of `LifecycleRegistry`.
+  and has `moveTo` method to move to a specific state. This is a flexible version
+  of `LifecycleRegistry`.
 - **New**: Add `rememberWindowLifecycleOwner()` for Desktop (JVM) platform.
-- **New**: Add `SavedStateSupport.ProvideCompositionLocals` and `SavedStateSupport.ClearOnDispose` for non-Android platforms.
+- **New**: Add `SavedStateSupport.ProvideCompositionLocals` and `SavedStateSupport.ClearOnDispose`
+  for non-Android platforms.
 
 ### Fixed
 
-- **Fixed**: an issue where `LocalLifecycleOwner` provided the wrong `LifecycleOwner` to the content of `NavHost` composable.
+- **Fixed**: an issue where `LocalLifecycleOwner` provided the wrong `LifecycleOwner` to the content
+  of `NavHost` composable.
 
 ### Sample
 
-- **New**: Add [Solivagant Wasm Sample](https://github.com/hoc081098/solivagant/tree/master/samples/solivagant-wasm-sample).
-  You can open the web application by running the `./gradlew :samples:solivagant-wasm-sample:wasmJsBrowserDevelopmentRun` Gradle task.
+- **New**:
+  Add [Solivagant Wasm Sample](https://github.com/hoc081098/solivagant/tree/master/samples/solivagant-wasm-sample).
+  You can open the web application by running
+  the `./gradlew :samples:solivagant-wasm-sample:wasmJsBrowserDevelopmentRun` Gradle task.
 
 ## [0.1.1] - Feb 25, 2024
 
@@ -54,13 +68,15 @@
 
 ### Example, docs and tests
 
-- Add [Compose Multiplatform Todo solivagant Sample](https://github.com/hoc081098/Compose-Multiplatform-Todo-solivagant-Sample):
-  A KMP template of the Todo App using Compose multiplatform for Android, Desktop, iOS and Web.
-  Share everything including data, domain, presentation, and UI.
+-
+Add [Compose Multiplatform Todo solivagant Sample](https://github.com/hoc081098/Compose-Multiplatform-Todo-solivagant-Sample):
+A KMP template of the Todo App using Compose multiplatform for Android, Desktop, iOS and Web.
+Share everything including data, domain, presentation, and UI.
 
 ## [0.1.0] - Feb 19, 2024
 
 ### Update dependencies
+
 - [KotlinX Coroutines `1.8.0`](https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.8.0).
 - [KMP ViewModel `0.7.0`](https://github.com/hoc081098/kmp-viewmodel/releases/tag/0.7.0).
 
@@ -110,7 +126,8 @@
 
 - Initial release of `solivagant` 🔆.
   Compose Multiplatform Navigation - 🌸 Pragmatic, type safety navigation for Compose Multiplatform.
-  Based on [Freeletics Khonshu Navigation](https://freeletics.github.io/khonshu/navigation/get-started/).
+  Based
+  on [Freeletics Khonshu Navigation](https://freeletics.github.io/khonshu/navigation/get-started/).
   ♥️ ViewModel, SavedStateHandle, Lifecycle, Multi-Backstacks, and more...
 
 - Dependencies
@@ -120,7 +137,9 @@
   - [KotlinX Coroutines `1.7.3`](https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.7.3).
   - [KotlinX Collections Immutable `0.3.7`](https://github.com/Kotlin/kotlinx.collections.immutable/releases/tag/v0.3.7).
 
-[Unreleased]: https://github.com/hoc081098/solivagant/compare/0.3.0...HEAD
+[Unreleased]: https://github.com/hoc081098/solivagant/compare/0.4.0...HEAD
+
+[0.4.0]: https://github.com/hoc081098/solivagant/releases/tag/0.4.0
 
 [0.3.0]: https://github.com/hoc081098/solivagant/releases/tag/0.3.0
 
