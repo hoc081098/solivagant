@@ -10,7 +10,7 @@ plugins {
 
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.parcelize)
-
+  alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.jetbrains.compose)
   alias(libs.plugins.poko)
 
@@ -20,9 +20,7 @@ plugins {
   alias(libs.plugins.kotlinx.kover)
 }
 
-compose {
-  kotlinCompilerPlugin.set(libs.versions.jetbrains.compose.compiler)
-}
+composeCompiler {}
 
 kotlin {
   explicitApi()
@@ -40,16 +38,20 @@ kotlin {
     publishAllLibraryVariants()
 
     compilations.configureEach {
-      compilerOptions.configure {
-        jvmTarget.set(JvmTarget.fromTarget(libs.versions.java.target.get()))
+      compileTaskProvider.configure {
+        compilerOptions {
+          jvmTarget.set(JvmTarget.fromTarget(libs.versions.java.target.get()))
+        }
       }
     }
   }
 
   jvm {
     compilations.configureEach {
-      compilerOptions.configure {
-        jvmTarget.set(JvmTarget.fromTarget(libs.versions.java.target.get()))
+      compileTaskProvider.configure {
+        compilerOptions {
+          jvmTarget.set(JvmTarget.fromTarget(libs.versions.java.target.get()))
+        }
       }
     }
   }
@@ -57,9 +59,11 @@ kotlin {
   js(IR) {
     moduleName = property("POM_ARTIFACT_ID")!!.toString()
     compilations.configureEach {
-      compilerOptions.configure {
-        sourceMap.set(true)
-        moduleKind.set(JsModuleKind.MODULE_COMMONJS)
+      compileTaskProvider.configure {
+        compilerOptions {
+          sourceMap.set(true)
+          moduleKind.set(JsModuleKind.MODULE_COMMONJS)
+        }
       }
     }
     browser()
@@ -225,6 +229,22 @@ kotlin {
     }
   }
 
+  targets.configureEach {
+    val isAndroidTarget = platformType == org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType.androidJvm
+    compilations.configureEach {
+      compileTaskProvider.configure {
+        compilerOptions {
+          if (isAndroidTarget) {
+            freeCompilerArgs.addAll(
+              "-P",
+              "plugin:org.jetbrains.kotlin.parcelize:additionalAnnotation=com.hoc081098.kmp.viewmodel.parcelable.Parcelize",
+            )
+          }
+        }
+      }
+    }
+  }
+
   sourceSets.matching { it.name.contains("Test") }.all {
     languageSettings {
       optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
@@ -238,16 +258,17 @@ kotlin {
   }
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
-  kotlinOptions {
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>>().configureEach {
+  compilerOptions {
     // 'expect'/'actual' classes (including interfaces, objects, annotations, enums,
     // and 'actual' typealiases) are in Beta.
     // You can use -Xexpect-actual-classes flag to suppress this warning.
     // Also see: https://youtrack.jetbrains.com/issue/KT-61573
-    freeCompilerArgs +=
+    freeCompilerArgs.addAll(
       listOf(
         "-Xexpect-actual-classes",
-      )
+      ),
+    )
   }
 }
 

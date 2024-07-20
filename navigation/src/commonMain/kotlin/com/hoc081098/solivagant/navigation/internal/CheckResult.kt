@@ -52,5 +52,5 @@ internal expect annotation class CheckResult(
    * public boolean redirectErrorStream() { ... }
    * ```
    */
-  val suggest: String = "",
+  val suggest: String,
 )

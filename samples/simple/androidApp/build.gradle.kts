@@ -3,10 +3,11 @@ plugins {
   alias(libs.plugins.android.app)
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.jetbrains.compose)
+  alias(libs.plugins.kotlin.compose)
 }
 
-compose {
-  kotlinCompilerPlugin.set(libs.versions.jetbrains.compose.compiler)
+composeCompiler {
+  enableStrongSkippingMode = true
 }
 
 android {

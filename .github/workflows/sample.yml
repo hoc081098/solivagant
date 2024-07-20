@@ -27,7 +27,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '17'
+          java-version: '19'
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
@@ -76,7 +76,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '17'
+          java-version: '19'
 
       - name: Setup Xcode
         uses: maxim-lobanov/setup-xcode@v1

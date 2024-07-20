@@ -65,11 +65,11 @@ public final class com/hoc081098/solivagant/navigation/NavigationResultRequest$K
 	public static final field $stable I
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
 	public fun <init> (Lcom/hoc081098/solivagant/navigation/internal/DestinationId;Ljava/lang/String;)V
-	public fun describeContents ()I
+	public final fun describeContents ()I
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-	public fun writeToParcel (Landroid/os/Parcel;I)V
+	public final fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
 public final class com/hoc081098/solivagant/navigation/NavigationResultRequest$Key$Creator : android/os/Parcelable$Creator {
@@ -146,11 +146,11 @@ public final class com/hoc081098/solivagant/navigation/internal/DestinationId : 
 	public final fun component1 ()Lkotlin/reflect/KClass;
 	public final fun copy (Lkotlin/reflect/KClass;)Lcom/hoc081098/solivagant/navigation/internal/DestinationId;
 	public static synthetic fun copy$default (Lcom/hoc081098/solivagant/navigation/internal/DestinationId;Lkotlin/reflect/KClass;ILjava/lang/Object;)Lcom/hoc081098/solivagant/navigation/internal/DestinationId;
-	public fun describeContents ()I
+	public final fun describeContents ()I
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-	public fun writeToParcel (Landroid/os/Parcel;I)V
+	public final fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
 public final class com/hoc081098/solivagant/navigation/internal/DestinationId$Creator : android/os/Parcelable$Creator {

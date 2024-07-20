@@ -4,10 +4,11 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 plugins {
   alias(libs.plugins.kotlin.multiplatform)
   alias(libs.plugins.jetbrains.compose)
+  alias(libs.plugins.kotlin.compose)
 }
 
-compose {
-  kotlinCompilerPlugin.set(libs.versions.jetbrains.compose.compiler)
+composeCompiler {
+  enableStrongSkippingMode = true
 }
 
 kotlin {
@@ -48,8 +49,4 @@ kotlin {
       implementation(libs.flowExt)
     }
   }
-}
-
-compose.experimental {
-  web.application {}
 }

@@ -1,0 +1,297 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, macosArm64, macosX64, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <solivagant:khonshu-navigation-core>
+open annotation class com.hoc081098.solivagant.navigation.internal/DelicateNavigationApi : kotlin/Annotation { // com.hoc081098.solivagant.navigation.internal/DelicateNavigationApi|null[0]
+    constructor <init>() // com.hoc081098.solivagant.navigation.internal/DelicateNavigationApi.<init>|<init>(){}[0]
+}
+
+open annotation class com.hoc081098.solivagant.navigation/InternalNavigationApi : kotlin/Annotation { // com.hoc081098.solivagant.navigation/InternalNavigationApi|null[0]
+    constructor <init>() // com.hoc081098.solivagant.navigation/InternalNavigationApi.<init>|<init>(){}[0]
+}
+
+abstract interface com.hoc081098.solivagant.navigation.internal/NavigationExecutor : com.hoc081098.solivagant.navigation/Navigator { // com.hoc081098.solivagant.navigation.internal/NavigationExecutor|null[0]
+    abstract fun extra(com.hoc081098.solivagant.navigation.internal/StackEntryId): com.hoc081098.solivagant.navigation/Serializable // com.hoc081098.solivagant.navigation.internal/NavigationExecutor.extra|extra(com.hoc081098.solivagant.navigation.internal.StackEntryId){}[0]
+    abstract fun savedStateHandleFor(com.hoc081098.solivagant.navigation.internal/StackEntryId): com.hoc081098.kmp.viewmodel/SavedStateHandle // com.hoc081098.solivagant.navigation.internal/NavigationExecutor.savedStateHandleFor|savedStateHandleFor(com.hoc081098.solivagant.navigation.internal.StackEntryId){}[0]
+    abstract fun stackEntryIdFor(com.hoc081098.solivagant.navigation.internal/DestinationId<*>): com.hoc081098.solivagant.navigation.internal/StackEntryId // com.hoc081098.solivagant.navigation.internal/NavigationExecutor.stackEntryIdFor|stackEntryIdFor(com.hoc081098.solivagant.navigation.internal.DestinationId<*>){}[0]
+    abstract fun stackEntryIdFor(com.hoc081098.solivagant.navigation/BaseRoute): com.hoc081098.solivagant.navigation.internal/StackEntryId // com.hoc081098.solivagant.navigation.internal/NavigationExecutor.stackEntryIdFor|stackEntryIdFor(com.hoc081098.solivagant.navigation.BaseRoute){}[0]
+    abstract fun storeFor(com.hoc081098.solivagant.navigation.internal/StackEntryId): com.hoc081098.solivagant.navigation.internal/NavigationExecutor.Store // com.hoc081098.solivagant.navigation.internal/NavigationExecutor.storeFor|storeFor(com.hoc081098.solivagant.navigation.internal.StackEntryId){}[0]
+
+    abstract interface Store { // com.hoc081098.solivagant.navigation.internal/NavigationExecutor.Store|null[0]
+        abstract fun <#A2: kotlin/Any> getOrCreate(kotlin.reflect/KClass<#A2>, kotlin/Function0<#A2>): #A2 // com.hoc081098.solivagant.navigation.internal/NavigationExecutor.Store.getOrCreate|getOrCreate(kotlin.reflect.KClass<0:0>;kotlin.Function0<0:0>){0§<kotlin.Any>}[0]
+    }
+}
+
+abstract interface com.hoc081098.solivagant.navigation/BackInterceptor { // com.hoc081098.solivagant.navigation/BackInterceptor|null[0]
+    abstract fun <#A1: kotlin/Any?> backPresses(#A1): kotlinx.coroutines.flow/Flow<#A1> // com.hoc081098.solivagant.navigation/BackInterceptor.backPresses|backPresses(0:0){0§<kotlin.Any?>}[0]
+    abstract fun backPresses(): kotlinx.coroutines.flow/Flow<kotlin/Unit> // com.hoc081098.solivagant.navigation/BackInterceptor.backPresses|backPresses(){}[0]
+}
+
+abstract interface com.hoc081098.solivagant.navigation/NavRoot : com.hoc081098.solivagant.navigation/BaseRoute // com.hoc081098.solivagant.navigation/NavRoot|null[0]
+
+abstract interface com.hoc081098.solivagant.navigation/NavRoute : com.hoc081098.solivagant.navigation/BaseRoute // com.hoc081098.solivagant.navigation/NavRoute|null[0]
+
+abstract interface com.hoc081098.solivagant.navigation/Navigator { // com.hoc081098.solivagant.navigation/Navigator|null[0]
+    abstract fun <#A1: com.hoc081098.solivagant.navigation/BaseRoute> navigateBackToInternal(com.hoc081098.solivagant.navigation.internal/DestinationId<#A1>, kotlin/Boolean = ...) // com.hoc081098.solivagant.navigation/Navigator.navigateBackToInternal|navigateBackToInternal(com.hoc081098.solivagant.navigation.internal.DestinationId<0:0>;kotlin.Boolean){0§<com.hoc081098.solivagant.navigation.BaseRoute>}[0]
+    abstract fun navigateBack() // com.hoc081098.solivagant.navigation/Navigator.navigateBack|navigateBack(){}[0]
+    abstract fun navigateTo(com.hoc081098.solivagant.navigation/NavRoute) // com.hoc081098.solivagant.navigation/Navigator.navigateTo|navigateTo(com.hoc081098.solivagant.navigation.NavRoute){}[0]
+    abstract fun navigateToRoot(com.hoc081098.solivagant.navigation/NavRoot, kotlin/Boolean = ...) // com.hoc081098.solivagant.navigation/Navigator.navigateToRoot|navigateToRoot(com.hoc081098.solivagant.navigation.NavRoot;kotlin.Boolean){}[0]
+    abstract fun navigateUp() // com.hoc081098.solivagant.navigation/Navigator.navigateUp|navigateUp(){}[0]
+    abstract fun replaceAll(com.hoc081098.solivagant.navigation/NavRoot) // com.hoc081098.solivagant.navigation/Navigator.replaceAll|replaceAll(com.hoc081098.solivagant.navigation.NavRoot){}[0]
+    abstract fun resetToRoot(com.hoc081098.solivagant.navigation/NavRoot) // com.hoc081098.solivagant.navigation/Navigator.resetToRoot|resetToRoot(com.hoc081098.solivagant.navigation.NavRoot){}[0]
+
+    final object Companion { // com.hoc081098.solivagant.navigation/Navigator.Companion|null[0]
+        final inline fun <#A2: reified com.hoc081098.solivagant.navigation/NavRoute> (com.hoc081098.solivagant.navigation/Navigator).navigateBackTo(kotlin/Boolean = ...) // com.hoc081098.solivagant.navigation/Navigator.Companion.navigateBackTo|navigateBackTo@com.hoc081098.solivagant.navigation.Navigator(kotlin.Boolean){0§<com.hoc081098.solivagant.navigation.NavRoute>}[0]
+    }
+}
+
+abstract interface com.hoc081098.solivagant.navigation/ResultNavigator { // com.hoc081098.solivagant.navigation/ResultNavigator|null[0]
+    abstract fun <#A1: com.hoc081098.kmp.viewmodel.parcelable/Parcelable> deliverNavigationResult(com.hoc081098.solivagant.navigation/NavigationResultRequest.Key<#A1>, #A1) // com.hoc081098.solivagant.navigation/ResultNavigator.deliverNavigationResult|deliverNavigationResult(com.hoc081098.solivagant.navigation.NavigationResultRequest.Key<0:0>;0:0){0§<com.hoc081098.kmp.viewmodel.parcelable.Parcelable>}[0]
+}
+
+abstract interface com.hoc081098.solivagant.navigation/Serializable // com.hoc081098.solivagant.navigation/Serializable|null[0]
+
+sealed interface <#A: com.hoc081098.solivagant.navigation/BaseRoute> com.hoc081098.solivagant.navigation/ContentDestination : com.hoc081098.solivagant.navigation/NavDestination { // com.hoc081098.solivagant.navigation/ContentDestination|null[0]
+    abstract val content // com.hoc081098.solivagant.navigation/ContentDestination.content|{}content[0]
+        abstract fun <get-content>(): kotlin/Function4<#A, androidx.compose.ui/Modifier, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit> // com.hoc081098.solivagant.navigation/ContentDestination.content.<get-content>|<get-content>(){}[0]
+    abstract val extra // com.hoc081098.solivagant.navigation/ContentDestination.extra|{}extra[0]
+        abstract fun <get-extra>(): com.hoc081098.solivagant.navigation/Serializable? // com.hoc081098.solivagant.navigation/ContentDestination.extra.<get-extra>|<get-extra>(){}[0]
+    abstract val id // com.hoc081098.solivagant.navigation/ContentDestination.id|{}id[0]
+        abstract fun <get-id>(): com.hoc081098.solivagant.navigation.internal/DestinationId<#A> // com.hoc081098.solivagant.navigation/ContentDestination.id.<get-id>|<get-id>(){}[0]
+}
+
+sealed interface com.hoc081098.solivagant.navigation.internal/NavEvent { // com.hoc081098.solivagant.navigation.internal/NavEvent|null[0]
+    final class <#A1: com.hoc081098.kmp.viewmodel.parcelable/Parcelable> DestinationResultEvent : com.hoc081098.solivagant.navigation.internal/NavEvent { // com.hoc081098.solivagant.navigation.internal/NavEvent.DestinationResultEvent|null[0]
+        constructor <init>(com.hoc081098.solivagant.navigation/NavigationResultRequest.Key<#A1>, #A1) // com.hoc081098.solivagant.navigation.internal/NavEvent.DestinationResultEvent.<init>|<init>(com.hoc081098.solivagant.navigation.NavigationResultRequest.Key<1:0>;1:0){}[0]
+
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.hoc081098.solivagant.navigation.internal/NavEvent.DestinationResultEvent.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.hoc081098.solivagant.navigation.internal/NavEvent.DestinationResultEvent.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.hoc081098.solivagant.navigation.internal/NavEvent.DestinationResultEvent.toString|toString(){}[0]
+    }
+
+    final class BackToEvent : com.hoc081098.solivagant.navigation.internal/NavEvent { // com.hoc081098.solivagant.navigation.internal/NavEvent.BackToEvent|null[0]
+        constructor <init>(com.hoc081098.solivagant.navigation.internal/DestinationId<out com.hoc081098.solivagant.navigation/BaseRoute>, kotlin/Boolean) // com.hoc081098.solivagant.navigation.internal/NavEvent.BackToEvent.<init>|<init>(com.hoc081098.solivagant.navigation.internal.DestinationId<out|com.hoc081098.solivagant.navigation.BaseRoute>;kotlin.Boolean){}[0]
+
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.hoc081098.solivagant.navigation.internal/NavEvent.BackToEvent.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.hoc081098.solivagant.navigation.internal/NavEvent.BackToEvent.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.hoc081098.solivagant.navigation.internal/NavEvent.BackToEvent.toString|toString(){}[0]
+    }
+
+    final class MultiNavEvent : com.hoc081098.solivagant.navigation.internal/NavEvent { // com.hoc081098.solivagant.navigation.internal/NavEvent.MultiNavEvent|null[0]
+        constructor <init>(kotlin.collections/List<com.hoc081098.solivagant.navigation.internal/NavEvent>) // com.hoc081098.solivagant.navigation.internal/NavEvent.MultiNavEvent.<init>|<init>(kotlin.collections.List<com.hoc081098.solivagant.navigation.internal.NavEvent>){}[0]
+
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.hoc081098.solivagant.navigation.internal/NavEvent.MultiNavEvent.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.hoc081098.solivagant.navigation.internal/NavEvent.MultiNavEvent.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.hoc081098.solivagant.navigation.internal/NavEvent.MultiNavEvent.toString|toString(){}[0]
+    }
+
+    final class NavigateToEvent : com.hoc081098.solivagant.navigation.internal/NavEvent { // com.hoc081098.solivagant.navigation.internal/NavEvent.NavigateToEvent|null[0]
+        constructor <init>(com.hoc081098.solivagant.navigation/NavRoute) // com.hoc081098.solivagant.navigation.internal/NavEvent.NavigateToEvent.<init>|<init>(com.hoc081098.solivagant.navigation.NavRoute){}[0]
+
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.hoc081098.solivagant.navigation.internal/NavEvent.NavigateToEvent.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.hoc081098.solivagant.navigation.internal/NavEvent.NavigateToEvent.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.hoc081098.solivagant.navigation.internal/NavEvent.NavigateToEvent.toString|toString(){}[0]
+    }
+
+    final class NavigateToRootEvent : com.hoc081098.solivagant.navigation.internal/NavEvent { // com.hoc081098.solivagant.navigation.internal/NavEvent.NavigateToRootEvent|null[0]
+        constructor <init>(com.hoc081098.solivagant.navigation/NavRoot, kotlin/Boolean) // com.hoc081098.solivagant.navigation.internal/NavEvent.NavigateToRootEvent.<init>|<init>(com.hoc081098.solivagant.navigation.NavRoot;kotlin.Boolean){}[0]
+
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.hoc081098.solivagant.navigation.internal/NavEvent.NavigateToRootEvent.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.hoc081098.solivagant.navigation.internal/NavEvent.NavigateToRootEvent.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.hoc081098.solivagant.navigation.internal/NavEvent.NavigateToRootEvent.toString|toString(){}[0]
+    }
+
+    final class ReplaceAll : com.hoc081098.solivagant.navigation.internal/NavEvent { // com.hoc081098.solivagant.navigation.internal/NavEvent.ReplaceAll|null[0]
+        constructor <init>(com.hoc081098.solivagant.navigation/NavRoot) // com.hoc081098.solivagant.navigation.internal/NavEvent.ReplaceAll.<init>|<init>(com.hoc081098.solivagant.navigation.NavRoot){}[0]
+
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.hoc081098.solivagant.navigation.internal/NavEvent.ReplaceAll.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.hoc081098.solivagant.navigation.internal/NavEvent.ReplaceAll.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.hoc081098.solivagant.navigation.internal/NavEvent.ReplaceAll.toString|toString(){}[0]
+    }
+
+    final class ResetToRoot : com.hoc081098.solivagant.navigation.internal/NavEvent { // com.hoc081098.solivagant.navigation.internal/NavEvent.ResetToRoot|null[0]
+        constructor <init>(com.hoc081098.solivagant.navigation/NavRoot) // com.hoc081098.solivagant.navigation.internal/NavEvent.ResetToRoot.<init>|<init>(com.hoc081098.solivagant.navigation.NavRoot){}[0]
+
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.hoc081098.solivagant.navigation.internal/NavEvent.ResetToRoot.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.hoc081098.solivagant.navigation.internal/NavEvent.ResetToRoot.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.hoc081098.solivagant.navigation.internal/NavEvent.ResetToRoot.toString|toString(){}[0]
+    }
+
+    final object BackEvent : com.hoc081098.solivagant.navigation.internal/NavEvent { // com.hoc081098.solivagant.navigation.internal/NavEvent.BackEvent|null[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.hoc081098.solivagant.navigation.internal/NavEvent.BackEvent.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.hoc081098.solivagant.navigation.internal/NavEvent.BackEvent.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.hoc081098.solivagant.navigation.internal/NavEvent.BackEvent.toString|toString(){}[0]
+    }
+
+    final object UpEvent : com.hoc081098.solivagant.navigation.internal/NavEvent { // com.hoc081098.solivagant.navigation.internal/NavEvent.UpEvent|null[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.hoc081098.solivagant.navigation.internal/NavEvent.UpEvent.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.hoc081098.solivagant.navigation.internal/NavEvent.UpEvent.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.hoc081098.solivagant.navigation.internal/NavEvent.UpEvent.toString|toString(){}[0]
+    }
+}
+
+sealed interface com.hoc081098.solivagant.navigation/BaseRoute : com.hoc081098.kmp.viewmodel.parcelable/Parcelable // com.hoc081098.solivagant.navigation/BaseRoute|null[0]
+
+sealed interface com.hoc081098.solivagant.navigation/NavDestination // com.hoc081098.solivagant.navigation/NavDestination|null[0]
+
+abstract class com.hoc081098.solivagant.navigation.internal/OnBackPressedCallback { // com.hoc081098.solivagant.navigation.internal/OnBackPressedCallback|null[0]
+    constructor <init>(kotlin/Boolean) // com.hoc081098.solivagant.navigation.internal/OnBackPressedCallback.<init>|<init>(kotlin.Boolean){}[0]
+
+    final var isEnabled // com.hoc081098.solivagant.navigation.internal/OnBackPressedCallback.isEnabled|{}isEnabled[0]
+        final fun <get-isEnabled>(): kotlin/Boolean // com.hoc081098.solivagant.navigation.internal/OnBackPressedCallback.isEnabled.<get-isEnabled>|<get-isEnabled>(){}[0]
+        final fun <set-isEnabled>(kotlin/Boolean) // com.hoc081098.solivagant.navigation.internal/OnBackPressedCallback.isEnabled.<set-isEnabled>|<set-isEnabled>(kotlin.Boolean){}[0]
+
+    abstract fun handleOnBackPressed() // com.hoc081098.solivagant.navigation.internal/OnBackPressedCallback.handleOnBackPressed|handleOnBackPressed(){}[0]
+    final fun remove() // com.hoc081098.solivagant.navigation.internal/OnBackPressedCallback.remove|remove(){}[0]
+}
+
+final class <#A: com.hoc081098.kmp.viewmodel.parcelable/Parcelable> com.hoc081098.solivagant.navigation/NavigationResultRequest : com.hoc081098.solivagant.navigation/ResultOwner<#A> { // com.hoc081098.solivagant.navigation/NavigationResultRequest|null[0]
+    final val key // com.hoc081098.solivagant.navigation/NavigationResultRequest.key|{}key[0]
+        final fun <get-key>(): com.hoc081098.solivagant.navigation/NavigationResultRequest.Key<#A> // com.hoc081098.solivagant.navigation/NavigationResultRequest.key.<get-key>|<get-key>(){}[0]
+
+    final class <#A1: com.hoc081098.kmp.viewmodel.parcelable/Parcelable> Key : com.hoc081098.kmp.viewmodel.parcelable/Parcelable { // com.hoc081098.solivagant.navigation/NavigationResultRequest.Key|null[0]
+        constructor <init>(com.hoc081098.solivagant.navigation.internal/DestinationId<*>, kotlin/String) // com.hoc081098.solivagant.navigation/NavigationResultRequest.Key.<init>|<init>(com.hoc081098.solivagant.navigation.internal.DestinationId<*>;kotlin.String){}[0]
+
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.hoc081098.solivagant.navigation/NavigationResultRequest.Key.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.hoc081098.solivagant.navigation/NavigationResultRequest.Key.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.hoc081098.solivagant.navigation/NavigationResultRequest.Key.toString|toString(){}[0]
+    }
+}
+
+final class <#A: com.hoc081098.solivagant.navigation/BaseRoute> com.hoc081098.solivagant.navigation.internal/DestinationId : com.hoc081098.kmp.viewmodel.parcelable/Parcelable { // com.hoc081098.solivagant.navigation.internal/DestinationId|null[0]
+    constructor <init>(kotlin.reflect/KClass<#A>) // com.hoc081098.solivagant.navigation.internal/DestinationId.<init>|<init>(kotlin.reflect.KClass<1:0>){}[0]
+
+    final val route // com.hoc081098.solivagant.navigation.internal/DestinationId.route|{}route[0]
+        final fun <get-route>(): kotlin.reflect/KClass<#A> // com.hoc081098.solivagant.navigation.internal/DestinationId.route.<get-route>|<get-route>(){}[0]
+
+    final fun component1(): kotlin.reflect/KClass<#A> // com.hoc081098.solivagant.navigation.internal/DestinationId.component1|component1(){}[0]
+    final fun copy(kotlin.reflect/KClass<#A> = ...): com.hoc081098.solivagant.navigation.internal/DestinationId<#A> // com.hoc081098.solivagant.navigation.internal/DestinationId.copy|copy(kotlin.reflect.KClass<1:0>){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // com.hoc081098.solivagant.navigation.internal/DestinationId.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // com.hoc081098.solivagant.navigation.internal/DestinationId.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // com.hoc081098.solivagant.navigation.internal/DestinationId.toString|toString(){}[0]
+}
+
+final class <#A: com.hoc081098.solivagant.navigation/BaseRoute> com.hoc081098.solivagant.navigation/ScreenDestination : com.hoc081098.solivagant.navigation/ContentDestination<#A> { // com.hoc081098.solivagant.navigation/ScreenDestination|null[0]
+    constructor <init>(com.hoc081098.solivagant.navigation.internal/DestinationId<#A>, com.hoc081098.solivagant.navigation/Serializable?, kotlin/Function4<#A, androidx.compose.ui/Modifier, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>) // com.hoc081098.solivagant.navigation/ScreenDestination.<init>|<init>(com.hoc081098.solivagant.navigation.internal.DestinationId<1:0>;com.hoc081098.solivagant.navigation.Serializable?;kotlin.Function4<1:0,androidx.compose.ui.Modifier,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>){}[0]
+
+    final val content // com.hoc081098.solivagant.navigation/ScreenDestination.content|{}content[0]
+        final fun <get-content>(): kotlin/Function4<#A, androidx.compose.ui/Modifier, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit> // com.hoc081098.solivagant.navigation/ScreenDestination.content.<get-content>|<get-content>(){}[0]
+    final val extra // com.hoc081098.solivagant.navigation/ScreenDestination.extra|{}extra[0]
+        final fun <get-extra>(): com.hoc081098.solivagant.navigation/Serializable? // com.hoc081098.solivagant.navigation/ScreenDestination.extra.<get-extra>|<get-extra>(){}[0]
+    final val id // com.hoc081098.solivagant.navigation/ScreenDestination.id|{}id[0]
+        final fun <get-id>(): com.hoc081098.solivagant.navigation.internal/DestinationId<#A> // com.hoc081098.solivagant.navigation/ScreenDestination.id.<get-id>|<get-id>(){}[0]
+}
+
+final class <#A: com.hoc081098.solivagant.navigation/NavRoute> com.hoc081098.solivagant.navigation/OverlayDestination : com.hoc081098.solivagant.navigation/ContentDestination<#A> { // com.hoc081098.solivagant.navigation/OverlayDestination|null[0]
+    constructor <init>(com.hoc081098.solivagant.navigation.internal/DestinationId<#A>, com.hoc081098.solivagant.navigation/Serializable?, kotlin/Function4<#A, androidx.compose.ui/Modifier, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>) // com.hoc081098.solivagant.navigation/OverlayDestination.<init>|<init>(com.hoc081098.solivagant.navigation.internal.DestinationId<1:0>;com.hoc081098.solivagant.navigation.Serializable?;kotlin.Function4<1:0,androidx.compose.ui.Modifier,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>){}[0]
+
+    final val content // com.hoc081098.solivagant.navigation/OverlayDestination.content|{}content[0]
+        final fun <get-content>(): kotlin/Function4<#A, androidx.compose.ui/Modifier, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit> // com.hoc081098.solivagant.navigation/OverlayDestination.content.<get-content>|<get-content>(){}[0]
+    final val extra // com.hoc081098.solivagant.navigation/OverlayDestination.extra|{}extra[0]
+        final fun <get-extra>(): com.hoc081098.solivagant.navigation/Serializable? // com.hoc081098.solivagant.navigation/OverlayDestination.extra.<get-extra>|<get-extra>(){}[0]
+    final val id // com.hoc081098.solivagant.navigation/OverlayDestination.id|{}id[0]
+        final fun <get-id>(): com.hoc081098.solivagant.navigation.internal/DestinationId<#A> // com.hoc081098.solivagant.navigation/OverlayDestination.id.<get-id>|<get-id>(){}[0]
+}
+
+final class com.hoc081098.solivagant.navigation.internal/NavigationExecutorStore : com.hoc081098.kmp.viewmodel/Closeable, com.hoc081098.solivagant.navigation.internal/NavigationExecutor.Store { // com.hoc081098.solivagant.navigation.internal/NavigationExecutorStore|null[0]
+    constructor <init>() // com.hoc081098.solivagant.navigation.internal/NavigationExecutorStore.<init>|<init>(){}[0]
+
+    final fun <#A1: kotlin/Any> getOrCreate(kotlin.reflect/KClass<#A1>, kotlin/Function0<#A1>): #A1 // com.hoc081098.solivagant.navigation.internal/NavigationExecutorStore.getOrCreate|getOrCreate(kotlin.reflect.KClass<0:0>;kotlin.Function0<0:0>){0§<kotlin.Any>}[0]
+    final fun close() // com.hoc081098.solivagant.navigation.internal/NavigationExecutorStore.close|close(){}[0]
+}
+
+final class com.hoc081098.solivagant.navigation.internal/OnBackPressedDispatcherOwner { // com.hoc081098.solivagant.navigation.internal/OnBackPressedDispatcherOwner|null[0]
+    constructor <init>() // com.hoc081098.solivagant.navigation.internal/OnBackPressedDispatcherOwner.<init>|<init>(){}[0]
+
+    final fun addCallback(com.hoc081098.solivagant.navigation.internal/OnBackPressedCallback) // com.hoc081098.solivagant.navigation.internal/OnBackPressedDispatcherOwner.addCallback|addCallback(com.hoc081098.solivagant.navigation.internal.OnBackPressedCallback){}[0]
+
+    final object Companion // com.hoc081098.solivagant.navigation.internal/OnBackPressedDispatcherOwner.Companion|null[0]
+}
+
+final value class com.hoc081098.solivagant.navigation.internal/StackEntryId { // com.hoc081098.solivagant.navigation.internal/StackEntryId|null[0]
+    constructor <init>(kotlin/String) // com.hoc081098.solivagant.navigation.internal/StackEntryId.<init>|<init>(kotlin.String){}[0]
+
+    final val value // com.hoc081098.solivagant.navigation.internal/StackEntryId.value|{}value[0]
+        final fun <get-value>(): kotlin/String // com.hoc081098.solivagant.navigation.internal/StackEntryId.value.<get-value>|<get-value>(){}[0]
+
+    final fun equals(kotlin/Any?): kotlin/Boolean // com.hoc081098.solivagant.navigation.internal/StackEntryId.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // com.hoc081098.solivagant.navigation.internal/StackEntryId.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // com.hoc081098.solivagant.navigation.internal/StackEntryId.toString|toString(){}[0]
+}
+
+open class com.hoc081098.solivagant.navigation/NavEventNavigator : com.hoc081098.solivagant.navigation/BackInterceptor, com.hoc081098.solivagant.navigation/Navigator, com.hoc081098.solivagant.navigation/ResultNavigator { // com.hoc081098.solivagant.navigation/NavEventNavigator|null[0]
+    constructor <init>() // com.hoc081098.solivagant.navigation/NavEventNavigator.<init>|<init>(){}[0]
+
+    final val navEvents // com.hoc081098.solivagant.navigation/NavEventNavigator.navEvents|{}navEvents[0]
+        final fun <get-navEvents>(): kotlinx.coroutines.flow/Flow<com.hoc081098.solivagant.navigation.internal/NavEvent> // com.hoc081098.solivagant.navigation/NavEventNavigator.navEvents.<get-navEvents>|<get-navEvents>(){}[0]
+    final val navigationResultRequests // com.hoc081098.solivagant.navigation/NavEventNavigator.navigationResultRequests|{}navigationResultRequests[0]
+        final fun <get-navigationResultRequests>(): kotlin.collections/List<com.hoc081098.solivagant.navigation/NavigationResultRequest<*>> // com.hoc081098.solivagant.navigation/NavEventNavigator.navigationResultRequests.<get-navigationResultRequests>|<get-navigationResultRequests>(){}[0]
+    final val onBackPressedCallback // com.hoc081098.solivagant.navigation/NavEventNavigator.onBackPressedCallback|{}onBackPressedCallback[0]
+        final fun <get-onBackPressedCallback>(): com.hoc081098.solivagant.navigation.internal/OnBackPressedCallback // com.hoc081098.solivagant.navigation/NavEventNavigator.onBackPressedCallback.<get-onBackPressedCallback>|<get-onBackPressedCallback>(){}[0]
+
+    final fun <#A1: com.hoc081098.solivagant.navigation/BaseRoute, #B1: com.hoc081098.kmp.viewmodel.parcelable/Parcelable> registerForNavigationResult(com.hoc081098.solivagant.navigation.internal/DestinationId<#A1>, kotlin/String): com.hoc081098.solivagant.navigation/NavigationResultRequest<#B1> // com.hoc081098.solivagant.navigation/NavEventNavigator.registerForNavigationResult|registerForNavigationResult(com.hoc081098.solivagant.navigation.internal.DestinationId<0:0>;kotlin.String){0§<com.hoc081098.solivagant.navigation.BaseRoute>;1§<com.hoc081098.kmp.viewmodel.parcelable.Parcelable>}[0]
+    final fun navigate(kotlin/Function1<com.hoc081098.solivagant.navigation/Navigator, kotlin/Unit>) // com.hoc081098.solivagant.navigation/NavEventNavigator.navigate|navigate(kotlin.Function1<com.hoc081098.solivagant.navigation.Navigator,kotlin.Unit>){}[0]
+    final inline fun <#A1: reified com.hoc081098.solivagant.navigation/BaseRoute, #B1: reified com.hoc081098.kmp.viewmodel.parcelable/Parcelable> registerForNavigationResult(): com.hoc081098.solivagant.navigation/NavigationResultRequest<#B1> // com.hoc081098.solivagant.navigation/NavEventNavigator.registerForNavigationResult|registerForNavigationResult(){0§<com.hoc081098.solivagant.navigation.BaseRoute>;1§<com.hoc081098.kmp.viewmodel.parcelable.Parcelable>}[0]
+    open fun <#A1: com.hoc081098.kmp.viewmodel.parcelable/Parcelable> deliverNavigationResult(com.hoc081098.solivagant.navigation/NavigationResultRequest.Key<#A1>, #A1) // com.hoc081098.solivagant.navigation/NavEventNavigator.deliverNavigationResult|deliverNavigationResult(com.hoc081098.solivagant.navigation.NavigationResultRequest.Key<0:0>;0:0){0§<com.hoc081098.kmp.viewmodel.parcelable.Parcelable>}[0]
+    open fun <#A1: com.hoc081098.solivagant.navigation/BaseRoute> navigateBackToInternal(com.hoc081098.solivagant.navigation.internal/DestinationId<#A1>, kotlin/Boolean) // com.hoc081098.solivagant.navigation/NavEventNavigator.navigateBackToInternal|navigateBackToInternal(com.hoc081098.solivagant.navigation.internal.DestinationId<0:0>;kotlin.Boolean){0§<com.hoc081098.solivagant.navigation.BaseRoute>}[0]
+    open fun <#A1: kotlin/Any?> backPresses(#A1): kotlinx.coroutines.flow/Flow<#A1> // com.hoc081098.solivagant.navigation/NavEventNavigator.backPresses|backPresses(0:0){0§<kotlin.Any?>}[0]
+    open fun backPresses(): kotlinx.coroutines.flow/Flow<kotlin/Unit> // com.hoc081098.solivagant.navigation/NavEventNavigator.backPresses|backPresses(){}[0]
+    open fun navigateBack() // com.hoc081098.solivagant.navigation/NavEventNavigator.navigateBack|navigateBack(){}[0]
+    open fun navigateTo(com.hoc081098.solivagant.navigation/NavRoute) // com.hoc081098.solivagant.navigation/NavEventNavigator.navigateTo|navigateTo(com.hoc081098.solivagant.navigation.NavRoute){}[0]
+    open fun navigateToRoot(com.hoc081098.solivagant.navigation/NavRoot, kotlin/Boolean) // com.hoc081098.solivagant.navigation/NavEventNavigator.navigateToRoot|navigateToRoot(com.hoc081098.solivagant.navigation.NavRoot;kotlin.Boolean){}[0]
+    open fun navigateUp() // com.hoc081098.solivagant.navigation/NavEventNavigator.navigateUp|navigateUp(){}[0]
+    open fun replaceAll(com.hoc081098.solivagant.navigation/NavRoot) // com.hoc081098.solivagant.navigation/NavEventNavigator.replaceAll|replaceAll(com.hoc081098.solivagant.navigation.NavRoot){}[0]
+    open fun resetToRoot(com.hoc081098.solivagant.navigation/NavRoot) // com.hoc081098.solivagant.navigation/NavEventNavigator.resetToRoot|resetToRoot(com.hoc081098.solivagant.navigation.NavRoot){}[0]
+}
+
+sealed class <#A: kotlin/Any?> com.hoc081098.solivagant.navigation/ResultOwner { // com.hoc081098.solivagant.navigation/ResultOwner|null[0]
+    constructor <init>() // com.hoc081098.solivagant.navigation/ResultOwner.<init>|<init>(){}[0]
+
+    final val results // com.hoc081098.solivagant.navigation/ResultOwner.results|{}results[0]
+        final fun <get-results>(): kotlinx.coroutines.flow/Flow<#A> // com.hoc081098.solivagant.navigation/ResultOwner.results.<get-results>|<get-results>(){}[0]
+
+    final fun onResult(#A) // com.hoc081098.solivagant.navigation/ResultOwner.onResult|onResult(1:0){}[0]
+}
+
+final const val com.hoc081098.solivagant.navigation/EXTRA_ROUTE // com.hoc081098.solivagant.navigation/EXTRA_ROUTE|{}EXTRA_ROUTE[0]
+    final fun <get-EXTRA_ROUTE>(): kotlin/String // com.hoc081098.solivagant.navigation/EXTRA_ROUTE.<get-EXTRA_ROUTE>|<get-EXTRA_ROUTE>(){}[0]
+
+final val com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_DelegatingOnBackPressedCallback$stableprop // com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_DelegatingOnBackPressedCallback$stableprop|#static{}com_hoc081098_solivagant_navigation_internal_DelegatingOnBackPressedCallback$stableprop[0]
+final val com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_DestinationId$stableprop // com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_DestinationId$stableprop|#static{}com_hoc081098_solivagant_navigation_internal_DestinationId$stableprop[0]
+final val com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_KClassParceler$stableprop // com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_KClassParceler$stableprop|#static{}com_hoc081098_solivagant_navigation_internal_KClassParceler$stableprop[0]
+final val com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEventCollector$stableprop // com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEventCollector$stableprop|#static{}com_hoc081098_solivagant_navigation_internal_NavEventCollector$stableprop[0]
+final val com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEvent_BackEvent$stableprop // com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEvent_BackEvent$stableprop|#static{}com_hoc081098_solivagant_navigation_internal_NavEvent_BackEvent$stableprop[0]
+final val com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEvent_BackToEvent$stableprop // com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEvent_BackToEvent$stableprop|#static{}com_hoc081098_solivagant_navigation_internal_NavEvent_BackToEvent$stableprop[0]
+final val com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEvent_DestinationResultEvent$stableprop // com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEvent_DestinationResultEvent$stableprop|#static{}com_hoc081098_solivagant_navigation_internal_NavEvent_DestinationResultEvent$stableprop[0]
+final val com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEvent_MultiNavEvent$stableprop // com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEvent_MultiNavEvent$stableprop|#static{}com_hoc081098_solivagant_navigation_internal_NavEvent_MultiNavEvent$stableprop[0]
+final val com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEvent_NavigateToEvent$stableprop // com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEvent_NavigateToEvent$stableprop|#static{}com_hoc081098_solivagant_navigation_internal_NavEvent_NavigateToEvent$stableprop[0]
+final val com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEvent_NavigateToRootEvent$stableprop // com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEvent_NavigateToRootEvent$stableprop|#static{}com_hoc081098_solivagant_navigation_internal_NavEvent_NavigateToRootEvent$stableprop[0]
+final val com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEvent_ReplaceAll$stableprop // com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEvent_ReplaceAll$stableprop|#static{}com_hoc081098_solivagant_navigation_internal_NavEvent_ReplaceAll$stableprop[0]
+final val com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEvent_ResetToRoot$stableprop // com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEvent_ResetToRoot$stableprop|#static{}com_hoc081098_solivagant_navigation_internal_NavEvent_ResetToRoot$stableprop[0]
+final val com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEvent_UpEvent$stableprop // com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavEvent_UpEvent$stableprop|#static{}com_hoc081098_solivagant_navigation_internal_NavEvent_UpEvent$stableprop[0]
+final val com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavigationExecutorStore$stableprop // com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_NavigationExecutorStore$stableprop|#static{}com_hoc081098_solivagant_navigation_internal_NavigationExecutorStore$stableprop[0]
+final val com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_OnBackPressedCallback$stableprop // com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_OnBackPressedCallback$stableprop|#static{}com_hoc081098_solivagant_navigation_internal_OnBackPressedCallback$stableprop[0]
+final val com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_OnBackPressedDispatcherOwner$stableprop // com.hoc081098.solivagant.navigation.internal/com_hoc081098_solivagant_navigation_internal_OnBackPressedDispatcherOwner$stableprop|#static{}com_hoc081098_solivagant_navigation_internal_OnBackPressedDispatcherOwner$stableprop[0]
+final val com.hoc081098.solivagant.navigation.internal/destinationId // com.hoc081098.solivagant.navigation.internal/destinationId|@0:0{0§<com.hoc081098.solivagant.navigation.BaseRoute>}destinationId[0]
+    final fun <#A1: com.hoc081098.solivagant.navigation/BaseRoute> (#A1).<get-destinationId>(): com.hoc081098.solivagant.navigation.internal/DestinationId<out #A1> // com.hoc081098.solivagant.navigation.internal/destinationId.<get-destinationId>|<get-destinationId>@0:0(){0§<com.hoc081098.solivagant.navigation.BaseRoute>}[0]
+final val com.hoc081098.solivagant.navigation/LocalNavigationExecutor // com.hoc081098.solivagant.navigation/LocalNavigationExecutor|{}LocalNavigationExecutor[0]
+    final fun <get-LocalNavigationExecutor>(): androidx.compose.runtime/ProvidableCompositionLocal<com.hoc081098.solivagant.navigation.internal/NavigationExecutor> // com.hoc081098.solivagant.navigation/LocalNavigationExecutor.<get-LocalNavigationExecutor>|<get-LocalNavigationExecutor>(){}[0]
+final val com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_NavEventNavigator$stableprop // com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_NavEventNavigator$stableprop|#static{}com_hoc081098_solivagant_navigation_NavEventNavigator$stableprop[0]
+final val com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_NavigationResultRequest$stableprop // com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_NavigationResultRequest$stableprop|#static{}com_hoc081098_solivagant_navigation_NavigationResultRequest$stableprop[0]
+final val com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_NavigationResultRequest_Key$stableprop // com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_NavigationResultRequest_Key$stableprop|#static{}com_hoc081098_solivagant_navigation_NavigationResultRequest_Key$stableprop[0]
+final val com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_OverlayDestination$stableprop // com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_OverlayDestination$stableprop|#static{}com_hoc081098_solivagant_navigation_OverlayDestination$stableprop[0]
+final val com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_ResultOwner$stableprop // com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_ResultOwner$stableprop|#static{}com_hoc081098_solivagant_navigation_ResultOwner$stableprop[0]
+final val com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_ScreenDestination$stableprop // com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_ScreenDestination$stableprop|#static{}com_hoc081098_solivagant_navigation_ScreenDestination$stableprop[0]
+
+final fun (com.hoc081098.solivagant.navigation/BaseRoute).com.hoc081098.solivagant.navigation/getArguments(): com.hoc081098.kmp.viewmodel/SavedStateHandle // com.hoc081098.solivagant.navigation/getArguments|getArguments@com.hoc081098.solivagant.navigation.BaseRoute(){}[0]
+final fun <#A: com.hoc081098.solivagant.navigation/BaseRoute> (com.hoc081098.kmp.viewmodel/SavedStateHandle).com.hoc081098.solivagant.navigation/requireRoute(): #A // com.hoc081098.solivagant.navigation/requireRoute|requireRoute@com.hoc081098.kmp.viewmodel.SavedStateHandle(){0§<com.hoc081098.solivagant.navigation.BaseRoute>}[0]
+final fun com.hoc081098.solivagant.navigation.internal/currentBackPressedDispatcher(androidx.compose.runtime/Composer?, kotlin/Int): com.hoc081098.solivagant.navigation.internal/OnBackPressedDispatcherOwner // com.hoc081098.solivagant.navigation.internal/currentBackPressedDispatcher|currentBackPressedDispatcher(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+final fun com.hoc081098.solivagant.navigation/NavigationSetup(com.hoc081098.solivagant.navigation/NavEventNavigator, androidx.compose.runtime/Composer?, kotlin/Int) // com.hoc081098.solivagant.navigation/NavigationSetup|NavigationSetup(com.hoc081098.solivagant.navigation.NavEventNavigator;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+final inline fun <#A: reified com.hoc081098.solivagant.navigation/BaseRoute> com.hoc081098.solivagant.navigation/ScreenDestination(com.hoc081098.solivagant.navigation/Serializable, noinline kotlin/Function4<#A, androidx.compose.ui/Modifier, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>): com.hoc081098.solivagant.navigation/NavDestination // com.hoc081098.solivagant.navigation/ScreenDestination|ScreenDestination(com.hoc081098.solivagant.navigation.Serializable;kotlin.Function4<0:0,androidx.compose.ui.Modifier,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>){0§<com.hoc081098.solivagant.navigation.BaseRoute>}[0]
+final inline fun <#A: reified com.hoc081098.solivagant.navigation/BaseRoute> com.hoc081098.solivagant.navigation/ScreenDestination(noinline kotlin/Function4<#A, androidx.compose.ui/Modifier, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>): com.hoc081098.solivagant.navigation/NavDestination // com.hoc081098.solivagant.navigation/ScreenDestination|ScreenDestination(kotlin.Function4<0:0,androidx.compose.ui.Modifier,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>){0§<com.hoc081098.solivagant.navigation.BaseRoute>}[0]
+final inline fun <#A: reified com.hoc081098.solivagant.navigation/NavRoute> com.hoc081098.solivagant.navigation/OverlayDestination(com.hoc081098.solivagant.navigation/Serializable, noinline kotlin/Function4<#A, androidx.compose.ui/Modifier, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>): com.hoc081098.solivagant.navigation/NavDestination // com.hoc081098.solivagant.navigation/OverlayDestination|OverlayDestination(com.hoc081098.solivagant.navigation.Serializable;kotlin.Function4<0:0,androidx.compose.ui.Modifier,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>){0§<com.hoc081098.solivagant.navigation.NavRoute>}[0]
+final inline fun <#A: reified com.hoc081098.solivagant.navigation/NavRoute> com.hoc081098.solivagant.navigation/OverlayDestination(noinline kotlin/Function4<#A, androidx.compose.ui/Modifier, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>): com.hoc081098.solivagant.navigation/NavDestination // com.hoc081098.solivagant.navigation/OverlayDestination|OverlayDestination(kotlin.Function4<0:0,androidx.compose.ui.Modifier,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>){0§<com.hoc081098.solivagant.navigation.NavRoute>}[0]

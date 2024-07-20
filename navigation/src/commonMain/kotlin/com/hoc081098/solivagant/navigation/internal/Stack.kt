@@ -82,7 +82,7 @@ internal class Stack private constructor(
   }
   //endregion
 
-  @CheckResult
+  @CheckResult(suggest = "")
   @Suppress("NestedBlockDepth")
   internal fun computeVisibleEntries(): NonEmptyImmutableList<StackEntry<*>> {
     if (stack.size == 1) {
@@ -117,16 +117,16 @@ internal class Stack private constructor(
     stack.add(stackEntry)
   }
 
-  @CheckResult
+  @CheckResult(suggest = "")
   fun pop(): StackEntry<*> {
     check(stack.last().removable) { "Can't pop the root of the back stack" }
     return popInternal()
   }
 
-  @CheckResult
+  @CheckResult(suggest = "")
   private fun popInternal(): StackEntry<*> = stack.removeLast()
 
-  @CheckResult
+  @CheckResult(suggest = "")
   fun popUpTo(
     destinationId: DestinationId<*>,
     isInclusive: Boolean,
@@ -143,7 +143,7 @@ internal class Stack private constructor(
       }
     }
 
-  @CheckResult
+  @CheckResult(suggest = "")
   fun clear(): ImmutableList<StackEntry<*>> =
     persistentListOf<StackEntry<*>>().mutate { builder ->
       while (stack.last().removable) {
@@ -153,7 +153,7 @@ internal class Stack private constructor(
     }
   //endregion
 
-  @CheckResult
+  @CheckResult(suggest = "")
   internal fun saveState(): StackSavedState =
     StackSavedState(
       entries = stack.mapTo(ArrayList(stack.size)) {
@@ -167,18 +167,12 @@ internal class Stack private constructor(
   internal fun handleLifecycleEvent(event: Lifecycle.Event) = stack.forEach { it.handleLifecycleEvent(event) }
 
   companion object {
-    @OptIn(ExperimentalContracts::class)
     fun createWith(
       root: NavRoot,
       destinations: List<ContentDestination<*>>,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
-      contract {
-        callsInPlace(idGenerator, InvocationKind.AT_LEAST_ONCE)
-        callsInPlace(getHostLifecycleState, InvocationKind.AT_LEAST_ONCE)
-      }
-
       val rootEntry = entry(
         route = root,
         destinations = destinations,
@@ -193,18 +187,12 @@ internal class Stack private constructor(
       )
     }
 
-    @OptIn(ExperimentalContracts::class)
     fun fromState(
       savedState: StackSavedState,
       destinations: List<ContentDestination<*>>,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
-      contract {
-        callsInPlace(idGenerator, InvocationKind.AT_LEAST_ONCE)
-        callsInPlace(getHostLifecycleState, InvocationKind.AT_LEAST_ONCE)
-      }
-
       val entries = savedState.entries.map { entry ->
         entry(
           route = entry.route,

@@ -4,13 +4,13 @@
 plugins {
   alias(libs.plugins.kotlin.multiplatform)
   alias(libs.plugins.jetbrains.compose)
-
+  alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.parcelize)
 }
 
-compose {
-  kotlinCompilerPlugin.set(libs.versions.jetbrains.compose.compiler)
+composeCompiler {
+  enableStrongSkippingMode = true
 }
 
 kotlin {
@@ -21,16 +21,20 @@ kotlin {
 
   androidTarget {
     compilations.configureEach {
-      compilerOptions.configure {
-        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(libs.versions.java.target.get()))
+      compileTaskProvider.configure {
+        compilerOptions {
+          jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(libs.versions.java.target.get()))
+        }
       }
     }
   }
 
   jvm("desktop") {
     compilations.configureEach {
-      compilerOptions.configure {
-        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(libs.versions.java.target.get()))
+      compileTaskProvider.configure {
+        compilerOptions {
+          jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(libs.versions.java.target.get()))
+        }
       }
     }
   }
@@ -104,18 +108,35 @@ kotlin {
     val iosSimulatorArm64Test by getting
     iosTest {}
   }
+
+  targets.configureEach {
+    val isAndroidTarget = platformType == org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType.androidJvm
+    compilations.configureEach {
+      compileTaskProvider.configure {
+        compilerOptions {
+          if (isAndroidTarget) {
+            freeCompilerArgs.addAll(
+              "-P",
+              "plugin:org.jetbrains.kotlin.parcelize:additionalAnnotation=com.hoc081098.kmp.viewmodel.parcelable.Parcelize",
+            )
+          }
+        }
+      }
+    }
+  }
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
-  kotlinOptions {
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>>().configureEach {
+  compilerOptions {
     // 'expect'/'actual' classes (including interfaces, objects, annotations, enums,
     // and 'actual' typealiases) are in Beta.
     // You can use -Xexpect-actual-classes flag to suppress this warning.
     // Also see: https://youtrack.jetbrains.com/issue/KT-61573
-    freeCompilerArgs +=
+    freeCompilerArgs.addAll(
       listOf(
         "-Xexpect-actual-classes",
-      )
+      ),
+    )
   }
 }
 

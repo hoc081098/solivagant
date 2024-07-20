@@ -1,14 +1,14 @@
 [versions]
 junit = "4.13.2"
-kotlin = "1.9.24"
-coroutines = "1.8.1"
-kotlinx-serialization-json = "1.6.3"
+kotlin = "2.0.0"
+coroutines = "1.9.0-RC"
+kotlinx-serialization-json = "1.7.1"
 kotlinx-collections-immutable = "0.3.7"
 
 # the Java version that the Java and Kotlin compilers will target
 java-target = "11"
 # the Java version that is used to run the Java and Kotlin compilers and various other tasks
-java-toolchain = "17"
+java-toolchain = "19"
 
 # the Android minSdkVersion to use
 android-min = "21"
@@ -26,7 +26,7 @@ jetbrains-compose = "1.6.11"
 jetbrains-compose-compiler = "1.5.13.1"
 
 napier = "2.7.1"
-flowExt = "0.8.1"
+flowExt = "1.0.0-RC"
 koin = "3.5.6"
 koin-compose = "1.1.5"
 koin-androidx-compose = "3.5.6"
@@ -40,7 +40,7 @@ android-gradle = "8.5.1"
 coil = "3.0.0-alpha06"
 ktor = "2.3.12"
 
-kmp-viewmodel = "0.7.1"
+kmp-viewmodel = "0.8.0"
 uuid = "0.8.4"
 
 spotless = "6.25.0"
@@ -48,7 +48,7 @@ detekt = "1.23.6"
 kotlinx-kover = "0.8.2"
 dokka = "1.9.20"
 kotlinx-binary-compatibility-validator = "0.16.2"
-poko = "0.15.3"
+poko = "0.16.0"
 vanniktech-maven-publish = "0.29.0"
 ktlint = "1.1.1"
 
@@ -96,6 +96,7 @@ uuid = { module = "com.benasher44:uuid", version.ref = "uuid" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
