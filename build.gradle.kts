@@ -128,6 +128,7 @@ allprojects {
   }
 }
 
+// TODO: Recheck this
 rootProject.plugins.withType<org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin> {
   rootProject.the<org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension>().run {
     yarnLockMismatchReport = org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport.WARNING
