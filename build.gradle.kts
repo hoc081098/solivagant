@@ -1,3 +1,4 @@
+
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.diffplug.gradle.spotless.SpotlessPlugin
 import io.gitlab.arturbosch.detekt.DetektPlugin
@@ -124,5 +125,13 @@ allprojects {
     val taskClass = Class.forName(className) as Class<Task>
 
     parent?.subprojects?.forEach { dependsOn(it.tasks.withType(taskClass)) }
+  }
+}
+
+rootProject.plugins.withType<org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin> {
+  rootProject.the<org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension>().run {
+    yarnLockMismatchReport = org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport.WARNING
+    reportNewYarnLock = true
+    yarnLockAutoReplace = false
   }
 }
