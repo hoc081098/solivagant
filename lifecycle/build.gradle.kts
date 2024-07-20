@@ -36,16 +36,20 @@ kotlin {
     publishAllLibraryVariants()
 
     compilations.configureEach {
-      compilerOptions.configure {
-        jvmTarget.set(JvmTarget.fromTarget(libs.versions.java.target.get()))
+      compileTaskProvider.configure {
+        compilerOptions {
+          jvmTarget.set(JvmTarget.fromTarget(libs.versions.java.target.get()))
+        }
       }
     }
   }
 
   jvm {
     compilations.configureEach {
-      compilerOptions.configure {
-        jvmTarget.set(JvmTarget.fromTarget(libs.versions.java.target.get()))
+      compileTaskProvider.configure {
+        compilerOptions {
+          jvmTarget.set(JvmTarget.fromTarget(libs.versions.java.target.get()))
+        }
       }
     }
   }
@@ -53,9 +57,11 @@ kotlin {
   js(IR) {
     moduleName = property("POM_ARTIFACT_ID")!!.toString()
     compilations.configureEach {
-      compilerOptions.configure {
-        sourceMap.set(true)
-        moduleKind.set(JsModuleKind.MODULE_COMMONJS)
+      compileTaskProvider.configure {
+        compilerOptions {
+          sourceMap.set(true)
+          moduleKind.set(JsModuleKind.MODULE_COMMONJS)
+        }
       }
     }
     browser()

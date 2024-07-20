@@ -19,16 +19,20 @@ kotlin {
 
   androidTarget {
     compilations.configureEach {
-      compilerOptions.configure {
-        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(libs.versions.java.target.get()))
+      compileTaskProvider.configure {
+        compilerOptions {
+          jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(libs.versions.java.target.get()))
+        }
       }
     }
   }
 
   jvm("desktop") {
     compilations.configureEach {
-      compilerOptions.configure {
-        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(libs.versions.java.target.get()))
+      compileTaskProvider.configure {
+        compilerOptions {
+          jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(libs.versions.java.target.get()))
+        }
       }
     }
   }
