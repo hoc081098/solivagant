@@ -30,7 +30,9 @@ kotlin {
   }
 }
 
-composeCompiler {}
+composeCompiler {
+  enableStrongSkippingMode = true
+}
 
 compose.desktop {
   application {

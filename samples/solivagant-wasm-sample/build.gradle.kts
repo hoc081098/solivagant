@@ -7,7 +7,9 @@ plugins {
   alias(libs.plugins.kotlin.compose)
 }
 
-composeCompiler {}
+composeCompiler {
+  enableStrongSkippingMode = true
+}
 
 kotlin {
   @OptIn(ExperimentalWasmDsl::class)

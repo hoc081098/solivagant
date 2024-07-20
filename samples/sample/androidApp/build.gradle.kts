@@ -6,7 +6,9 @@ plugins {
   alias(libs.plugins.kotlin.compose)
 }
 
-composeCompiler {}
+composeCompiler {
+  enableStrongSkippingMode = true
+}
 
 android {
   namespace = "com.hoc081098.solivagant.sample.android"

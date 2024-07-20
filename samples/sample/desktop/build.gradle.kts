@@ -31,6 +31,7 @@ kotlin {
 }
 
 composeCompiler {
+  enableStrongSkippingMode = true
 }
 
 compose.desktop {

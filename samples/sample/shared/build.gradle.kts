@@ -11,7 +11,9 @@ plugins {
   alias(libs.plugins.kotlin.parcelize)
 }
 
-composeCompiler {}
+composeCompiler {
+  enableStrongSkippingMode = true
+}
 
 kotlin {
   jvmToolchain {
