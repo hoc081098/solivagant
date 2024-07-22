@@ -113,7 +113,7 @@ kotlin {
       dependencies {
         implementation(kotlin("test-common"))
         implementation(kotlin("test-annotations-common"))
-        implementation("io.kotest:kotest-assertions-core:6.0.0.1563-SNAPSHOT")
+        implementation("io.kotest:kotest-assertions-core:5.9.1")
       }
     }
 
