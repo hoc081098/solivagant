@@ -2,7 +2,9 @@
 
 ## [Unreleased] - TBD
 
-## [0.4.0] - Jul 20, 2024
+- TDB
+
+## [0.4.0] - Jul 22, 2024
 
 ### Update dependencies
 

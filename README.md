@@ -79,13 +79,13 @@ Liked some of my work? Buy me a coffee (or more likely a beer)
 
 <a href="https://www.buymeacoffee.com/hoc081098" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" height=64></a>
 
-## Docs
+## Docs & Installation
 
 ### **0.x release** docs: https://hoc081098.github.io/solivagant/docs/0.x
 
 ### Snapshot docs: https://hoc081098.github.io/solivagant/docs/latest
 
-## Installation
+### Installation
 
 ```kotlin
 allprojects {
@@ -97,7 +97,25 @@ allprojects {
 ```
 
 ```kotlin
-implementation("io.github.hoc081098:solivagant-navigation:0.3.0")
+implementation("io.github.hoc081098:solivagant-navigation:0.4.0")
+```
+
+### Snapshot
+
+<details>
+  <summary>Snapshots of the development version are available in Sonatype's snapshots repository.</summary>
+
+```kotlin
+allprojects {
+  repositories {
+    ...
+    maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
+  }
+}
+
+dependencies {
+  implementation("io.github.hoc081098:solivagant-navigation:0.4.1-SNAPSHOT")
+}
 ```
 
 ## Getting started
