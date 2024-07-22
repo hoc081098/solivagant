@@ -8,8 +8,12 @@
 
 - [Kotlin `2.0.0` 🎉](https://github.com/JetBrains/kotlin/releases/tag/v2.0.0).
 - [JetBrains Compose Multiplatform `1.6.11` 🎉](https://github.com/JetBrains/compose-multiplatform/releases/tag/v1.6.11).
-- [KMP ViewModel `0.8.0`](https://github.com/hoc081098/kmp-viewmodel/releases/tag/0.8.0).
+- [KMP ViewModel `0.8.0` 🎉](https://github.com/hoc081098/kmp-viewmodel/releases/tag/0.8.0).
 - [KotlinX Coroutines `1.9.0-RC`](https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.9.0-RC).
+- [AndroidX Lifecycle `2.8.3`](https://developer.android.com/jetpack/androidx/releases/lifecycle#2.8.3).
+- [AndroidX Compose Activity `1.9.0`](https://developer.android.com/jetpack/androidx/releases/activity#1.9.0).
+- [AndroidX Annotation `1.8.0`](https://developer.android.com/jetpack/androidx/releases/annotation#1.8.0).
+- [Benasher44 UUID `0.8.4`](https://github.com/benasher44/uuid/releases/tag/0.8.4).
 
 ## [0.3.0] - Mar 13, 2024
 
