@@ -118,6 +118,8 @@ dependencies {
 }
 ```
 
+</details>
+
 ## Getting started
 
 The library is ported from `Freeletics Khonshu Navigation` library, so the concepts is similar.
