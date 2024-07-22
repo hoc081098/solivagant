@@ -23,7 +23,6 @@ sample-android-target = "34"
 sample-android-compile = "34"
 
 jetbrains-compose = "1.6.11"
-jetbrains-compose-compiler = "1.5.13.1"
 
 napier = "2.7.1"
 flowExt = "1.0.0-RC"
