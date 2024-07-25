@@ -44,7 +44,7 @@ uuid = "0.8.4"
 
 spotless = "6.25.0"
 detekt = "1.23.6"
-kotlinx-kover = "0.8.2"
+kotlinx-kover = "0.8.3"
 dokka = "1.9.20"
 kotlinx-binary-compatibility-validator = "0.16.2"
 poko = "0.16.0"
