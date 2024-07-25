@@ -15,6 +15,9 @@ import dev.drewhamilton.poko.Poko
 @Suppress("MagicNumber")
 public object NavHostDefaults {
   @Stable
+  public fun stackValidationMode(): StackValidationMode = StackValidationMode.Lenient
+
+  @Stable
   public fun transitionAnimations(
     enterTransition: (AnimatedContentTransitionScope<*>.() -> EnterTransition) =
       { fadeIn(animationSpec = tween(700)) },

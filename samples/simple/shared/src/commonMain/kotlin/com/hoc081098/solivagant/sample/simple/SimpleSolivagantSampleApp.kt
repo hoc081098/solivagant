@@ -33,6 +33,7 @@ import com.hoc081098.solivagant.navigation.NavEventNavigator
 import com.hoc081098.solivagant.navigation.NavHost
 import com.hoc081098.solivagant.navigation.NavHostDefaults
 import com.hoc081098.solivagant.navigation.NavRoot
+import com.hoc081098.solivagant.navigation.StackValidationMode
 import com.hoc081098.solivagant.sample.simple.common.MyApplicationTheme
 import com.hoc081098.solivagant.sample.simple.ui.detail.DetailScreenDestination
 import com.hoc081098.solivagant.sample.simple.ui.detail.overlay.DetailScreenOverlayDestination
@@ -136,6 +137,7 @@ fun SimpleSolivagantSampleApp(
             startRoute = LoginScreenRoute,
             destinations = AllDestinations,
             navEventNavigator = navigator,
+            stackValidationMode = StackValidationMode.Warning.Debug,
             destinationChangedCallback = { currentRoute = it },
             transitionAnimations = NavHostDefaults.transitionAnimations(
               enterTransition = {

@@ -106,7 +106,12 @@ fun SolivagantSampleApp(
               navigationIcon = {
                 if (currentRoute !is NavRoot) {
                   IconButton(
-                    onClick = remember { navigator::navigateBack },
+                    onClick = remember {
+                      {
+                        navigator.navigateBack()
+                        navigator.navigateBack()
+                      }
+                    },
                   ) {
                     Icon(
                       imageVector = Icons.Default.ArrowBack,

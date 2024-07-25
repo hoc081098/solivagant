@@ -43,6 +43,7 @@ import com.hoc081098.solivagant.navigation.EXTRA_ROUTE
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.Serializable
+import com.hoc081098.solivagant.navigation.StackValidationMode
 import com.hoc081098.solivagant.navigation.internal.MultiStackNavigationExecutor.Companion.SAVED_STATE_STACK
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
@@ -83,6 +84,7 @@ internal class MultiStackNavigationExecutor(
    * Do not cancel this scope, it is managed by the outside.
    */
   scope: CoroutineScope,
+  private val getStackValidationMode: () -> StackValidationMode,
 ) : NavigationExecutor {
   private val stores = mutableMapOf<StackEntryId, NavigationExecutorStore>()
   private val savedStateHandles = mutableMapOf<StackEntryId, SavedStateHandle>()
@@ -319,6 +321,7 @@ internal class MultiStackNavigationExecutor(
         destinations = contentDestinations,
         getHostLifecycleState = getHostLifecycleState,
         onStackEntryRemoved = onStackEntryRemoved,
+        stackValidationMode = getStackValidationMode(),
       )
     } else {
       MultiStack.fromState(
@@ -326,6 +329,7 @@ internal class MultiStackNavigationExecutor(
         destinations = contentDestinations,
         getHostLifecycleState = getHostLifecycleState,
         onStackEntryRemoved = onStackEntryRemoved,
+        stackValidationMode = getStackValidationMode(),
       )
     }
   }

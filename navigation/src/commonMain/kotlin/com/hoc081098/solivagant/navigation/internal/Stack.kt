@@ -41,6 +41,7 @@ import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.ScreenDestination
+import com.hoc081098.solivagant.navigation.StackValidationMode
 import dev.drewhamilton.poko.Poko
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
@@ -55,6 +56,7 @@ internal class Stack private constructor(
   private val destinations: List<ContentDestination<*>>,
   private val getHostLifecycleState: () -> Lifecycle.State,
   private val idGenerator: () -> String,
+  private val stackValidationMode: StackValidationMode,
 ) {
   @Suppress("MemberNameEqualsClassName")
   private val stack = ArrayDeque<StackEntry<*>>(@Suppress("MagicNumber") 20).also {
@@ -118,13 +120,42 @@ internal class Stack private constructor(
   }
 
   @CheckResult(suggest = "")
-  fun pop(): StackEntry<*> {
-    check(stack.last().removable) { "Can't pop the root of the back stack" }
-    return popInternal()
+  fun pop(): StackEntry<*>? {
+    return when (stackValidationMode) {
+      StackValidationMode.Lenient ->
+        if (stack.last().removable) {
+          popInternal(checkRemovable = false)
+        } else {
+          null
+        }
+
+      StackValidationMode.Strict ->
+        popInternal(checkRemovable = true)
+
+      is StackValidationMode.Warning ->
+        if (stack.last().removable) {
+          popInternal(checkRemovable = false)
+        } else {
+          stackValidationMode.logWarn(
+            StackValidationMode.Warning.LOG_TAG,
+            "Can't pop the root of the back stack",
+          )
+          null
+        }
+    }
   }
 
+  /**
+   * When [checkRemovable] is true, if the last entry is removable, it will be removed from the stack and returned.
+   * Otherwise, a [IllegalStateException] or [NoSuchElementException] will be thrown.
+   */
   @CheckResult(suggest = "")
-  private fun popInternal(): StackEntry<*> = stack.removeLast()
+  private fun popInternal(checkRemovable: Boolean): StackEntry<*> {
+    if (checkRemovable) {
+      check(stack.last().removable) { "Can't pop the root of the back stack" }
+    }
+    return stack.removeLast()
+  }
 
   @CheckResult(suggest = "")
   fun popUpTo(
@@ -134,12 +165,12 @@ internal class Stack private constructor(
     persistentListOf<StackEntry<*>>().mutate { builder ->
       while (stack.last().destinationId != destinationId) {
         check(stack.last().removable) { "Route ${destinationId.route} not found on back stack" }
-        popInternal().also(builder::add)
+        popInternal(checkRemovable = false).also(builder::add)
       }
 
       if (isInclusive) {
-        // using pop here to get the default removable check
-        pop().also(builder::add)
+        // using popInternal with checkRemovable = true here to get the default removable check
+        popInternal(checkRemovable = true).also(builder::add)
       }
     }
 
@@ -147,8 +178,7 @@ internal class Stack private constructor(
   fun clear(): ImmutableList<StackEntry<*>> =
     persistentListOf<StackEntry<*>>().mutate { builder ->
       while (stack.last().removable) {
-        popInternal()
-          .also(builder::add)
+        popInternal(checkRemovable = false).also(builder::add)
       }
     }
   //endregion
@@ -170,6 +200,7 @@ internal class Stack private constructor(
     fun createWith(
       root: NavRoot,
       destinations: List<ContentDestination<*>>,
+      stackValidationMode: StackValidationMode,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
@@ -184,12 +215,14 @@ internal class Stack private constructor(
         destinations = destinations,
         getHostLifecycleState = getHostLifecycleState,
         idGenerator = idGenerator,
+        stackValidationMode = stackValidationMode,
       )
     }
 
     fun fromState(
       savedState: StackSavedState,
       destinations: List<ContentDestination<*>>,
+      stackValidationMode: StackValidationMode,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
@@ -205,6 +238,7 @@ internal class Stack private constructor(
         destinations = destinations,
         getHostLifecycleState = getHostLifecycleState,
         idGenerator = idGenerator,
+        stackValidationMode = stackValidationMode,
       )
     }
 

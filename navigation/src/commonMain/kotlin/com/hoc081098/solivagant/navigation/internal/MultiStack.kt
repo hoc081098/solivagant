@@ -49,8 +49,8 @@ import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.OverlayDestination
 import com.hoc081098.solivagant.navigation.ScreenDestination
+import com.hoc081098.solivagant.navigation.StackValidationMode
 import dev.drewhamilton.poko.Poko
-import kotlin.contracts.ExperimentalContracts
 import kotlinx.collections.immutable.ImmutableList
 
 @Stable
@@ -89,6 +89,7 @@ internal class MultiStack private constructor(
   private val destinations: List<ContentDestination<*>>,
   private val onStackEntryRemoved: OnStackEntryRemoved,
   private val idGenerator: () -> String,
+  private val stackValidationMode: StackValidationMode,
 ) {
   private val visibleEntryState: MutableState<VisibleEntryState> =
     mutableStateOf(
@@ -145,6 +146,7 @@ internal class MultiStack private constructor(
     val newStack = Stack.createWith(
       root = root,
       destinations = destinations,
+      stackValidationMode = stackValidationMode,
       idGenerator = idGenerator,
       getHostLifecycleState = { hostLifecycleState },
     )
@@ -195,7 +197,7 @@ internal class MultiStack private constructor(
   }
 
   fun popCurrentStack() {
-    currentStack.pop().also {
+    currentStack.pop()?.also {
       onStackEntryRemoved(it, it.isOverlayDestination)
       updateVisibleDestinations(
         lastEvent = if (it.isOverlayDestination) {
@@ -209,8 +211,25 @@ internal class MultiStack private constructor(
 
   fun pop() {
     if (currentStack.isAtRoot) {
-      check(currentStack.destinationId != startStack.destinationId) {
-        "Can't navigate back from the root of the start back stack"
+      when (stackValidationMode) {
+        StackValidationMode.Lenient ->
+          if (currentStack.destinationId == startStack.destinationId) {
+            return
+          }
+
+        StackValidationMode.Strict ->
+          check(currentStack.destinationId != startStack.destinationId) {
+            "Can't navigate back from the root of the start back stack"
+          }
+
+        is StackValidationMode.Warning ->
+          if (currentStack.destinationId == startStack.destinationId) {
+            stackValidationMode.logWarn(
+              StackValidationMode.Warning.LOG_TAG,
+              "Can't navigate back from the root of the start back stack",
+            )
+            return
+          }
       }
       removeBackStack(stack = currentStack, shouldRemoveImmediately = false)
       currentStack = startStack
@@ -220,7 +239,7 @@ internal class MultiStack private constructor(
       currentStack.clear().forEach { onStackEntryRemoved(it, true) }
       updateVisibleDestinations(lastEvent = StackEvent.Pop)
     } else {
-      currentStack.pop().also {
+      currentStack.pop()?.also {
         onStackEntryRemoved(it, it.isOverlayDestination)
         updateVisibleDestinations(
           lastEvent = if (it.isOverlayDestination) {
@@ -369,17 +388,18 @@ internal class MultiStack private constructor(
   }
 
   companion object {
-    @OptIn(ExperimentalContracts::class)
     fun createWith(
       root: NavRoot,
       destinations: List<ContentDestination<*>>,
       onStackEntryRemoved: OnStackEntryRemoved,
+      stackValidationMode: StackValidationMode,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): MultiStack {
       val startStack = Stack.createWith(
         root = root,
         destinations = destinations,
+        stackValidationMode = stackValidationMode,
         getHostLifecycleState = getHostLifecycleState,
         idGenerator = idGenerator,
       )
@@ -388,6 +408,7 @@ internal class MultiStack private constructor(
         startStack = startStack,
         currentStack = startStack,
         destinations = destinations,
+        stackValidationMode = stackValidationMode,
         onStackEntryRemoved = onStackEntryRemoved,
         idGenerator = idGenerator,
       )
@@ -397,6 +418,7 @@ internal class MultiStack private constructor(
     fun fromState(
       savedState: MultiStackSavedState,
       destinations: List<ContentDestination<*>>,
+      stackValidationMode: StackValidationMode,
       getHostLifecycleState: () -> Lifecycle.State,
       onStackEntryRemoved: OnStackEntryRemoved,
       idGenerator: () -> String = { uuid4().toString() },
@@ -406,6 +428,7 @@ internal class MultiStack private constructor(
         Stack.fromState(
           savedState = it,
           destinations = destinations,
+          stackValidationMode = stackValidationMode,
           getHostLifecycleState = getHostLifecycleState,
           idGenerator = idGenerator,
         )
@@ -418,6 +441,7 @@ internal class MultiStack private constructor(
         startStack = startStack,
         currentStack = currentStack,
         destinations = destinations,
+        stackValidationMode = stackValidationMode,
         onStackEntryRemoved = onStackEntryRemoved,
         idGenerator = idGenerator,
       )
