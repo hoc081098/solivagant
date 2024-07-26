@@ -80,11 +80,14 @@ internal class MultiStackNavigationExecutor(
    */
   private val restoreState: Boolean,
   /**
+   * The stack validation mode.
+   */
+  private val stackValidationMode: StackValidationMode,
+  /**
    * The scope to launch the [lifecycleJob].
    * Do not cancel this scope, it is managed by the outside.
    */
   scope: CoroutineScope,
-  private val getStackValidationMode: () -> StackValidationMode,
 ) : NavigationExecutor {
   private val stores = mutableMapOf<StackEntryId, NavigationExecutorStore>()
   private val savedStateHandles = mutableMapOf<StackEntryId, SavedStateHandle>()
@@ -321,7 +324,7 @@ internal class MultiStackNavigationExecutor(
         destinations = contentDestinations,
         getHostLifecycleState = getHostLifecycleState,
         onStackEntryRemoved = onStackEntryRemoved,
-        stackValidationMode = getStackValidationMode(),
+        stackValidationMode = stackValidationMode,
       )
     } else {
       MultiStack.fromState(
@@ -329,7 +332,7 @@ internal class MultiStackNavigationExecutor(
         destinations = contentDestinations,
         getHostLifecycleState = getHostLifecycleState,
         onStackEntryRemoved = onStackEntryRemoved,
-        stackValidationMode = getStackValidationMode(),
+        stackValidationMode = stackValidationMode,
       )
     }
   }

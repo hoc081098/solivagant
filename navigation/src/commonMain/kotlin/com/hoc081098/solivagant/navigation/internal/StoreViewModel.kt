@@ -57,12 +57,11 @@ internal class StoreViewModel(
 ) : ViewModel() {
   private val executor: MutableState<MultiStackNavigationExecutor?> = mutableStateOf(null)
   private val lifecycleOwnerRef = LifecycleOwnerRef(null)
-  private var getStackValidationMode: (() -> StackValidationMode)? = null
+  private var stackValidationMode: StackValidationMode? = null
 
   init {
     addCloseable {
       lifecycleOwnerRef.ref?.clear()
-      getStackValidationMode = null
 
       Snapshot.withMutableSnapshot {
         executor.value?.clear()
@@ -78,7 +77,9 @@ internal class StoreViewModel(
     stackValidationMode: StackValidationMode,
   ): MultiStackNavigationExecutor {
     lifecycleOwnerRef.ref = WeakReference(lifecycleOwner)
-    getStackValidationMode = { stackValidationMode }
+    if (this.stackValidationMode == null) {
+      this.stackValidationMode = stackValidationMode
+    }
 
     return Snapshot.withMutableSnapshot {
       val currentExecutor = executor.value
@@ -108,7 +109,7 @@ internal class StoreViewModel(
           scope = viewModelScope,
           startRoot = startRoot,
           restoreState = false,
-          getStackValidationMode = getStackValidationMode!!,
+          stackValidationMode = this.stackValidationMode!!,
         )
 
         currentExecutor?.clear()
@@ -124,7 +125,7 @@ internal class StoreViewModel(
             scope = viewModelScope,
             startRoot = startRoot,
             restoreState = true,
-            getStackValidationMode = getStackValidationMode!!,
+            stackValidationMode = this.stackValidationMode!!,
           ).also { this.executor.value = it }
       }
     }

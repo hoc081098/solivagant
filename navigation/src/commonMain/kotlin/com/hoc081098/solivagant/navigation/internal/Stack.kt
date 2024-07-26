@@ -163,14 +163,85 @@ internal class Stack private constructor(
     isInclusive: Boolean,
   ): ImmutableList<StackEntry<*>> =
     persistentListOf<StackEntry<*>>().mutate { builder ->
+      var earlyExit = false
+
       while (stack.last().destinationId != destinationId) {
-        check(stack.last().removable) { "Route ${destinationId.route} not found on back stack" }
-        popInternal(checkRemovable = false).also(builder::add)
+        val isLastRemovable = stack.last().removable
+
+        when (stackValidationMode) {
+          StackValidationMode.Lenient -> {
+            if (isLastRemovable) {
+              // using popInternal with checkRemovable = false is enough here
+              // because we know that the last entry is removable (see isLastRemovable).
+              popInternal(checkRemovable = false).also(builder::add)
+            } else {
+              // if the last entry is not removable, we can't pop it, so we break the loop.
+              earlyExit = true
+              break
+            }
+          }
+
+          StackValidationMode.Strict -> {
+            check(isLastRemovable) { "Route ${destinationId.route} not found on back stack" }
+            // using popInternal with checkRemovable = false is enough here
+            // because we know that the last entry is removable (see above check).
+            popInternal(checkRemovable = false).also(builder::add)
+          }
+
+          is StackValidationMode.Warning -> {
+            if (isLastRemovable) {
+              // using popInternal with checkRemovable = false is enough here
+              // because we know that the last entry is removable (see isLastRemovable).
+              popInternal(checkRemovable = false).also(builder::add)
+            } else {
+              stackValidationMode.logWarn(
+                StackValidationMode.Warning.LOG_TAG,
+                "Route ${destinationId.route} not found on back stack",
+              )
+              // if the last entry is not removable, we can't pop it, so we break the loop.
+              earlyExit = true
+              break
+            }
+          }
+        }
+      }
+
+      if (earlyExit) {
+        // if we break the loop early, that means destinationId is not found on the stack.
+        // so we don't need to check isInclusive.
+        return@mutate
       }
 
       if (isInclusive) {
-        // using popInternal with checkRemovable = true here to get the default removable check
-        popInternal(checkRemovable = true).also(builder::add)
+        val isLastRemovable = stack.last().removable
+
+        when (stackValidationMode) {
+          StackValidationMode.Lenient -> {
+            if (isLastRemovable) {
+              // using popInternal with checkRemovable = false is enough here
+              // because we know that the last entry is removable (see isLastRemovable).
+              popInternal(checkRemovable = false).also(builder::add)
+            }
+          }
+
+          StackValidationMode.Strict -> {
+            // using popInternal with checkRemovable = true here to get the default removable check
+            popInternal(checkRemovable = true).also(builder::add)
+          }
+
+          is StackValidationMode.Warning -> {
+            if (isLastRemovable) {
+              // using popInternal with checkRemovable = false is enough here
+              // because we know that the last entry is removable (see isLastRemovable).
+              popInternal(checkRemovable = false).also(builder::add)
+            } else {
+              stackValidationMode.logWarn(
+                StackValidationMode.Warning.LOG_TAG,
+                "Can't pop the root of the back stack",
+              )
+            }
+          }
+        }
       }
     }
 
@@ -178,6 +249,8 @@ internal class Stack private constructor(
   fun clear(): ImmutableList<StackEntry<*>> =
     persistentListOf<StackEntry<*>>().mutate { builder ->
       while (stack.last().removable) {
+        // using popInternal with checkRemovable = false is enough here
+        // because we know that the last entry is removable (see while condition).
         popInternal(checkRemovable = false).also(builder::add)
       }
     }
