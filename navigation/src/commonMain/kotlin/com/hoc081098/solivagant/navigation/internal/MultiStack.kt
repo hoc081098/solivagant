@@ -50,6 +50,7 @@ import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.OverlayDestination
 import com.hoc081098.solivagant.navigation.ScreenDestination
 import com.hoc081098.solivagant.navigation.StackValidationMode
+import com.hoc081098.solivagant.navigation.guardSafe
 import dev.drewhamilton.poko.Poko
 import kotlinx.collections.immutable.ImmutableList
 
@@ -211,26 +212,11 @@ internal class MultiStack private constructor(
 
   fun pop() {
     if (currentStack.isAtRoot) {
-      when (stackValidationMode) {
-        StackValidationMode.Lenient ->
-          if (currentStack.destinationId == startStack.destinationId) {
-            return
-          }
+      stackValidationMode.guardSafe(
+        strictCondition = { currentStack.destinationId != startStack.destinationId },
+        lazyMessage = { "Can't navigate back from the root of the start back stack" },
+      ) { /* execute the code below*/ }
 
-        StackValidationMode.Strict ->
-          check(currentStack.destinationId != startStack.destinationId) {
-            "Can't navigate back from the root of the start back stack"
-          }
-
-        is StackValidationMode.Warning ->
-          if (currentStack.destinationId == startStack.destinationId) {
-            stackValidationMode.logWarn(
-              StackValidationMode.Warning.LOG_TAG,
-              "Can't navigate back from the root of the start back stack",
-            )
-            return
-          }
-      }
       removeBackStack(stack = currentStack, shouldRemoveImmediately = false)
       currentStack = startStack
 
@@ -277,9 +263,11 @@ internal class MultiStack private constructor(
     val lastEvent: StackEvent
 
     currentStack = if (stack != null) {
-      check(currentStack.destinationId != stack.destinationId) {
-        "$root is already the current stack"
-      }
+      stackValidationMode.guardSafe(
+        strictCondition = { currentStack.destinationId != stack.destinationId },
+        lazyMessage = { "$root is already the current stack" },
+      ) { /* execute the code below*/ }
+
       if (clearTargetStack) {
         lastEvent = StackEvent.PushRoot
 

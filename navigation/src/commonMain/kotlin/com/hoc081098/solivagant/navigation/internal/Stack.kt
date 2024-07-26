@@ -42,6 +42,7 @@ import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.ScreenDestination
 import com.hoc081098.solivagant.navigation.StackValidationMode
+import com.hoc081098.solivagant.navigation.guardWithBothCases
 import dev.drewhamilton.poko.Poko
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
@@ -120,30 +121,12 @@ internal class Stack private constructor(
   }
 
   @CheckResult(suggest = "")
-  fun pop(): StackEntry<*>? {
-    return when (stackValidationMode) {
-      StackValidationMode.Lenient ->
-        if (stack.last().removable) {
-          popInternal(checkRemovable = false)
-        } else {
-          null
-        }
-
-      StackValidationMode.Strict ->
-        popInternal(checkRemovable = true)
-
-      is StackValidationMode.Warning ->
-        if (stack.last().removable) {
-          popInternal(checkRemovable = false)
-        } else {
-          stackValidationMode.logWarn(
-            StackValidationMode.Warning.LOG_TAG,
-            "Can't pop the root of the back stack",
-          )
-          null
-        }
-    }
-  }
+  fun pop(): StackEntry<*>? =
+    stackValidationMode.guardWithBothCases(
+      strictCondition = { stack.last().removable },
+      lazyMessage = { "Can't pop the root of the back stack" },
+      unsafeBlock = { null },
+    ) { popInternal(checkRemovable = false) }
 
   /**
    * When [checkRemovable] is true, if the last entry is removable, it will be removed from the stack and returned.

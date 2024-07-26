@@ -23,6 +23,9 @@ import com.hoc081098.solivagant.navigation.StackValidationMode.Strict
 import com.hoc081098.solivagant.navigation.StackValidationMode.Warning
 import com.hoc081098.solivagant.navigation.internal.utils.logWarn
 import dev.drewhamilton.poko.Poko
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 /**
  * Stack validation mode.
@@ -55,3 +58,53 @@ public sealed interface StackValidationMode {
     }
   }
 }
+
+@OptIn(ExperimentalContracts::class)
+internal inline fun <R> StackValidationMode.guardWithBothCases(
+  strictCondition: () -> Boolean,
+  lazyMessage: () -> String,
+  unsafeBlock: () -> R,
+  safeBlock: () -> R,
+): R {
+  contract {
+    callsInPlace(strictCondition, InvocationKind.EXACTLY_ONCE)
+    callsInPlace(lazyMessage, InvocationKind.AT_MOST_ONCE)
+    callsInPlace(safeBlock, InvocationKind.AT_MOST_ONCE)
+    callsInPlace(unsafeBlock, InvocationKind.AT_MOST_ONCE)
+  }
+
+  val condition = strictCondition()
+
+  return when (this) {
+    Strict -> {
+      check(condition, lazyMessage)
+      safeBlock()
+    }
+
+    Lenient ->
+      if (condition) {
+        safeBlock()
+      } else {
+        unsafeBlock()
+      }
+
+    is Warning ->
+      if (condition) {
+        safeBlock()
+      } else {
+        logWarn(Warning.LOG_TAG, lazyMessage())
+        unsafeBlock()
+      }
+  }
+}
+
+internal inline fun StackValidationMode.guardSafe(
+  strictCondition: () -> Boolean,
+  lazyMessage: () -> String,
+  safeBlock: () -> Unit,
+) = guardWithBothCases(
+  strictCondition = strictCondition,
+  lazyMessage = lazyMessage,
+  unsafeBlock = { return },
+  safeBlock = safeBlock,
+)
