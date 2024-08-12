@@ -24,12 +24,10 @@ import com.hoc081098.solivagant.lifecycle.compose.collectAsStateWithLifecycle
 import com.hoc081098.solivagant.lifecycle.compose.currentStateAsState
 import com.hoc081098.solivagant.navigation.NavEventNavigator
 import com.hoc081098.solivagant.sample.wasm.LocalNavigator
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
-import solivagant.samples.`solivagant-wasm-sample`.generated.resources.Res
-import solivagant.samples.`solivagant-wasm-sample`.generated.resources.compose_multiplatform
+import solivagant.samples.solivagant_wasm_sample.generated.resources.Res
+import solivagant.samples.solivagant_wasm_sample.generated.resources.compose_multiplatform
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 internal fun SecondScreen(
   modifier: Modifier = Modifier,

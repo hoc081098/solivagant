@@ -38,6 +38,7 @@ import com.hoc081098.solivagant.navigation.NavDestination
 import com.hoc081098.solivagant.navigation.NavEventNavigator
 import com.hoc081098.solivagant.navigation.NavHost
 import com.hoc081098.solivagant.navigation.NavRoot
+import com.hoc081098.solivagant.navigation.StackValidationMode
 import com.hoc081098.solivagant.sample.wasm.second.SecondScreenDestination
 import com.hoc081098.solivagant.sample.wasm.start.StartScreenDestination
 import com.hoc081098.solivagant.sample.wasm.start.StartScreenRoute
@@ -96,6 +97,7 @@ fun App(modifier: Modifier = Modifier) {
               destinations = AllDestinations,
               navEventNavigator = Navigator,
               destinationChangedCallback = { currentRoute = it },
+              stackValidationMode = StackValidationMode.Warning.Debug,
             )
 
             Text(
