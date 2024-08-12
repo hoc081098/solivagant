@@ -114,13 +114,38 @@ internal inline fun <R> StackValidationMode.executeBasedOnValidationMode(
  * @param lazyMessage A lambda that returns a message string.
  * @param safeBlock A lambda to execute if the condition is met.
  */
+@OptIn(ExperimentalContracts::class)
 internal inline fun StackValidationMode.executeSafelyBasedOnValidationMode(
   strictCondition: () -> Boolean,
   lazyMessage: () -> String,
   safeBlock: () -> Unit,
-) = executeBasedOnValidationMode(
-  strictCondition = strictCondition,
-  lazyMessage = lazyMessage,
-  unsafeBlock = { return },
-  safeBlock = safeBlock,
-)
+) {
+  contract {
+    callsInPlace(strictCondition, InvocationKind.EXACTLY_ONCE)
+    callsInPlace(lazyMessage, InvocationKind.AT_MOST_ONCE)
+    callsInPlace(safeBlock, InvocationKind.AT_MOST_ONCE)
+  }
+
+  val condition = strictCondition()
+  when (this) {
+    Strict -> {
+      check(condition, lazyMessage = lazyMessage)
+      safeBlock()
+    }
+
+    Lenient ->
+      if (condition) {
+        safeBlock()
+      } else {
+        return
+      }
+
+    is Warning ->
+      if (condition) {
+        safeBlock()
+      } else {
+        logWarn(Warning.LOG_TAG, lazyMessage())
+        return
+      }
+  }
+}
