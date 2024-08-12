@@ -50,7 +50,7 @@ import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.OverlayDestination
 import com.hoc081098.solivagant.navigation.ScreenDestination
 import com.hoc081098.solivagant.navigation.StackValidationMode
-import com.hoc081098.solivagant.navigation.guardSafe
+import com.hoc081098.solivagant.navigation.executeSafelyBasedOnValidationMode
 import dev.drewhamilton.poko.Poko
 import kotlinx.collections.immutable.ImmutableList
 
@@ -212,7 +212,7 @@ internal class MultiStack private constructor(
 
   fun pop() {
     if (currentStack.isAtRoot) {
-      stackValidationMode.guardSafe(
+      stackValidationMode.executeSafelyBasedOnValidationMode(
         strictCondition = { currentStack.destinationId != startStack.destinationId },
         lazyMessage = { "Can't navigate back from the root of the start back stack" },
       ) { /* execute the code below*/ }
@@ -263,7 +263,7 @@ internal class MultiStack private constructor(
     val lastEvent: StackEvent
 
     currentStack = if (stack != null) {
-      stackValidationMode.guardSafe(
+      stackValidationMode.executeSafelyBasedOnValidationMode(
         strictCondition = { currentStack.destinationId != stack.destinationId },
         lazyMessage = { "$root is already the current stack" },
       ) { /* execute the code below*/ }

@@ -59,8 +59,17 @@ public sealed interface StackValidationMode {
   }
 }
 
+/**
+ * Executes a block of code based on the stack validation mode.
+ *
+ * @param strictCondition A lambda that returns a boolean indicating the strict condition.
+ * @param lazyMessage A lambda that returns a message string.
+ * @param unsafeBlock A lambda to execute if the condition is not met in lenient or warning mode.
+ * @param safeBlock A lambda to execute if the condition is met.
+ * @return The result of the executed block.
+ */
 @OptIn(ExperimentalContracts::class)
-internal inline fun <R> StackValidationMode.guardWithBothCases(
+internal inline fun <R> StackValidationMode.executeBasedOnValidationMode(
   strictCondition: () -> Boolean,
   lazyMessage: () -> String,
   unsafeBlock: () -> R,
@@ -98,11 +107,18 @@ internal inline fun <R> StackValidationMode.guardWithBothCases(
   }
 }
 
-internal inline fun StackValidationMode.guardSafe(
+/**
+ * Executes a safe block of code based on the stack validation mode.
+ *
+ * @param strictCondition A lambda that returns a boolean indicating the strict condition.
+ * @param lazyMessage A lambda that returns a message string.
+ * @param safeBlock A lambda to execute if the condition is met.
+ */
+internal inline fun StackValidationMode.executeSafelyBasedOnValidationMode(
   strictCondition: () -> Boolean,
   lazyMessage: () -> String,
   safeBlock: () -> Unit,
-) = guardWithBothCases(
+) = executeBasedOnValidationMode(
   strictCondition = strictCondition,
   lazyMessage = lazyMessage,
   unsafeBlock = { return },

@@ -42,7 +42,7 @@ import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.ScreenDestination
 import com.hoc081098.solivagant.navigation.StackValidationMode
-import com.hoc081098.solivagant.navigation.guardWithBothCases
+import com.hoc081098.solivagant.navigation.executeBasedOnValidationMode
 import dev.drewhamilton.poko.Poko
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
@@ -122,7 +122,7 @@ internal class Stack private constructor(
 
   @CheckResult(suggest = "")
   fun pop(): StackEntry<*>? =
-    stackValidationMode.guardWithBothCases(
+    stackValidationMode.executeBasedOnValidationMode(
       strictCondition = { stack.last().removable },
       lazyMessage = { "Can't pop the root of the back stack" },
       unsafeBlock = { null },
