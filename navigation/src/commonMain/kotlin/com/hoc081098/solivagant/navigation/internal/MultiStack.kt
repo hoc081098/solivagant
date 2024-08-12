@@ -215,7 +215,7 @@ internal class MultiStack private constructor(
       stackValidationMode.executeSafelyBasedOnValidationMode(
         strictCondition = { currentStack.destinationId != startStack.destinationId },
         lazyMessage = { "Can't navigate back from the root of the start back stack" },
-      ) { /* execute the code below*/ }
+      ) { /* execute the code below */ }
 
       removeBackStack(stack = currentStack, shouldRemoveImmediately = false)
       currentStack = startStack
@@ -266,7 +266,7 @@ internal class MultiStack private constructor(
       stackValidationMode.executeSafelyBasedOnValidationMode(
         strictCondition = { currentStack.destinationId != stack.destinationId },
         lazyMessage = { "$root is already the current stack" },
-      ) { /* execute the code below*/ }
+      ) { /* execute the code below */ }
 
       if (clearTargetStack) {
         lastEvent = StackEvent.PushRoot
