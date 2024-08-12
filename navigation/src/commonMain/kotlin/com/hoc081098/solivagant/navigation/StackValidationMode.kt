@@ -77,7 +77,6 @@ internal inline fun <R> StackValidationMode.executeBasedOnValidationMode(
 ): R {
   contract {
     callsInPlace(strictCondition, InvocationKind.EXACTLY_ONCE)
-    callsInPlace(lazyMessage, InvocationKind.AT_MOST_ONCE)
     callsInPlace(safeBlock, InvocationKind.AT_MOST_ONCE)
     callsInPlace(unsafeBlock, InvocationKind.AT_MOST_ONCE)
   }
