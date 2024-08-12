@@ -50,7 +50,7 @@ import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.OverlayDestination
 import com.hoc081098.solivagant.navigation.ScreenDestination
 import com.hoc081098.solivagant.navigation.StackValidationMode
-import com.hoc081098.solivagant.navigation.executeSafelyBasedOnValidationMode
+import com.hoc081098.solivagant.navigation.executeBasedOnValidationMode
 import dev.drewhamilton.poko.Poko
 import kotlinx.collections.immutable.ImmutableList
 
@@ -81,7 +81,7 @@ internal typealias OnStackEntryRemoved = (
 private inline val StackEntry<*>.isOverlayDestination get() = destination is OverlayDestination<*>
 private inline val StackEntry<*>.isScreenDestination get() = destination is ScreenDestination<*>
 
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "LongParameterList")
 internal class MultiStack private constructor(
   // Use ArrayList to make sure it is a RandomAccess
   private val allStacks: ArrayList<Stack>,
@@ -212,18 +212,19 @@ internal class MultiStack private constructor(
 
   fun pop() {
     if (currentStack.isAtRoot) {
-      stackValidationMode.executeSafelyBasedOnValidationMode(
+      stackValidationMode.executeBasedOnValidationMode(
         strictCondition = { currentStack.destinationId != startStack.destinationId },
-        lazyMessage = { "Can't navigate back from the root of the start back stack" },
-      ) { /* execute the code below */ }
+        lazyMessage = { "[$this.pop] Can't navigate back from the root of the start back stack" },
+        unsafeBlock = { return },
+      ) {
+        removeBackStack(stack = currentStack, shouldRemoveImmediately = false)
+        currentStack = startStack
 
-      removeBackStack(stack = currentStack, shouldRemoveImmediately = false)
-      currentStack = startStack
-
-      // remove anything that the start stack could have shown before
-      // can't use resetToRoot because that will also recreate the root
-      currentStack.clear().forEach { onStackEntryRemoved(it, true) }
-      updateVisibleDestinations(lastEvent = StackEvent.Pop)
+        // remove anything that the start stack could have shown before
+        // can't use resetToRoot because that will also recreate the root
+        currentStack.clear().forEach { onStackEntryRemoved(it, true) }
+        updateVisibleDestinations(lastEvent = StackEvent.Pop)
+      }
     } else {
       currentStack.pop()?.also {
         onStackEntryRemoved(it, it.isOverlayDestination)
@@ -260,27 +261,31 @@ internal class MultiStack private constructor(
     clearTargetStack: Boolean,
   ) {
     val stack = getBackStack(root)
-    val lastEvent: StackEvent
+    lateinit var lastEvent: StackEvent
 
     currentStack = if (stack != null) {
-      stackValidationMode.executeSafelyBasedOnValidationMode(
+      stackValidationMode.executeBasedOnValidationMode(
         strictCondition = { currentStack.destinationId != stack.destinationId },
-        lazyMessage = { "$root is already the current stack" },
-      ) { /* execute the code below */ }
+        lazyMessage = {
+          "[$this.push(root=$root, clearTargetStack=$clearTargetStack)] " +
+            "$root is already the current stack"
+        },
+        unsafeBlock = { return },
+      ) {
+        if (clearTargetStack) {
+          lastEvent = StackEvent.PushRoot
 
-      if (clearTargetStack) {
-        lastEvent = StackEvent.PushRoot
-
-        removeBackStack(stack = stack, shouldRemoveImmediately = true)
-        createBackStack(root)
-      } else {
-        lastEvent = if (currentStack == stack) {
-          StackEvent.Idle
+          removeBackStack(stack = stack, shouldRemoveImmediately = true)
+          createBackStack(root)
         } else {
-          StackEvent.PushRoot
-        }
+          lastEvent = if (currentStack == stack) {
+            StackEvent.Idle
+          } else {
+            StackEvent.PushRoot
+          }
 
-        stack
+          stack
+        }
       }
     } else {
       lastEvent = StackEvent.PushRoot

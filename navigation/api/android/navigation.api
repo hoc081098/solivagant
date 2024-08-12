@@ -4,12 +4,13 @@ public abstract interface annotation class com/hoc081098/solivagant/navigation/E
 public final class com/hoc081098/solivagant/navigation/NavHostDefaults {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/hoc081098/solivagant/navigation/NavHostDefaults;
+	public final fun stackValidationMode ()Lcom/hoc081098/solivagant/navigation/StackValidationMode;
 	public final fun transitionAnimations (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Lcom/hoc081098/solivagant/navigation/NavHostTransitionAnimations;
 	public static synthetic fun transitionAnimations$default (Lcom/hoc081098/solivagant/navigation/NavHostDefaults;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/hoc081098/solivagant/navigation/NavHostTransitionAnimations;
 }
 
 public final class com/hoc081098/solivagant/navigation/NavHostKt {
-	public static final fun NavHost (Lcom/hoc081098/solivagant/navigation/NavRoot;Lkotlinx/collections/immutable/ImmutableSet;Landroidx/compose/ui/Modifier;Lcom/hoc081098/solivagant/navigation/NavEventNavigator;Lkotlin/jvm/functions/Function1;Lcom/hoc081098/solivagant/navigation/NavHostTransitionAnimations;Landroidx/compose/runtime/Composer;II)V
+	public static final fun NavHost (Lcom/hoc081098/solivagant/navigation/NavRoot;Lkotlinx/collections/immutable/ImmutableSet;Landroidx/compose/ui/Modifier;Lcom/hoc081098/solivagant/navigation/NavEventNavigator;Lkotlin/jvm/functions/Function1;Lcom/hoc081098/solivagant/navigation/NavHostTransitionAnimations;Lcom/hoc081098/solivagant/navigation/StackValidationMode;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/hoc081098/solivagant/navigation/NavHostTransitionAnimations {
@@ -32,6 +33,40 @@ public final class com/hoc081098/solivagant/navigation/NavHostTransitionAnimatio
 
 public final class com/hoc081098/solivagant/navigation/RememberCloseableOnRouteKt {
 	public static final fun rememberCloseableOnRoute (Lcom/hoc081098/solivagant/navigation/BaseRoute;Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)Ljava/io/Closeable;
+}
+
+public abstract interface class com/hoc081098/solivagant/navigation/StackValidationMode {
+}
+
+public final class com/hoc081098/solivagant/navigation/StackValidationMode$Lenient : com/hoc081098/solivagant/navigation/StackValidationMode {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/hoc081098/solivagant/navigation/StackValidationMode$Lenient;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/hoc081098/solivagant/navigation/StackValidationMode$Strict : com/hoc081098/solivagant/navigation/StackValidationMode {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/hoc081098/solivagant/navigation/StackValidationMode$Strict;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/hoc081098/solivagant/navigation/StackValidationMode$Warning : com/hoc081098/solivagant/navigation/StackValidationMode {
+	public static final field $stable I
+	public static final field Companion Lcom/hoc081098/solivagant/navigation/StackValidationMode$Warning$Companion;
+	public static final field LOG_TAG Ljava/lang/String;
+	public fun <init> (Lkotlin/jvm/functions/Function2;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLogWarn ()Lkotlin/jvm/functions/Function2;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/hoc081098/solivagant/navigation/StackValidationMode$Warning$Companion {
+	public final fun getDebug ()Lcom/hoc081098/solivagant/navigation/StackValidationMode$Warning;
 }
 
 public final class com/hoc081098/solivagant/navigation/internal/MultiStackSavedState$Creator : android/os/Parcelable$Creator {

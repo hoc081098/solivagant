@@ -56,7 +56,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "LongParameterList")
 internal class MultiStackNavigationExecutor(
   /**
    * The list of content destinations.

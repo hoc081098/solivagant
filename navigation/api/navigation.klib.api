@@ -11,6 +11,39 @@ open annotation class com.hoc081098.solivagant.navigation/ExperimentalSolivagant
     constructor <init>() // com.hoc081098.solivagant.navigation/ExperimentalSolivagantApi.<init>|<init>(){}[0]
 }
 
+sealed interface com.hoc081098.solivagant.navigation/StackValidationMode { // com.hoc081098.solivagant.navigation/StackValidationMode|null[0]
+    final class Warning : com.hoc081098.solivagant.navigation/StackValidationMode { // com.hoc081098.solivagant.navigation/StackValidationMode.Warning|null[0]
+        constructor <init>(kotlin/Function2<kotlin/String, kotlin/String, kotlin/Unit>) // com.hoc081098.solivagant.navigation/StackValidationMode.Warning.<init>|<init>(kotlin.Function2<kotlin.String,kotlin.String,kotlin.Unit>){}[0]
+
+        final val logWarn // com.hoc081098.solivagant.navigation/StackValidationMode.Warning.logWarn|{}logWarn[0]
+            final fun <get-logWarn>(): kotlin/Function2<kotlin/String, kotlin/String, kotlin/Unit> // com.hoc081098.solivagant.navigation/StackValidationMode.Warning.logWarn.<get-logWarn>|<get-logWarn>(){}[0]
+
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.hoc081098.solivagant.navigation/StackValidationMode.Warning.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.hoc081098.solivagant.navigation/StackValidationMode.Warning.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.hoc081098.solivagant.navigation/StackValidationMode.Warning.toString|toString(){}[0]
+
+        final object Companion { // com.hoc081098.solivagant.navigation/StackValidationMode.Warning.Companion|null[0]
+            final const val LOG_TAG // com.hoc081098.solivagant.navigation/StackValidationMode.Warning.Companion.LOG_TAG|{}LOG_TAG[0]
+                final fun <get-LOG_TAG>(): kotlin/String // com.hoc081098.solivagant.navigation/StackValidationMode.Warning.Companion.LOG_TAG.<get-LOG_TAG>|<get-LOG_TAG>(){}[0]
+
+            final val Debug // com.hoc081098.solivagant.navigation/StackValidationMode.Warning.Companion.Debug|{}Debug[0]
+                final fun <get-Debug>(): com.hoc081098.solivagant.navigation/StackValidationMode.Warning // com.hoc081098.solivagant.navigation/StackValidationMode.Warning.Companion.Debug.<get-Debug>|<get-Debug>(){}[0]
+        }
+    }
+
+    final object Lenient : com.hoc081098.solivagant.navigation/StackValidationMode { // com.hoc081098.solivagant.navigation/StackValidationMode.Lenient|null[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.hoc081098.solivagant.navigation/StackValidationMode.Lenient.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.hoc081098.solivagant.navigation/StackValidationMode.Lenient.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.hoc081098.solivagant.navigation/StackValidationMode.Lenient.toString|toString(){}[0]
+    }
+
+    final object Strict : com.hoc081098.solivagant.navigation/StackValidationMode { // com.hoc081098.solivagant.navigation/StackValidationMode.Strict|null[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.hoc081098.solivagant.navigation/StackValidationMode.Strict.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.hoc081098.solivagant.navigation/StackValidationMode.Strict.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.hoc081098.solivagant.navigation/StackValidationMode.Strict.toString|toString(){}[0]
+    }
+}
+
 final class com.hoc081098.solivagant.navigation/NavHostTransitionAnimations { // com.hoc081098.solivagant.navigation/NavHostTransitionAnimations|null[0]
     final val enterTransition // com.hoc081098.solivagant.navigation/NavHostTransitionAnimations.enterTransition|{}enterTransition[0]
         final fun <get-enterTransition>(): kotlin/Function1<androidx.compose.animation/AnimatedContentTransitionScope<*>, androidx.compose.animation/EnterTransition> // com.hoc081098.solivagant.navigation/NavHostTransitionAnimations.enterTransition.<get-enterTransition>|<get-enterTransition>(){}[0]
@@ -64,6 +97,7 @@ final class com.hoc081098.solivagant.navigation/SavedStateSupport : androidx.com
 }
 
 final object com.hoc081098.solivagant.navigation/NavHostDefaults { // com.hoc081098.solivagant.navigation/NavHostDefaults|null[0]
+    final fun stackValidationMode(): com.hoc081098.solivagant.navigation/StackValidationMode // com.hoc081098.solivagant.navigation/NavHostDefaults.stackValidationMode|stackValidationMode(){}[0]
     final fun transitionAnimations(kotlin/Function1<androidx.compose.animation/AnimatedContentTransitionScope<*>, androidx.compose.animation/EnterTransition> = ..., kotlin/Function1<androidx.compose.animation/AnimatedContentTransitionScope<*>, androidx.compose.animation/ExitTransition> = ..., kotlin/Function1<androidx.compose.animation/AnimatedContentTransitionScope<*>, androidx.compose.animation/EnterTransition> = ..., kotlin/Function1<androidx.compose.animation/AnimatedContentTransitionScope<*>, androidx.compose.animation/ExitTransition> = ..., kotlin/Function1<androidx.compose.animation/AnimatedContentTransitionScope<*>, androidx.compose.animation/EnterTransition> = ..., kotlin/Function1<androidx.compose.animation/AnimatedContentTransitionScope<*>, androidx.compose.animation/ExitTransition> = ...): com.hoc081098.solivagant.navigation/NavHostTransitionAnimations // com.hoc081098.solivagant.navigation/NavHostDefaults.transitionAnimations|transitionAnimations(kotlin.Function1<androidx.compose.animation.AnimatedContentTransitionScope<*>,androidx.compose.animation.EnterTransition>;kotlin.Function1<androidx.compose.animation.AnimatedContentTransitionScope<*>,androidx.compose.animation.ExitTransition>;kotlin.Function1<androidx.compose.animation.AnimatedContentTransitionScope<*>,androidx.compose.animation.EnterTransition>;kotlin.Function1<androidx.compose.animation.AnimatedContentTransitionScope<*>,androidx.compose.animation.ExitTransition>;kotlin.Function1<androidx.compose.animation.AnimatedContentTransitionScope<*>,androidx.compose.animation.EnterTransition>;kotlin.Function1<androidx.compose.animation.AnimatedContentTransitionScope<*>,androidx.compose.animation.ExitTransition>){}[0]
 }
 
@@ -84,11 +118,14 @@ final val com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigatio
 final val com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_NavHostTransitionAnimations$stableprop // com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_NavHostTransitionAnimations$stableprop|#static{}com_hoc081098_solivagant_navigation_NavHostTransitionAnimations$stableprop[0]
 final val com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_SaveableCloseable$stableprop // com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_SaveableCloseable$stableprop|#static{}com_hoc081098_solivagant_navigation_SaveableCloseable$stableprop[0]
 final val com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_SavedStateSupport$stableprop // com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_SavedStateSupport$stableprop|#static{}com_hoc081098_solivagant_navigation_SavedStateSupport$stableprop[0]
+final val com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_StackValidationMode_Lenient$stableprop // com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_StackValidationMode_Lenient$stableprop|#static{}com_hoc081098_solivagant_navigation_StackValidationMode_Lenient$stableprop[0]
+final val com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_StackValidationMode_Strict$stableprop // com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_StackValidationMode_Strict$stableprop|#static{}com_hoc081098_solivagant_navigation_StackValidationMode_Strict$stableprop[0]
+final val com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_StackValidationMode_Warning$stableprop // com.hoc081098.solivagant.navigation/com_hoc081098_solivagant_navigation_StackValidationMode_Warning$stableprop|#static{}com_hoc081098_solivagant_navigation_StackValidationMode_Warning$stableprop[0]
 
 final fun (com.hoc081098.solivagant.navigation/SavedStateSupport).com.hoc081098.solivagant.navigation/ClearOnDispose(androidx.compose.runtime/Composer?, kotlin/Int) // com.hoc081098.solivagant.navigation/ClearOnDispose|ClearOnDispose@com.hoc081098.solivagant.navigation.SavedStateSupport(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
 final fun (com.hoc081098.solivagant.navigation/SavedStateSupport).com.hoc081098.solivagant.navigation/ProvideCompositionLocals(kotlin/Array<out androidx.compose.runtime/ProvidedValue<*>>..., kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, androidx.compose.runtime/Composer?, kotlin/Int) // com.hoc081098.solivagant.navigation/ProvideCompositionLocals|ProvideCompositionLocals@com.hoc081098.solivagant.navigation.SavedStateSupport(kotlin.Array<out|androidx.compose.runtime.ProvidedValue<*>>...;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
 final fun <#A: com.hoc081098.kmp.viewmodel/Closeable> com.hoc081098.solivagant.navigation/rememberCloseableOnRoute(com.hoc081098.solivagant.navigation/BaseRoute, kotlin.reflect/KClass<#A>, kotlin/Function0<#A>, androidx.compose.runtime/Composer?, kotlin/Int): #A // com.hoc081098.solivagant.navigation/rememberCloseableOnRoute|rememberCloseableOnRoute(com.hoc081098.solivagant.navigation.BaseRoute;kotlin.reflect.KClass<0:0>;kotlin.Function0<0:0>;androidx.compose.runtime.Composer?;kotlin.Int){0§<com.hoc081098.kmp.viewmodel.Closeable>}[0]
-final fun com.hoc081098.solivagant.navigation/NavHost(com.hoc081098.solivagant.navigation/NavRoot, kotlinx.collections.immutable/ImmutableSet<com.hoc081098.solivagant.navigation/NavDestination>, androidx.compose.ui/Modifier?, com.hoc081098.solivagant.navigation/NavEventNavigator?, kotlin/Function1<com.hoc081098.solivagant.navigation/BaseRoute, kotlin/Unit>?, com.hoc081098.solivagant.navigation/NavHostTransitionAnimations?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.hoc081098.solivagant.navigation/NavHost|NavHost(com.hoc081098.solivagant.navigation.NavRoot;kotlinx.collections.immutable.ImmutableSet<com.hoc081098.solivagant.navigation.NavDestination>;androidx.compose.ui.Modifier?;com.hoc081098.solivagant.navigation.NavEventNavigator?;kotlin.Function1<com.hoc081098.solivagant.navigation.BaseRoute,kotlin.Unit>?;com.hoc081098.solivagant.navigation.NavHostTransitionAnimations?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun com.hoc081098.solivagant.navigation/NavHost(com.hoc081098.solivagant.navigation/NavRoot, kotlinx.collections.immutable/ImmutableSet<com.hoc081098.solivagant.navigation/NavDestination>, androidx.compose.ui/Modifier?, com.hoc081098.solivagant.navigation/NavEventNavigator?, kotlin/Function1<com.hoc081098.solivagant.navigation/BaseRoute, kotlin/Unit>?, com.hoc081098.solivagant.navigation/NavHostTransitionAnimations?, com.hoc081098.solivagant.navigation/StackValidationMode?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.hoc081098.solivagant.navigation/NavHost|NavHost(com.hoc081098.solivagant.navigation.NavRoot;kotlinx.collections.immutable.ImmutableSet<com.hoc081098.solivagant.navigation.NavDestination>;androidx.compose.ui.Modifier?;com.hoc081098.solivagant.navigation.NavEventNavigator?;kotlin.Function1<com.hoc081098.solivagant.navigation.BaseRoute,kotlin.Unit>?;com.hoc081098.solivagant.navigation.NavHostTransitionAnimations?;com.hoc081098.solivagant.navigation.StackValidationMode?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
 final inline fun <#A: reified com.hoc081098.kmp.viewmodel/Closeable> com.hoc081098.solivagant.navigation/rememberCloseableOnRoute(com.hoc081098.solivagant.navigation/BaseRoute, noinline kotlin/Function0<#A>, androidx.compose.runtime/Composer?, kotlin/Int): #A // com.hoc081098.solivagant.navigation/rememberCloseableOnRoute|rememberCloseableOnRoute(com.hoc081098.solivagant.navigation.BaseRoute;kotlin.Function0<0:0>;androidx.compose.runtime.Composer?;kotlin.Int){0§<com.hoc081098.kmp.viewmodel.Closeable>}[0]
 
 // Targets: [ios]

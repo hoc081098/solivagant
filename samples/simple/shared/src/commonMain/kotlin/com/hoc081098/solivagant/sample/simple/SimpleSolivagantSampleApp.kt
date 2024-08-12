@@ -3,12 +3,11 @@ package com.hoc081098.solivagant.sample.simple
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -62,10 +61,7 @@ private val AllDestinations: ImmutableSet<NavDestination> = persistentSetOf(
   DetailScreenOverlayDestination,
 )
 
-@OptIn(
-  ExperimentalLayoutApi::class,
-  ExperimentalMaterial3Api::class,
-)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Suppress("LongMethod")
 fun SimpleSolivagantSampleApp(
@@ -80,6 +76,10 @@ fun SimpleSolivagantSampleApp(
         // TODO: Handle re-selection of the same tab
       } else {
         // Switch to the new tab if it is not already selected
+        navigator.navigateToRoot(
+          root = item.root,
+          restoreRootState = true,
+        )
         navigator.navigateToRoot(
           root = item.root,
           restoreRootState = true,
@@ -103,7 +103,7 @@ fun SimpleSolivagantSampleApp(
                 if (currentRoute !is NavRoot) {
                   IconButton(onClick = remember { navigator::navigateBack }) {
                     Icon(
-                      imageVector = Icons.Filled.ArrowBack,
+                      imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                       contentDescription = "Back",
                     )
                   }

@@ -124,7 +124,7 @@ internal class Stack private constructor(
   fun pop(): StackEntry<*>? =
     stackValidationMode.executeBasedOnValidationMode(
       strictCondition = { stack.last().removable },
-      lazyMessage = { "Can't pop the root of the back stack" },
+      lazyMessage = { "[$this.pop] Can't pop the root of the back stack" },
       unsafeBlock = { null },
     ) { popInternal(checkRemovable = false) }
 
@@ -140,6 +140,7 @@ internal class Stack private constructor(
     return stack.removeLast()
   }
 
+  @Suppress("LongMethod", "CyclomaticComplexMethod", "LoopWithTooManyJumpStatements") // TODO: Simplify
   @CheckResult(suggest = "")
   fun popUpTo(
     destinationId: DestinationId<*>,
@@ -165,7 +166,10 @@ internal class Stack private constructor(
           }
 
           StackValidationMode.Strict -> {
-            check(isLastRemovable) { "Route ${destinationId.route} not found on back stack" }
+            check(isLastRemovable) {
+              "[$this.popUpTo(destinationId=$destinationId, isInclusive=$isInclusive)] " +
+                "Route ${destinationId.route} not found on back stack"
+            }
             // using popInternal with checkRemovable = false is enough here
             // because we know that the last entry is removable (see above check).
             popInternal(checkRemovable = false).also(builder::add)
@@ -179,7 +183,8 @@ internal class Stack private constructor(
             } else {
               stackValidationMode.logWarn(
                 StackValidationMode.Warning.LOG_TAG,
-                "Route ${destinationId.route} not found on back stack",
+                "[$this.popUpTo(destinationId=$destinationId, isInclusive=$isInclusive)] " +
+                  "Route ${destinationId.route} not found on back stack",
               )
               // if the last entry is not removable, we can't pop it, so we break the loop.
               earlyExit = true
@@ -220,7 +225,8 @@ internal class Stack private constructor(
             } else {
               stackValidationMode.logWarn(
                 StackValidationMode.Warning.LOG_TAG,
-                "Can't pop the root of the back stack",
+                "[$this.popUpTo(destinationId=$destinationId, isInclusive=$isInclusive)] " +
+                  "Can't pop the root of the back stack",
               )
             }
           }
