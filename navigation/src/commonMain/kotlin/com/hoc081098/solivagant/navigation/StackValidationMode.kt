@@ -38,21 +38,44 @@ import kotlin.contracts.contract
  */
 @Immutable
 public sealed interface StackValidationMode {
+  /**
+   * Represents the strict stack validation mode.
+   * In this mode, the stack is always kept in a valid state.
+   * An exception is thrown if the stack transitions to an invalid state.
+   */
   @Immutable
   public data object Strict : StackValidationMode
 
+  /**
+   * Represents the lenient stack validation mode.
+   * In this mode, the stack is always kept in a valid state.
+   * If the stack transitions to an invalid state, no action is taken.
+   */
   @Immutable
   public data object Lenient : StackValidationMode
 
+  /**
+   * Represents the warning stack validation mode.
+   * In this mode, the stack is always kept in a valid state.
+   * A warning is logged if the stack transitions to an invalid state.
+   *
+   * @property logWarn A function that logs a warning message.
+   */
   @Immutable
   @Poko
   public class Warning(
     public val logWarn: (tag: String, message: String) -> Unit,
   ) : StackValidationMode {
     public companion object {
+      /**
+       * The log tag used for warning messages.
+       */
       @Stable
       public const val LOG_TAG: String = "[solivagant]"
 
+      /**
+       * A debug instance of the Warning class that uses the default logWarn function.
+       */
       @Stable
       public val Debug: Warning = Warning(logWarn = ::logWarn)
     }
