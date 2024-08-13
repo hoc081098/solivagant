@@ -80,10 +80,6 @@ fun SimpleSolivagantSampleApp(
           root = item.root,
           restoreRootState = true,
         )
-        navigator.navigateToRoot(
-          root = item.root,
-          restoreRootState = true,
-        )
       }
     }
   }
