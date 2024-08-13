@@ -70,19 +70,14 @@ internal class Stack private constructor(
 
   //region Entry lookup
   @Suppress("UNCHECKED_CAST")
-  fun <T : BaseRoute> entryFor(id: StackEntryId): StackEntry<T>? {
-    return stack.findLast { it.id == id } as StackEntry<T>?
-  }
+  fun <T : BaseRoute> entryFor(id: StackEntryId): StackEntry<T>? = stack.findLast { it.id == id } as StackEntry<T>?
 
   @Suppress("UNCHECKED_CAST")
-  fun <T : BaseRoute> entryFor(route: T): StackEntry<T>? {
-    return stack.findLast { it.route == route } as StackEntry<T>?
-  }
+  fun <T : BaseRoute> entryFor(route: T): StackEntry<T>? = stack.findLast { it.route == route } as StackEntry<T>?
 
   @Suppress("UNCHECKED_CAST")
-  fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T>? {
-    return stack.findLast { it.destinationId == destinationId } as StackEntry<T>?
-  }
+  fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T>? =
+    stack.findLast { it.destinationId == destinationId } as StackEntry<T>?
   //endregion
 
   @CheckResult(suggest = "")
@@ -126,21 +121,11 @@ internal class Stack private constructor(
       strictCondition = { stack.last().removable },
       lazyMessage = { "[$this.pop] Can't pop the root of the back stack" },
       unsafeBlock = { null },
-    ) { popInternal(checkRemovable = false) }
+    ) { popInternal() }
 
-  /**
-   * When [checkRemovable] is true, if the last entry is removable, it will be removed from the stack and returned.
-   * Otherwise, a [IllegalStateException] or [NoSuchElementException] will be thrown.
-   */
   @CheckResult(suggest = "")
-  private fun popInternal(checkRemovable: Boolean): StackEntry<*> {
-    if (checkRemovable) {
-      check(stack.last().removable) { "Can't pop the root of the back stack" }
-    }
-    return stack.removeLast()
-  }
+  private fun popInternal(): StackEntry<*> = stack.removeLast()
 
-  @Suppress("LongMethod", "CyclomaticComplexMethod") // TODO: Simplify
   @CheckResult(suggest = "")
   fun popUpTo(
     destinationId: DestinationId<*>,
@@ -148,80 +133,38 @@ internal class Stack private constructor(
   ): ImmutableList<StackEntry<*>> =
     persistentListOf<StackEntry<*>>().mutate { builder ->
       while (stack.last().destinationId != destinationId) {
-        val isLastRemovable = stack.last().removable
-
-        when (stackValidationMode) {
-          StackValidationMode.Lenient -> {
-            if (isLastRemovable) {
-              // using popInternal with checkRemovable = false is enough here
-              // because we know that the last entry is removable (see isLastRemovable).
-              popInternal(checkRemovable = false).also(builder::add)
-            } else {
-              // if we break the loop early, that means destinationId is not found on the stack.
-              // so we don't need to check isInclusive.
-              return@mutate
-            }
-          }
-
-          StackValidationMode.Strict -> {
-            check(isLastRemovable) {
-              "[$this.popUpTo(destinationId=$destinationId, isInclusive=$isInclusive)] " +
-                  "Route ${destinationId.route} not found on back stack"
-            }
-            // using popInternal with checkRemovable = false is enough here
-            // because we know that the last entry is removable (see above check).
-            popInternal(checkRemovable = false).also(builder::add)
-          }
-
-          is StackValidationMode.Warning -> {
-            if (isLastRemovable) {
-              // using popInternal with checkRemovable = false is enough here
-              // because we know that the last entry is removable (see isLastRemovable).
-              popInternal(checkRemovable = false).also(builder::add)
-            } else {
-              stackValidationMode.logWarn(
-                StackValidationMode.Warning.LOG_TAG,
-                "[$this.popUpTo(destinationId=$destinationId, isInclusive=$isInclusive)] " +
-                    "Route ${destinationId.route} not found on back stack",
-              )
-              // if we break the loop early, that means destinationId is not found on the stack.
-              // so we don't need to check isInclusive.
-              return@mutate
-            }
-          }
+        stackValidationMode.executeBasedOnValidationMode(
+          strictCondition = { stack.last().removable },
+          lazyMessage = {
+            "[$this.popUpTo(destinationId=$destinationId, isInclusive=$isInclusive)] " +
+              "Route ${destinationId.route} not found on back stack"
+          },
+          unsafeBlock = {
+            // if we break the loop early, that means destinationId is not found on the stack.
+            // so we don't need to check isInclusive.
+            return@mutate
+          },
+        ) {
+          // using popInternal is enough here
+          // because we know that the last entry is removable (see isLastRemovable).
+          popInternal().also(builder::add)
         }
       }
 
       if (isInclusive) {
         val isLastRemovable = stack.last().removable
 
-        when (stackValidationMode) {
-          StackValidationMode.Lenient -> {
-            if (isLastRemovable) {
-              // using popInternal with checkRemovable = false is enough here
-              // because we know that the last entry is removable (see isLastRemovable).
-              popInternal(checkRemovable = false).also(builder::add)
-            }
-          }
-
-          StackValidationMode.Strict -> {
-            // using popInternal with checkRemovable = true here to get the default removable check
-            popInternal(checkRemovable = true).also(builder::add)
-          }
-
-          is StackValidationMode.Warning -> {
-            if (isLastRemovable) {
-              // using popInternal with checkRemovable = false is enough here
-              // because we know that the last entry is removable (see isLastRemovable).
-              popInternal(checkRemovable = false).also(builder::add)
-            } else {
-              stackValidationMode.logWarn(
-                StackValidationMode.Warning.LOG_TAG,
-                "[$this.popUpTo(destinationId=$destinationId, isInclusive=$isInclusive)] " +
-                    "Can't pop the root of the back stack",
-              )
-            }
-          }
+        stackValidationMode.executeBasedOnValidationMode(
+          strictCondition = { isLastRemovable },
+          lazyMessage = {
+            "[$this.popUpTo(destinationId=$destinationId, isInclusive=$isInclusive)] " +
+              "Can't pop the root of the back stack"
+          },
+          unsafeBlock = {},
+        ) {
+          // using popInternal is enough here
+          // because we know that the last entry is removable (see isLastRemovable).
+          popInternal().also(builder::add)
         }
       }
     }
@@ -230,9 +173,9 @@ internal class Stack private constructor(
   fun clear(): ImmutableList<StackEntry<*>> =
     persistentListOf<StackEntry<*>>().mutate { builder ->
       while (stack.last().removable) {
-        // using popInternal with checkRemovable = false is enough here
+        // using popInternal is enough here
         // because we know that the last entry is removable (see while condition).
-        popInternal(checkRemovable = false).also(builder::add)
+        popInternal().also(builder::add)
       }
     }
   //endregion
