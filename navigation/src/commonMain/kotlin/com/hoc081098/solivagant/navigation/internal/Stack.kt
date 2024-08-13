@@ -140,15 +140,13 @@ internal class Stack private constructor(
     return stack.removeLast()
   }
 
-  @Suppress("LongMethod", "CyclomaticComplexMethod", "LoopWithTooManyJumpStatements") // TODO: Simplify
+  @Suppress("LongMethod", "CyclomaticComplexMethod") // TODO: Simplify
   @CheckResult(suggest = "")
   fun popUpTo(
     destinationId: DestinationId<*>,
     isInclusive: Boolean,
   ): ImmutableList<StackEntry<*>> =
     persistentListOf<StackEntry<*>>().mutate { builder ->
-      var earlyExit = false
-
       while (stack.last().destinationId != destinationId) {
         val isLastRemovable = stack.last().removable
 
@@ -159,16 +157,16 @@ internal class Stack private constructor(
               // because we know that the last entry is removable (see isLastRemovable).
               popInternal(checkRemovable = false).also(builder::add)
             } else {
-              // if the last entry is not removable, we can't pop it, so we break the loop.
-              earlyExit = true
-              break
+              // if we break the loop early, that means destinationId is not found on the stack.
+              // so we don't need to check isInclusive.
+              return@mutate
             }
           }
 
           StackValidationMode.Strict -> {
             check(isLastRemovable) {
               "[$this.popUpTo(destinationId=$destinationId, isInclusive=$isInclusive)] " +
-                "Route ${destinationId.route} not found on back stack"
+                  "Route ${destinationId.route} not found on back stack"
             }
             // using popInternal with checkRemovable = false is enough here
             // because we know that the last entry is removable (see above check).
@@ -184,20 +182,14 @@ internal class Stack private constructor(
               stackValidationMode.logWarn(
                 StackValidationMode.Warning.LOG_TAG,
                 "[$this.popUpTo(destinationId=$destinationId, isInclusive=$isInclusive)] " +
-                  "Route ${destinationId.route} not found on back stack",
+                    "Route ${destinationId.route} not found on back stack",
               )
-              // if the last entry is not removable, we can't pop it, so we break the loop.
-              earlyExit = true
-              break
+              // if we break the loop early, that means destinationId is not found on the stack.
+              // so we don't need to check isInclusive.
+              return@mutate
             }
           }
         }
-      }
-
-      if (earlyExit) {
-        // if we break the loop early, that means destinationId is not found on the stack.
-        // so we don't need to check isInclusive.
-        return@mutate
       }
 
       if (isInclusive) {
@@ -226,7 +218,7 @@ internal class Stack private constructor(
               stackValidationMode.logWarn(
                 StackValidationMode.Warning.LOG_TAG,
                 "[$this.popUpTo(destinationId=$destinationId, isInclusive=$isInclusive)] " +
-                  "Can't pop the root of the back stack",
+                    "Can't pop the root of the back stack",
               )
             }
           }
