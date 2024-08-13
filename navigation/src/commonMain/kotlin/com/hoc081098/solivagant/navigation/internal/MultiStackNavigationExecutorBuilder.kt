@@ -42,12 +42,14 @@ import com.hoc081098.solivagant.lifecycle.LocalLifecycleOwner
 import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavDestination
 import com.hoc081098.solivagant.navigation.NavRoot
+import com.hoc081098.solivagant.navigation.StackValidationMode
 import kotlinx.collections.immutable.ImmutableSet
 
 @Composable
 internal fun rememberNavigationExecutor(
   startRoot: NavRoot,
   destinations: ImmutableSet<NavDestination>,
+  stackValidationMode: StackValidationMode,
   viewModel: StoreViewModel = kmpViewModel(
     viewModelFactory {
       StoreViewModel(
@@ -62,6 +64,7 @@ internal fun rememberNavigationExecutor(
     startRoot = startRoot,
     contentDestinations = remember(destinations) { destinations.filterIsInstance<ContentDestination<*>>() },
     lifecycleOwner = lifecycleOwner,
+    stackValidationMode = stackValidationMode,
   )
 
   DisposableEffect(executor, lifecycleOwner) {

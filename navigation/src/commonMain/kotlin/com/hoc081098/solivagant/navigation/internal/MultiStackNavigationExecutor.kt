@@ -43,6 +43,7 @@ import com.hoc081098.solivagant.navigation.EXTRA_ROUTE
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.Serializable
+import com.hoc081098.solivagant.navigation.StackValidationMode
 import com.hoc081098.solivagant.navigation.internal.MultiStackNavigationExecutor.Companion.SAVED_STATE_STACK
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
@@ -55,7 +56,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "LongParameterList")
 internal class MultiStackNavigationExecutor(
   /**
    * The list of content destinations.
@@ -78,6 +79,10 @@ internal class MultiStackNavigationExecutor(
    * Should restore the state of the stack from the saved state instead of creating a new one.
    */
   private val restoreState: Boolean,
+  /**
+   * The stack validation mode.
+   */
+  private val stackValidationMode: StackValidationMode,
   /**
    * The scope to launch the [lifecycleJob].
    * Do not cancel this scope, it is managed by the outside.
@@ -319,6 +324,7 @@ internal class MultiStackNavigationExecutor(
         destinations = contentDestinations,
         getHostLifecycleState = getHostLifecycleState,
         onStackEntryRemoved = onStackEntryRemoved,
+        stackValidationMode = stackValidationMode,
       )
     } else {
       MultiStack.fromState(
@@ -326,6 +332,7 @@ internal class MultiStackNavigationExecutor(
         destinations = contentDestinations,
         getHostLifecycleState = getHostLifecycleState,
         onStackEntryRemoved = onStackEntryRemoved,
+        stackValidationMode = stackValidationMode,
       )
     }
   }

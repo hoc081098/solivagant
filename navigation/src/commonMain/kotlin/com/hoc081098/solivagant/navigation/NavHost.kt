@@ -98,11 +98,13 @@ public fun NavHost(
   navEventNavigator: NavEventNavigator? = null,
   destinationChangedCallback: ((BaseRoute) -> Unit)? = null,
   transitionAnimations: NavHostTransitionAnimations = NavHostDefaults.transitionAnimations(),
+  stackValidationMode: StackValidationMode = NavHostDefaults.stackValidationMode(),
 ) {
   ProvideLifecycleOwner {
     val executor = rememberNavigationExecutor(
       startRoot = startRoute,
       destinations = destinations,
+      stackValidationMode = stackValidationMode,
     )
 
     SystemBackHandling(executor)

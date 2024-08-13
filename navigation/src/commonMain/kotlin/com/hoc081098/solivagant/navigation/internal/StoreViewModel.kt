@@ -44,6 +44,7 @@ import com.hoc081098.kmp.viewmodel.safe.safe
 import com.hoc081098.solivagant.lifecycle.LifecycleOwner
 import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavRoot
+import com.hoc081098.solivagant.navigation.StackValidationMode
 import kotlin.jvm.JvmField
 
 @MainThread
@@ -56,6 +57,7 @@ internal class StoreViewModel(
 ) : ViewModel() {
   private val executor: MutableState<MultiStackNavigationExecutor?> = mutableStateOf(null)
   private val lifecycleOwnerRef = LifecycleOwnerRef(null)
+  private var stackValidationMode: StackValidationMode? = null
 
   init {
     addCloseable {
@@ -72,8 +74,12 @@ internal class StoreViewModel(
     startRoot: NavRoot,
     contentDestinations: List<ContentDestination<*>>,
     lifecycleOwner: LifecycleOwner,
+    stackValidationMode: StackValidationMode,
   ): MultiStackNavigationExecutor {
     lifecycleOwnerRef.ref = WeakReference(lifecycleOwner)
+    if (this.stackValidationMode == null) {
+      this.stackValidationMode = stackValidationMode
+    }
 
     return Snapshot.withMutableSnapshot {
       val currentExecutor = executor.value
@@ -103,6 +109,7 @@ internal class StoreViewModel(
           scope = viewModelScope,
           startRoot = startRoot,
           restoreState = false,
+          stackValidationMode = this.stackValidationMode!!,
         )
 
         currentExecutor?.clear()
@@ -118,6 +125,7 @@ internal class StoreViewModel(
             scope = viewModelScope,
             startRoot = startRoot,
             restoreState = true,
+            stackValidationMode = this.stackValidationMode!!,
           ).also { this.executor.value = it }
       }
     }

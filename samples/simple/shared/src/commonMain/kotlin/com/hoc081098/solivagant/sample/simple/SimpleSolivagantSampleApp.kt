@@ -3,12 +3,11 @@ package com.hoc081098.solivagant.sample.simple
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -33,6 +32,7 @@ import com.hoc081098.solivagant.navigation.NavEventNavigator
 import com.hoc081098.solivagant.navigation.NavHost
 import com.hoc081098.solivagant.navigation.NavHostDefaults
 import com.hoc081098.solivagant.navigation.NavRoot
+import com.hoc081098.solivagant.navigation.StackValidationMode
 import com.hoc081098.solivagant.sample.simple.common.MyApplicationTheme
 import com.hoc081098.solivagant.sample.simple.ui.detail.DetailScreenDestination
 import com.hoc081098.solivagant.sample.simple.ui.detail.overlay.DetailScreenOverlayDestination
@@ -61,10 +61,7 @@ private val AllDestinations: ImmutableSet<NavDestination> = persistentSetOf(
   DetailScreenOverlayDestination,
 )
 
-@OptIn(
-  ExperimentalLayoutApi::class,
-  ExperimentalMaterial3Api::class,
-)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Suppress("LongMethod")
 fun SimpleSolivagantSampleApp(
@@ -102,7 +99,7 @@ fun SimpleSolivagantSampleApp(
                 if (currentRoute !is NavRoot) {
                   IconButton(onClick = remember { navigator::navigateBack }) {
                     Icon(
-                      imageVector = Icons.Filled.ArrowBack,
+                      imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                       contentDescription = "Back",
                     )
                   }
@@ -136,6 +133,7 @@ fun SimpleSolivagantSampleApp(
             startRoute = LoginScreenRoute,
             destinations = AllDestinations,
             navEventNavigator = navigator,
+            stackValidationMode = StackValidationMode.Warning.Debug,
             destinationChangedCallback = { currentRoute = it },
             transitionAnimations = NavHostDefaults.transitionAnimations(
               enterTransition = {

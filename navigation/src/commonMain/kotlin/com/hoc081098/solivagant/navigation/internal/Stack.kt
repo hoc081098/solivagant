@@ -41,6 +41,8 @@ import com.hoc081098.solivagant.navigation.ContentDestination
 import com.hoc081098.solivagant.navigation.NavRoot
 import com.hoc081098.solivagant.navigation.NavRoute
 import com.hoc081098.solivagant.navigation.ScreenDestination
+import com.hoc081098.solivagant.navigation.StackValidationMode
+import com.hoc081098.solivagant.navigation.executeBasedOnValidationMode
 import dev.drewhamilton.poko.Poko
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
@@ -55,6 +57,7 @@ internal class Stack private constructor(
   private val destinations: List<ContentDestination<*>>,
   private val getHostLifecycleState: () -> Lifecycle.State,
   private val idGenerator: () -> String,
+  private val stackValidationMode: StackValidationMode,
 ) {
   @Suppress("MemberNameEqualsClassName")
   private val stack = ArrayDeque<StackEntry<*>>(@Suppress("MagicNumber") 20).also {
@@ -67,19 +70,14 @@ internal class Stack private constructor(
 
   //region Entry lookup
   @Suppress("UNCHECKED_CAST")
-  fun <T : BaseRoute> entryFor(id: StackEntryId): StackEntry<T>? {
-    return stack.findLast { it.id == id } as StackEntry<T>?
-  }
+  fun <T : BaseRoute> entryFor(id: StackEntryId): StackEntry<T>? = stack.findLast { it.id == id } as StackEntry<T>?
 
   @Suppress("UNCHECKED_CAST")
-  fun <T : BaseRoute> entryFor(route: T): StackEntry<T>? {
-    return stack.findLast { it.route == route } as StackEntry<T>?
-  }
+  fun <T : BaseRoute> entryFor(route: T): StackEntry<T>? = stack.findLast { it.route == route } as StackEntry<T>?
 
   @Suppress("UNCHECKED_CAST")
-  fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T>? {
-    return stack.findLast { it.destinationId == destinationId } as StackEntry<T>?
-  }
+  fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T>? =
+    stack.findLast { it.destinationId == destinationId } as StackEntry<T>?
   //endregion
 
   @CheckResult(suggest = "")
@@ -118,10 +116,12 @@ internal class Stack private constructor(
   }
 
   @CheckResult(suggest = "")
-  fun pop(): StackEntry<*> {
-    check(stack.last().removable) { "Can't pop the root of the back stack" }
-    return popInternal()
-  }
+  fun pop(): StackEntry<*>? =
+    stackValidationMode.executeBasedOnValidationMode(
+      strictCondition = { stack.last().removable },
+      lazyMessage = { "[$this.pop] Can't pop the root of the back stack" },
+      unsafeBlock = { null },
+    ) { popInternal() }
 
   @CheckResult(suggest = "")
   private fun popInternal(): StackEntry<*> = stack.removeLast()
@@ -133,13 +133,39 @@ internal class Stack private constructor(
   ): ImmutableList<StackEntry<*>> =
     persistentListOf<StackEntry<*>>().mutate { builder ->
       while (stack.last().destinationId != destinationId) {
-        check(stack.last().removable) { "Route ${destinationId.route} not found on back stack" }
-        popInternal().also(builder::add)
+        stackValidationMode.executeBasedOnValidationMode(
+          strictCondition = { stack.last().removable },
+          lazyMessage = {
+            "[$this.popUpTo(destinationId=$destinationId, isInclusive=$isInclusive)] " +
+              "Route ${destinationId.route} not found on back stack"
+          },
+          unsafeBlock = {
+            // if we break the loop early, that means destinationId is not found on the stack.
+            // so we don't need to check isInclusive.
+            return@mutate
+          },
+        ) {
+          // using popInternal is enough here
+          // because we know that the last entry is removable (see isLastRemovable).
+          popInternal().also(builder::add)
+        }
       }
 
       if (isInclusive) {
-        // using pop here to get the default removable check
-        pop().also(builder::add)
+        val isLastRemovable = stack.last().removable
+
+        stackValidationMode.executeBasedOnValidationMode(
+          strictCondition = { isLastRemovable },
+          lazyMessage = {
+            "[$this.popUpTo(destinationId=$destinationId, isInclusive=$isInclusive)] " +
+              "Can't pop the root of the back stack"
+          },
+          unsafeBlock = {},
+        ) {
+          // using popInternal is enough here
+          // because we know that the last entry is removable (see isLastRemovable).
+          popInternal().also(builder::add)
+        }
       }
     }
 
@@ -147,8 +173,9 @@ internal class Stack private constructor(
   fun clear(): ImmutableList<StackEntry<*>> =
     persistentListOf<StackEntry<*>>().mutate { builder ->
       while (stack.last().removable) {
-        popInternal()
-          .also(builder::add)
+        // using popInternal is enough here
+        // because we know that the last entry is removable (see while condition).
+        popInternal().also(builder::add)
       }
     }
   //endregion
@@ -170,6 +197,7 @@ internal class Stack private constructor(
     fun createWith(
       root: NavRoot,
       destinations: List<ContentDestination<*>>,
+      stackValidationMode: StackValidationMode,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
@@ -184,12 +212,14 @@ internal class Stack private constructor(
         destinations = destinations,
         getHostLifecycleState = getHostLifecycleState,
         idGenerator = idGenerator,
+        stackValidationMode = stackValidationMode,
       )
     }
 
     fun fromState(
       savedState: StackSavedState,
       destinations: List<ContentDestination<*>>,
+      stackValidationMode: StackValidationMode,
       getHostLifecycleState: () -> Lifecycle.State,
       idGenerator: () -> String = { uuid4().toString() },
     ): Stack {
@@ -205,6 +235,7 @@ internal class Stack private constructor(
         destinations = destinations,
         getHostLifecycleState = getHostLifecycleState,
         idGenerator = idGenerator,
+        stackValidationMode = stackValidationMode,
       )
     }
 

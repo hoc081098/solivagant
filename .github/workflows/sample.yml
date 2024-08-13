@@ -15,7 +15,7 @@ env:
   GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.daemon=false -Dkotlin.incremental=false -XX:+UseParallelGC -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
 
 jobs:
-  samples-android-desktop:
+  samples-android-desktop-wasmJs:
     strategy:
       matrix:
         os: [ ubuntu-latest ]
@@ -61,6 +61,7 @@ jobs:
           :samples:simple:androidApp:assembleDebug \
           :samples:sample:desktop:build \
           :samples:simple:desktop:build \
+          :samples:solivagant-wasm-sample:wasmJsBrowserDistribution \
           --stacktrace
 
   samples-sample-ios:

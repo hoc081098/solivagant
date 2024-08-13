@@ -102,8 +102,8 @@ internal class StackEntry<T : BaseRoute>
       // cast is needed for the compiler to recognize that the when is exhaustive
       @Suppress("USELESS_CAST")
       get() = when (route as BaseRoute) {
-        is NavRoute -> true
         is NavRoot -> false
+        is NavRoute -> true
       }
 
     //region Lifecycle
