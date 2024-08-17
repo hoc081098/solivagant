@@ -4,6 +4,46 @@
 
 - TDB
 
+## [0.5.0] - Jul 22, 2024
+
+### Update dependencies
+
+- [KotlinX Coroutines `1.9.0-RC.2`](https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.9.0-RC.2).
+- [AndroidX Lifecycle `2.8.4`](https://developer.android.com/jetpack/androidx/releases/lifecycle#2.8.4).
+- [AndroidX Compose Activity `1.9.1`](https://developer.android.com/jetpack/androidx/releases/activity#1.9.1).
+- [AndroidX Annotation `1.8.2`](https://developer.android.com/jetpack/androidx/releases/annotation#1.8.2).
+
+### Added
+
+- **StackValidationMode**: Introduced a new sealed interface `StackValidationMode` to handle
+  different stack validation modes in the navigation stack. This interface includes three
+  implementations:
+  - `Strict`: Ensures the stack is always in a valid state and throws an exception if it transitions
+    to an invalid state.
+  - `Lenient`: Ensures the stack is always in a valid state but takes no action if it transitions to
+    an invalid state.
+  - `Warning`: Ensures the stack is always in a valid state and logs a warning if it transitions to
+    an invalid state.
+
+- **NavHost**: Added a new parameter `stackValidationMode: StackValidationMode` to the `NavHost`
+  composable.
+  Default value is `StackValidationMode.Lenient`.
+  ```kotlin
+  NavHost(
+    startRoute = LoginScreenRoute,
+    destinations = AllDestinations,
+    navEventNavigator = navigator,
+    destinationChangedCallback = { currentRoute = it },
+    stackValidationMode = StackValidationMode.Warning.Debug, // <--- Set the stack validation mode
+  )
+  ```
+
+### Fixed
+
+- `Lifecycle*Effect` completion is now idempotent (i.e., if the `onStopOrDispose` was called because
+  of the Lifecycle being stopped, it won’t be called a second time upon disposal unless the
+  Lifecycle goes back up to `STARTED` again).
+
 ## [0.4.0] - Jul 22, 2024
 
 ### Update dependencies
@@ -75,6 +115,7 @@
 ### Example, docs and tests
 
 -
+
 Add [Compose Multiplatform Todo solivagant Sample](https://github.com/hoc081098/Compose-Multiplatform-Todo-solivagant-Sample):
 A KMP template of the Todo App using Compose multiplatform for Android, Desktop, iOS and Web.
 Share everything including data, domain, presentation, and UI.

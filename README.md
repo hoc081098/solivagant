@@ -1,6 +1,6 @@
 # solivagant 🔆
 
-## 🔆 Compose Multiplatform Navigation library - 🌸 Pragmatic, type safety navigation for Compose Multiplatform. Based on [Freeletics Khonshu Navigation](https://freeletics.github.io/khonshu/navigation/get-started/). ♥️ ViewModel, SavedStateHandle, Lifecycle, Multi-Backstacks, Transitions, Back-press handling, and more...
+## [🟢 ACTIVE] 🔆 Compose Multiplatform Navigation library - 🌸 Pragmatic, type safety navigation for Compose Multiplatform. Based on [Freeletics Khonshu Navigation](https://freeletics.github.io/khonshu/navigation/get-started/). ♥️ ViewModel, SavedStateHandle, Lifecycle, Multi-Backstacks, Transitions, Back-press handling, and more...
 
 [![maven-central](https://img.shields.io/maven-central/v/io.github.hoc081098/solivagant-navigation)](https://search.maven.org/search?q=g:io.github.hoc081098%20solivagant-navigation)
 [<img src="https://img.shields.io/nexus/snapshots/https/s01.oss.sonatype.org/io.github.hoc081098/solivagant-navigation.svg?label=latest%20snapshot"/>](https://s01.oss.sonatype.org/content/repositories/snapshots/io/github/hoc081098/solivagant-navigation)
@@ -425,6 +425,10 @@ navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 - [ ] Polish and improve the implementation and the public API
 - [x] Support transition when navigating (since [0.1.0](https://github.com/hoc081098/solivagant/releases/tag/0.1.0)).
 - [x] Support more targets such as wasm, watchOS, tvOS, etc... (since [0.2.0](https://github.com/hoc081098/solivagant/releases/tag/0.2.0)).
+
+## 🟢 Active status
+
+This library is actively maintained and updated with new features and bug fixes.
 
 ## License
 
