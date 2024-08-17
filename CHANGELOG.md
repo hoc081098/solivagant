@@ -2,9 +2,9 @@
 
 ## [Unreleased] - TBD
 
-- TDB
+- TBD
 
-## [0.5.0] - Jul 22, 2024
+## [0.5.0] - Aug 17, 2024
 
 ### Update dependencies
 
@@ -184,7 +184,9 @@ Share everything including data, domain, presentation, and UI.
   - [KotlinX Coroutines `1.7.3`](https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.7.3).
   - [KotlinX Collections Immutable `0.3.7`](https://github.com/Kotlin/kotlinx.collections.immutable/releases/tag/v0.3.7).
 
-[Unreleased]: https://github.com/hoc081098/solivagant/compare/0.4.0...HEAD
+[Unreleased]: https://github.com/hoc081098/solivagant/compare/0.5.0...HEAD
+
+[0.5.0]: https://github.com/hoc081098/solivagant/releases/tag/0.5.0
 
 [0.4.0]: https://github.com/hoc081098/solivagant/releases/tag/0.4.0
 

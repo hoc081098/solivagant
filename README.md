@@ -97,7 +97,7 @@ allprojects {
 ```
 
 ```kotlin
-implementation("io.github.hoc081098:solivagant-navigation:0.4.0")
+implementation("io.github.hoc081098:solivagant-navigation:0.5.0")
 ```
 
 ### Snapshot
@@ -114,7 +114,7 @@ allprojects {
 }
 
 dependencies {
-  implementation("io.github.hoc081098:solivagant-navigation:0.4.1-SNAPSHOT")
+  implementation("io.github.hoc081098:solivagant-navigation:0.5.1-SNAPSHOT")
 }
 ```
 
