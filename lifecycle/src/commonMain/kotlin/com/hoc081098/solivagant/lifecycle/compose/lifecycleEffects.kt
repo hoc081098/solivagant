@@ -350,7 +350,10 @@ private fun LifecycleStartEffectImpl(
           effectResult = effects()
         }
 
-        Lifecycle.Event.ON_STOP -> effectResult?.runStopOrDisposeEffect()
+        Lifecycle.Event.ON_STOP -> {
+          effectResult?.runStopOrDisposeEffect()
+          effectResult = null
+        }
 
         else -> {}
       }
@@ -655,7 +658,10 @@ private fun LifecycleResumeEffectImpl(
           effectResult = effects()
         }
 
-        Lifecycle.Event.ON_PAUSE -> effectResult?.runPauseOrOnDisposeEffect()
+        Lifecycle.Event.ON_PAUSE -> {
+          effectResult?.runPauseOrOnDisposeEffect()
+          effectResult = null
+        }
 
         else -> {}
       }
