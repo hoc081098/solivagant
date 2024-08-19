@@ -16,20 +16,31 @@
 
 package com.hoc081098.solivagant.lifecycle.internal
 
+import kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 /**
  * Map a [StateFlow] to another [StateFlow] with the given [transform] function.
  */
+@Suppress("UnnecessaryOptInAnnotation")
+@OptIn(ExperimentalForInheritanceCoroutinesApi::class)
 internal fun <T, R> StateFlow<T>.mapState(transform: (T) -> R): StateFlow<R> =
   object : StateFlow<R> {
     override val replayCache: List<R>
-      get() = listOf(value)
+      get() = this@mapState.replayCache.map(transform)
 
     override val value: R
       get() = transform(this@mapState.value)
 
-    override suspend fun collect(collector: FlowCollector<R>): Nothing =
-      this@mapState.collect { collector.emit(transform(it)) }
+    override suspend fun collect(collector: FlowCollector<R>): Nothing {
+      this@mapState
+        .map { transform(it) }
+        .distinctUntilChanged()
+        .collect(collector)
+
+      error("StateFlow collection never ends.")
+    }
   }

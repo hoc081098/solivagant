@@ -2,7 +2,9 @@
 
 ## [Unreleased] - TBD
 
-- TBD
+### Update dependencies
+
+- [Kotlin `2.0.10` 🎉](https://github.com/JetBrains/kotlin/releases/tag/v2.0.10).
 
 ## [0.5.0] - Aug 17, 2024
 
