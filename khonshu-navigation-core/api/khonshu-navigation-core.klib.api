@@ -249,8 +249,6 @@ open class com.hoc081098.solivagant.navigation/NavEventNavigator : com.hoc081098
 }
 
 sealed class <#A: kotlin/Any?> com.hoc081098.solivagant.navigation/ResultOwner { // com.hoc081098.solivagant.navigation/ResultOwner|null[0]
-    constructor <init>() // com.hoc081098.solivagant.navigation/ResultOwner.<init>|<init>(){}[0]
-
     final val results // com.hoc081098.solivagant.navigation/ResultOwner.results|{}results[0]
         final fun <get-results>(): kotlinx.coroutines.flow/Flow<#A> // com.hoc081098.solivagant.navigation/ResultOwner.results.<get-results>|<get-results>(){}[0]
 
