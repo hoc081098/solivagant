@@ -26,7 +26,7 @@ jetbrains-compose = "1.6.11"
 
 napier = "2.7.1"
 flowExt = "1.0.0-RC"
-koin = "3.5.6"
+koin = "4.0.0"
 koin-compose = "1.1.5"
 koin-androidx-compose = "3.5.6"
 compose-rules-detekt = "0.4.11"
