@@ -322,7 +322,7 @@ fun main() {
 > [!TIP]
 > For more information please check out [Desktop sample main.kt](https://github.com/hoc081098/solivagant/blob/2eb1ef4beee875d63aaa882f7198cc738638ad75/samples/sample/desktop/src/commonMain/kotlin/com/hoc081098/solivagant/sample/main.kt#L18-L49)
 
-#### 3.4. iOs / tvOS / watchOS
+#### 3.4. iOS / tvOS / watchOS
 
 To display `MyAwesomeApp` on `iOS/tvOS/watchOS`, use `ComposeUIViewController` (Kotlin - iosMain SourceSet) and `UIViewControllerRepresentable` (Swift - native code):
 
