@@ -34,7 +34,7 @@ compose-rules-detekt = "0.4.15"
 androidx-lifecycle = "2.8.6"
 androidx-annotation = "1.8.2"
 androidx-activity = "1.9.2"
-android-gradle = "8.7.0"
+android-gradle = "8.7.1"
 
 coil = "3.0.0-alpha06"
 ktor = "3.0.0"
