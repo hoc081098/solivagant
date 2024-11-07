@@ -403,14 +403,18 @@ navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
   - `kmp-viewmodel` to share `ViewModel` and `SavedStateHandle`.
   - `Koin DI`.
 
-    ###### Desktop
+  ###### Desktop
 
-    https://github.com/user-attachments/assets/8b2d806f-3650-47ed-96a2-d9bc72342d25
+  https://github.com/user-attachments/assets/8b2d806f-3650-47ed-96a2-d9bc72342d25
 
-- [Simple sample](https://github.com/hoc081098/solivagant/tree/master/samples/simple): a simple sample
+- [Simple sample - Multibackstacks sample](https://github.com/hoc081098/solivagant/tree/master/samples/simple): a simple sample
   that demonstrates how to use `solivagant-navigation` in `Compose Multiplatform (Android, Desktop, iOS)` to
   switch between tabs (bottom navigation), but can keep the back stack state of each tab.
   Basically, it's a **multi-backstack** demo sample.
+
+    ###### Desktop
+  
+    https://github.com/user-attachments/assets/300d7153-ccc0-49b3-a272-ff4f22f66e03
 
 - [Compose Multiplatform KmpViewModel KMM Unsplash Sample](https://github.com/hoc081098/Compose-Multiplatform-KmpViewModel-KMM-Unsplash-Sample): A KMP template of the Unsplash App using Compose multiplatform for Android, Desktop, iOS. Share everything including data, domain, presentation, and UI.
 

@@ -55,7 +55,7 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
-        implementation(compose.runtime)
+        api(compose.runtime)
         implementation(compose.foundation)
         implementation(compose.ui)
         implementation(compose.material3)
@@ -70,6 +70,7 @@ kotlin {
         implementation(libs.kmp.viewmodel.koin.compose)
 
         api(libs.koin.core)
+        api(libs.koin.compose)
         api(libs.napier)
         api(libs.coroutines.core)
         api(libs.kotlinx.collections.immutable)
