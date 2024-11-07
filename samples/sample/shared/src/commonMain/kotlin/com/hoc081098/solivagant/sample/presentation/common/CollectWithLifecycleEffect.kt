@@ -1,4 +1,4 @@
-package com.hoc081098.solivagant.sample.common
+package com.hoc081098.solivagant.sample.presentation.common
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable

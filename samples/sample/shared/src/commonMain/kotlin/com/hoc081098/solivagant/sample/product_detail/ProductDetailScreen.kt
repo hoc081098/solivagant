@@ -36,10 +36,10 @@ import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.SubcomposeAsyncImageContent
 import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
 import com.hoc081098.solivagant.lifecycle.compose.collectAsStateWithLifecycle
-import com.hoc081098.solivagant.sample.common.ErrorMessageAndRetryButton
-import com.hoc081098.solivagant.sample.common.LoadingIndicator
-import com.hoc081098.solivagant.sample.common.OnLifecycleEventWithBuilder
-import com.hoc081098.solivagant.sample.common.ProductItemUi
+import com.hoc081098.solivagant.sample.presentation.ProductItemUi
+import com.hoc081098.solivagant.sample.presentation.common.ErrorMessageAndRetryButton
+import com.hoc081098.solivagant.sample.presentation.common.LoadingIndicator
+import com.hoc081098.solivagant.sample.presentation.common.OnLifecycleEventWithBuilder
 import io.github.aakira.napier.Napier
 import kotlinx.collections.immutable.persistentListOf
 
@@ -89,9 +89,6 @@ private fun ProductDetailContent(
       "Title: " to product.title,
       "Price: " to product.price.toString(),
       "Description: " to product.description,
-      "Category: " to product.category.name,
-      "Created at: " to product.creationAt,
-      "Updated at: " to product.updatedAt,
     )
   }
 
@@ -102,7 +99,7 @@ private fun ProductDetailContent(
       .padding(horizontal = 24.dp),
   ) {
     SubcomposeAsyncImage(
-      model = product.images.firstOrNull(),
+      model = product.image,
       contentDescription = product.title,
       contentScale = ContentScale.Crop,
       modifier = Modifier
@@ -111,7 +108,7 @@ private fun ProductDetailContent(
         .aspectRatio(1f)
         .clip(RoundedCornerShape(4.dp)),
     ) {
-      when (painter.state) {
+      when (painter.state.collectAsStateWithLifecycle().value) {
         is AsyncImagePainter.State.Loading -> {
           CircularProgressIndicator(
             modifier = Modifier

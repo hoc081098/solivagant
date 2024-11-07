@@ -1,6 +1,5 @@
 package com.hoc081098.solivagant.sample
 
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -8,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,16 +28,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil3.ImageLoader
-import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.setSingletonImageLoaderFactory
-import coil3.network.ktor.KtorNetworkFetcherFactory
+import coil3.network.ktor3.KtorNetworkFetcherFactory
 import coil3.util.DebugLogger
 import com.hoc081098.solivagant.navigation.BaseRoute
 import com.hoc081098.solivagant.navigation.NavDestination
 import com.hoc081098.solivagant.navigation.NavEventNavigator
 import com.hoc081098.solivagant.navigation.NavHost
 import com.hoc081098.solivagant.navigation.NavRoot
-import com.hoc081098.solivagant.sample.common.MyApplicationTheme
+import com.hoc081098.solivagant.sample.presentation.common.MyApplicationTheme
 import com.hoc081098.solivagant.sample.product_detail.ProductDetailScreenDestination
 import com.hoc081098.solivagant.sample.product_detail.ProductDetailScreenRoute
 import com.hoc081098.solivagant.sample.products.ProductsScreenDestination
@@ -60,11 +58,7 @@ private val AllDestinations: ImmutableSet<NavDestination> = persistentSetOf(
   ProductDetailScreenDestination,
 )
 
-@OptIn(
-  ExperimentalLayoutApi::class,
-  ExperimentalMaterial3Api::class,
-  ExperimentalCoilApi::class,
-)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Suppress("LongMethod")
 fun SolivagantSampleApp(
@@ -109,7 +103,7 @@ fun SolivagantSampleApp(
                     onClick = remember { navigator::navigateBack },
                   ) {
                     Icon(
-                      imageVector = Icons.Default.ArrowBack,
+                      imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                       contentDescription = "Back",
                     )
                   }

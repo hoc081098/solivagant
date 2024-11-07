@@ -14,14 +14,14 @@ import androidx.compose.runtime.withFrameMillis
 import androidx.compose.ui.Modifier
 import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
 import com.hoc081098.solivagant.lifecycle.compose.collectAsStateWithLifecycle
-import com.hoc081098.solivagant.sample.common.CollectWithLifecycleEffect
-import com.hoc081098.solivagant.sample.common.EmptyProducts
-import com.hoc081098.solivagant.sample.common.ErrorMessageAndRetryButton
-import com.hoc081098.solivagant.sample.common.LoadingIndicator
-import com.hoc081098.solivagant.sample.common.OnLifecycleEventWithBuilder
 import com.hoc081098.solivagant.sample.common.PlatformToastManager
-import com.hoc081098.solivagant.sample.common.ProductItemUi
-import com.hoc081098.solivagant.sample.common.ProductItemsList
+import com.hoc081098.solivagant.sample.presentation.ProductItemUi
+import com.hoc081098.solivagant.sample.presentation.common.CollectWithLifecycleEffect
+import com.hoc081098.solivagant.sample.presentation.common.EmptyProducts
+import com.hoc081098.solivagant.sample.presentation.common.ErrorMessageAndRetryButton
+import com.hoc081098.solivagant.sample.presentation.common.LoadingIndicator
+import com.hoc081098.solivagant.sample.presentation.common.OnLifecycleEventWithBuilder
+import com.hoc081098.solivagant.sample.presentation.common.ProductItemsList
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
 

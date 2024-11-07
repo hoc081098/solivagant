@@ -1,8 +1,11 @@
-package com.hoc081098.solivagant.sample.common
+package com.hoc081098.solivagant.sample.presentation.common
 
 import com.hoc081098.kmp.viewmodel.Closeable
 import com.hoc081098.kmp.viewmodel.MainThread
 import com.hoc081098.kmp.viewmodel.ViewModel
+import com.hoc081098.solivagant.sample.common.WeakReference
+import com.hoc081098.solivagant.sample.common.debugCheckImmediateMainDispatcher
+import com.hoc081098.solivagant.sample.common.identityHashCode
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.onClosed
@@ -44,7 +47,8 @@ sealed interface SingleEventFlowSender<E> {
   suspend fun sendEvent(event: E)
 }
 
-private class SingleEventFlowImpl<E>(private val channelRef: WeakReference<Channel<E>>) : SingleEventFlow<E> {
+private class SingleEventFlowImpl<E>(private val channelRef: WeakReference<Channel<E>>) :
+  SingleEventFlow<E> {
   override suspend fun collect(collector: FlowCollector<E>) {
     debugCheckImmediateMainDispatcher()
     val flow = channelRef.get()?.receiveAsFlow() ?: return

@@ -1,4 +1,4 @@
-package com.hoc081098.solivagant.sample.common
+package com.hoc081098.solivagant.sample.presentation.common
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -40,6 +40,8 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
 import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.SubcomposeAsyncImageContent
+import com.hoc081098.solivagant.lifecycle.compose.collectAsStateWithLifecycle
+import com.hoc081098.solivagant.sample.presentation.ProductItemUi
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -150,14 +152,14 @@ internal fun ProductItemRow(
     modifier = modifier.clickable(onClick = onClick),
   ) {
     SubcomposeAsyncImage(
-      model = product.images.firstOrNull(),
+      model = product.image,
       contentDescription = product.title,
       contentScale = ContentScale.Crop,
       modifier = Modifier
         .size(96.dp)
         .clip(RoundedCornerShape(4.dp)),
     ) {
-      when (painter.state) {
+      when (painter.state.collectAsStateWithLifecycle().value) {
         is AsyncImagePainter.State.Loading -> {
           CircularProgressIndicator(
             modifier = Modifier

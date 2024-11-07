@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
 import com.hoc081098.solivagant.lifecycle.compose.LifecycleResumeEffect
-import com.hoc081098.solivagant.sample.common.OnLifecycleEventWithBuilder
+import com.hoc081098.solivagant.sample.presentation.common.OnLifecycleEventWithBuilder
 import io.github.aakira.napier.Napier
 
 @Composable

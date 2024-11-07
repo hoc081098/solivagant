@@ -1,7 +1,4 @@
-@file:OptIn(
-  ExperimentalMaterial3Api::class,
-  ExperimentalMaterialApi::class,
-)
+@file:OptIn(ExperimentalMaterialApi::class)
 @file:Suppress("PackageNaming")
 
 package com.hoc081098.solivagant.sample.search_products
@@ -14,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -25,12 +21,12 @@ import androidx.compose.ui.unit.dp
 import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
 import com.hoc081098.solivagant.lifecycle.compose.collectAsStateWithLifecycle
 import com.hoc081098.solivagant.sample.common.AppDispatchers
-import com.hoc081098.solivagant.sample.common.EmptyProducts
-import com.hoc081098.solivagant.sample.common.ErrorMessageAndRetryButton
-import com.hoc081098.solivagant.sample.common.LoadingIndicator
-import com.hoc081098.solivagant.sample.common.OnLifecycleEventWithBuilder
-import com.hoc081098.solivagant.sample.common.ProductItemUi
-import com.hoc081098.solivagant.sample.common.ProductItemsList
+import com.hoc081098.solivagant.sample.presentation.ProductItemUi
+import com.hoc081098.solivagant.sample.presentation.common.EmptyProducts
+import com.hoc081098.solivagant.sample.presentation.common.ErrorMessageAndRetryButton
+import com.hoc081098.solivagant.sample.presentation.common.LoadingIndicator
+import com.hoc081098.solivagant.sample.presentation.common.OnLifecycleEventWithBuilder
+import com.hoc081098.solivagant.sample.presentation.common.ProductItemsList
 import io.github.aakira.napier.Napier
 import org.koin.compose.koinInject
 

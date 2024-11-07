@@ -12,7 +12,7 @@ import com.hoc081098.solivagant.navigation.ClearOnDispose
 import com.hoc081098.solivagant.navigation.LifecycleControllerEffect
 import com.hoc081098.solivagant.navigation.ProvideCompositionLocals
 import com.hoc081098.solivagant.navigation.SavedStateSupport
-import com.hoc081098.solivagant.sample.common.OnLifecycleEventWithBuilder
+import com.hoc081098.solivagant.sample.presentation.common.OnLifecycleEventWithBuilder
 import io.github.aakira.napier.Napier
 
 fun main() {
