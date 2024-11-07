@@ -407,7 +407,7 @@ navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 
     https://github.com/user-attachments/assets/8b2d806f-3650-47ed-96a2-d9bc72342d25
 
-- [Simple sample](https://github.com/hoc081098/solivagant/tree/master/samples/simple): a simple sample
+- [Simple sample - Multibackstacks sample](https://github.com/hoc081098/solivagant/tree/master/samples/simple): a simple sample
   that demonstrates how to use `solivagant-navigation` in `Compose Multiplatform (Android, Desktop, iOS)` to
   switch between tabs (bottom navigation), but can keep the back stack state of each tab.
   Basically, it's a **multi-backstack** demo sample.
