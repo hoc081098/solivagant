@@ -397,7 +397,7 @@ navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 
 ## Samples
 
-- [Complete sample](https://github.com/hoc081098/solivagant/tree/master/samples/sample): a complete sample
+- [Complete sample - Products app](https://github.com/hoc081098/solivagant/tree/master/samples/sample): a complete sample
   that demonstrates how to use `solivagant-navigation` in `Compose Multiplatform (Android, Desktop, iOS)`
   - `solivagant-navigation` for navigation in Compose Multiplatform.
   - `kmp-viewmodel` to share `ViewModel` and `SavedStateHandle`.

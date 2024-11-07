@@ -10,7 +10,7 @@ import com.hoc081098.kmp.viewmodel.safe.NullableSavedStateHandleKey
 import com.hoc081098.kmp.viewmodel.safe.safe
 import com.hoc081098.kmp.viewmodel.safe.string
 import com.hoc081098.solivagant.navigation.NavEventNavigator
-import com.hoc081098.solivagant.sample.common.toProductItemUi
+import com.hoc081098.solivagant.sample.presentation.toProductItemUi
 import com.hoc081098.solivagant.sample.product_detail.ProductDetailScreenRoute
 import io.github.aakira.napier.Napier
 import kotlin.time.Duration.Companion.milliseconds

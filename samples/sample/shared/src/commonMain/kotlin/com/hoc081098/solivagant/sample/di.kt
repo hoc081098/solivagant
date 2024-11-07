@@ -1,7 +1,7 @@
 package com.hoc081098.solivagant.sample
 
 import com.hoc081098.solivagant.navigation.NavEventNavigator
-import com.hoc081098.solivagant.sample.common.SingleEventChannel
+import com.hoc081098.solivagant.sample.presentation.common.SingleEventChannel
 import com.hoc081098.solivagant.sample.product_detail.GetProductById
 import com.hoc081098.solivagant.sample.product_detail.ProductDetailViewModel
 import com.hoc081098.solivagant.sample.products.GetProducts

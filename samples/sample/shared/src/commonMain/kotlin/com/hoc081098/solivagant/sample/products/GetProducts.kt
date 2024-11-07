@@ -2,7 +2,9 @@ package com.hoc081098.solivagant.sample.products
 
 import com.hoc081098.solivagant.sample.common.AppDispatchers
 import com.hoc081098.solivagant.sample.data.FakeProductsJson
-import com.hoc081098.solivagant.sample.data.ProductItem
+import com.hoc081098.solivagant.sample.data.ProductResponse
+import com.hoc081098.solivagant.sample.data.toProductItem
+import com.hoc081098.solivagant.sample.domain.ProductItem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -26,7 +28,9 @@ class GetProducts(
           throw RuntimeException("Fake error")
         }
 
-        Json.decodeFromString<List<ProductItem>>(FakeProductsJson).shuffled()
+        Json.decodeFromString<List<ProductResponse>>(FakeProductsJson)
+          .shuffled()
+          .map { it.toProductItem() }
       }
     }
 }

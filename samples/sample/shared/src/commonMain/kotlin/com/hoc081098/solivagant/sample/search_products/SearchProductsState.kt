@@ -3,7 +3,7 @@
 package com.hoc081098.solivagant.sample.search_products
 
 import androidx.compose.runtime.Immutable
-import com.hoc081098.solivagant.sample.common.ProductItemUi
+import com.hoc081098.solivagant.sample.presentation.ProductItemUi
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 

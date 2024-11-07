@@ -8,7 +8,7 @@ import com.hoc081098.flowext.startWith
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.ViewModel
 import com.hoc081098.solivagant.navigation.requireRoute
-import com.hoc081098.solivagant.sample.common.toProductItemUi
+import com.hoc081098.solivagant.sample.presentation.toProductItemUi
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow

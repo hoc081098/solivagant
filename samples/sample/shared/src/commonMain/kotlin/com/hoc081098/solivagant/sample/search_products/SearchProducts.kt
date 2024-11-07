@@ -4,7 +4,9 @@ package com.hoc081098.solivagant.sample.search_products
 
 import com.hoc081098.solivagant.sample.common.AppDispatchers
 import com.hoc081098.solivagant.sample.data.FakeProductsJson
-import com.hoc081098.solivagant.sample.data.ProductItem
+import com.hoc081098.solivagant.sample.data.ProductResponse
+import com.hoc081098.solivagant.sample.data.toProductItem
+import com.hoc081098.solivagant.sample.domain.ProductItem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -22,11 +24,12 @@ class SearchProducts(
         @Suppress("MagicNumber")
         (delay(2_000))
 
-        Json.decodeFromString<List<ProductItem>>(FakeProductsJson)
+        Json.decodeFromString<List<ProductResponse>>(FakeProductsJson)
           .filter {
             it.title.contains(term, ignoreCase = true) ||
               it.description.contains(term, ignoreCase = true)
           }
+          .map { it.toProductItem() }
       }
     }
 }

@@ -1,6 +1,6 @@
 @file:Suppress("MagicNumber")
 
-package com.hoc081098.solivagant.sample.common
+package com.hoc081098.solivagant.sample.presentation.common
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
