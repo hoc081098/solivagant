@@ -983,30 +983,30 @@ For more information please check out <a href="https://github.com/hoc081098/soli
 <span class="p">}</span>
 </code></pre></div>
 <h6 id="composeviewswift">ComposeView.swift<a class="headerlink" href="#composeviewswift" title="Permanent link">&para;</a></h6>
-<div class="highlight"><pre><span></span><code><span class="kd">private</span> <span class="kd">struct</span> <span class="nc">ComposeView</span><span class="p">:</span> <span class="n">UIViewControllerRepresentable</span> <span class="p">{</span>
-  <span class="kd">let</span> <span class="nv">savedStateSupport</span><span class="p">:</span> <span class="n">NavigationSavedStateSupport</span>
+<div class="highlight"><pre><span></span><code><span class="kd">private</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="nc">ComposeView</span><span class="p">:</span><span class="w"> </span><span class="n">UIViewControllerRepresentable</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="nv">savedStateSupport</span><span class="p">:</span><span class="w"> </span><span class="n">NavigationSavedStateSupport</span>
 
-  <span class="kd">func</span> <span class="nf">makeUIViewController</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="bp">UIViewController</span> <span class="p">{</span>
-    <span class="n">MainViewControllerKt</span><span class="p">.</span><span class="n">MainViewController</span><span class="p">(</span><span class="n">savedStateSupport</span><span class="p">:</span> <span class="n">savedStateSupport</span><span class="p">)</span>
-  <span class="p">}</span>
+<span class="w">  </span><span class="kd">func</span><span class="w"> </span><span class="nf">makeUIViewController</span><span class="p">(</span><span class="n">context</span><span class="p">:</span><span class="w"> </span><span class="n">Context</span><span class="p">)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="bp">UIViewController</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">MainViewControllerKt</span><span class="p">.</span><span class="n">MainViewController</span><span class="p">(</span><span class="n">savedStateSupport</span><span class="p">:</span><span class="w"> </span><span class="n">savedStateSupport</span><span class="p">)</span>
+<span class="w">  </span><span class="p">}</span>
 
-  <span class="kd">func</span> <span class="nf">updateUIViewController</span><span class="p">(</span><span class="kc">_</span> <span class="n">uiViewController</span><span class="p">:</span> <span class="bp">UIViewController</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span>
+<span class="w">  </span><span class="kd">func</span><span class="w"> </span><span class="nf">updateUIViewController</span><span class="p">(</span><span class="kc">_</span><span class="w"> </span><span class="n">uiViewController</span><span class="p">:</span><span class="w"> </span><span class="bp">UIViewController</span><span class="p">,</span><span class="w"> </span><span class="n">context</span><span class="p">:</span><span class="w"> </span><span class="n">Context</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kd">private</span> <span class="kd">class</span> <span class="nc">ComposeViewViewModel</span><span class="p">:</span> <span class="n">ObservableObject</span> <span class="p">{</span>
-  <span class="kd">let</span> <span class="nv">savedStateSupport</span> <span class="p">=</span> <span class="n">NavigationSavedStateSupport</span><span class="p">()</span>
-  <span class="kd">deinit</span> <span class="p">{</span>
-    <span class="kc">self</span><span class="p">.</span><span class="n">savedStateSupport</span><span class="p">.</span><span class="n">clear</span><span class="p">()</span>
-  <span class="p">}</span>
+<span class="kd">private</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nc">ComposeViewViewModel</span><span class="p">:</span><span class="w"> </span><span class="n">ObservableObject</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="nv">savedStateSupport</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">NavigationSavedStateSupport</span><span class="p">()</span>
+<span class="w">  </span><span class="kd">deinit</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kc">self</span><span class="p">.</span><span class="n">savedStateSupport</span><span class="p">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kd">struct</span> <span class="nc">ComposeViewContainer</span><span class="p">:</span> <span class="n">View</span> <span class="p">{</span>
-  <span class="p">@</span><span class="n">StateObject</span> <span class="kd">private</span> <span class="kd">var</span> <span class="nv">viewModel</span> <span class="p">=</span> <span class="n">ComposeViewViewModel</span><span class="p">()</span>
+<span class="kd">struct</span><span class="w"> </span><span class="nc">ComposeViewContainer</span><span class="p">:</span><span class="w"> </span><span class="n">View</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">@</span><span class="n">StateObject</span><span class="w"> </span><span class="kd">private</span><span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="nv">viewModel</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ComposeViewViewModel</span><span class="p">()</span>
 
-  <span class="kd">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="n">View</span> <span class="p">{</span>
-    <span class="n">ComposeView</span><span class="p">(</span><span class="n">savedStateSupport</span><span class="p">:</span> <span class="n">viewModel</span><span class="p">.</span><span class="n">savedStateSupport</span><span class="p">)</span>
-      <span class="p">.</span><span class="n">ignoresSafeArea</span><span class="p">(.</span><span class="n">keyboard</span><span class="p">)</span> <span class="c1">// Compose has own keyboard handler</span>
-  <span class="p">}</span>
+<span class="w">  </span><span class="kd">var</span><span class="w"> </span><span class="nv">body</span><span class="p">:</span><span class="w"> </span><span class="n">some</span><span class="w"> </span><span class="n">View</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ComposeView</span><span class="p">(</span><span class="n">savedStateSupport</span><span class="p">:</span><span class="w"> </span><span class="n">viewModel</span><span class="p">.</span><span class="n">savedStateSupport</span><span class="p">)</span>
+<span class="w">      </span><span class="p">.</span><span class="n">ignoresSafeArea</span><span class="p">(.</span><span class="n">keyboard</span><span class="p">)</span><span class="w"> </span><span class="c1">// Compose has own keyboard handler</span>
+<span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 <blockquote>
