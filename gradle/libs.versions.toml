@@ -33,7 +33,7 @@ compose-rules-detekt = "0.4.22"
 
 androidx-lifecycle = "2.8.7"
 androidx-annotation = "1.9.1"
-androidx-activity = "1.9.3"
+androidx-activity = "1.10.0"
 android-gradle = "8.8.0"
 
 coil = "3.0.4"
