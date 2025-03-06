@@ -48,7 +48,7 @@ kotlinx-kover = "0.9.1"
 dokka = "2.0.0"
 kotlinx-binary-compatibility-validator = "0.17.0"
 poko = "0.18.2"
-vanniktech-maven-publish = "0.30.0"
+vanniktech-maven-publish = "0.31.0"
 ktlint = "1.1.1"
 
 [libraries]
