@@ -37,7 +37,7 @@ androidx-activity = "1.10.1"
 android-gradle = "8.9.1"
 
 coil = "3.1.0"
-ktor = "3.1.1"
+ktor = "3.1.2"
 
 kmp-viewmodel = "0.8.0"
 uuid = "0.8.4"
