@@ -29,7 +29,7 @@ flowExt = "1.0.0"
 koin = "4.1.0"
 koin-compose = "4.1.0"
 koin-androidx-compose = "4.0.4"
-compose-rules-detekt = "0.4.22"
+compose-rules-detekt = "0.4.24"
 
 androidx-lifecycle = "2.9.2"
 androidx-annotation = "1.9.1"
