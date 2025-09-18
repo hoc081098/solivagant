@@ -31,7 +31,7 @@ koin-compose = "4.1.1"
 koin-androidx-compose = "4.0.4"
 compose-rules-detekt = "0.4.27"
 
-androidx-lifecycle = "2.9.3"
+androidx-lifecycle = "2.9.4"
 androidx-annotation = "1.9.1"
 androidx-activity = "1.11.0"
 android-gradle = "8.12.2"
