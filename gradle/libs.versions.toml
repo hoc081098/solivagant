@@ -42,7 +42,7 @@ ktor = "3.2.3"
 kmp-viewmodel = "0.8.0"
 uuid = "0.8.4"
 
-spotless = "7.2.1"
+spotless = "8.0.0"
 detekt = "1.23.8"
 kotlinx-kover = "0.9.2"
 dokka = "2.0.0"
