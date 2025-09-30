@@ -36,7 +36,7 @@ androidx-annotation = "1.9.1"
 androidx-activity = "1.11.0"
 android-gradle = "8.12.2"
 
-coil = "3.2.0"
+coil = "3.3.0"
 ktor = "3.2.3"
 
 kmp-viewmodel = "0.8.0"
