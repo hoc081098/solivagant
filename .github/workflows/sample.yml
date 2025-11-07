@@ -117,7 +117,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build iosApp scheme
-        uses: sersoft-gmbh/xcodebuild-action@v3
+        uses: sersoft-gmbh/xcodebuild-action@v4
         with:
           project: samples/sample/iosApp/iosApp.xcodeproj
           scheme: iosApp
