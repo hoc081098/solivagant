@@ -1,6 +1,6 @@
 # solivagant 🔆
 
-## [🟢 ACTIVE] 🔆 Compose Multiplatform Navigation library - 🌸 Pragmatic, type safety navigation for Compose Multiplatform. Based on [Freeletics Khonshu Navigation](https://freeletics.github.io/khonshu/navigation/get-started/). ♥️ ViewModel, SavedStateHandle, Lifecycle, Multi-Backstacks, Transitions, Back-press handling, and more...
+## [🔴 NOT MAINTAINED] 🔆 Compose Multiplatform Navigation library - 🌸 Pragmatic, type safety navigation for Compose Multiplatform. Based on [Freeletics Khonshu Navigation](https://freeletics.github.io/khonshu/navigation/get-started/). ♥️ ViewModel, SavedStateHandle, Lifecycle, Multi-Backstacks, Transitions, Back-press handling, and more...
 
 [![maven-central](https://img.shields.io/maven-central/v/io.github.hoc081098/solivagant-navigation)](https://search.maven.org/search?q=g:io.github.hoc081098%20solivagant-navigation)
 [<img src="https://img.shields.io/nexus/snapshots/https/s01.oss.sonatype.org/io.github.hoc081098/solivagant-navigation.svg?label=latest%20snapshot"/>](https://s01.oss.sonatype.org/content/repositories/snapshots/io/github/hoc081098/solivagant-navigation)
@@ -60,8 +60,18 @@
     <img src="https://github.com/hoc081098/solivagant/raw/master/logo.png" width="400">
 </p>
 
-> [!NOTE]
-> This library is still in alpha, so the API may change in the future.
+> [!WARNING]
+> **This library is no longer maintained.**
+>
+> Development has stopped. No new features, bug fixes, or dependency updates will be published.
+> The repository is preserved as a reference and for existing users who wish to fork or study the code.
+>
+> **For new projects**, use [Navigation 3](https://developer.android.com/guide/navigation/navigation-3)
+> (Android/Compose) or the official [JetBrains Compose Multiplatform](https://www.jetbrains.com/compose-multiplatform/)
+> navigation solution when it becomes available on all platforms.
+>
+> The architectural patterns and design decisions from this library are documented in
+> [`docs/`](docs/README.md) and are worth reading regardless of which navigation library you use.
 
 ## Credits
 
@@ -434,9 +444,12 @@ navigator.navigateBackTo<MainScreenRoute>(inclusive = false)
 - [x] Support transition when navigating (since [0.1.0](https://github.com/hoc081098/solivagant/releases/tag/0.1.0)).
 - [x] Support more targets such as wasm, watchOS, tvOS, etc... (since [0.2.0](https://github.com/hoc081098/solivagant/releases/tag/0.2.0)).
 
-## 🟢 Active status
+## 🔴 Not maintained
 
-This library is actively maintained and updated with new features and bug fixes.
+This library is **no longer maintained**. No new releases, bug fixes, or dependency updates are planned.
+
+The repository remains public for reference. See [`docs/`](docs/README.md) for a full retrospective,
+architectural patterns worth keeping, and migration guidance toward modern official APIs.
 
 ## License
 
