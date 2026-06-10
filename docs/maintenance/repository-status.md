@@ -1,6 +1,6 @@
-# Repository Status Recommendation
+# Repository Status — Final Decision
 
-Engineering trade-off analysis for **solivagant** and **kmp-viewmodel** as of mid-2025.
+Engineering trade-off analysis and **final maintenance decision** for **solivagant** and **kmp-viewmodel** as of mid-2026.
 
 ---
 
@@ -79,34 +79,32 @@ Compose API changes.
   Deprecating now would require migrating to a less mature alternative.
 - Users starting new projects should be informed of Navigation 3's trajectory so they can plan.
 
-### Recommendation: **Minimal maintenance mode with documented deprecation intent**
+### Final decision: **Not maintained — repository archived for reference**
 
 **Reasoning:**
-- solivagant still solves a real problem that official APIs do not yet solve on all platforms.
-  Deprecating it before Navigation 3 is stable and multiplatform would harm existing users.
-- However, the alpha status and sparse test coverage mean that significant new investment is
-  not justified.
-- The library should continue to receive dependency updates (Kotlin, CMP, AndroidX) to remain
-  compilable. Critical bugs should be fixed. New features should not be added.
-- A deprecation notice should be added to the README once Navigation 3 is stable on iOS and
-  Desktop, not before.
+Navigation 3 is on a clear trajectory to become the official multiplatform navigation solution.
+With Navigation 3 eventually going stable and multiplatform, solivagant's unique value as a
+library will disappear. Continuing maintenance would require ongoing effort for diminishing returns.
 
-**Recommended README changes (add now):**
-```markdown
-> [!NOTE]
-> solivagant is in minimal maintenance mode. It continues to receive dependency updates and
-> critical bug fixes. New features are not planned. If you are starting a new project,
-> evaluate [Navigation 3](https://developer.android.com/guide/navigation/navigation3) for
-> Android and assess its multiplatform readiness before choosing a navigation library.
-> See [docs/maintenance/repository-status.md] for details.
-```
+The library is preserved as a public reference. All architectural concepts, patterns, and design
+decisions are documented in `docs/` and remain worth reading.
 
-**GitHub archive:** Do **not** archive. The library is still compilable and used by active projects.
-Archiving would prevent users from reporting bugs and would signal abandonment to library consumers.
+**Actions taken:**
+- README updated with a `[🔴 NOT MAINTAINED]` banner and a deprecation warning.
+- No further Maven releases planned after 0.5.0.
+- Repository is not archived on GitHub so that users can still file issues, but no responses
+  or fixes are guaranteed.
+- The `docs/` directory documents everything worth keeping for future library authors.
 
-**Maven artifact deprecation:** Do **not** deprecate Maven artifacts now. Deprecate when
-Navigation 3 is stable and multiplatform (probably 2026). Deprecated Maven artifacts should
-point to the official Navigation 3 documentation.
+**Patterns worth preserving (see [`docs/architecture/`](../architecture/) and [`docs/ideas/`](../ideas/)):**
+
+| Pattern | Why it matters |
+|---------|----------------|
+| `NavEventNavigator` — Channel-backed nav commands from ViewModel | Testable navigation without Compose test infrastructure |
+| `NavRoot`/`NavRoute` multi-backstack ownership | Clean two-level hierarchy for bottom navigation |
+| `StackValidationMode` (Strict / Lenient / Warning) | Defensive programming for navigation state machines |
+| `SavedStateSupport` for non-Android platforms | Bridging saved state to platforms that have no built-in support |
+| Back stack as observable Compose state | Endorsed independently by Navigation 3; solivagant arrived here first |
 
 ---
 
@@ -165,37 +163,27 @@ point to the official Navigation 3 documentation.
 - Abrupt deprecation of the savedstate module would require users to either write their own
   key abstraction or regress to raw string-based `SavedStateHandle` access.
 
-### Recommendation: **Split into two maintenance tracks**
+### Final decision: **Not maintained — repository archived for reference**
 
-**Core `viewmodel` module:** Move to deprecated but not archived. Add a README notice pointing
-to `org.jetbrains.androidx.lifecycle:lifecycle-viewmodel`. Continue receiving Kotlin/CMP
-dependency updates for at least one year to give users time to migrate. Stop accepting new
-features.
+**Reasoning:**
+The core ViewModel module is already superseded by `org.jetbrains.androidx.lifecycle:lifecycle-viewmodel`.
+The `savedstate` module (type-safe keys, `@Parcelize` in common code) retains some unique value,
+but the maintenance cost and the uncertainty around official multiplatform `@Parcelize` support
+make continued maintenance unjustifiable.
 
-**`viewmodel-savedstate` module (type-safe keys, `@Parcelize`):** Keep in minimal maintenance
-mode. This module has unique value that official APIs do not yet cover. Deprecate when either:
-- Official multiplatform `@Parcelize` support ships, or
-- The type-safe key API has an official equivalent.
+**Actions taken:**
+- No further Maven releases planned.
+- Repository is not archived on GitHub so existing users can still view the code and history.
+- The `docs/` directory documents the patterns worth keeping.
 
-**`viewmodel-compose` and DI modules:** Tie their lifecycle to the core module. Once the core is
-deprecated, these become thin wrappers with no reason to exist. Deprecate them alongside the core.
+**Patterns worth preserving (see [`docs/architecture/`](../architecture/) and [`docs/ideas/`](../ideas/)):**
 
-**Recommended README changes (add now):**
-```markdown
-> [!NOTE]
-> The core `kmp-viewmodel` ViewModel is superseded by
-> [`org.jetbrains.androidx.lifecycle:lifecycle-viewmodel`](https://central.sonatype.com/artifact/org.jetbrains.androidx.lifecycle/lifecycle-viewmodel)
-> for new projects. The `kmp-viewmodel-savedstate` module (type-safe `SavedStateHandle` keys and
-> `@Parcelize` support in common code) retains unique value and remains maintained.
-> See [docs/maintenance/repository-status.md] for details and migration guidance.
-```
-
-**GitHub archive:** Do **not** archive. The savedstate module is actively useful. Archive
-only after the savedstate module is superseded or explicitly deprecated.
-
-**Maven artifact deprecation for core ViewModel:** Publish a 0.9.0 release with
-`@Deprecated` annotations on the core `ViewModel` class pointing to the official artifact.
-Keep the Maven coordinates alive so existing users' builds do not break.
+| Pattern | Why it matters |
+|---------|----------------|
+| `NonNullSavedStateHandleKey` / `NullableSavedStateHandleKey` | Type-safe SavedStateHandle access; prevents runtime key-name mistakes |
+| `@Parcelize` / `Parcelable` in `commonMain` | Still no official KMP equivalent; the workaround technique is worth documenting |
+| `expect`/`actual` ViewModel delegation | Canonical pattern for wrapping platform-specific APIs in KMP |
+| Swift Flow wrappers | Practical interop technique regardless of which Kotlin library you use |
 
 ---
 
@@ -204,38 +192,30 @@ Keep the Maven coordinates alive so existing users' builds do not break.
 | Aspect | solivagant | kmp-viewmodel |
 |--------|------------|---------------|
 | Core problem | Multiplatform navigation | Multiplatform ViewModel + lifecycle abstractions |
-| Official alternative exists | Partial (Navigation 3, not yet multiplatform) | Yes (JetBrains lifecycle) |
+| Official alternative exists | Partial (Navigation 3, not yet stable multiplatform) | Yes (JetBrains lifecycle) |
 | Unique value remaining | High (multi-backstack, overlay, NavEventNavigator, cross-platform) | Medium (type-safe keys, `@Parcelize` in common) |
-| Recommended status | Minimal maintenance | Split: core deprecated; savedstate minimal maintenance |
-| Archive GitHub now? | ❌ No | ❌ No |
-| Deprecate Maven now? | ❌ No | ⚠️ Core only, with notice |
-| README banner needed? | ✅ Maintenance mode note | ✅ Core superseded note |
-| Migration guide available? | ✅ Partial (see migration docs) | ✅ Yes (see migration docs) |
+| **Final status** | **Not maintained. Preserved for reference.** | **Not maintained. Preserved for reference.** |
+| Archive GitHub? | Not yet — users can still browse/fork | Not yet — users can still browse/fork |
+| Further Maven releases? | ❌ No | ❌ No |
+| Documentation preserved? | ✅ Yes — see `docs/` | ✅ Yes — see `docs/` |
+| Migration guide available? | ✅ Yes — see `docs/migration/` | ✅ Yes — see `docs/migration/` |
 
 ---
 
-## Suggested Next Actions
+## Final note
 
-### Immediate (no code changes required)
+Both libraries were written to fill real gaps in the Kotlin Multiplatform ecosystem at the time.
+Those gaps are now being closed by official APIs from JetBrains and Google. The right decision
+is to stop maintaining these libraries and let the official ecosystem take over.
 
-1. Add the maintenance mode note to solivagant README.
-2. Add the superseded note to kmp-viewmodel README.
-3. Publish these docs to the repository.
-4. Check the latest Navigation 3 release notes and update this document's assessment of its
-   multiplatform readiness.
+The concepts, patterns, and design decisions documented in `docs/` are the lasting contribution
+of this work. They are applicable regardless of which navigation or lifecycle library you use,
+and they reflect production-tested thinking about:
 
-### Short term (3–6 months)
+- How to model navigation state as observable Compose state
+- How to architect multi-backstack navigation cleanly
+- How to decouple navigation commands from UI using Channels
+- How to preserve state across process death on non-Android platforms
+- How to write idiomatic Kotlin Multiplatform abstractions over platform-specific APIs
 
-1. Add `@Deprecated` annotations to `kmp-viewmodel`'s core ViewModel class with a migration
-   pointer to the JetBrains lifecycle artifact.
-2. Improve test coverage on `MultiStack` and `Stack` in solivagant to reduce regression risk
-   during dependency update maintenance.
-3. Write a blog post documenting solivagant's design decisions and their relationship to
-   Navigation 3's approach. This creates lasting educational value.
-
-### Medium term (6–18 months, after Navigation 3 stabilises)
-
-1. Add deprecation banners to solivagant when Navigation 3 is stable on iOS and Desktop.
-2. Deprecate Maven artifacts for `solivagant-navigation` with a link to Navigation 3.
-3. Archive solivagant if no new issues are being filed and no migration questions remain open.
-4. If official multiplatform `@Parcelize` ships, deprecate `kmp-viewmodel-savedstate` accordingly.
+Thank you to everyone who used, contributed to, or filed issues on these libraries.

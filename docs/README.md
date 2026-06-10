@@ -49,10 +49,13 @@ libraries were created to address.
 
 ## Quick summary
 
-| Library | Current status recommendation | Maven artifacts |
-|---------|------------------------------|-----------------|
-| **solivagant** | Minimal maintenance mode → document deprecation path | Keep publishing; add deprecation notice after Navigation 3 is stable |
-| **kmp-viewmodel** | Minimal maintenance mode → document deprecation path | Keep publishing; the `parcelable` and `savedstate` modules remain useful for Android-targeting KMP projects |
+| Library | Final status | Maven artifacts |
+|---------|-------------|-----------------|
+| **solivagant** | **Not maintained. Repository preserved for reference.** | Last published: 0.5.0. No further releases planned. |
+| **kmp-viewmodel** | **Not maintained. Repository preserved for reference.** | Core ViewModel superseded by JetBrains `lifecycle-viewmodel`. `savedstate` module has no official equivalent but is no longer updated. |
 
-See [maintenance/repository-status.md](maintenance/repository-status.md) for the detailed
-engineering trade-off analysis.
+The architectural decisions, design patterns, and concepts from both libraries are documented in
+this directory and remain valuable reading regardless of which navigation library you use.
+
+See [maintenance/repository-status.md](maintenance/repository-status.md) for the full engineering
+trade-off analysis and the reasoning behind this decision.
