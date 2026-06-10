@@ -66,7 +66,7 @@
 > Development has stopped. No new features, bug fixes, or dependency updates will be published.
 > The repository is preserved as a reference and for existing users who wish to fork or study the code.
 >
-> **For new projects**, use [Navigation 3](https://developer.android.com/guide/navigation/navigation3)
+> **For new projects**, use [Navigation 3](https://developer.android.com/guide/navigation/navigation-3)
 > (Android/Compose) or the official [JetBrains Compose Multiplatform](https://www.jetbrains.com/compose-multiplatform/)
 > navigation solution when it becomes available on all platforms.
 >
